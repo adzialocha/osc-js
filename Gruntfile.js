@@ -6,6 +6,8 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
 
+    pkg: grunt.file.readJSON('package.json'),
+
     paths: {
       src: 'src',
       example: 'example',
@@ -88,63 +90,63 @@ module.exports = function (grunt) {
       }
     },
 
-    copy: {
-      dist: {
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: [ '<%= paths.src %>/osc.js' ],
-            dest: '<%= paths.dist %>'
-          }
-        ]
-      }
-    },
-
     uglify: {
-      options: {
-        mangle: true,
-        compress: true,
-        preserveComments: 'some',
-        sourceMap: true
-      },
-      dist: {
+      min: {
+        options: {
+          mangle: true,
+          compress: true,
+          preserveComments: 'some',
+          sourceMap: true,
+          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */'
+        },
         files: {
           '<%= paths.dist %>/osc.min.js': [ '<%= paths.src %>/osc.js' ]
         }
+      },
+      src: {
+        options: {
+          mangle: false,
+          compress: false,
+          beautify: true,
+          preserveComments: 'some',
+          sourceMap: false,
+          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */\n'
+        },
+        files: {
+          '<%= paths.dist %>/osc.js': [ '<%= paths.src %>/osc.js' ]
+        }
+      }
+    },
+
+    bump: {
+      options: {
+        files: [ 'package.json' ],
+        commit: false,
+        createTag: false,
+        push: false
       }
     }
+
   });
 
   /* tasks */
 
-  grunt.registerTask('serve', function () {
-    grunt.task.run([
-      'clean:server',
-      'connect:server',
-      'watch'
-    ]);
-  });
+  grunt.registerTask('serve', [
+    'clean:server',
+    'connect:server',
+    'watch'
+  ]);
 
-  grunt.registerTask('test', function(target) {
-
-    if (target !== 'watch') {
-      grunt.task.run([
-        'clean:server'
-      ]);
-    }
-
-    grunt.task.run([
-      'connect:test',
-      'jasmine'
-    ]);
-
-  });
+  grunt.registerTask('test', [
+    'connect:test',
+    'jasmine'
+  ]);
 
   grunt.registerTask('build', [
     'clean:dist',
-    'uglify:dist',
-    'copy:dist'
+    'uglify'
   ]);
 
   grunt.registerTask('default', [

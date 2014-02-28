@@ -3,8 +3,17 @@
   <head>
     <title>osc-js</title>
     <script src="osc.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+      var OSCInterface;
+
+      function init() {
+        OSCInterface = new OSC();
+      }
+
+    </script>
   </head>
-  <body>
-    <h1>Hello!</h1>
+  <body onload="init()">
+    <h1>osc-js</h1>
   </body>
 </html>

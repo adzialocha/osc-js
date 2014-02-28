@@ -1,13 +1,19 @@
-/*! osc-js by marmorkuchen.net */
+(function (window, undefined) {
 
-'use strict';
+  'use strict';
 
-function OSC(){}
+  var OSC = function() {
 
-OSC.prototype.testFunc = function() {
-  console.log('saying what?!');
-};
+  };
 
-OSC.prototype.answer = function() {
-  return 42;
-};
+  OSC.prototype.testFunc = function() {
+    console.log('saying what?!');
+  };
+
+  OSC.prototype.answer = function() {
+    return 42;
+  };
+
+  window.OSC = OSC;
+
+}(window));
