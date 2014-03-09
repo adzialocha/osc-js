@@ -6,7 +6,8 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
 
-    pkg: grunt.file.readJSON('package.json'),
+    npm: grunt.file.readJSON('package.json'),
+    bower: grunt.file.readJSON('.bowerrc'),
 
     paths: {
       src: 'src',
@@ -37,6 +38,7 @@ module.exports = function (grunt) {
           port: 9001,
           base: [
             '.tmp',
+            '<%= bower.directory %>',
             '<%= paths.test %>',
             '<%= paths.src %>'
           ]
@@ -46,9 +48,11 @@ module.exports = function (grunt) {
         options: {
           port: 9000,
           hostname: '0.0.0.0',
-          open: true,
+          open: false,
           base: [
             '.tmp',
+            '<%= bower.directory %>',
+            '<%= paths.test %>',
             '<%= paths.example %>',
             '<%= paths.src %>'
           ]
@@ -83,7 +87,9 @@ module.exports = function (grunt) {
 
     jasmine: {
       dist: {
-        src: '<%= paths.src %>/*.js',
+        src: [
+          '<%= paths.src %>/*.js'
+        ],
         options: {
           specs: '<%= paths.test %>/*.js'
         }
@@ -97,7 +103,7 @@ module.exports = function (grunt) {
           compress: true,
           preserveComments: 'some',
           sourceMap: true,
-          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          banner: '/*! <%= npm.name %> - v<%= npm.version %> - ' +
           '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */'
         },
         files: {
@@ -111,7 +117,7 @@ module.exports = function (grunt) {
           beautify: true,
           preserveComments: 'some',
           sourceMap: false,
-          banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          banner: '/*! <%= npm.name %> - v<%= npm.version %> - ' +
           '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */\n'
         },
         files: {

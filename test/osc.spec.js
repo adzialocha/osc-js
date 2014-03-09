@@ -1,7 +1,18 @@
-var OSC = new OSC();
+var oscTest;
 
-describe('A suite', function() {
-  it('returns the answer to all questions', function() {
-    expect(OSC.answer()).toEqual(42);
+describe('OSC', function() {
+
+  beforeEach(function() {
+    oscTest = new OSC();
   });
+
+  describe('public methods', function() {
+
+    it('exposes #on and #off methods', function() {
+      expect(oscTest.on).toBeDefined();
+      expect(oscTest.off).toBeDefined();
+    });
+
+  });
+
 });
