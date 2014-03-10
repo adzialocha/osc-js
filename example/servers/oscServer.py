@@ -17,7 +17,7 @@ class MyServerProtocol(WebSocketServerProtocol):
       def sendRandomOSCMessage():
 
          m = OSCMessage()
-         m.setAddress("/test")
+         m.setAddress("/test/pa")
 
          for x in range(0, randint(1, 3)) :
             m.append(randint(0, 9999))

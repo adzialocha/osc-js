@@ -14,6 +14,12 @@
 
   };
 
+  function _addressToArray(pAddress) {
+    var address = pAddress.split('/');
+    address = address.filter(function(aItem){ return aItem.length > 0; });
+    return address;
+  }
+
   /*
    * OSCEventHandler
    * event callback handling
@@ -37,31 +43,7 @@
 
     this._uuid = -1;
 
-    // helpers
-
-    this._transformToArray = function(pAddress) {
-      var address = pAddress.split('/');
-      address = address.filter(function(aItem){ return aItem.length > 0; });
-      return address;
-    };
-
-    this._findAddressHandler = function(fAddress) {
-      var obj = this._addressHandlers;
-
-      for (var i = 0; i < fAddress.length; ++i) {
-        if (obj && fAddress[i] in obj) {
-          obj = obj[fAddress[i]];
-        } else {
-          obj = null;
-        }
-      }
-
-      if (obj && this.CALLBACKS_KEY in obj) {
-        return obj[this.CALLBACKS_KEY];
-      }
-
-      return null;
-    };
+    return true;
 
   };
 
@@ -85,10 +67,14 @@
         this._callbackHandlers[sEventName].push(data);
         return token;
       } else {
-        address = this._transformToArray(sEventName);
+        address = _addressToArray(sEventName);
       }
     } else {
       address = sEventName;
+    }
+
+    if (typeof sEventName === 'string' && ( sEventName.length === 0 || sEventName[0] !== '/' )) {
+      throw 'OSCEventHandler Error: expects string to start with a / character';
     }
 
     // subscribe osc address listener, put it in a tree
@@ -135,7 +121,7 @@
         }
         return success;
       } else {
-        address = this._transformToArray(sEventName);
+        address = _addressToArray(sEventName);
       }
     } else {
       address = sEventName;
@@ -143,16 +129,31 @@
 
     // remove osc address listener
 
-    var handlers = this._findAddressHandler(address);
+    var handlers = [];
 
-    if (handlers) {
-      for (i = 0; i < handlers.length; i++) {
-        if (handlers[i].token === sToken) {
-          handlers.splice(i, 1);
-          success = true;
-        }
+    var obj = this._addressHandlers;
+
+    for (i = 0; i < address.length; ++i) {
+      if (obj && address[i] in obj) {
+        obj = obj[address[i]];
+      } else {
+        obj = null;
       }
     }
+
+    if (obj && this.CALLBACKS_KEY in obj) {
+      handlers = obj[this.CALLBACKS_KEY];
+    }
+
+    handlers.some(function(hItem, hIndex) {
+      if (hItem.token === sToken) {
+        handlers.splice(hIndex, 1);
+        success = true;
+        return true;
+      } else {
+        return false;
+      }
+    });
 
     return success;
   };
@@ -160,7 +161,7 @@
   // notify subscribers
 
   OSCEventHandler.prototype.notify = function(sEventName, sEventData) {
-    var address;
+    var address, i;
 
     if (typeof sEventName === 'string') {
       if (this._callbackHandlers[sEventName]) {
@@ -170,7 +171,7 @@
         });
         return true;
       } else {
-        address = this._transformToArray(sEventName);
+        address = _addressToArray(sEventName);
       }
     } else {
       address = sEventName;
@@ -178,7 +179,21 @@
 
     // notify osc address subscribers
 
-    var handlers = this._findAddressHandler(address);
+    var handlers = [];
+    var obj = this._addressHandlers;
+
+    if (this.CALLBACKS_KEY in obj) {
+      handlers = handlers.concat(obj[this.CALLBACKS_KEY]);
+    }
+
+    for (i = 0; i < address.length; i++) {
+      if (address[i] in obj) {
+        obj = obj[address[i]];
+        if (this.CALLBACKS_KEY in obj) {
+          handlers = handlers.concat(obj[this.CALLBACKS_KEY]);
+        }
+      }
+    }
 
     handlers.forEach(function(eHandlerItem) {
       eHandlerItem.callback(sEventData);
@@ -200,16 +215,23 @@
     if (!( sAddress && sPort)) {
       throw 'OSCSocket Error: missing WebSocket address or port';
     }
+    // setting up websocket
 
     this._socket = new WebSocket('ws://' + sAddress + ':' + sPort);
     this._socket.binaryType = 'arraybuffer';
 
-    this._socket.onopen = function(wEvent) {
-      _oscEventHandler.notify('onOpen', wEvent);
+    this._socket.onopen = function(sEvent) {
+      _oscEventHandler.notify('onOpen', sEvent);
     };
 
-    this._socket.onerror = function(wEvent) {
-      _oscEventHandler.notify('onError', wEvent);
+    this._socket.onerror = function(sEvent) {
+      _oscEventHandler.notify('onError', sEvent);
+    };
+
+    this._socket.onmessage = function(sEvent) {
+      var message = new OSCMessage();
+      message.decode(sEvent.data);
+      _oscEventHandler.notify( message.address, message.toJSON() );
     };
 
     return true;
@@ -229,6 +251,153 @@
    */
 
   var OSCMessage = function() {
+
+    this.address = [];
+    this.addressString = '';
+    this.typesString = '';
+    this.args = [];
+
+    // OSC String (ASCII)
+
+    this.OSCString = function() {
+      this.value = '';
+      this.offset = 0;
+    };
+
+    this.OSCString.prototype.decode = function(sData, sOffset) {
+      var data = new Int8Array(sData);
+      var end = sOffset;
+      while (data[end] && end < data.length) { end++; }
+
+      if (end === data.length) {
+        throw 'OSCMessage Error: malformed not ending OSC String';
+      }
+
+      this.value = String.fromCharCode.apply(null, data.subarray(sOffset, end));
+      this.offset = parseInt( Math.ceil( ( end + 1 ) / 4.0 ) * 4, 10 );
+
+      return this.offset;
+    };
+
+    // OSC Integer (32-bit big-endian twos complement)
+
+    this.OSCInt = function() {
+      this.value = 0;
+      this.offset = 0;
+    };
+
+    this.OSCInt.prototype.decode = function(sData, sOffset) {
+      var dataView = new DataView(sData, sOffset, 4);
+      this.value = dataView.getInt32(0);
+      this.offset = sOffset + 4;
+      return this.offset;
+    };
+
+    // OSC Float (32-bit big-endian IEEE 754 floating point number)
+
+    this.OSCFloat = function() {
+      this.value = 0.0;
+      this.offset = 0;
+    };
+
+    this.OSCFloat.prototype.decode = function(sData, sOffset) {
+      var dataView = new DataView(sData, sOffset, 4);
+      this.value = dataView.getFloat32(0);
+      this.offset = sOffset + 4;
+      return this.offset;
+    };
+
+    // OSC Blob
+
+    // @ TODO
+
+    this.OSCBlob = function() {
+      this.value = 0.0;
+      this.offset = 0;
+    };
+
+    this.OSCBlob.prototype.decode = function(sData, sOffset) {
+      var dataView = new DataView(sData, sOffset, 4);
+      this.value = dataView.getFloat32(0);
+      this.offset = sOffset + 4;
+      return this.offset;
+    };
+
+    return true;
+  };
+
+  OSCMessage.prototype.toJSON = function() {
+
+    var json = {
+
+      address: this.address,
+      addressString: this.addressString,
+
+      types: this.typesString,
+      arguments: this.args
+
+    };
+
+    return json;
+
+  };
+
+  OSCMessage.prototype.decode = function(mData) {
+
+    var address, types, i, args, offset;
+
+    // read address and type string
+
+    address = new this.OSCString();
+    address.decode(mData, 0);
+
+    types = new this.OSCString();
+    types.decode(mData, address.offset);
+
+    // parse type string
+
+    if (types.length === 0 || types.value[0] !== ',') {
+      throw 'OSCMessage Error: malformed or missing OSC TypeString';
+    }
+
+    args = [];
+    offset = types.offset;
+
+    for (i = 1; i < types.value.length; i++) {
+
+      var next;
+
+      if (types.value[i] === 'i') {
+        next = new this.OSCInt();
+      } else if (types.value[i] === 'f') {
+        next = new this.OSCFloat();
+      } else if (types.value[i] === 's') {
+        next = new this.OSCString();
+      } else if (types.value[i] === 'b') {
+        next = new this.OSCBlob();
+      } else {
+        throw 'OSCMessage Error: found nonstandard argument type';
+      }
+
+      next.decode(mData, offset);
+      offset = next.offset;
+      args.push(next.value);
+
+    }
+
+    // persist them
+
+    this.address = _addressToArray(address.value);
+    this.addressString = address.value;
+    this.typesString = types.value.slice(1, types.value.length);
+    this.args = args;
+
+    return true;
+  };
+
+  OSCMessage.prototype.encode = function(mAddress, mData) {
+    // @ TODO
+    console.log(mAddress, mData);
     return true;
   };
 
@@ -248,9 +417,13 @@
     _oscSocket = new OSCSocket();
     _oscMessage = new OSCMessage();
 
-    // make accessible for specs
+    // expose for specs
 
     this.__OSCEventHandler = _oscEventHandler;
+    this.__OSCSocket = _oscSocket;
+    this.__OSCMessage = _oscMessage;
+
+    return true;
   };
 
   // event handling

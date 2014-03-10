@@ -21,6 +21,24 @@
           console.log('STATUS', oscInterface.status());
         });
 
+        // listen to osc address
+
+        oscInterface.on('/', function(cMessage) {
+          console.log('lowest', cMessage.arguments[0], cMessage.addressString);
+        });
+
+        oscInterface.on('/test', function(cMessage) {
+          console.log('lower', cMessage.arguments[0]);
+        });
+
+        oscInterface.on('/test/pa', function(cMessage) {
+          console.log(cMessage.arguments[0]);
+        });
+
+        oscInterface.on('/test/pa/peter', function(cMessage) {
+          console.log('high', cMessage.arguments[0]);
+        });
+
         oscInterface.server('127.0.0.1', 8000);
       }
 

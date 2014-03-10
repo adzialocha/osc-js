@@ -187,15 +187,21 @@ describe('OSCEventHandler', function() {
 
       it('notifies two listeners', function() {
         oscTest.__OSCEventHandler.notify('/a/test', testdata);
-        expect(oscTest.__OSCEventHandler._addressHandlers[cbkey][0].callback).not.toHaveBeenCalled();
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).not.toHaveBeenCalled();
       });
 
+      it('notifies parent listeners as well', function() {
+        oscTest.__OSCEventHandler.notify('/a/test/path', testdata);
+        expect(oscTest.__OSCEventHandler._addressHandlers[cbkey][0].callback).toHaveBeenCalled();
+        expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
+        expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
+        expect(oscTest.__OSCEventHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).toHaveBeenCalled();
+      });
+
       it('notifies two listeners with slightly different but correct path', function() {
-        oscTest.__OSCEventHandler.notify('a/test/', testdata);
-        expect(oscTest.__OSCEventHandler._addressHandlers[cbkey][0].callback).not.toHaveBeenCalled();
+        oscTest.__OSCEventHandler.notify('/a/test/', testdata);
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
         expect(oscTest.__OSCEventHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).not.toHaveBeenCalled();
