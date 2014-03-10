@@ -16,14 +16,24 @@ class MyServerProtocol(WebSocketServerProtocol):
 
       def sendRandomOSCMessage():
 
-         m = OSCMessage()
-         m.setAddress("/test/pa")
+         m = OSCMessage("/test/pa")
 
-         for x in range(0, randint(1, 3)) :
+         for x in range(0, randint(0, 3)) :
             m.append(randint(0, 9999))
 
-         for x in range(0, randint(1, 3)) :
+         for x in range(0, randint(0, 3)) :
             m.append(uniform(0, 9999))
+
+         for x in range(0, randint(0, 3)) :
+            m.append("teststring")
+
+         for x in range(0, randint(0, 3)) :
+            m.append(uniform(0, 9999))
+
+         # add blob
+
+         for x in range(0, randint(0, 1)) :
+            m.append("somebinarydatabumbum","b")
 
          print "send random OSC message", m
 

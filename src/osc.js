@@ -34,9 +34,9 @@
     // callback subscriptions
 
     this._callbackHandlers = {
-      onOpen: [],
-      onError: [],
-      onClose: []
+      open: [],
+      error: [],
+      close: []
     };
 
     this._addressHandlers = {};
@@ -221,11 +221,11 @@
     this._socket.binaryType = 'arraybuffer';
 
     this._socket.onopen = function(sEvent) {
-      _oscEventHandler.notify('onOpen', sEvent);
+      _oscEventHandler.notify('open', sEvent);
     };
 
     this._socket.onerror = function(sEvent) {
-      _oscEventHandler.notify('onError', sEvent);
+      _oscEventHandler.notify('error', sEvent);
     };
 
     this._socket.onmessage = function(sEvent) {
@@ -265,21 +265,35 @@
     };
 
     this.OSCString.prototype.decode = function(sData, sOffset) {
+
+      var i, subarray, str;
       var data = new Int8Array(sData);
       var end = sOffset;
+
       while (data[end] && end < data.length) { end++; }
 
       if (end === data.length) {
         throw 'OSCMessage Error: malformed not ending OSC String';
       }
 
-      this.value = String.fromCharCode.apply(null, data.subarray(sOffset, end));
-      this.offset = parseInt( Math.ceil( ( end + 1 ) / 4.0 ) * 4, 10 );
+      subarray = data.subarray(sOffset, end);
+
+      str = '';
+
+      for (i = 0; i < subarray.length; i++) {
+        str = str + String.fromCharCode(subarray[i]);
+      }
+
+      // @TODO check this nicer implementation here, it doesnt work in jasmine specs:
+      // this.value = String.fromCharCode.apply(null, data.subarray(sOffset, end));
+
+      this.offset = Math.ceil( ( end + 1 ) / 4 ) * 4;
+      this.value = str;
 
       return this.offset;
     };
 
-    // OSC Integer (32-bit big-endian twos complement)
+    // OSC Integer (32-bit big-endian two-complement integer)
 
     this.OSCInt = function() {
       this.value = 0;
@@ -309,17 +323,17 @@
 
     // OSC Blob
 
-    // @ TODO
-
     this.OSCBlob = function() {
-      this.value = 0.0;
+      this.value = new Blob();
       this.offset = 0;
     };
 
     this.OSCBlob.prototype.decode = function(sData, sOffset) {
       var dataView = new DataView(sData, sOffset, 4);
-      this.value = dataView.getFloat32(0);
-      this.offset = sOffset + 4;
+      var blobSize = dataView.getInt32(0);
+      var binary = sData.slice(sOffset + 4,  sOffset + 4 + blobSize);
+      this.value = new Blob([ binary ]);
+      this.offset = sOffset + 4 + blobSize;
       return this.offset;
     };
 
@@ -345,6 +359,10 @@
   OSCMessage.prototype.decode = function(mData) {
 
     var address, types, i, args, offset;
+
+    if (mData.byteLength % 4 !== 0) {
+      throw 'OSCMessage Error: byteLength has to be a multiple of four';
+    }
 
     // read address and type string
 
@@ -403,7 +421,7 @@
 
   // OSC wrapper object used as main interface
 
-  var _oscEventHandler, _oscSocket, _oscMessage;
+  var _oscEventHandler, _oscSocket;
 
   var OSC = function() {
 
@@ -415,13 +433,12 @@
 
     _oscEventHandler = new OSCEventHandler();
     _oscSocket = new OSCSocket();
-    _oscMessage = new OSCMessage();
 
-    // expose for specs
+    // expose to specs
 
-    this.__OSCEventHandler = _oscEventHandler;
-    this.__OSCSocket = _oscSocket;
-    this.__OSCMessage = _oscMessage;
+    this.__OSCEventHandler = OSCEventHandler;
+    this.__OSCSocket = OSCSocket;
+    this.__OSCMessage = OSCMessage;
 
     return true;
   };

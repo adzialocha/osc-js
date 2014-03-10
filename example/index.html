@@ -6,40 +6,42 @@
     <script src="osc.js" type="text/javascript"></script>
     <script type="text/javascript">
 
-      var oscInterface;
+      var osc;
 
       function init() {
-        oscInterface = new OSC();
+        osc = new OSC();
 
-        oscInterface.on('onOpen', function(cEvent) {
+        osc.on('open', function(cEvent) {
           console.log('ready', cEvent);
-          console.log('STATUS', oscInterface.status() === oscInterface.SOCKET.IS_OPEN);
+          console.log('STATUS', osc.status() === osc.SOCKET.IS_OPEN);
         });
 
-        oscInterface.on('onError', function(cEvent) {
+        osc.on('error', function(cEvent) {
           console.log('error', cEvent);
-          console.log('STATUS', oscInterface.status());
+          console.log('STATUS', osc.status());
         });
 
         // listen to osc address
 
-        oscInterface.on('/', function(cMessage) {
+        var listener = osc.on('/', function(cMessage) {
           console.log('lowest', cMessage.arguments[0], cMessage.addressString);
         });
 
-        oscInterface.on('/test', function(cMessage) {
-          console.log('lower', cMessage.arguments[0]);
+        osc.off('/', listener);
+
+        osc.on('/test', function(cMessage) {
+          console.log('lower', cMessage.arguments[0], cMessage.addressString);
         });
 
-        oscInterface.on('/test/pa', function(cMessage) {
-          console.log(cMessage.arguments[0]);
+        osc.on('/test/pa', function(cMessage) {
+          console.log(cMessage);
         });
 
-        oscInterface.on('/test/pa/peter', function(cMessage) {
+        osc.on('/test/pa/peter', function(cMessage) {
           console.log('high', cMessage.arguments[0]);
         });
 
-        oscInterface.server('127.0.0.1', 8000);
+        osc.server('127.0.0.1', 8000);
       }
 
     </script>
