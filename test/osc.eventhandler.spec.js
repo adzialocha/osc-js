@@ -5,7 +5,6 @@ describe('OSCEventHandler', function() {
   beforeEach(function() {
     oscTest = new OSC();
     oscHandler = new oscTest.__OSCEventHandler();
-    cbkey = oscHandler.CALLBACKS_KEY;
   });
 
   describe('#on and #off', function() {
@@ -52,18 +51,18 @@ describe('OSCEventHandler', function() {
         });
 
         it('#on subscribes to a osc address handler', function() {
-          var handler = oscHandler._addressHandlers['a']['test']['path'];
+          var handler = oscHandler._addressHandlers['/a/test/path'];
           expect(handler).toBeDefined();
-          expect(handler[cbkey][0].token).toEqual('0');
-          expect(handler[cbkey][0].callback).toEqual(jasmine.any(Function));
+          expect(handler[0].token).toEqual('0');
+          expect(handler[0].callback).toEqual(jasmine.any(Function));
         });
 
         it('#off unsubscribes a osc address handler', function() {
-          var success = oscHandler.off('/a/test/path/', token);
-          var closePathFailA = oscHandler.off('/a/test/path/further/', token);
-          var closePathFailB = oscHandler.off('/a/test/', token);
-          var handler = oscHandler._addressHandlers['a']['test']['path'];
-          expect(handler[cbkey][0]).not.toBeDefined();
+          var success = oscHandler.off('/a/test/path', token);
+          var closePathFailA = oscHandler.off('/a/test/path/further', token);
+          var closePathFailB = oscHandler.off('/a/test', token);
+          var handler = oscHandler._addressHandlers['/a/test/path'];
+          expect(handler[0]).not.toBeDefined();
           expect(success).toBe(true);
           expect(closePathFailA).toBe(false);
           expect(closePathFailB).toBe(false);
@@ -74,7 +73,7 @@ describe('OSCEventHandler', function() {
       describe('using an array address', function() {
 
         beforeEach(function() {
-          token = oscHandler.on(['another', 'test'], function(){ return 42; });
+          token = oscHandler.on(['a', 'test', 'path'], function(){ return true; });
         });
 
         it('returns a token', function() {
@@ -82,17 +81,21 @@ describe('OSCEventHandler', function() {
         });
 
         it('#on subscribes to a osc address handler', function() {
-          var handler = oscHandler._addressHandlers['another']['test'];
+          var handler = oscHandler._addressHandlers['/a/test/path'];
           expect(handler).toBeDefined();
-          expect(handler[cbkey][0].token).toEqual('0');
-          expect(handler[cbkey][0].callback()).toEqual(42);
+          expect(handler[0].token).toEqual('0');
+          expect(handler[0].callback).toEqual(jasmine.any(Function));
         });
 
         it('#off unsubscribes a osc address handler', function() {
-          var success = oscHandler.off(['another','test'], token);
-          var handler = oscHandler._addressHandlers['another']['test'];
-          expect(handler[cbkey][0]).not.toBeDefined();
+          var success = oscHandler.off(['a','test','path'], token);
+          var closePathFailA = oscHandler.off('/a/test/path/further', token);
+          var closePathFailB = oscHandler.off('/a/test', token);
+          var handler = oscHandler._addressHandlers['/a/test/path'];
+          expect(handler[0]).not.toBeDefined();
           expect(success).toBe(true);
+          expect(closePathFailA).toBe(false);
+          expect(closePathFailB).toBe(false);
         });
 
       });
@@ -104,15 +107,15 @@ describe('OSCEventHandler', function() {
         });
 
         it('#on subscribes to a root osc address handler', function() {
-          var handler = oscHandler._addressHandlers;
-          expect(handler[cbkey][0].token).toEqual('0');
-          expect(handler[cbkey][0].callback).toEqual(jasmine.any(Function));
+          var handler = oscHandler._addressHandlers['/'];
+          expect(handler[0].token).toEqual('0');
+          expect(handler[0].callback).toEqual(jasmine.any(Function));
         });
 
         it('#off unsubscribes a root osc address handler', function() {
-          var success = oscHandler.off([], token);
-          var handler = oscHandler._addressHandlers;
-          expect(handler[cbkey][0]).not.toBeDefined();
+          var success = oscHandler.off('/', token);
+          var handler = oscHandler._addressHandlers['/'];
+          expect(handler[0]).not.toBeDefined();
           expect(success).toBe(true);
         });
 
@@ -163,49 +166,79 @@ describe('OSCEventHandler', function() {
         testdata = { test: 'data' };
 
         oscHandler.on('/', function(hData){ return 1; });
-        oscHandler.on('/a/test/', function(hData){ return 2; });
-        oscHandler.on(['a', 'test'], function(hData){ return 3; });
-        oscHandler.on('/a/test/path', function(hData){ return 4; });
+        oscHandler.on('/one/test', function(hData){ return 2; });
+        oscHandler.on('/and/another', function(hData){ return 3; });
+        oscHandler.on('/two/test/path', function(hData){ return 4; });
+        oscHandler.on('/two/test/path', function(hData){ return 5; });
+        oscHandler.on('/two/some/path', function(hData){ return 6; });
 
-        spyOn(oscHandler._addressHandlers[cbkey][0], 'callback').and.callThrough();
-        spyOn(oscHandler._addressHandlers['a']['test'][cbkey][0], 'callback').and.callThrough();
-        spyOn(oscHandler._addressHandlers['a']['test'][cbkey][1], 'callback').and.callThrough();
-        spyOn(oscHandler._addressHandlers['a']['test']['path'][cbkey][0], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/'][0], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/one/test'][0], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/and/another'][0], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/two/test/path'][0], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/two/test/path'][1], 'callback').and.callThrough();
+        spyOn(oscHandler._addressHandlers['/two/some/path'][0], 'callback').and.callThrough();
 
       });
 
       it('passes over the event arguments', function() {
-        oscHandler.notify('/a/test/path', testdata);
-        expect(oscHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).toHaveBeenCalledWith(testdata);
+        oscHandler.notify('/and/another', testdata);
+        expect(oscHandler._addressHandlers['/and/another'][0].callback).toHaveBeenCalledWith(testdata);
       });
 
       it('notifies the root listener', function() {
         oscHandler.notify('/', testdata);
-        expect(oscHandler._addressHandlers[cbkey][0].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][0].callback).not.toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).not.toHaveBeenCalled();
+        expect(oscHandler._addressHandlers['/'][0].callback).toHaveBeenCalled();
+        expect(oscHandler._addressHandlers['/one/test'][0].callback).not.toHaveBeenCalled();
+        expect(oscHandler._addressHandlers['/and/another'][0].callback).not.toHaveBeenCalled();
       });
 
       it('notifies two listeners', function() {
-        oscHandler.notify('/a/test', testdata);
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).not.toHaveBeenCalled();
+        oscHandler.notify('/two/test/path', testdata);
+        expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+        expect(oscHandler._addressHandlers['/two/test/path'][1].callback).toHaveBeenCalled();
+        expect(oscHandler._addressHandlers['/two/some/path'][0].callback).not.toHaveBeenCalled();
       });
 
-      it('notifies parent listeners as well', function() {
-        oscHandler.notify('/a/test/path', testdata);
-        expect(oscHandler._addressHandlers[cbkey][0].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).toHaveBeenCalled();
-      });
+      describe('using regular expressions', function() {
 
-      it('notifies two listeners with slightly different path', function() {
-        oscHandler.notify('/a/test/', testdata);
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][0].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test'][cbkey][1].callback).toHaveBeenCalled();
-        expect(oscHandler._addressHandlers['a']['test']['path'][cbkey][0].callback).not.toHaveBeenCalled();
+        it('with {} wildcard', function() {
+          oscHandler.notify('/two/{test,some}/path', testdata);
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).toHaveBeenCalled();
+        });
+
+        it('with [] wildcard', function() {
+          oscHandler.notify('/[pawgfo]ne/[bnit]est', testdata);
+          expect(oscHandler._addressHandlers['/one/test'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/'][0].callback).not.toHaveBeenCalled();
+        });
+
+        it('with * wildcard', function() {
+          oscHandler.notify('/two/*', testdata);
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/test/path'][1].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/one/test'][0].callback).not.toHaveBeenCalled();
+        });
+
+        it('with * wildcard calling all', function() {
+          oscHandler.notify('/*', testdata);
+          expect(oscHandler._addressHandlers['/'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/one/test'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/and/another'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/test/path'][1].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).toHaveBeenCalled();
+        });
+
+        it('with ? wildcard', function() {
+          oscHandler.notify('/two/????/pa?h', testdata);
+          expect(oscHandler._addressHandlers['/'][0].callback).not.toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).toHaveBeenCalled();
+        });
+
       });
 
     });

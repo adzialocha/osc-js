@@ -14,10 +14,34 @@
 
   };
 
-  function _addressToArray(pAddress) {
-    var address = pAddress.split('/');
-    address = address.filter(function(aItem){ return aItem.length > 0; });
+  function _prepareAddress(pAddress) {
+    var address = '';
+    if (typeof pAddress === 'object') {
+      address = '/' + pAddress.join('/');
+    } else {
+      address = pAddress;
+      if (address.length > 1 && address[address.length - 1] === '/') {
+        address = address.slice(0, address.length - 1);
+      }
+    }
     return address;
+  }
+
+  function _prepareRegExPattern(rPattern) {
+    var pattern;
+
+    pattern = rPattern.replace(/\./g, '\\.');
+    pattern = pattern.replace(/\(/g, '\\(');
+    pattern = pattern.replace(/\)/g, '\\)');
+
+    pattern = pattern.replace(/\{/g, '(');
+    pattern = pattern.replace(/\}/g, ')');
+    pattern = pattern.replace(/\,/g, '|');
+
+    pattern = pattern.replace(/\?/g, '.');
+    pattern = pattern.replace(/\*/g, '.*');
+
+    return pattern;
   }
 
   /*
@@ -50,7 +74,7 @@
   // subscribe to event
 
   OSCEventHandler.prototype.on = function(sEventName, sCallback) {
-    var token, address, data, i;
+    var token, address, data;
 
     if (!((typeof sEventName === 'string' || typeof sEventName === 'object') &&
         typeof sCallback === 'function')) {
@@ -60,41 +84,22 @@
     token = (++this._uuid).toString();
     data = { token: token, callback: sCallback };
 
-    // distinct between event or osc address listener
+    // event listener
 
-    if (typeof sEventName === 'string') {
-      if (this._callbackHandlers[sEventName]) {
-        this._callbackHandlers[sEventName].push(data);
-        return token;
-      } else {
-        address = _addressToArray(sEventName);
-      }
-    } else {
-      address = sEventName;
+    if (typeof sEventName === 'string' && sEventName in this._callbackHandlers) {
+      this._callbackHandlers[sEventName].push(data);
+      return token;
     }
 
-    if (typeof sEventName === 'string' && ( sEventName.length === 0 || sEventName[0] !== '/' )) {
-      throw 'OSCEventHandler Error: expects string to start with a / character';
+    // address listener
+
+    address = _prepareAddress(sEventName);
+
+    if (! (address in this._addressHandlers)) {
+      this._addressHandlers[address] = [];
     }
 
-    // subscribe osc address listener, put it in a tree
-
-    var obj = this._addressHandlers;
-
-    for (i = 0; i < address.length; ++i) {
-      var key = address[i];
-      if (!(key in obj)) {
-        obj[key] = {};
-        obj[key][this.CALLBACKS_KEY] = [];
-      }
-      obj = obj[key];
-    }
-
-    if (!(this.CALLBACKS_KEY in obj)) {
-      obj[this.CALLBACKS_KEY] = [];
-    }
-
-    obj[this.CALLBACKS_KEY].push(data);
+    this._addressHandlers[address].push(data);
 
     return token;
   };
@@ -102,7 +107,7 @@
   // unsubscribe to event
 
   OSCEventHandler.prototype.off = function(sEventName, sToken) {
-    var address, i, success;
+    var key, success, haystack;
 
     if (!((typeof sEventName === 'string' || typeof sEventName === 'object') && sToken)) {
       throw 'OSCEventHandler Error: off expects string/array as eventName and a proper token';
@@ -110,50 +115,22 @@
 
     success = false;
 
-    if (typeof sEventName === 'string') {
-      if (this._callbackHandlers[sEventName]) {
-        // remove event callback
-        for (i = 0; i < this._callbackHandlers[sEventName].length; i++) {
-          if (this._callbackHandlers[sEventName][i].token === sToken) {
-            this._callbackHandlers[sEventName].splice(i, 1);
-            success = true;
-          }
-        }
-        return success;
-      } else {
-        address = _addressToArray(sEventName);
-      }
+    if (typeof sEventName === 'string' && this._callbackHandlers[sEventName]) {
+      haystack = this._callbackHandlers;
+      key = sEventName;
     } else {
-      address = sEventName;
+      key = _prepareAddress(sEventName);
+      haystack = this._addressHandlers;
     }
 
-    // remove osc address listener
-
-    var handlers = [];
-
-    var obj = this._addressHandlers;
-
-    for (i = 0; i < address.length; ++i) {
-      if (obj && address[i] in obj) {
-        obj = obj[address[i]];
-      } else {
-        obj = null;
-      }
+    if (key in haystack) {
+      haystack[key].forEach(function(hItem, hIndex) {
+        if (hItem.token === sToken) {
+          haystack[key].splice(hIndex, 1);
+          success = true;
+        }
+      });
     }
-
-    if (obj && this.CALLBACKS_KEY in obj) {
-      handlers = obj[this.CALLBACKS_KEY];
-    }
-
-    handlers.some(function(hItem, hIndex) {
-      if (hItem.token === sToken) {
-        handlers.splice(hIndex, 1);
-        success = true;
-        return true;
-      } else {
-        return false;
-      }
-    });
 
     return success;
   };
@@ -161,42 +138,38 @@
   // notify subscribers
 
   OSCEventHandler.prototype.notify = function(sEventName, sEventData) {
-    var address, i;
+    var _this, addresses, regex, test;
 
-    if (typeof sEventName === 'string') {
-      if (this._callbackHandlers[sEventName]) {
-        // notify event subscribers
-        this._callbackHandlers[sEventName].forEach(function(cHandlerItem) {
-          cHandlerItem.callback(sEventData);
-        });
-        return true;
-      } else {
-        address = _addressToArray(sEventName);
-      }
-    } else {
-      address = sEventName;
+    if (typeof sEventName !== 'string') {
+      throw 'OSCEventHandler Error: notify expects a string';
+    }
+
+    // notify event subscribers
+
+    if (this._callbackHandlers[sEventName]) {
+      this._callbackHandlers[sEventName].forEach(function(cHandlerItem) {
+        cHandlerItem.callback(sEventData);
+      });
+      return true;
+    }
+
+    if (sEventName.length === 0 || sEventName[0] !== '/' ) {
+      throw 'OSCEventHandler Error: notify expects a proper address starting with /';
     }
 
     // notify osc address subscribers
 
-    var handlers = [];
-    var obj = this._addressHandlers;
+    addresses = Object.keys(this._addressHandlers);
+    _this = this;
 
-    if (this.CALLBACKS_KEY in obj) {
-      handlers = handlers.concat(obj[this.CALLBACKS_KEY]);
-    }
-
-    for (i = 0; i < address.length; i++) {
-      if (address[i] in obj) {
-        obj = obj[address[i]];
-        if (this.CALLBACKS_KEY in obj) {
-          handlers = handlers.concat(obj[this.CALLBACKS_KEY]);
-        }
+    addresses.forEach(function(fAddress) {
+      regex = new RegExp(_prepareRegExPattern(_prepareAddress(sEventName)), 'g');
+      test = regex.test(fAddress);
+      if (test && fAddress.length === regex.lastIndex) {
+        _this._addressHandlers[fAddress].forEach(function(cHandlerItem) {
+          cHandlerItem.callback(sEventData);
+        });
       }
-    }
-
-    handlers.forEach(function(eHandlerItem) {
-      eHandlerItem.callback(sEventData);
     });
 
     return true;
@@ -252,8 +225,7 @@
 
   var OSCMessage = function() {
 
-    this.address = [];
-    this.addressString = '';
+    this.address = '';
     this.typesString = '';
     this.args = [];
 
@@ -345,8 +317,6 @@
     var json = {
 
       address: this.address,
-      addressString: this.addressString,
-
       types: this.typesString,
       arguments: this.args
 
@@ -405,8 +375,7 @@
 
     // persist them
 
-    this.address = _addressToArray(address.value);
-    this.addressString = address.value;
+    this.address = address.value;
     this.typesString = types.value.slice(1, types.value.length);
     this.args = args;
 
