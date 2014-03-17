@@ -353,11 +353,6 @@
     this.SOCKET = FLAGS.SOCKET;
     _oscEventHandler = new OSCEventHandler();
     _oscSocket = new OSCSocket();
-    this.__OSCEventHandler = OSCEventHandler;
-    this.__OSCSocket = OSCSocket;
-    this.__OSCPacket = OSCPacket;
-    this.__OSCBundle = OSCBundle;
-    this.__OSCMessage = OSCMessage;
     return true;
   };
   OSC.prototype.on = function(sEventName, sCallback) {

@@ -107,7 +107,7 @@ module.exports = function (grunt) {
           '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */'
         },
         files: {
-          '<%= paths.dist %>/osc.min.js': [ '<%= paths.src %>/osc.js' ]
+          '<%= paths.dist %>/osc.min.js': [ '.tmp/osc.dist.js' ]
         }
       },
       src: {
@@ -125,8 +125,19 @@ module.exports = function (grunt) {
           '<%= grunt.template.today("yyyy-mm-dd") %> by marmorkuchen.net */\n'
         },
         files: {
-          '<%= paths.dist %>/osc.js': [ '<%= paths.src %>/osc.js' ]
+          '<%= paths.dist %>/osc.js': [ '.tmp/osc.dist.js' ]
         }
+      }
+    },
+
+    replace: {
+      dist: {
+        src: ['<%= paths.src %>/osc.js'],
+        dest: '.tmp/osc.dist.js',
+        replacements: [{
+          from: /\/\/ START_SPECS([\S\s]*?)END_SPECS/g,
+          to: ''
+        }]
       }
     },
 
@@ -156,7 +167,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'uglify'
+    'replace:dist',
+    'uglify',
+    'clean:server'
   ]);
 
   grunt.registerTask('default', [

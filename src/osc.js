@@ -533,13 +533,18 @@
     _oscEventHandler = new OSCEventHandler();
     _oscSocket = new OSCSocket();
 
-    // expose to specs
+    // START_SPECS
+
+    // expose specs in dev environment. this
+    // will be removed by our grunt build task
 
     this.__OSCEventHandler = OSCEventHandler;
     this.__OSCSocket = OSCSocket;
     this.__OSCPacket = OSCPacket;
     this.__OSCBundle = OSCBundle;
     this.__OSCMessage = OSCMessage;
+
+    // END_SPECS
 
     return true;
   };
