@@ -24,21 +24,13 @@
         // listen to osc address
 
         var listener = osc.on('/', function(cMessage) {
-          console.log('lowest', cMessage.arguments[0], cMessage.addressString);
+          console.log(cMessage.arguments[0], cMessage.addressString);
         });
 
         osc.off('/', listener);
 
         osc.on('/test', function(cMessage) {
-          console.log('lower', cMessage.arguments[0], cMessage.addressString);
-        });
-
-        osc.on('/test/pa', function(cMessage) {
-          console.log(cMessage);
-        });
-
-        osc.on('/test/pa/peter', function(cMessage) {
-          console.log('high', cMessage.arguments[0]);
+          console.log(cMessage.arguments[0], cMessage.addressString);
         });
 
         osc.server('127.0.0.1', 8000);

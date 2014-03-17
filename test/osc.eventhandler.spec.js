@@ -214,6 +214,18 @@ describe('OSCEventHandler', function() {
           expect(oscHandler._addressHandlers['/'][0].callback).not.toHaveBeenCalled();
         });
 
+        it('with [!] wildcard', function() {
+          oscHandler.notify('/two/[!s][eso][tspm][tea]/path', testdata);
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).not.toHaveBeenCalled();
+        });
+
+        it('with [a-z] wildcard', function() {
+          oscHandler.notify('/two/[a-z]est/p[a-c]t[e-i]', testdata);
+          expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();
+          expect(oscHandler._addressHandlers['/two/some/path'][0].callback).not.toHaveBeenCalled();
+        });
+
         it('with * wildcard', function() {
           oscHandler.notify('/two/*', testdata);
           expect(oscHandler._addressHandlers['/two/test/path'][0].callback).toHaveBeenCalled();

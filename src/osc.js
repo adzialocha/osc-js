@@ -38,6 +38,8 @@
     pattern = pattern.replace(/\}/g, ')');
     pattern = pattern.replace(/\,/g, '|');
 
+    pattern = pattern.replace(/\[\!/g, '[^');
+
     pattern = pattern.replace(/\?/g, '.');
     pattern = pattern.replace(/\*/g, '.*');
 
@@ -74,7 +76,7 @@
   // subscribe to event
 
   OSCEventHandler.prototype.on = function(sEventName, sCallback) {
-    var token, address, data;
+    var token, address, data, regex;
 
     if (!((typeof sEventName === 'string' || typeof sEventName === 'object') &&
         typeof sCallback === 'function')) {
@@ -94,6 +96,12 @@
     // address listener
 
     address = _prepareAddress(sEventName);
+
+    regex = new RegExp(/[#*\s\[\],\/{}|\?]/g);
+
+    if (regex.test(address.split('/').join(''))) {
+      throw 'OSCEventHandler Error: address string contains invalid characters';
+    }
 
     if (! (address in this._addressHandlers)) {
       this._addressHandlers[address] = [];
