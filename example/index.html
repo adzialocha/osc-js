@@ -9,7 +9,7 @@
       var osc;
 
       function init() {
-        osc = new OSC();
+        osc = new OSC({ discardLateMessages: true });
 
         osc.on('open', function(cEvent) {
           console.log('ready', cEvent);

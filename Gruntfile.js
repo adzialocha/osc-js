@@ -112,9 +112,13 @@ module.exports = function (grunt) {
       },
       src: {
         options: {
+          beautify: {
+            width: 80,
+            'indent_level': 2,
+            beautify: true
+          },
           mangle: false,
           compress: false,
-          beautify: true,
           preserveComments: 'some',
           sourceMap: false,
           banner: '/*! <%= npm.name %> - v<%= npm.version %> - ' +

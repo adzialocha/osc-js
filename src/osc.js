@@ -3,7 +3,6 @@
   'use strict';
 
   var FLAGS = {
-
     SOCKET: {
       IS_NOT_INITALIZED: -1,
       IS_CONNECTING: 0,
@@ -11,8 +10,13 @@
       IS_CLOSING: 2,
       IS_CLOSED: 3
     }
-
   };
+
+  var _options = {
+    discardLateMessages: false
+  };
+
+  // helpers
 
   function _prepareAddress(pAddress) {
     var address = '';
@@ -52,10 +56,6 @@
    */
 
   var OSCEventHandler = function() {
-
-    // constants
-
-    this.CALLBACKS_KEY = '_cb';
 
     // callback subscriptions
 
@@ -183,6 +183,30 @@
     return true;
   };
 
+  // timed notification
+
+  OSCEventHandler.prototype.notifyLater = function(sEventName, sEventData, sTimeTag) {
+    var now, _this, data;
+
+    data = sEventData;
+    data.timeStamp = sTimeTag.milliseconds;
+
+    now = new Date();
+
+    if (now.getTime() >= sTimeTag.milliseconds) {
+      if (! _options.discardLateMessages) {
+        this.notify(sEventName, data);
+      }
+    } else {
+      _this = this;
+      window.setTimeout(function() {
+        _this.notify(sEventName, data);
+      }, sTimeTag.milliseconds - now.getTime() );
+    }
+
+    return true;
+  };
+
   /*
    * OSCSocket
    * holds all WebSocket handling
@@ -210,9 +234,8 @@
     };
 
     this._socket.onmessage = function(sEvent) {
-      var message = new OSCMessage();
+      var message = new OSCPacket();
       message.decode(sEvent.data);
-      _oscEventHandler.notify( message.address, message.toJSON() );
     };
 
     return true;
@@ -226,128 +249,217 @@
     }
   };
 
+  /* OSCAtomic
+   * holds all atomic OSC data types:
+   * Int32, Float32, OSC-Timestamp, OSC-String, OSC-Blob
+   */
+
+  var OSCAtomic = {};
+
+  // OSC-String (ASCII)
+
+  OSCAtomic.OSCString = function() {
+    this.value = '';
+    this.offset = 0;
+  };
+
+  OSCAtomic.OSCString.prototype.decode = function(sData, sOffset) {
+
+    var i, subarray, str;
+    var data = new Int8Array(sData);
+    var end = sOffset;
+
+    while (data[end] && end < data.length) { end++; }
+
+    if (end === data.length) {
+      throw 'OSCMessage Error: malformed not ending OSC String';
+    }
+
+    subarray = data.subarray(sOffset, end);
+
+    str = '';
+
+    for (i = 0; i < subarray.length; i++) {
+      str = str + String.fromCharCode(subarray[i]);
+    }
+
+    // @TODO check this nicer implementation here, it doesnt work in jasmine specs:
+    // this.value = String.fromCharCode.apply(null, data.subarray(sOffset, end));
+
+    this.offset = Math.ceil( ( end + 1 ) / 4 ) * 4;
+    this.value = str;
+
+    return this.offset;
+  };
+
+  // OSC Integer32 (32-bit big-endian two-complement integer)
+
+  OSCAtomic.Int32 = function() {
+    this.value = 0;
+    this.offset = 0;
+  };
+
+  OSCAtomic.Int32.prototype.decode = function(sData, sOffset) {
+    var dataView = new DataView(sData, sOffset, 4);
+    this.value = dataView.getInt32(0);
+    this.offset = sOffset + 4;
+    return this.offset;
+  };
+
+  // OSC Float32 (32-bit big-endian IEEE 754 floating point number)
+
+  OSCAtomic.Float32 = function() {
+    this.value = 0.0;
+    this.offset = 0;
+  };
+
+  OSCAtomic.Float32.prototype.decode = function(sData, sOffset) {
+    var dataView = new DataView(sData, sOffset, 4);
+    this.value = dataView.getFloat32(0);
+    this.offset = sOffset + 4;
+    return this.offset;
+  };
+
+  // OSC-Blob
+
+  OSCAtomic.OSCBlob = function() {
+    this.value = new Blob();
+    this.offset = 0;
+  };
+
+  OSCAtomic.OSCBlob.prototype.decode = function(sData, sOffset) {
+    var dataView = new DataView(sData, sOffset, 4);
+    var blobSize = dataView.getInt32(0);
+    var binary = sData.slice(sOffset + 4,  sOffset + 4 + blobSize);
+    this.value = new Blob([ binary ]);
+    this.offset = sOffset + 4 + blobSize;
+    return this.offset;
+  };
+
+  // OSC-Timetag (32+32-bit NTP TimeTag)
+
+  OSCAtomic.OSCTimeTag = function() {
+    this.value = '';
+    this.seconds = 0;
+    this.fraction = 0;
+    this.offset = 0;
+    this.milliseconds = 0;
+  };
+
+  OSCAtomic.OSCTimeTag.prototype.decode = function(sData, sOffset) {
+    var dataView = new DataView(sData, sOffset, 8);
+    this.seconds = dataView.getInt32(0);
+    this.fraction = dataView.getInt32(4);
+    this.milliseconds = this.seconds * 1000;
+    this.value = this.seconds + '' + this.fraction;
+    this.offset = sOffset + 8;
+    return this.offset;
+  };
+
+  /* OSCPacket
+   * unit of transmission of OSC. The contents of an
+   * OSC packet must be either an OSC Message or an OSC Bundle.
+   */
+
+  var OSCPacket = function() {
+    return true;
+  };
+
+  OSCPacket.prototype.decode = function(pData, pTimeTag) {
+    var first, message, bundle;
+
+    if (pData.byteLength % 4 !== 0) {
+      throw 'OSCPackage Error: byteLength has to be a multiple of four';
+    }
+
+    // read first string
+
+    first = new OSCAtomic.OSCString();
+    first.decode(pData, 0);
+
+    // is this a OSCBundle or OSCMessage?
+
+    if (first.value === '#bundle') {
+      bundle = new OSCBundle();
+      bundle.decode(pData);
+      if (pTimeTag && bundle.timeTag.value < pTimeTag.value) {
+        throw 'OSCPackage Error: timetag of enclosing bundle is past timestamp of enclosed ones';
+      }
+      return bundle;
+    } else {
+      message = new OSCMessage();
+      message.decode(pData);
+      if (! pTimeTag) {
+        _oscEventHandler.notify(message.address, message.toJSON());
+      } else {
+        _oscEventHandler.notifyLater(message.address, message.toJSON(), pTimeTag);
+      }
+      return message;
+    }
+  };
+
+  /* OSCBundle
+   * consists of OSC Messages or other OSC Bundles (recursively)
+   */
+
+  var OSCBundle = function() {
+    this._CLASS = 'OSCBundle';
+    this.timeTag = new OSCAtomic.OSCTimeTag();
+    this.bundleElements = [];
+    return true;
+  };
+
+  OSCBundle.prototype.decode = function(bData) {
+    var offset, timetag, size, packet;
+
+    timetag = new OSCAtomic.OSCTimeTag();
+    offset = timetag.decode(bData, 8);
+    this.timeTag = timetag;
+
+    do {
+      size = new OSCAtomic.Int32();
+      offset = size.decode(bData, offset);
+      if (size.value > 0) {
+        packet = new OSCPacket();
+        this.bundleElements.push(packet.decode(bData.slice(offset, offset + size.value), timetag));
+      }
+      offset = offset + size.value;
+    } while (offset < bData.byteLength);
+
+    return this;
+  };
+
   /*
    * OSCMessage
-   * is our abstract OSC data package
+   * consists of an OSC Address, OSC Type Tag String and Arguments
    */
 
   var OSCMessage = function() {
-
+    this._CLASS = 'OSCMessage';
     this.address = '';
     this.typesString = '';
     this.args = [];
-
-    // OSC String (ASCII)
-
-    this.OSCString = function() {
-      this.value = '';
-      this.offset = 0;
-    };
-
-    this.OSCString.prototype.decode = function(sData, sOffset) {
-
-      var i, subarray, str;
-      var data = new Int8Array(sData);
-      var end = sOffset;
-
-      while (data[end] && end < data.length) { end++; }
-
-      if (end === data.length) {
-        throw 'OSCMessage Error: malformed not ending OSC String';
-      }
-
-      subarray = data.subarray(sOffset, end);
-
-      str = '';
-
-      for (i = 0; i < subarray.length; i++) {
-        str = str + String.fromCharCode(subarray[i]);
-      }
-
-      // @TODO check this nicer implementation here, it doesnt work in jasmine specs:
-      // this.value = String.fromCharCode.apply(null, data.subarray(sOffset, end));
-
-      this.offset = Math.ceil( ( end + 1 ) / 4 ) * 4;
-      this.value = str;
-
-      return this.offset;
-    };
-
-    // OSC Integer (32-bit big-endian two-complement integer)
-
-    this.OSCInt = function() {
-      this.value = 0;
-      this.offset = 0;
-    };
-
-    this.OSCInt.prototype.decode = function(sData, sOffset) {
-      var dataView = new DataView(sData, sOffset, 4);
-      this.value = dataView.getInt32(0);
-      this.offset = sOffset + 4;
-      return this.offset;
-    };
-
-    // OSC Float (32-bit big-endian IEEE 754 floating point number)
-
-    this.OSCFloat = function() {
-      this.value = 0.0;
-      this.offset = 0;
-    };
-
-    this.OSCFloat.prototype.decode = function(sData, sOffset) {
-      var dataView = new DataView(sData, sOffset, 4);
-      this.value = dataView.getFloat32(0);
-      this.offset = sOffset + 4;
-      return this.offset;
-    };
-
-    // OSC Blob
-
-    this.OSCBlob = function() {
-      this.value = new Blob();
-      this.offset = 0;
-    };
-
-    this.OSCBlob.prototype.decode = function(sData, sOffset) {
-      var dataView = new DataView(sData, sOffset, 4);
-      var blobSize = dataView.getInt32(0);
-      var binary = sData.slice(sOffset + 4,  sOffset + 4 + blobSize);
-      this.value = new Blob([ binary ]);
-      this.offset = sOffset + 4 + blobSize;
-      return this.offset;
-    };
-
     return true;
   };
 
   OSCMessage.prototype.toJSON = function() {
-
-    var json = {
-
+    return {
       address: this.address,
       types: this.typesString,
       arguments: this.args
-
     };
-
-    return json;
-
   };
 
   OSCMessage.prototype.decode = function(mData) {
 
     var address, types, i, args, offset;
 
-    if (mData.byteLength % 4 !== 0) {
-      throw 'OSCMessage Error: byteLength has to be a multiple of four';
-    }
-
     // read address and type string
 
-    address = new this.OSCString();
+    address = new OSCAtomic.OSCString();
     address.decode(mData, 0);
 
-    types = new this.OSCString();
+    types = new OSCAtomic.OSCString();
     types.decode(mData, address.offset);
 
     // parse type string
@@ -364,13 +476,13 @@
       var next;
 
       if (types.value[i] === 'i') {
-        next = new this.OSCInt();
+        next = new OSCAtomic.Int32();
       } else if (types.value[i] === 'f') {
-        next = new this.OSCFloat();
+        next = new OSCAtomic.Float32();
       } else if (types.value[i] === 's') {
-        next = new this.OSCString();
+        next = new OSCAtomic.OSCString();
       } else if (types.value[i] === 'b') {
-        next = new this.OSCBlob();
+        next = new OSCAtomic.OSCBlob();
       } else {
         throw 'OSCMessage Error: found nonstandard argument type';
       }
@@ -387,7 +499,7 @@
     this.typesString = types.value.slice(1, types.value.length);
     this.args = args;
 
-    return true;
+    return this;
   };
 
   OSCMessage.prototype.encode = function(mAddress, mData) {
@@ -400,7 +512,17 @@
 
   var _oscEventHandler, _oscSocket;
 
-  var OSC = function() {
+  var OSC = function(mOptions) {
+
+    // set options
+
+    if (mOptions) {
+      Object.keys(mOptions).forEach(function(oKey) {
+        if (oKey in _options) {
+          _options[oKey] = mOptions[oKey];
+        }
+      });
+    }
 
     // expose flags
 
@@ -415,6 +537,8 @@
 
     this.__OSCEventHandler = OSCEventHandler;
     this.__OSCSocket = OSCSocket;
+    this.__OSCPacket = OSCPacket;
+    this.__OSCBundle = OSCBundle;
     this.__OSCMessage = OSCMessage;
 
     return true;

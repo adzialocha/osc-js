@@ -26,7 +26,7 @@ describe('OSCSocket', function() {
 
       beforeEach(function() {
         oscSocket.server('127.0.0.2', 3212);
-        spyOn(oscTest.__OSCMessage.prototype, 'decode').and.callThrough();
+        spyOn(oscTest.__OSCPacket.prototype, 'decode').and.callThrough();
       });
 
       it('does not return a IS_NOT_INITALIZED status', function() {
@@ -45,9 +45,9 @@ describe('OSCSocket', function() {
         expect(oscSocket._socket.URL).toEqual('ws://127.0.0.2:3212');
       });
 
-      it('informs an OSCMessage object on message events', function() {
+      it('informs an OSCPacket object on a new packet', function() {
         oscSocket._socket.onmessage({ data: binary.buffer });
-        expect(oscTest.__OSCMessage.prototype.decode).toHaveBeenCalled();
+        expect(oscTest.__OSCPacket.prototype.decode).toHaveBeenCalled();
       });
 
     });
