@@ -2,3 +2,5 @@ node_modules
 .tmp
 .sass-cache
 bower_components
+.grunt
+_SpecRunner.html
