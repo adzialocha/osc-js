@@ -36,9 +36,41 @@
         osc.server('127.0.0.1', 8000);
       }
 
+      function send() {
+
+        // SENDING MESSAGES
+
+        var message = new OSC.Message(['lala','dasdsa'], 'test22', 12, 22.1, new Blob(['lalalaldasdsadsadsadsada!']));
+
+        console.log(message);
+
+        // osc.send(message);
+
+        var message2 = new OSC.Message();
+
+        message2.address('/test/pa');
+        message2.add(7395);
+        message2.add(5684.9150390625);
+        message2.add('teststring');
+        message2.add(2100.76953125);
+
+        console.log(message2.toJSON(), message2.encode());
+
+        // osc.send(message2);
+
+        var bundle = new OSC.Bundle([ message2 ], new Date());
+        bundle.add(message);
+
+        console.log(bundle);
+
+        // osc.send(bundle);
+
+      }
+
     </script>
   </head>
   <body onload="init()">
     <h1>osc-js</h1>
+    <button onclick="send()">Test Send</button>
   </body>
 </html>
