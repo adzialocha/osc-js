@@ -16,6 +16,11 @@
     discardLateMessages: false
   };
 
+  var BUNDLE_TAG = '#bundle';
+
+  var DEFAULT_ADDRESS = '127.0.0.1';
+  var DEFAULT_PORT = 8000;
+
   // helpers
 
   function _isArray(pItem) {
@@ -24,6 +29,11 @@
 
   function _isInteger(pItem) {
     return typeof pItem === 'number' && pItem % 1 === 0;
+  }
+
+  function _now() {
+    var date = new Date();
+    return date.getTime();
   }
 
   function _prepareAddress(pAddress) {
@@ -60,6 +70,32 @@
 
     return pattern;
   }
+
+  /* EncodeHelper
+   * util to encode and merge binary data to Int8Array
+   */
+
+  var EncodeHelper = function() {
+    this.data = [];
+    this.length = 0;
+  };
+
+  EncodeHelper.prototype.add = function(aItem) {
+    var buf = aItem.encode();
+    this.length = this.length + buf.length;
+    this.data.push(buf);
+    return true;
+  };
+
+  EncodeHelper.prototype.merge = function() {
+    var merged = new Int8Array(this.length);
+    var offset = 0;
+    this.data.forEach(function(eItem) {
+      merged.set(eItem, offset);
+      offset = offset + eItem.length;
+    });
+    return merged;
+  };
 
   /*
    * OSCEventHandler
@@ -200,11 +236,11 @@
     var now, _this, data;
 
     data = sEventData;
-    data.timeStamp = sTimeTag.milliseconds;
+    data.timestamp = sTimeTag.milliseconds;
 
-    now = new Date();
+    now = _now();
 
-    if (now.getTime() >= sTimeTag.milliseconds) {
+    if (now >= sTimeTag.milliseconds) {
       if (! _options.discardLateMessages) {
         this.notify(sEventName, data);
       }
@@ -212,7 +248,7 @@
       _this = this;
       window.setTimeout(function() {
         _this.notify(sEventName, data);
-      }, sTimeTag.milliseconds - now.getTime() );
+      }, sTimeTag.milliseconds - now );
     }
 
     return true;
@@ -240,6 +276,10 @@
       _oscEventHandler.notify('open', sEvent);
     };
 
+    this._socket.onclose = function(sEvent) {
+      _oscEventHandler.notify('close', sEvent);
+    };
+
     this._socket.onerror = function(sEvent) {
       _oscEventHandler.notify('error', sEvent);
     };
@@ -261,8 +301,7 @@
   };
 
   OSCSocket.prototype.send = function(sData) {
-    if (sData) {
-      console.log('SEND', sData);
+    if (sData && sData instanceof ArrayBuffer) {
       this._socket.send(sData.buffer);
       return true;
     } else {
@@ -347,10 +386,6 @@
   OSCAtomic.Float32 = function(sValue) {
     this.value = sValue || 0.0;
     this.offset = 0;
-
-    this.warn = function(str) {
-      console.log(str);
-    };
   };
 
   OSCAtomic.Float32.prototype.decode = function(sData, sOffset) {
@@ -401,7 +436,6 @@
   };
 
   OSCAtomic.OSCTimeTag.prototype.update = function(sMilliseconds) {
-
     var ms;
 
     if (sMilliseconds instanceof Date) {
@@ -460,7 +494,7 @@
 
     // is this a OSCBundle or OSCMessage?
 
-    if (first.value === '#bundle') {
+    if (first.value === BUNDLE_TAG) {
       bundle = new OSCBundle();
       bundle.decode(pData);
       if (pTimeTag && bundle.timeTag.value < pTimeTag.value) {
@@ -497,7 +531,7 @@
    */
 
   var OSCBundle = function() {
-
+    var i, len;
     this.timeTag = new OSCAtomic.OSCTimeTag();
     this.bundleElements = [];
 
@@ -510,9 +544,9 @@
 
         if (_isArray(arguments[0])) {
 
-          var len = arguments[0].length;
+          len = arguments[0].length;
 
-          for (var i = 0; i < len; i++) {
+          for (i = 0; i < len; i++) {
             if (arguments[0][i] instanceof OSCMessage) {
               this.bundleElements.push(arguments[0][i]);
             } else {
@@ -536,22 +570,18 @@
   };
 
   OSCBundle.prototype.timestamp = function(bMilliseconds) {
-
     if (bMilliseconds) {
-
       if (! (_isInteger(bMilliseconds) || bMilliseconds instanceof Date)) {
         throw 'OSCBundle Error: timetag must be an integer (milliseconds) or Date instance';
       }
-
       this.timeTag.update(bMilliseconds);
-
     } else {
       return this.timeTag;
     }
   };
 
   OSCBundle.prototype.add = function(bMessage) {
-    if (bMessage && bMessage instanceof OSCMessage) {
+    if (bMessage && ( bMessage instanceof OSCMessage || bMessage instanceof OSCBundle)) {
       this.bundleElements.push(bMessage);
     } else {
       throw 'OSCBundle Error: proper OSCMessage needed for bundling';
@@ -579,8 +609,23 @@
   };
 
   OSCBundle.prototype.encode = function() {
-    // @ TODO
-    return this;
+    var encoder, buf;
+    encoder = new EncodeHelper();
+
+    // bundle tag & time tag
+
+    encoder.add(new OSCAtomic.OSCString(BUNDLE_TAG));
+    encoder.add(this.timeTag);
+
+    // bundle elements
+
+    this.bundleElements.forEach(function(bPacket) {
+      buf = bPacket.encode();
+      encoder.add(new OSCAtomic.Int32(buf.length));
+      encoder.add(bPacket);
+    });
+
+    return encoder.merge();
   };
 
   /*
@@ -589,13 +634,14 @@
    */
 
   var OSCMessage = function() {
-    var i, len;
+    var i, len, typeString;
 
     // defaults
 
     this.addressPattern = '';
     this.typesString = '';
     this.args = [];
+    this.timestamp = _now();
 
     // constructor
 
@@ -609,7 +655,7 @@
       this.addressPattern = _prepareAddress(arguments[0]);
 
       if (len > 1) {
-        var typeString = '';
+        typeString = '';
 
         for (i = 1; len > i; i++) {
           if (typeof arguments[i] === 'number') {
@@ -669,14 +715,6 @@
     }
   };
 
-  OSCMessage.prototype.toJSON = function() {
-    return {
-      address: this.addressPattern,
-      types: this.typesString,
-      arguments: this.args
-    };
-  };
-
   OSCMessage.prototype.decode = function(mData) {
 
     var address, types, i, args, offset;
@@ -730,65 +768,47 @@
   };
 
   OSCMessage.prototype.encode = function() {
-    var encoded, merged, len, buf, next, offset;
-
-    encoded = [];
-    len = 0;
-
-    // address
 
     if (this.addressPattern.length === 0 || this.addressPattern[0] !== '/' ) {
       throw 'OSCMessage Error: proper address is needed to encode this message';
     }
 
-    next = new OSCAtomic.OSCString(this.addressPattern);
-    buf = next.encode();
-    len = len + buf.length;
-    encoded.push(buf);
+    var encoder = new EncodeHelper();
+
+    // address
+
+    encoder.add(new OSCAtomic.OSCString(this.addressPattern));
 
     if (this.args.length > 0) {
 
       // type string
 
-      next = new OSCAtomic.OSCString(',' + this.typesString);
-      buf = next.encode();
-      len = len + buf.length;
-      encoded.push(buf);
+      encoder.add(new OSCAtomic.OSCString(',' + this.typesString));
 
       // arguments
+
+      var argument;
 
       this.args.forEach(function(eArgument) {
         if (typeof eArgument === 'number') {
           if (eArgument % 1 === 0) {
-            next = new OSCAtomic.Int32(eArgument);
+            argument = new OSCAtomic.Int32(eArgument);
           } else {
-            next = new OSCAtomic.Float32(eArgument);
+            argument = new OSCAtomic.Float32(eArgument);
           }
         } else if (typeof eArgument === 'string') {
-          next = new OSCAtomic.OSCString(eArgument);
+          argument = new OSCAtomic.OSCString(eArgument);
         } else if (eArgument instanceof Blob) {
-          next = new OSCAtomic.OSCBlob(eArgument);
+          argument = new OSCAtomic.OSCBlob(eArgument);
         } else {
           throw 'OSCMessage Error: unknown argument type';
         }
-        buf = next.encode();
-        len = len + buf.length;
-        encoded.push(buf);
+        encoder.add(argument);
       });
 
     }
 
-    // merge
-
-    merged = new Int8Array(len);
-    offset = 0;
-
-    encoded.forEach(function(eItem) {
-      merged.set(eItem, offset);
-      offset = offset + eItem.length;
-    });
-
-    return merged;
+    return encoder.merge();
   };
 
   // OSC wrapper object used as main interface
@@ -845,7 +865,9 @@
   // socket handling
 
   OSC.prototype.server = function(sAddress, sPort) {
-    return _oscSocket.server(sAddress, sPort);
+    var address = sAddress || DEFAULT_ADDRESS;
+    var port = sPort || DEFAULT_PORT;
+    return _oscSocket.server(address, port);
   };
 
   OSC.prototype.status = function() {
@@ -856,7 +878,7 @@
 
   OSC.prototype.send = function(sData) {
     if (! (sData instanceof OSCMessage || sData instanceof OSCBundle)) {
-      throw 'OSC Error: packet must be an OSC.Message or OSC.Bundle instance';
+      throw 'OSC Error: packet must be an OSCMessage or OSCBundle instance';
     }
     var packet = new OSCPacket();
     return _oscSocket.send(packet.encode(sData));
@@ -868,4 +890,4 @@
   window.OSC.Message = OSCMessage;
   window.OSC.Bundle = OSCBundle;
 
-}(window));
+})(window);

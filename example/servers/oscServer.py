@@ -18,7 +18,7 @@ class MyServerProtocol(WebSocketServerProtocol):
 
       def sendRandomOSCMessage():
 
-         m = OSCMessage("/test/pa")
+         m = OSCMessage("/test")
 
          for x in range(0, randint(0, 3)) :
             m.append(randint(0, 9999))
@@ -37,23 +37,8 @@ class MyServerProtocol(WebSocketServerProtocol):
          for x in range(0, randint(0, 1)) :
             m.append("somebinarydatabumbum","b")
 
-         #print "send random OSC message", m
+         print "send random OSC message", m
 
-         bundle = OSCBundle()
-         bundle.setTimeTag(time.time() + 5)
-         bundle2 = OSCBundle()
-         bundle2.setTimeTag(time.time() + 15)
-         bundle2.append({'addr':"/hallo", 'args':["testtesttest"]})
-         bundle.append(m)
-
-         bundle.append({'addr':"/print", 'args':["bundled messages:", 2]})
-         bundle.append(bundle2)
-         bundle.setAddress("/*print")
-         bundle.append(("no,", 3, "actually."))
-
-         print bundle
-
-         self.sendMessage(bundle.getBinary(), isBinary = True)
          self.factory.reactor.callLater(5, sendRandomOSCMessage)
 
       sendRandomOSCMessage()
