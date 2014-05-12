@@ -91,7 +91,8 @@ module.exports = function (grunt) {
           '<%= paths.src %>/*.js'
         ],
         options: {
-          specs: '<%= paths.test %>/*.js'
+          helpers: '<%= paths.test %>/*.shim.js',
+          specs: '<%= paths.test %>/*.spec.js'
         }
       }
     },
