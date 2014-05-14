@@ -1,4 +1,4 @@
-/*! osc-js - v0.0.2 - 2014-05-14 by marmorkuchen.net */
+/*! osc-js - v0.1.0 - 2014-05-14 by marmorkuchen.net */
 (function(window, undefined) {
   "use strict";
   var FLAGS = {
