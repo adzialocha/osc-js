@@ -45,7 +45,7 @@ osc.send(bundle2);
 
 // close session
 
-osc.disconnect()
+osc.disconnect();
 ```
 
 ## Address Pattern Matching
@@ -57,9 +57,9 @@ osc.on('/instrument/1', function(message) { });
 osc.on('/instrument/2', function(message) { });
 osc.on('/instrument/3', function(message) { });
 ```
-Read more about this topic in the OSC [specs](http://opensoundcontrol.org/spec-1_0) and [examples](http://opensoundcontrol.org/spec-1_0-examples#addressparts)
+Read more about this topic in the OSC [specs](http://opensoundcontrol.org/spec-1_0) and [examples](http://opensoundcontrol.org/spec-1_0-examples#addressparts).
 
-### WebSocket Servers
+## WebSocket Servers
 
 To connect your Max MSP / PD etc. to your WebSocket client (propably a browser) you can use a NodeJS server as a bridge or these new solutions (some of them with a direct websocket link):
 
@@ -68,17 +68,17 @@ To connect your Max MSP / PD etc. to your WebSocket client (propably a browser) 
 * [Autobahn framework for Python](http://autobahn.ws/)
 * [Websocket to UDP Bridge with HTTP server](https://gist.github.com/marmorkuchen-net/48544bd61183da666e6d)
 
-### Development
+## Development
 
 Fetch respository and set up environment
 
-  git clone git@github.com:marmorkuchen-net/osc-js.git
-  npm install && bower install
+    git clone git@github.com:marmorkuchen-net/osc-js.git
+    npm install && bower install
 
 Start a server on localhost:9000 which is checking your js syntax and running the tests in background after every save. You can also open a browser and check the examples here.
 
-  grunt serve
+    grunt serve
 
 To build the source (in dist folder) just run
 
-  grunt
+    grunt
