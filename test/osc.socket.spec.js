@@ -25,7 +25,7 @@ describe('OSCSocket', function() {
     describe('initalized state', function() {
 
       beforeEach(function() {
-        oscSocket.server('127.0.0.2', 3212);
+        oscSocket.connect('127.0.0.2', 3212);
         spyOn(oscTest.__OSCPacket.prototype, 'decode').and.callThrough();
       });
 

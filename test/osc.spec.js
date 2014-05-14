@@ -23,9 +23,10 @@ describe('OSC', function() {
 
     describe('OSCSocket', function() {
 
-      it('exposes #server and #status methods', function() {
-        expect(oscTest.server).toBeDefined();
+      it('exposes #connect, #disconnect and #status methods', function() {
+        expect(oscTest.connect).toBeDefined();
         expect(oscTest.status).toBeDefined();
+        expect(oscTest.disconnect).toBeDefined();
       });
 
       it('exposes OSCSocket flags', function() {

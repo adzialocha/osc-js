@@ -71,11 +71,15 @@
     <script src="osc.js" type="text/javascript"></script>
     <script type="text/javascript">
 
-      var osc;
+      var MAX_PROTOCOL_MESSAGES = 100;
+
+      var osc, protocol;
 
       function init() {
 
         osc = new OSC({ discardLateMessages: true });
+
+        protocol = [];
 
         // socket event listeners
 
@@ -85,21 +89,25 @@
 
         osc.on('close', function(cEvent) {
           document.getElementById('socket_status').innerHTML = 'offline';
-          document.getElementById('socket_button').disabled = false;
+          document.getElementById('socket_start').disabled = false;
+          document.getElementById('socket_stop').disabled = true;
         });
 
         osc.on('error', function(cEvent) {
           document.getElementById('socket_status').innerHTML = 'error';
-          document.getElementById('socket_button').disabled = false;
+          document.getElementById('socket_start').disabled = false;
+          document.getElementById('socket_stop').disabled = true;
         });
 
         // listen to osc address
 
-        var listener = osc.on('/test', function(cMessage) {
-          console.log('got', cMessage);
-          var protocol = document.getElementById('protocol').innerText;
-          protocol = protocol + cMessage.addressPattern + '\n';
-          document.getElementById('protocol').innerText = protocol;
+        osc.on('/test', function(cMessage) {
+          var date = new Date(cMessage.timestamp).toLocaleTimeString();
+          protocol = ['- ' + date + ' ' + cMessage.addressPattern + ' @ ' + JSON.stringify(cMessage.args)].concat(protocol);
+          if (protocol.length > MAX_PROTOCOL_MESSAGES) {
+            protocol = protocol.slice(0, MAX_PROTOCOL_MESSAGES);
+          }
+          document.getElementById('protocol').innerHTML = protocol.join('\n');
         });
 
       }
@@ -108,8 +116,13 @@
         var address = document.getElementById('socket_address').value;
         var port = document.getElementById('socket_port').value;
         document.getElementById('socket_status').innerHTML = 'waiting';
-        document.getElementById('socket_button').disabled = true;
-        osc.server(address, port);
+        document.getElementById('socket_start').disabled = true;
+        document.getElementById('socket_stop').disabled = false;
+        osc.connect(address, port);
+      }
+
+      function stop() {
+        osc.disconnect();
       }
 
       function sendMessage() {
@@ -126,11 +139,12 @@
       <h3>Websocket</h3>
       <p><strong>Status</strong> <span id="socket_status">offline</span></p>
       <p>IP-Address</p>
-      <input type="text" id="socket_address" value="127.0.0.1" />
+      <input type="text" id="socket_address" value="localhost" />
       <p>Port</p>
       <input type="text" id="socket_port" value="8000" />
       <br/>
-      <button id="socket_button" onclick="start()">Start</button>
+      <button id="socket_start" onclick="start()">Start</button>
+      <button id="socket_stop" onclick="stop()">Stop</button>
     </div>
     <div class="control">
       <h3>Send OSC Message</h3>

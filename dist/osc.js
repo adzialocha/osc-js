@@ -1,4 +1,4 @@
-/*! osc-js - v0.0.2 - 2014-05-12 by marmorkuchen.net */
+/*! osc-js - v0.0.2 - 2014-05-14 by marmorkuchen.net */
 (function(window, undefined) {
   "use strict";
   var FLAGS = {
@@ -178,9 +178,12 @@
   var OSCSocket = function() {
     this._socket = null;
   };
-  OSCSocket.prototype.server = function(sAddress, sPort) {
+  OSCSocket.prototype.connect = function(sAddress, sPort) {
     if (!(sAddress && sPort)) {
       throw "OSCSocket Error: missing WebSocket address or port";
+    }
+    if (this._socket) {
+      this.disconnect();
     }
     this._socket = new WebSocket("ws://" + sAddress + ":" + sPort);
     this._socket.binaryType = "arraybuffer";
@@ -197,6 +200,10 @@
       var message = new OSCPacket();
       message.decode(sEvent.data);
     };
+    return true;
+  };
+  OSCSocket.prototype.disconnect = function() {
+    this._socket.close();
     return true;
   };
   OSCSocket.prototype.status = function() {
@@ -590,10 +597,13 @@
   OSC.prototype.off = function(sEventName, sToken) {
     return _oscEventHandler.off(sEventName, sToken);
   };
-  OSC.prototype.server = function(sAddress, sPort) {
+  OSC.prototype.connect = function(sAddress, sPort) {
     var address = sAddress || DEFAULT_ADDRESS;
     var port = sPort || DEFAULT_PORT;
-    return _oscSocket.server(address, port);
+    return _oscSocket.connect(address, port);
+  };
+  OSC.prototype.disconnect = function() {
+    return _oscSocket.disconnect();
   };
   OSC.prototype.status = function() {
     return _oscSocket.status();
