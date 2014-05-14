@@ -70,7 +70,7 @@ To connect your Max MSP / PD etc. to your WebSocket client (propably a browser) 
 
 ## Development
 
-Fetch respository and set up environment
+Fetch repository and set up environment
 
     git clone git@github.com:marmorkuchen-net/osc-js.git
     npm install && bower install
