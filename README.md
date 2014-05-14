@@ -39,3 +39,4 @@ To connect your Max MSP / PD / OSC Server etc. and audio environment to your Web
 * [Pure Data patch by Nicolas Lhommet](http://puredata.hurleur.com/sujet-10062-websocket-server-patch-extended-demo)
 * [ol.wsserver object for Max by Oli Larkin](https://github.com/olilarkin/wsserver)
 * [Autobahn framework for Python](http://autobahn.ws/)
+* [Websocket to UDP Bridge with HTTP server](https://gist.github.com/marmorkuchen-net/48544bd61183da666e6d)
