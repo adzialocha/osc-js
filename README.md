@@ -67,6 +67,7 @@ To connect your Max MSP / PD etc. to your WebSocket client (propably a browser) 
 * [ol.wsserver object for Max by Oli Larkin](https://github.com/olilarkin/wsserver)
 * [Autobahn framework for Python](http://autobahn.ws/)
 * [Websocket to UDP Bridge with HTTP server](https://gist.github.com/marmorkuchen-net/48544bd61183da666e6d)
+* [Turn any program that uses STDIN/STDOUT into a WebSocket server](https://github.com/joewalnes/websocketd)
 
 ## Development
 
