@@ -310,11 +310,15 @@
   };
 
   OSCSocket.prototype.send = function(sData) {
-    if (sData && sData instanceof ArrayBuffer) {
-      this._socket.send(sData.buffer);
-      return true;
+    if (this._socket) {
+      if (sData && sData.buffer && sData.buffer instanceof ArrayBuffer) {
+        this._socket.send(sData.buffer);
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      throw 'OSCSocket Error: WebSocket is not ready to send OSC data';
     }
   };
 

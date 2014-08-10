@@ -1,4 +1,4 @@
-/*! osc-js - v0.1.0 - 2014-05-14 by marmorkuchen.net */
+/*! osc-js - v0.1.1 - 2014-08-10 by marmorkuchen.net */
 (function(window, undefined) {
   "use strict";
   var FLAGS = {
@@ -214,11 +214,15 @@
     }
   };
   OSCSocket.prototype.send = function(sData) {
-    if (sData && sData instanceof ArrayBuffer) {
-      this._socket.send(sData.buffer);
-      return true;
+    if (this._socket) {
+      if (sData && sData.buffer && sData.buffer instanceof ArrayBuffer) {
+        this._socket.send(sData.buffer);
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      throw "OSCSocket Error: WebSocket is not ready to send OSC data";
     }
   };
   var OSCAtomic = {};

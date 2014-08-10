@@ -1,7 +1,7 @@
 {
   "name": "osc-js",
   "description": "OSC protocol interface with address pattern matching for javascript applications",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     "marmorkuchen.net <andreas@marmorkuchen.net>"
   ],
