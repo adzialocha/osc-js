@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import OSCAtomic from '../src/atomic'
 
 import OSCAtomicInt32 from '../src/atomic/int32'
-import OSCAtomicFloat64 from '../src/atomic/float64'
+import OSCAtomicFloat32 from '../src/atomic/float32'
 import OSCAtomicString from '../src/atomic/string'
 import OSCAtomicBlob from '../src/atomic/blob'
 
@@ -21,7 +21,7 @@ describe('OSCAtomic', () => {
 
     atomicChildren = [
       new OSCAtomicInt32(123132132),
-      new OSCAtomicFloat64(1299389992.342243),
+      new OSCAtomicFloat32(1299389992.342243),
       new OSCAtomicString('hello'),
       new OSCAtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),
       new OSCAtomicTimetag(new OSCTimetag(SECONDS_70_YEARS + 123, 3312123)),

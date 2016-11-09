@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import OSCAtomicFloat64 from '../../src/atomic/float64'
+import OSCAtomicFloat32 from '../../src/atomic/float32'
 
-describe('OSCAtomicFloat64', () => {
-  const bitArray = { 0: 64, 1: 195, 2: 47, 3: 157, 4: 152, 5: 120, 6: 49, 7: 106 }
+describe('OSCAtomicFloat32', () => {
+  const bitArray = { 0: 70, 1: 25, 2: 124, 3: 237 }
   let atomic
-
+ 
   before(() => {
-    atomic = new OSCAtomicFloat64(9823.2312155)
+    atomic = new OSCAtomicFloat32(9823.2312155)
   })
 
   describe('encode', () => {
@@ -26,17 +26,17 @@ describe('OSCAtomicFloat64', () => {
       const data = new Uint8Array(8)
       const dataView = new DataView(data.buffer)
 
-      dataView.setFloat64(0, 1.254999123, false)
+      dataView.setFloat32(0, 1.254999123, false)
 
       atomic.decode(dataView, 0)
     })
 
-    it('sets the offset to 8', () => {
-      expect(atomic.offset).to.equal(8)
+    it('sets the offset to 4', () => {
+      expect(atomic.offset).to.equal(4)
     })
 
     it('sets the value to a human readable float number', () => {
-      expect(atomic.value).to.equal(1.254999123)
+      expect(atomic.value).to.equal(Math.fround(1.254999123))
     })
   })
 })

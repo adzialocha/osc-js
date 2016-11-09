@@ -3,7 +3,7 @@ import { isString, isArray, isInt, isFloat, isBlob } from './utils'
 import EncodeHelper, { typeChar, prepareAddress } from './helpers'
 
 import OSCAtomicInt32 from './atomic/int32'
-import OSCAtomicFloat64 from './atomic/float64'
+import OSCAtomicFloat32 from './atomic/float32'
 import OSCAtomicString from './atomic/string'
 import OSCAtomicBlob from './atomic/blob'
 
@@ -51,7 +51,7 @@ export default class OSCMessage {
         if (isInt(value)) {
           argument = new OSCAtomicInt32(value)
         } else if (isFloat(value)) {
-          argument = new OSCAtomicFloat64(value)
+          argument = new OSCAtomicFloat32(value)
         } else if (isString(value)) {
           argument = new OSCAtomicString(value)
         } else if (isBlob(value)) {
@@ -94,7 +94,7 @@ export default class OSCMessage {
       if (type === 'i') {
         next = new OSCAtomicInt32()
       } else if (type === 'f') {
-        next = new OSCAtomicFloat64()
+        next = new OSCAtomicFloat32()
       } else if (type === 's') {
         next = new OSCAtomicString()
       } else if (type === 'b') {

@@ -12,7 +12,7 @@ export default class OSCAtomic {
       throw new Error('OSCAtomic can not be encoded with empty value.')
     }
 
-    dataView[type](0, this.value, false)
+    dataView[type](this.offset, this.value, false)
 
     return data
   }

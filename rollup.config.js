@@ -2,8 +2,8 @@ import babel from 'rollup-plugin-babel'
 import uglify from 'rollup-plugin-uglify'
 
 const options = {
-  entry: 'src/osc.js',
-  dest: 'dist/osc.js',
+  entry: 'index.js',
+  dest: 'lib/osc.js',
   sourceMap: true,
   moduleName: 'OSC',
   plugins: [
@@ -20,6 +20,9 @@ const options = {
 
 export default [
   options,
+  Object.assign({}, options, {
+    dest: 'dist/osc.js',
+  }),
   Object.assign({}, options, {
     dest: 'dist/osc.min.js',
     plugins: options.plugins.concat(uglify()),
