@@ -1,0 +1,25 @@
+{
+  "name": "osc-js",
+  "description": "OSC protocol interface for js",
+  "main": "dist/osc.js",
+  "authors": [
+    "adzialocha"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "OSC",
+    "data",
+    "open",
+    "sound",
+    "control"
+  ],
+  "homepage": "https://github.com/adzialocha/osc-js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "lib",
+    "*.config.js"
+  ]
+}
