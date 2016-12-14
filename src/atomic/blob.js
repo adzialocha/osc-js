@@ -11,7 +11,7 @@ export default class AtomicBlob extends Atomic {
     super(value)
   }
 
-  encode() {
+  pack() {
     if (!this.value) {
       throw new Error('OSC AtomicBlob can not be encoded with empty value.')
     }
@@ -26,7 +26,7 @@ export default class AtomicBlob extends Atomic {
     return data
   }
 
-  decode(dataView, offset) {
+  unpack(dataView, offset) {
     const byteLength = dataView.getInt32(offset, false)
 
     this.value = new Uint8Array(dataView.buffer, offset + 4, byteLength)

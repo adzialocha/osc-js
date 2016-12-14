@@ -43,11 +43,11 @@ describe('AtomicTimetag', () => {
     atomic = new AtomicTimetag(new Timetag(129123, 283711))
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
-      result = atomic.encode()
+      result = atomic.pack()
     })
 
     it('returns correct bits', () => {
@@ -59,12 +59,12 @@ describe('AtomicTimetag', () => {
     })
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     before(() => {
       const data = new Uint8Array([1, 1, 1, 0, 0, 0, 1, 0])
       const dataView = new DataView(data.buffer)
 
-      atomic.decode(dataView, 0)
+      atomic.unpack(dataView, 0)
     })
 
     it('sets the offset to 8', () => {

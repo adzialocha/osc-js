@@ -41,7 +41,7 @@ describe('Message', () => {
     })
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
@@ -53,11 +53,11 @@ describe('Message', () => {
       message.add(22111.344)
       message.add(new Uint8Array([100, 52]))
 
-      result = message.encode()
+      result = message.pack()
     })
 
-    it('returns an object we can decode again', () => {
-      const decoded = message.decode(new DataView(result.buffer))
+    it('returns an object we can unpack again', () => {
+      const decoded = message.unpack(new DataView(result.buffer))
 
       expect(decoded.address).to.equal('/sssss//sssssadss')
       expect(decoded.args[3][0]).to.equal(100)

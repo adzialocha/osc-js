@@ -9,12 +9,12 @@ describe('AtomicString', () => {
     atomic = new AtomicString('hallo')
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     before(() => {
       const data = new Uint8Array(bitArrayHello)
       const dataView = new DataView(data.buffer)
 
-      atomic.decode(dataView, 0)
+      atomic.unpack(dataView, 0)
     })
 
     it('sets the offset to a multiple of 4', () => {
@@ -26,9 +26,9 @@ describe('AtomicString', () => {
     })
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     it('returns correct bits', () => {
-      expect(JSON.stringify(atomic.encode())).to.equal(
+      expect(JSON.stringify(atomic.pack())).to.equal(
         JSON.stringify(new Int8Array(bitArrayHello))
       )
     })

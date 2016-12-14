@@ -35,7 +35,7 @@ export default class Message {
     this.types += typeChar(value)
   }
 
-  encode() {
+  pack() {
     if (this.address.length === 0 || this.address[0] !== '/') {
       throw new Error('OSC Message does not have a proper address.')
     }
@@ -70,12 +70,12 @@ export default class Message {
     return encoder.merge()
   }
 
-  decode(dataView) {
+  unpack(dataView) {
     const address = new AtomicString()
-    address.decode(dataView, 0)
+    address.unpack(dataView, 0)
 
     const types = new AtomicString()
-    types.decode(dataView, address.offset)
+    types.unpack(dataView, address.offset)
 
     if (address.value.length === 0 || address.value[0] !== '/') {
       throw new Error('OSC Message found malformed or missing address string.')
@@ -106,7 +106,7 @@ export default class Message {
         throw new Error('OSC Message found non-standard argument type.')
       }
 
-      offset = next.decode(dataView, offset)
+      offset = next.unpack(dataView, offset)
       args.push(next.value)
     }
 

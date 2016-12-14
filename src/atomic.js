@@ -1,7 +1,7 @@
 import Entity from './entity'
 
 export default class Atomic extends Entity {
-  encode(type, byteLength) {
+  pack(type, byteLength) {
     const data = new Uint8Array(byteLength)
     const dataView = new DataView(data.buffer)
 
@@ -14,7 +14,7 @@ export default class Atomic extends Entity {
     return data
   }
 
-  decode(dataView, type, byteLength, offset) {
+  unpack(dataView, type, byteLength, offset) {
     this.value = dataView[type](offset, false)
     this.offset = offset + byteLength
     return this.offset

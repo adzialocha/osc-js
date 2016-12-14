@@ -9,11 +9,11 @@ describe('AtomicFloat32', () => {
     atomic = new AtomicFloat32(9823.2312155)
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
-      result = atomic.encode()
+      result = atomic.pack()
     })
 
     it('returns correct bits', () => {
@@ -21,14 +21,14 @@ describe('AtomicFloat32', () => {
     })
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     before(() => {
       const data = new Uint8Array(8)
       const dataView = new DataView(data.buffer)
 
       dataView.setFloat32(0, 1.254999123, false)
 
-      atomic.decode(dataView, 0)
+      atomic.unpack(dataView, 0)
     })
 
     it('sets the offset to 4', () => {

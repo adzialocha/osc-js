@@ -11,7 +11,7 @@ export default class AtomicString extends Atomic {
     super(value)
   }
 
-  encode() {
+  pack() {
     if (!this.value) {
       throw new Error('OSC AtomicString can not be encoded with empty value.')
     }
@@ -27,7 +27,7 @@ export default class AtomicString extends Atomic {
     return buffer
   }
 
-  decode(dataView, offset) {
+  unpack(dataView, offset) {
     let end = offset
     let charcode
     const data = []
@@ -44,7 +44,7 @@ export default class AtomicString extends Atomic {
     }
 
     if (end === dataView.length) {
-      throw new Error('OSC AtomicString found a malformed  string.')
+      throw new Error('OSC AtomicString found a malformed OSC string.')
     }
 
     this.offset = pad(end)

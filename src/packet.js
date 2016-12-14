@@ -11,21 +11,21 @@ export default class Packet extends Entity {
     super(value)
   }
 
-  encode() {
+  pack() {
     if (!this.value) {
       throw new Error('OSC Packet cant be encoded with empty body.')
     }
 
-    return this.value.encode()
+    return this.value.pack()
   }
 
-  decode(dataView, timetag) {
+  unpack(dataView, timetag) {
     if (dataView.byteLength % 4 !== 0) {
       throw new Error('OSC Packet byteLength has to be a multiple of four.')
     }
 
     const head = new AtomicString()
-    head.decode(dataView, 0)
+    head.unpack(dataView, 0)
 
     let item
 
@@ -38,7 +38,7 @@ export default class Packet extends Entity {
       }
     }
 
-    item.decode(dataView)
+    item.unpack(dataView)
 
     return item
   }

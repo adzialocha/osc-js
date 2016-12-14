@@ -11,11 +11,11 @@ export default class AtomicInt32 extends Atomic {
     super(value)
   }
 
-  encode() {
-    return super.encode('setInt32', 4)
+  pack() {
+    return super.pack('setInt32', 4)
   }
 
-  decode(dataView, offset) {
-    return super.decode(dataView, 'getInt32', 4, offset)
+  unpack(dataView, offset) {
+    return super.unpack(dataView, 'getInt32', 4, offset)
   }
 }

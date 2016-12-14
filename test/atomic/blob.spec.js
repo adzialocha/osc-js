@@ -9,11 +9,11 @@ describe('AtomicBlob', () => {
     atomic = new AtomicBlob(new Uint8Array([54, 42, 11, 33, 66]))
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
-      result = atomic.encode()
+      result = atomic.pack()
     })
 
     it('returns correct bits', () => {
@@ -26,12 +26,12 @@ describe('AtomicBlob', () => {
     })
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     before(() => {
       const data = new Uint8Array([0, 0, 0, 7, 1, 2, 3, 4, 5, 6, 7])
       const dataView = new DataView(data.buffer)
 
-      atomic.decode(dataView, 0)
+      atomic.unpack(dataView, 0)
     })
 
     it('sets the offset to 12', () => {

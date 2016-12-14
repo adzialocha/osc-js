@@ -42,7 +42,7 @@ export default class AtomicTimetag extends Atomic {
     super(value)
   }
 
-  encode() {
+  pack() {
     if (!this.value) {
       throw new Error('OSC AtomicTimetag can not be encoded with empty value.')
     }
@@ -57,7 +57,7 @@ export default class AtomicTimetag extends Atomic {
     return data
   }
 
-  decode(dataView, offset) {
+  unpack(dataView, offset) {
     const seconds = dataView.getUint32(offset, false)
     const fractions = dataView.getUint32(offset + 4, false)
 

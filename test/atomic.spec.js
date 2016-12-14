@@ -36,24 +36,24 @@ describe('Atomic', () => {
     expect(atomic.offset).to.be.equals(0)
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     it('exists', () => {
       atomicChildren.forEach((atomicItem) => {
-        expect(atomicItem).to.have.property('decode')
+        expect(atomicItem).to.have.property('unpack')
       })
     })
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     it('returns a multiple of 32', () => {
       atomicChildren.forEach((atomicItem) => {
-        expect((atomicItem.encode().byteLength * 8) % 32).to.equal(0)
+        expect((atomicItem.pack().byteLength * 8) % 32).to.equal(0)
       })
     })
 
     it('returns an object of type Uint8Array', () => {
       atomicChildren.forEach((atomicItem) => {
-        expect(atomicItem.encode()).to.be.a('uint8Array')
+        expect(atomicItem.pack()).to.be.a('uint8Array')
       })
     })
   })

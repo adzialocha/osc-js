@@ -11,11 +11,11 @@ export default class AtomicFloat32 extends Atomic {
     super(value)
   }
 
-  encode() {
-    return super.encode('setFloat32', 4)
+  pack() {
+    return super.pack('setFloat32', 4)
   }
 
-  decode(dataView, offset) {
-    return super.decode(dataView, 'getFloat32', 4, offset)
+  unpack(dataView, offset) {
+    return super.unpack(dataView, 'getFloat32', 4, offset)
   }
 }

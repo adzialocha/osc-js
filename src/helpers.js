@@ -40,7 +40,7 @@ export default class Helper {
   }
 
   add(item) {
-    const buffer = item.encode()
+    const buffer = item.pack()
     this.byteLength += buffer.byteLength
     this.data.push(buffer)
     return this

@@ -30,12 +30,12 @@ describe('Bundle', () => {
     })
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
       bundle = new Bundle(new AtomicTimetag(timetag))
-      result = bundle.encode()
+      result = bundle.pack()
     })
 
     it('returns a multiple of 32', () => {

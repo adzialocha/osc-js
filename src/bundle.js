@@ -33,14 +33,14 @@ export default class Bundle {
     this.bundleElements.push(item)
   }
 
-  encode() {
+  pack() {
     const encoder = new EncodeHelper()
 
     encoder.add(new AtomicString(BUNDLE_TAG))
     encoder.add(this.timetag)
 
     this.bundleElements.forEach((item) => {
-      item.encode()
+      item.pack()
 
       encoder.add(new AtomicInt32(item.offset))
       encoder.add(item)
@@ -49,16 +49,16 @@ export default class Bundle {
     return encoder.merge()
   }
 
-  decode(dataView, offset) {
+  unpack(dataView, offset) {
     const head = new AtomicString()
-    let end = head.decode(dataView, offset)
+    let end = head.unpack(dataView, offset)
 
     if (head !== BUNDLE_TAG) {
       throw new Error('OSC Bundle does not contain a valid #bundle head.')
     }
 
     const timetag = new AtomicTimetag()
-    end = timetag.decode(dataView, end)
+    end = timetag.unpack(dataView, end)
 
     this.bundleElements = []
 
@@ -66,8 +66,8 @@ export default class Bundle {
       const packet = new Packet()
       const size = new AtomicInt32()
 
-      end = size.decode(dataView, end)
-      packet.decode(dataView, end)
+      end = size.unpack(dataView, end)
+      packet.unpack(dataView, end)
 
       this.bundleElements.push(packet)
     }

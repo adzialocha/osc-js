@@ -9,11 +9,11 @@ describe('AtomicInt32', () => {
     atomic = new AtomicInt32(42)
   })
 
-  describe('encode', () => {
+  describe('pack', () => {
     let result
 
     before(() => {
-      result = atomic.encode()
+      result = atomic.pack()
     })
 
     it('returns correct bits', () => {
@@ -21,14 +21,14 @@ describe('AtomicInt32', () => {
     })
   })
 
-  describe('decode', () => {
+  describe('unpack', () => {
     before(() => {
       const data = new Uint8Array(4)
       const dataView = new DataView(data.buffer)
 
       dataView.setInt32(0, 214748364, false)
 
-      atomic.decode(dataView, 0)
+      atomic.unpack(dataView, 0)
     })
 
     it('sets the offset to 4', () => {
