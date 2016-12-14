@@ -1,32 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (factory());
-}(this, function () { 'use strict';
-
-  function isInt(n) {
-    return Number(n) === n && n % 1 === 0;
-  }
-
-  function isFloat(n) {
-    return Number(n) === n && n % 1 !== 0;
-  }
-
-  function isString(n) {
-    return typeof n === 'string';
-  }
-
-  function isArray(n) {
-    return Object.prototype.toString.call(n) === '[object Array]';
-  }
-
-  function isBlob(n) {
-    return n instanceof Uint8Array;
-  }
-
-  function pad(n) {
-    return n + 3 & ~0x03;
-  }
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.OSC = global.OSC || {})));
+}(this, function (exports) { 'use strict';
 
   var asyncGenerator = function () {
     function AwaitValue(value) {
@@ -214,6 +190,37 @@
     return call && (typeof call === "object" || typeof call === "function") ? call : self;
   };
 
+  var Entity = function Entity(value) {
+    classCallCheck(this, Entity);
+
+    this.value = value;
+    this.offset = 0;
+  };
+
+  function isInt(n) {
+    return Number(n) === n && n % 1 === 0;
+  }
+
+  function isFloat(n) {
+    return Number(n) === n && n % 1 !== 0;
+  }
+
+  function isString(n) {
+    return typeof n === 'string';
+  }
+
+  function isArray(n) {
+    return Object.prototype.toString.call(n) === '[object Array]';
+  }
+
+  function isBlob(n) {
+    return n instanceof Uint8Array;
+  }
+
+  function pad(n) {
+    return n + 3 & ~0x03;
+  }
+
   function typeChar(item) {
     if (isInt(item)) {
       return 'i';
@@ -225,7 +232,7 @@
       return 'b';
     }
 
-    throw new Error('OSCMessage found unknown value type.');
+    throw new Error('OSC Message found unknown value type.');
   }
 
   function prepareAddress(obj) {
@@ -244,18 +251,18 @@
       return address;
     }
 
-    throw new Error('Helpers can only prepare addresses which are Array of String.');
+    throw new Error('OSC Helpers can only prepare addresses which are Array of String.');
   }
 
-  var EncodeHelper = function () {
-    function EncodeHelper() {
-      classCallCheck(this, EncodeHelper);
+  var Helper = function () {
+    function Helper() {
+      classCallCheck(this, Helper);
 
       this.data = [];
       this.byteLength = 0;
     }
 
-    createClass(EncodeHelper, [{
+    createClass(Helper, [{
       key: 'add',
       value: function add(item) {
         var buffer = item.encode();
@@ -277,25 +284,25 @@
         return result;
       }
     }]);
-    return EncodeHelper;
+    return Helper;
   }();
 
-  var OSCAtomic = function () {
-    function OSCAtomic(value) {
-      classCallCheck(this, OSCAtomic);
+  var Atomic = function (_Entity) {
+    inherits(Atomic, _Entity);
 
-      this.value = value;
-      this.offset = 0;
+    function Atomic() {
+      classCallCheck(this, Atomic);
+      return possibleConstructorReturn(this, (Atomic.__proto__ || Object.getPrototypeOf(Atomic)).apply(this, arguments));
     }
 
-    createClass(OSCAtomic, [{
+    createClass(Atomic, [{
       key: 'encode',
       value: function encode(type, byteLength) {
         var data = new Uint8Array(byteLength);
         var dataView = new DataView(data.buffer);
 
         if (!this.value) {
-          throw new Error('OSCAtomic can not be encoded with empty value.');
+          throw new Error('OSC Atomic can not be encoded with empty value.');
         }
 
         dataView[type](this.offset, this.value, false);
@@ -310,81 +317,81 @@
         return this.offset;
       }
     }]);
-    return OSCAtomic;
-  }();
+    return Atomic;
+  }(Entity);
 
-  var OSCAtomicInt32 = function (_OSCAtomic) {
-    inherits(OSCAtomicInt32, _OSCAtomic);
+  var AtomicInt32 = function (_Atomic) {
+    inherits(AtomicInt32, _Atomic);
 
-    function OSCAtomicInt32(value) {
-      classCallCheck(this, OSCAtomicInt32);
+    function AtomicInt32(value) {
+      classCallCheck(this, AtomicInt32);
 
       if (value && !isInt(value)) {
-        throw new Error('OSCAtomicInt32 constructor expects value of type integer number.');
+        throw new Error('OSC AtomicInt32 constructor expects value of type integer number.');
       }
 
-      return possibleConstructorReturn(this, (OSCAtomicInt32.__proto__ || Object.getPrototypeOf(OSCAtomicInt32)).call(this, value));
+      return possibleConstructorReturn(this, (AtomicInt32.__proto__ || Object.getPrototypeOf(AtomicInt32)).call(this, value));
     }
 
-    createClass(OSCAtomicInt32, [{
+    createClass(AtomicInt32, [{
       key: 'encode',
       value: function encode() {
-        return get(OSCAtomicInt32.prototype.__proto__ || Object.getPrototypeOf(OSCAtomicInt32.prototype), 'encode', this).call(this, 'setInt32', 4);
+        return get(AtomicInt32.prototype.__proto__ || Object.getPrototypeOf(AtomicInt32.prototype), 'encode', this).call(this, 'setInt32', 4);
       }
     }, {
       key: 'decode',
       value: function decode(dataView, offset) {
-        return get(OSCAtomicInt32.prototype.__proto__ || Object.getPrototypeOf(OSCAtomicInt32.prototype), 'decode', this).call(this, dataView, 'getInt32', 4, offset);
+        return get(AtomicInt32.prototype.__proto__ || Object.getPrototypeOf(AtomicInt32.prototype), 'decode', this).call(this, dataView, 'getInt32', 4, offset);
       }
     }]);
-    return OSCAtomicInt32;
-  }(OSCAtomic);
+    return AtomicInt32;
+  }(Atomic);
 
-  var OSCAtomicFloat32 = function (_OSCAtomic) {
-    inherits(OSCAtomicFloat32, _OSCAtomic);
+  var AtomicFloat32 = function (_Atomic) {
+    inherits(AtomicFloat32, _Atomic);
 
-    function OSCAtomicFloat32(value) {
-      classCallCheck(this, OSCAtomicFloat32);
+    function AtomicFloat32(value) {
+      classCallCheck(this, AtomicFloat32);
 
       if (value && !isFloat(value)) {
-        throw new Error('OSCAtomicFloat32 constructor expects value of type float number.');
+        throw new Error('OSC AtomicFloat32 constructor expects value of type float number.');
       }
 
-      return possibleConstructorReturn(this, (OSCAtomicFloat32.__proto__ || Object.getPrototypeOf(OSCAtomicFloat32)).call(this, value));
+      return possibleConstructorReturn(this, (AtomicFloat32.__proto__ || Object.getPrototypeOf(AtomicFloat32)).call(this, value));
     }
 
-    createClass(OSCAtomicFloat32, [{
+    createClass(AtomicFloat32, [{
       key: 'encode',
       value: function encode() {
-        return get(OSCAtomicFloat32.prototype.__proto__ || Object.getPrototypeOf(OSCAtomicFloat32.prototype), 'encode', this).call(this, 'setFloat32', 4);
+        return get(AtomicFloat32.prototype.__proto__ || Object.getPrototypeOf(AtomicFloat32.prototype), 'encode', this).call(this, 'setFloat32', 4);
       }
     }, {
       key: 'decode',
       value: function decode(dataView, offset) {
-        return get(OSCAtomicFloat32.prototype.__proto__ || Object.getPrototypeOf(OSCAtomicFloat32.prototype), 'decode', this).call(this, dataView, 'getFloat32', 4, offset);
+        return get(AtomicFloat32.prototype.__proto__ || Object.getPrototypeOf(AtomicFloat32.prototype), 'decode', this).call(this, dataView, 'getFloat32', 4, offset);
       }
     }]);
-    return OSCAtomicFloat32;
-  }(OSCAtomic);
+    return AtomicFloat32;
+  }(Atomic);
 
-  var OSCAtomicString = function (_OSCAtomic) {
-    inherits(OSCAtomicString, _OSCAtomic);
+  var AtomicString = function (_Atomic) {
+    inherits(AtomicString, _Atomic);
 
-    function OSCAtomicString(value) {
-      classCallCheck(this, OSCAtomicString);
+    function AtomicString(value) {
+      classCallCheck(this, AtomicString);
 
       if (value && typeof value !== 'string') {
-        throw new Error('OSCAtomicString constructor expects value of type string.');
+        throw new Error('OSC AtomicString constructor expects value of type string.');
       }
 
-      return possibleConstructorReturn(this, (OSCAtomicString.__proto__ || Object.getPrototypeOf(OSCAtomicString)).call(this, value));
+      return possibleConstructorReturn(this, (AtomicString.__proto__ || Object.getPrototypeOf(AtomicString)).call(this, value));
     }
 
-    createClass(OSCAtomicString, [{
+    createClass(AtomicString, [{
       key: 'encode',
       value: function encode() {
         if (!this.value) {
-          throw new Error('OSCAtomicString can not be encoded with empty value.');
+          throw new Error('OSC AtomicString can not be encoded with empty value.');
         }
 
         var terminated = this.value + '\0';
@@ -416,7 +423,7 @@
         }
 
         if (end === dataView.length) {
-          throw new Error('OSCAtomicString found a malformed OSC string.');
+          throw new Error('OSC AtomicString found a malformed  string.');
         }
 
         this.offset = pad(end);
@@ -425,27 +432,27 @@
         return this.offset;
       }
     }]);
-    return OSCAtomicString;
-  }(OSCAtomic);
+    return AtomicString;
+  }(Atomic);
 
-  var OSCAtomicBlob = function (_OSCAtomic) {
-    inherits(OSCAtomicBlob, _OSCAtomic);
+  var AtomicBlob = function (_Atomic) {
+    inherits(AtomicBlob, _Atomic);
 
-    function OSCAtomicBlob(value) {
-      classCallCheck(this, OSCAtomicBlob);
+    function AtomicBlob(value) {
+      classCallCheck(this, AtomicBlob);
 
       if (value && !isBlob(value)) {
-        throw new Error('OSCAtomicBlob constructor expects value of type Uint8Array.');
+        throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array.');
       }
 
-      return possibleConstructorReturn(this, (OSCAtomicBlob.__proto__ || Object.getPrototypeOf(OSCAtomicBlob)).call(this, value));
+      return possibleConstructorReturn(this, (AtomicBlob.__proto__ || Object.getPrototypeOf(AtomicBlob)).call(this, value));
     }
 
-    createClass(OSCAtomicBlob, [{
+    createClass(AtomicBlob, [{
       key: 'encode',
       value: function encode() {
         if (!this.value) {
-          throw new Error('OSCAtomicBlob can not be encoded with empty value.');
+          throw new Error('OSC AtomicBlob can not be encoded with empty value.');
         }
 
         var byteLength = pad(this.value.byteLength);
@@ -468,13 +475,14 @@
         return this.offset;
       }
     }]);
-    return OSCAtomicBlob;
-  }(OSCAtomic);
+    return AtomicBlob;
+  }(Atomic);
 
-  var OSCMessage = function () {
-    function OSCMessage() {
-      classCallCheck(this, OSCMessage);
+  var Message = function () {
+    function Message() {
+      classCallCheck(this, Message);
 
+      this.offset = 0;
       this.address = '';
       this.types = '';
       this.args = [];
@@ -486,7 +494,7 @@
 
       if (args.length > 0) {
         if (!(isString(args[0]) || isArray(args[0]))) {
-          throw new Error('OSCMessage constructor first argument (address) must be a string or array.');
+          throw new Error('OSC Message constructor first argument (address) must be a string or array.');
         }
 
         this.address = prepareAddress(args.shift());
@@ -497,11 +505,11 @@
       }
     }
 
-    createClass(OSCMessage, [{
+    createClass(Message, [{
       key: 'add',
       value: function add(value) {
         if (!value) {
-          throw new Error('OSCMessage expects a valid value for adding.');
+          throw new Error('OSC Message expects a valid value for adding.');
         }
 
         this.args.push(value);
@@ -513,13 +521,13 @@
         var _this = this;
 
         if (this.address.length === 0 || this.address[0] !== '/') {
-          throw new Error('OSCMessage does not have a proper address.');
+          throw new Error('OSC Message does not have a proper address.');
         }
 
-        var encoder = new EncodeHelper();
+        var encoder = new Helper();
 
-        encoder.add(new OSCAtomicString(this.address));
-        encoder.add(new OSCAtomicString(',' + this.types));
+        encoder.add(new AtomicString(this.address));
+        encoder.add(new AtomicString(',' + this.types));
 
         if (this.args.length > 0) {
           (function () {
@@ -527,15 +535,15 @@
 
             _this.args.forEach(function (value) {
               if (isInt(value)) {
-                argument = new OSCAtomicInt32(value);
+                argument = new AtomicInt32(value);
               } else if (isFloat(value)) {
-                argument = new OSCAtomicFloat32(value);
+                argument = new AtomicFloat32(value);
               } else if (isString(value)) {
-                argument = new OSCAtomicString(value);
+                argument = new AtomicString(value);
               } else if (isBlob(value)) {
-                argument = new OSCAtomicBlob(value);
+                argument = new AtomicBlob(value);
               } else {
-                throw new Error('OSCMessage found unknown argument type.');
+                throw new Error('OSC Message found unknown argument type.');
               }
 
               encoder.add(argument);
@@ -543,23 +551,25 @@
           })();
         }
 
+        this.offset = encoder.byteLength;
+
         return encoder.merge();
       }
     }, {
       key: 'decode',
       value: function decode(dataView) {
-        var address = new OSCAtomicString();
+        var address = new AtomicString();
         address.decode(dataView, 0);
 
-        var types = new OSCAtomicString();
+        var types = new AtomicString();
         types.decode(dataView, address.offset);
 
         if (address.value.length === 0 || address.value[0] !== '/') {
-          throw new Error('OSCMessage found malformed or missing OSC address string.');
+          throw new Error('OSC Message found malformed or missing address string.');
         }
 
         if (types.value.length === 0 && types.value[0] !== ',') {
-          throw new Error('OSCMessage found malformed or missing OSC type string.');
+          throw new Error('OSC Message found malformed or missing type string.');
         }
 
         var offset = types.offset;
@@ -572,15 +582,15 @@
           type = types.value[i];
 
           if (type === 'i') {
-            next = new OSCAtomicInt32();
+            next = new AtomicInt32();
           } else if (type === 'f') {
-            next = new OSCAtomicFloat32();
+            next = new AtomicFloat32();
           } else if (type === 's') {
-            next = new OSCAtomicString();
+            next = new AtomicString();
           } else if (type === 'b') {
-            next = new OSCAtomicBlob();
+            next = new AtomicBlob();
           } else {
-            throw new Error('OSCMessage found non-standard argument type.');
+            throw new Error('OSC Message found non-standard argument type.');
           }
 
           offset = next.decode(dataView, offset);
@@ -594,10 +604,243 @@
         return this;
       }
     }]);
-    return OSCMessage;
+    return Message;
   }();
 
-  module.exports.OSCMessage = OSCMessage;
+  var SECONDS_70_YEARS = 2208988800;
+  var TWO_POWER_32 = 4294967296;
+
+  var Timetag = function () {
+    function Timetag() {
+      var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var fractions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      classCallCheck(this, Timetag);
+
+      if (!(isInt(seconds) && isInt(fractions))) {
+        throw new Error('OSC Timetag constructor expects values of type integer number.');
+      }
+
+      this.seconds = seconds;
+      this.fractions = fractions;
+    }
+
+    createClass(Timetag, [{
+      key: 'timestamp',
+      value: function timestamp(milliseconds) {
+        var seconds = void 0;
+
+        if (typeof milliseconds === 'number') {
+          seconds = milliseconds / 1000;
+          var rounded = Math.floor(seconds);
+
+          this.seconds = rounded + SECONDS_70_YEARS;
+          this.fractions = Math.round(TWO_POWER_32 * (seconds - rounded));
+
+          return milliseconds;
+        }
+
+        seconds = this.seconds - SECONDS_70_YEARS;
+        return (seconds + this.fractions / TWO_POWER_32) * 1000;
+      }
+    }]);
+    return Timetag;
+  }();
+
+  var AtomicTimetag = function (_Atomic) {
+    inherits(AtomicTimetag, _Atomic);
+
+    function AtomicTimetag(value) {
+      classCallCheck(this, AtomicTimetag);
+
+      if (value && !(value instanceof Timetag)) {
+        throw new Error('OSC AtomicTimetag constructor expects value of type Timetag.');
+      }
+
+      return possibleConstructorReturn(this, (AtomicTimetag.__proto__ || Object.getPrototypeOf(AtomicTimetag)).call(this, value));
+    }
+
+    createClass(AtomicTimetag, [{
+      key: 'encode',
+      value: function encode() {
+        if (!this.value) {
+          throw new Error('OSC AtomicTimetag can not be encoded with empty value.');
+        }
+
+        var _value = this.value,
+            seconds = _value.seconds,
+            fractions = _value.fractions;
+
+        var data = new Uint8Array(8);
+        var dataView = new DataView(data.buffer);
+
+        dataView.setInt32(0, seconds, false);
+        dataView.setInt32(4, fractions, false);
+
+        return data;
+      }
+    }, {
+      key: 'decode',
+      value: function decode(dataView, offset) {
+        var seconds = dataView.getUint32(offset, false);
+        var fractions = dataView.getUint32(offset + 4, false);
+
+        this.value = new Timetag(seconds, fractions);
+        this.offset += 8;
+
+        return this.offset;
+      }
+    }]);
+    return AtomicTimetag;
+  }(Atomic);
+
+  var BUNDLE_TAG = '#bundle';
+
+  var Bundle = function () {
+    function Bundle() {
+      var _this = this;
+
+      classCallCheck(this, Bundle);
+
+      this.offset = 0;
+      this.timetag = new AtomicTimetag();
+      this.bundleElements = [];
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      if (args.length > 0) {
+        if (args[0] instanceof AtomicTimetag) {
+          this.timetag = args.shift();
+        } else {
+          args.forEach(function (item) {
+            _this.add(item);
+          });
+        }
+      }
+    }
+
+    createClass(Bundle, [{
+      key: 'add',
+      value: function add(item) {
+        if (!(item instanceof Message || item instanceof Bundle)) {
+          throw new Error('OSC Bundle contains only Messages and Bundles');
+        }
+
+        this.bundleElements.push(item);
+      }
+    }, {
+      key: 'encode',
+      value: function encode() {
+        var encoder = new Helper();
+
+        encoder.add(new AtomicString(BUNDLE_TAG));
+        encoder.add(this.timetag);
+
+        this.bundleElements.forEach(function (item) {
+          item.encode();
+
+          encoder.add(new AtomicInt32(item.offset));
+          encoder.add(item);
+        });
+
+        return encoder.merge();
+      }
+    }, {
+      key: 'decode',
+      value: function decode(dataView, offset) {
+        var head = new AtomicString();
+        var end = head.decode(dataView, offset);
+
+        if (head !== BUNDLE_TAG) {
+          throw new Error('OSC Bundle does not contain a valid #bundle head.');
+        }
+
+        var timetag = new AtomicTimetag();
+        end = timetag.decode(dataView, end);
+
+        this.bundleElements = [];
+
+        for (var i = 0; i < dataView.byteLength; i += 1) {
+          var packet = new Packet();
+          var size = new AtomicInt32();
+
+          end = size.decode(dataView, end);
+          packet.decode(dataView, end);
+
+          this.bundleElements.push(packet);
+        }
+
+        this.offset = end;
+        this.timetag = timetag;
+
+        return end;
+      }
+    }]);
+    return Bundle;
+  }();
+
+  var Packet = function (_Entity) {
+    inherits(Packet, _Entity);
+
+    function Packet(value) {
+      classCallCheck(this, Packet);
+
+      if (value && !(value instanceof Message || value instanceof Bundle)) {
+        throw new Error('OSC Packet can only consist of Message or Bundle.');
+      }
+      return possibleConstructorReturn(this, (Packet.__proto__ || Object.getPrototypeOf(Packet)).call(this, value));
+    }
+
+    createClass(Packet, [{
+      key: 'encode',
+      value: function encode() {
+        if (!this.value) {
+          throw new Error('OSC Packet cant be encoded with empty body.');
+        }
+
+        return this.value.encode();
+      }
+    }, {
+      key: 'decode',
+      value: function decode(dataView, timetag) {
+        if (dataView.byteLength % 4 !== 0) {
+          throw new Error('OSC Packet byteLength has to be a multiple of four.');
+        }
+
+        var head = new AtomicString();
+        head.decode(dataView, 0);
+
+        var item = void 0;
+
+        if (head.value === BUNDLE_TAG) {
+          item = new Bundle();
+        } else {
+          item = new Message();
+          if (timetag) {
+            item.timetag = timetag;
+          }
+        }
+
+        item.decode(dataView);
+
+        return item;
+      }
+    }]);
+    return Packet;
+  }(Entity);
+
+  exports.Packet = Packet;
+  exports.Bundle = Bundle;
+  exports.Message = Message;
+  exports.AtomicInt32 = AtomicInt32;
+  exports.AtomicFloat32 = AtomicFloat32;
+  exports.AtomicString = AtomicString;
+  exports.AtomicBlob = AtomicBlob;
+  exports.AtomicTimetag = AtomicTimetag;
+  exports.Timetag = Timetag;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=osc.js.map

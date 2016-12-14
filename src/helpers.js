@@ -11,7 +11,7 @@ export function typeChar(item) {
     return 'b'
   }
 
-  throw new Error('OSCMessage found unknown value type.')
+  throw new Error('OSC Message found unknown value type.')
 }
 
 export function prepareAddress(obj) {
@@ -30,10 +30,10 @@ export function prepareAddress(obj) {
     return address
   }
 
-  throw new Error('Helpers can only prepare addresses which are Array of String.')
+  throw new Error('OSC Helpers can only prepare addresses which are Array of String.')
 }
 
-export default class EncodeHelper {
+export default class Helper {
   constructor() {
     this.data = []
     this.byteLength = 0

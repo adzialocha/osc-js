@@ -1,11 +1,11 @@
 import { isFloat } from '../utils'
 
-import OSCAtomic from '../atomic'
+import Atomic from '../atomic'
 
-export default class OSCAtomicFloat32 extends OSCAtomic {
+export default class AtomicFloat32 extends Atomic {
   constructor(value) {
     if (value && !isFloat(value)) {
-      throw new Error('OSCAtomicFloat32 constructor expects value of type float number.')
+      throw new Error('OSC AtomicFloat32 constructor expects value of type float number.')
     }
 
     super(value)

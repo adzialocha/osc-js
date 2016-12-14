@@ -1,14 +1,14 @@
 import { isInt } from '../utils'
 
-import OSCAtomic from '../atomic'
+import Atomic from '../atomic'
 
 export const SECONDS_70_YEARS = 2208988800
 export const TWO_POWER_32 = 4294967296
 
-export class OSCTimetag {
+export class Timetag {
   constructor(seconds = 0, fractions = 0) {
     if (!(isInt(seconds) && isInt(fractions))) {
-      throw new Error('OSCTimetag constructor expects values of type integer number.')
+      throw new Error('OSC Timetag constructor expects values of type integer number.')
     }
 
     this.seconds = seconds
@@ -33,10 +33,10 @@ export class OSCTimetag {
   }
 }
 
-export default class OSCAtomicTimetag extends OSCAtomic {
+export default class AtomicTimetag extends Atomic {
   constructor(value) {
-    if (value && !(value instanceof OSCTimetag)) {
-      throw new Error('OSCAtomicTimetag constructor expects value of type OSCTimetag.')
+    if (value && !(value instanceof Timetag)) {
+      throw new Error('OSC AtomicTimetag constructor expects value of type Timetag.')
     }
 
     super(value)
@@ -44,7 +44,7 @@ export default class OSCAtomicTimetag extends OSCAtomic {
 
   encode() {
     if (!this.value) {
-      throw new Error('OSCAtomicTimetag can not be encoded with empty value.')
+      throw new Error('OSC AtomicTimetag can not be encoded with empty value.')
     }
 
     const { seconds, fractions } = this.value
@@ -61,7 +61,7 @@ export default class OSCAtomicTimetag extends OSCAtomic {
     const seconds = dataView.getUint32(offset, false)
     const fractions = dataView.getUint32(offset + 4, false)
 
-    this.value = new OSCTimetag(seconds, fractions)
+    this.value = new Timetag(seconds, fractions)
     this.offset += 8
 
     return this.offset

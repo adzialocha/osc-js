@@ -1,11 +1,11 @@
 import { pad } from '../utils'
 
-import OSCAtomic from '../atomic'
+import Atomic from '../atomic'
 
-export default class OSCAtomicString extends OSCAtomic {
+export default class AtomicString extends Atomic {
   constructor(value) {
     if (value && typeof value !== 'string') {
-      throw new Error('OSCAtomicString constructor expects value of type string.')
+      throw new Error('OSC AtomicString constructor expects value of type string.')
     }
 
     super(value)
@@ -13,7 +13,7 @@ export default class OSCAtomicString extends OSCAtomic {
 
   encode() {
     if (!this.value) {
-      throw new Error('OSCAtomicString can not be encoded with empty value.')
+      throw new Error('OSC AtomicString can not be encoded with empty value.')
     }
 
     const terminated = `${this.value}\u0000`
@@ -44,7 +44,7 @@ export default class OSCAtomicString extends OSCAtomic {
     }
 
     if (end === dataView.length) {
-      throw new Error('OSCAtomicString found a malformed OSC string.')
+      throw new Error('OSC AtomicString found a malformed  string.')
     }
 
     this.offset = pad(end)

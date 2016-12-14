@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 
-import OSCMessage from '../src/message'
+import Message from '../src/message'
 
-describe('OSCMessage', () => {
+describe('Message', () => {
   let message
 
   before(() => {
-    message = new OSCMessage()
+    message = new Message()
   })
 
-  it('contains a set of OSC message data', () => {
+  it('contains a set of  message data', () => {
     expect(message.address).to.exist
     expect(message.types).to.exist
     expect(message.args).to.exist
@@ -17,7 +17,7 @@ describe('OSCMessage', () => {
   })
 
   it('fills the arguments and address during its construction', () => {
-    const anotherMessage = new OSCMessage('somekind/of/path', 221.21, 317, 'test')
+    const anotherMessage = new Message('somekind/of/path', 221.21, 317, 'test')
 
     expect(anotherMessage.address).to.be.equals('/somekind/of/path')
     expect(anotherMessage.args[0]).to.be.equals(221.21)
@@ -26,7 +26,7 @@ describe('OSCMessage', () => {
 
   describe('add', () => {
     before(() => {
-      message = new OSCMessage()
+      message = new Message()
 
       message.add('Hello World')
       message.add(121123)
@@ -45,7 +45,7 @@ describe('OSCMessage', () => {
     let result
 
     before(() => {
-      message = new OSCMessage()
+      message = new Message()
 
       message.address = '/sssss//sssssadss'
       message.add(12)

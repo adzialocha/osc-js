@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import OSCAtomicFloat32 from '../../src/atomic/float32'
+import AtomicFloat32 from '../../src/atomic/float32'
 
-describe('OSCAtomicFloat32', () => {
+describe('AtomicFloat32', () => {
   const bitArray = { 0: 70, 1: 25, 2: 124, 3: 237 }
   let atomic
- 
+
   before(() => {
-    atomic = new OSCAtomicFloat32(9823.2312155)
+    atomic = new AtomicFloat32(9823.2312155)
   })
 
   describe('encode', () => {

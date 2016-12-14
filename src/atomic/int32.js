@@ -1,11 +1,11 @@
 import { isInt } from '../utils'
 
-import OSCAtomic from '../atomic'
+import Atomic from '../atomic'
 
-export default class OSCAtomicInt32 extends OSCAtomic {
+export default class AtomicInt32 extends Atomic {
   constructor(value) {
     if (value && !isInt(value)) {
-      throw new Error('OSCAtomicInt32 constructor expects value of type integer number.')
+      throw new Error('OSC AtomicInt32 constructor expects value of type integer number.')
     }
 
     super(value)

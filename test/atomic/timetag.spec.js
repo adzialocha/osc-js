@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 
-import OSCAtomicTimetag, {
-  OSCTimetag,
+import AtomicTimetag, {
+  Timetag,
   SECONDS_70_YEARS,
 } from '../../src/atomic/timetag'
 
-describe('OSCTimetag', () => {
+describe('Timetag', () => {
   let timetag
 
   before(() => {
-    timetag = new OSCTimetag(SECONDS_70_YEARS + 1234, 0)
+    timetag = new Timetag(SECONDS_70_YEARS + 1234, 0)
   })
 
   it('sets the values correctly on initialization', () => {
@@ -35,12 +35,12 @@ describe('OSCTimetag', () => {
   })
 })
 
-describe('OSCAtomicTimetag', () => {
+describe('AtomicTimetag', () => {
   const bitArray = { 0: 0, 1: 1, 2: 248, 3: 99, 4: 0, 5: 4, 6: 84, 7: 63 }
   let atomic
 
   before(() => {
-    atomic = new OSCAtomicTimetag(new OSCTimetag(129123, 283711))
+    atomic = new AtomicTimetag(new Timetag(129123, 283711))
   })
 
   describe('encode', () => {

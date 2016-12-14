@@ -1,11 +1,11 @@
 import { isBlob, pad } from '../utils'
 
-import OSCAtomic from '../atomic'
+import Atomic from '../atomic'
 
-export default class OSCAtomicBlob extends OSCAtomic {
+export default class AtomicBlob extends Atomic {
   constructor(value) {
     if (value && !isBlob(value)) {
-      throw new Error('OSCAtomicBlob constructor expects value of type Uint8Array.')
+      throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array.')
     }
 
     super(value)
@@ -13,7 +13,7 @@ export default class OSCAtomicBlob extends OSCAtomic {
 
   encode() {
     if (!this.value) {
-      throw new Error('OSCAtomicBlob can not be encoded with empty value.')
+      throw new Error('OSC AtomicBlob can not be encoded with empty value.')
     }
 
     const byteLength = pad(this.value.byteLength)

@@ -1,31 +1,38 @@
-import OSCBundle, { BUNDLE_TAG } from './bundle'
-import OSCMessage from './message'
+import Entity from './entity'
+import Bundle, { BUNDLE_TAG } from './bundle'
+import Message from './message'
+import AtomicString from './atomic/string'
 
-import OSCAtomicString from './atomic/string'
+export default class Packet extends Entity {
+  constructor(value) {
+    if (value && !(value instanceof Message || value instanceof Bundle)) {
+      throw new Error('OSC Packet can only consist of Message or Bundle.')
+    }
+    super(value)
+  }
 
-export default class OSCPacket {
-  encode(item) {
-    if (!(item instanceof OSCMessage || item instanceof OSCBundle)) {
-      throw new Error('OSCPacket can only consist of OSCMessage or OSCBundle.')
+  encode() {
+    if (!this.value) {
+      throw new Error('OSC Packet cant be encoded with empty body.')
     }
 
-    return item.encode()
+    return this.value.encode()
   }
 
   decode(dataView, timetag) {
     if (dataView.byteLength % 4 !== 0) {
-      throw new Error('OSCPacket byteLength has to be a multiple of four.')
+      throw new Error('OSC Packet byteLength has to be a multiple of four.')
     }
 
-    const head = new OSCAtomicString()
+    const head = new AtomicString()
     head.decode(dataView, 0)
 
     let item
 
     if (head.value === BUNDLE_TAG) {
-      item = new OSCBundle()
+      item = new Bundle()
     } else {
-      item = new OSCMessage()
+      item = new Message()
       if (timetag) {
         item.timetag = timetag
       }

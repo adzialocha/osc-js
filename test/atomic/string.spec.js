@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import OSCAtomicString from '../../src/atomic/string'
+import AtomicString from '../../src/atomic/string'
 
-describe('OSCAtomicString', () => {
+describe('AtomicString', () => {
   const bitArrayHello = [104, 97, 108, 108, 111, 0, 0, 0]
   let atomic
 
   before(() => {
-    atomic = new OSCAtomicString('hallo')
+    atomic = new AtomicString('hallo')
   })
 
   describe('decode', () => {

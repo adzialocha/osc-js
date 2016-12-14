@@ -1,14 +1,15 @@
 import { isString, isArray, isInt, isFloat, isBlob } from './utils'
 
-import EncodeHelper, { typeChar, prepareAddress } from './helpers'
+import Helper, { typeChar, prepareAddress } from './helpers'
 
-import OSCAtomicInt32 from './atomic/int32'
-import OSCAtomicFloat32 from './atomic/float32'
-import OSCAtomicString from './atomic/string'
-import OSCAtomicBlob from './atomic/blob'
+import AtomicInt32 from './atomic/int32'
+import AtomicFloat32 from './atomic/float32'
+import AtomicString from './atomic/string'
+import AtomicBlob from './atomic/blob'
 
-export default class OSCMessage {
+export default class Message {
   constructor(...args) {
+    this.offset = 0
     this.address = ''
     this.types = ''
     this.args = []
@@ -16,7 +17,7 @@ export default class OSCMessage {
 
     if (args.length > 0) {
       if (!(isString(args[0]) || isArray(args[0]))) {
-        throw new Error('OSCMessage constructor first argument (address) must be a string or array.')
+        throw new Error('OSC Message constructor first argument (address) must be a string or array.')
       }
 
       this.address = prepareAddress(args.shift())
@@ -27,7 +28,7 @@ export default class OSCMessage {
 
   add(value) {
     if (!value) {
-      throw new Error('OSCMessage expects a valid value for adding.')
+      throw new Error('OSC Message expects a valid value for adding.')
     }
 
     this.args.push(value)
@@ -36,50 +37,52 @@ export default class OSCMessage {
 
   encode() {
     if (this.address.length === 0 || this.address[0] !== '/') {
-      throw new Error('OSCMessage does not have a proper address.')
+      throw new Error('OSC Message does not have a proper address.')
     }
 
-    const encoder = new EncodeHelper()
+    const encoder = new Helper()
 
-    encoder.add(new OSCAtomicString(this.address))
-    encoder.add(new OSCAtomicString(`,${this.types}`))
+    encoder.add(new AtomicString(this.address))
+    encoder.add(new AtomicString(`,${this.types}`))
 
     if (this.args.length > 0) {
       let argument
 
       this.args.forEach((value) => {
         if (isInt(value)) {
-          argument = new OSCAtomicInt32(value)
+          argument = new AtomicInt32(value)
         } else if (isFloat(value)) {
-          argument = new OSCAtomicFloat32(value)
+          argument = new AtomicFloat32(value)
         } else if (isString(value)) {
-          argument = new OSCAtomicString(value)
+          argument = new AtomicString(value)
         } else if (isBlob(value)) {
-          argument = new OSCAtomicBlob(value)
+          argument = new AtomicBlob(value)
         } else {
-          throw new Error('OSCMessage found unknown argument type.')
+          throw new Error('OSC Message found unknown argument type.')
         }
 
         encoder.add(argument)
       })
     }
 
+    this.offset = encoder.byteLength
+
     return encoder.merge()
   }
 
   decode(dataView) {
-    const address = new OSCAtomicString()
+    const address = new AtomicString()
     address.decode(dataView, 0)
 
-    const types = new OSCAtomicString()
+    const types = new AtomicString()
     types.decode(dataView, address.offset)
 
     if (address.value.length === 0 || address.value[0] !== '/') {
-      throw new Error('OSCMessage found malformed or missing OSC address string.')
+      throw new Error('OSC Message found malformed or missing address string.')
     }
 
     if (types.value.length === 0 && types.value[0] !== ',') {
-      throw new Error('OSCMessage found malformed or missing OSC type string.')
+      throw new Error('OSC Message found malformed or missing type string.')
     }
 
     let offset = types.offset
@@ -92,15 +95,15 @@ export default class OSCMessage {
       type = types.value[i]
 
       if (type === 'i') {
-        next = new OSCAtomicInt32()
+        next = new AtomicInt32()
       } else if (type === 'f') {
-        next = new OSCAtomicFloat32()
+        next = new AtomicFloat32()
       } else if (type === 's') {
-        next = new OSCAtomicString()
+        next = new AtomicString()
       } else if (type === 'b') {
-        next = new OSCAtomicBlob()
+        next = new AtomicBlob()
       } else {
-        throw new Error('OSCMessage found non-standard argument type.')
+        throw new Error('OSC Message found non-standard argument type.')
       }
 
       offset = next.decode(dataView, offset)

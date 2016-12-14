@@ -2,11 +2,11 @@ import { expect } from 'chai'
 
 import EncodeHelper, { typeChar, prepareAddress } from '../src/helpers'
 
-import OSCAtomicFloat64 from '../src/atomic/float64'
-import OSCAtomicString from '../src/atomic/string'
+import AtomicFloat64 from '../src/atomic/float64'
+import AtomicString from '../src/atomic/string'
 
 describe('typeChar', () => {
-  it('returns the right OSC type characters', () => {
+  it('returns the right  type characters', () => {
     expect(typeChar(2)).to.be.equals('i')
     expect(typeChar(2.2)).to.be.equals('f')
     expect(typeChar('joe')).to.be.equals('s')
@@ -15,11 +15,11 @@ describe('typeChar', () => {
 })
 
 describe('prepareAddress', () => {
-  it('builds an valid OSC address from an array', () => {
+  it('builds an valid  address from an array', () => {
     expect(prepareAddress(['hello', 'world'])).to.be.equals('/hello/world')
   })
 
-  it('builds an valid OSC address from an invalid string', () => {
+  it('builds an valid  address from an invalid string', () => {
     expect(prepareAddress('hello/world')).to.be.equals('/hello/world')
   })
 
@@ -33,8 +33,8 @@ describe('EncodeHelper', () => {
 
   before(() => {
     encoder = new EncodeHelper()
-    encoder.add(new OSCAtomicFloat64(24.12))
-    encoder.add(new OSCAtomicString('joe'))
+    encoder.add(new AtomicFloat64(24.12))
+    encoder.add(new AtomicString('joe'))
   })
 
   it('adds items up and increases the byteLength accordingly', () => {

@@ -1,30 +1,30 @@
 import { expect } from 'chai'
 
-import OSCAtomic from '../src/atomic'
+import Atomic from '../src/atomic'
 
-import OSCAtomicInt32 from '../src/atomic/int32'
-import OSCAtomicFloat32 from '../src/atomic/float32'
-import OSCAtomicString from '../src/atomic/string'
-import OSCAtomicBlob from '../src/atomic/blob'
+import AtomicInt32 from '../src/atomic/int32'
+import AtomicFloat32 from '../src/atomic/float32'
+import AtomicString from '../src/atomic/string'
+import AtomicBlob from '../src/atomic/blob'
 
-import OSCAtomicTimetag, {
-  OSCTimetag,
+import AtomicTimetag, {
+  Timetag,
   SECONDS_70_YEARS,
 } from '../src/atomic/timetag'
 
-describe('OSCAtomic', () => {
+describe('Atomic', () => {
   let atomic
   let atomicChildren
 
   before(() => {
-    atomic = new OSCAtomic(2)
+    atomic = new Atomic(2)
 
     atomicChildren = [
-      new OSCAtomicInt32(123132132),
-      new OSCAtomicFloat32(1299389992.342243),
-      new OSCAtomicString('hello'),
-      new OSCAtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),
-      new OSCAtomicTimetag(new OSCTimetag(SECONDS_70_YEARS + 123, 3312123)),
+      new AtomicInt32(123132132),
+      new AtomicFloat32(1299389992.342243),
+      new AtomicString('hello'),
+      new AtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),
+      new AtomicTimetag(new Timetag(SECONDS_70_YEARS + 123, 3312123)),
     ]
   })
 

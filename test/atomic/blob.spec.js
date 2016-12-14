@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import OSCAtomicBlob from '../../src/atomic/blob'
+import AtomicBlob from '../../src/atomic/blob'
 
-describe('OSCAtomicBlob', () => {
+describe('AtomicBlob', () => {
   const bitArray = { 0: 0, 1: 0, 2: 0, 3: 5, 4: 54, 5: 42, 6: 11, 7: 33, 8: 66, 9: 0, 10: 0, 11: 0 }
   let atomic
 
   before(() => {
-    atomic = new OSCAtomicBlob(new Uint8Array([54, 42, 11, 33, 66]))
+    atomic = new AtomicBlob(new Uint8Array([54, 42, 11, 33, 66]))
   })
 
   describe('encode', () => {
