@@ -1,12 +1,12 @@
 import { expect } from 'chai'
-import AtomicInt32 from '../../src/atomic/int32'
+import AtomicFloat32 from '../../src/atomic/float32'
 
-describe('AtomicInt32', () => {
-  const bitArray = { 0: 0, 1: 0, 2: 0, 3: 42 }
+describe('AtomicFloat32', () => {
+  const bitArray = { 0: 70, 1: 25, 2: 124, 3: 237 }
   let atomic
 
   before(() => {
-    atomic = new AtomicInt32(42)
+    atomic = new AtomicFloat32(9823.2312155)
   })
 
   describe('pack', () => {
@@ -25,10 +25,10 @@ describe('AtomicInt32', () => {
     let returnValue
 
     before(() => {
-      const data = new Uint8Array(4)
+      const data = new Uint8Array(8)
       const dataView = new DataView(data.buffer)
 
-      dataView.setInt32(0, 214748364, false)
+      dataView.setFloat32(0, 1.254999123, false)
 
       returnValue = atomic.unpack(dataView, 0)
     })
@@ -41,8 +41,8 @@ describe('AtomicInt32', () => {
       expect(atomic.offset).to.equal(4)
     })
 
-    it('sets the value to a human readable number', () => {
-      expect(atomic.value).to.equal(214748364)
+    it('sets the value to a human readable float number', () => {
+      expect(atomic.value).to.equal(Math.fround(1.254999123))
     })
   })
 })

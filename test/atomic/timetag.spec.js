@@ -60,11 +60,17 @@ describe('AtomicTimetag', () => {
   })
 
   describe('unpack', () => {
+    let returnValue
+
     before(() => {
       const data = new Uint8Array([1, 1, 1, 0, 0, 0, 1, 0])
       const dataView = new DataView(data.buffer)
 
-      atomic.unpack(dataView, 0)
+      returnValue = atomic.unpack(dataView, 0)
+    })
+
+    it('returns a number', () => {
+      expect(returnValue).to.be.a('number')
     })
 
     it('sets the offset to 8', () => {
@@ -74,6 +80,18 @@ describe('AtomicTimetag', () => {
     it('sets the correct NTP values', () => {
       expect(atomic.value.seconds).to.equal(16843008)
       expect(atomic.value.fractions).to.equal(256)
+    })
+  })
+
+  describe('constructor', () => {
+    it('with an integer timestamp', () => {
+      atomic = new AtomicTimetag(5000)
+      expect(atomic.value.seconds).to.equal(2208988805)
+    })
+
+    it('with a Date instance', () => {
+      atomic = new AtomicTimetag(new Date(2015, 2, 21, 5, 0, 21))
+      expect(atomic.value.seconds).to.equal(3635899221)
     })
   })
 })

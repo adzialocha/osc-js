@@ -15,7 +15,7 @@ export default class AtomicFloat32 extends Atomic {
     return super.pack('setFloat32', 4)
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     return super.unpack(dataView, 'getFloat32', 4, offset)
   }
 }

@@ -47,7 +47,7 @@ describe('Message', () => {
     before(() => {
       message = new Message()
 
-      message.address = '/sssss//sssssadss'
+      message.address = '/sssss/osc/sssssadss'
       message.add(12)
       message.add('Hello World')
       message.add(22111.344)
@@ -57,14 +57,39 @@ describe('Message', () => {
     })
 
     it('returns an object we can unpack again', () => {
-      const decoded = message.unpack(new DataView(result.buffer))
+      const anotherMessage = new Message()
+      anotherMessage.unpack(new DataView(result.buffer), 0)
 
-      expect(decoded.address).to.equal('/sssss//sssssadss')
-      expect(decoded.args[3][0]).to.equal(100)
+      expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')
+      expect(anotherMessage.args[3][0]).to.equal(100)
     })
 
     it('returns a multiple of 32', () => {
       expect((result.byteLength * 8) % 32).to.equal(0)
+    })
+  })
+
+  describe('unpack', () => {
+    let result
+    let anotherMessage
+
+    before(() => {
+      anotherMessage = new Message()
+      const data = new Uint8Array([
+        47, 116, 101, 115, 116, 47, 112, 97,
+        116, 104, 0, 0, 44, 105, 0, 0, 0, 0, 2, 141])
+      const dataView = new DataView(data.buffer, 0)
+
+      result = anotherMessage.unpack(dataView)
+    })
+
+    it('decodes the message correctly', () => {
+      expect(anotherMessage.address).to.equal('/test/path')
+      expect(anotherMessage.args[0]).to.equal(653)
+    })
+
+    it('returns a number', () => {
+      expect(result).to.be.a('number')
     })
   })
 })

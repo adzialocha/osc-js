@@ -10,11 +10,17 @@ describe('AtomicString', () => {
   })
 
   describe('unpack', () => {
+    let returnValue
+
     before(() => {
       const data = new Uint8Array(bitArrayHello)
       const dataView = new DataView(data.buffer)
 
-      atomic.unpack(dataView, 0)
+      returnValue = atomic.unpack(dataView, 0)
+    })
+
+    it('returns a number', () => {
+      expect(returnValue).to.be.a('number')
     })
 
     it('sets the offset to a multiple of 4', () => {

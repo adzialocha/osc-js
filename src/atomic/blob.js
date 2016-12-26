@@ -26,7 +26,7 @@ export default class AtomicBlob extends Atomic {
     return data
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     const byteLength = dataView.getInt32(offset, false)
 
     this.value = new Uint8Array(dataView.buffer, offset + 4, byteLength)

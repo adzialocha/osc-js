@@ -27,11 +27,17 @@ describe('AtomicBlob', () => {
   })
 
   describe('unpack', () => {
+    let returnValue
+
     before(() => {
       const data = new Uint8Array([0, 0, 0, 7, 1, 2, 3, 4, 5, 6, 7])
       const dataView = new DataView(data.buffer)
 
-      atomic.unpack(dataView, 0)
+      returnValue = atomic.unpack(dataView, 0)
+    })
+
+    it('returns a number', () => {
+      expect(returnValue).to.be.a('number')
     })
 
     it('sets the offset to 12', () => {

@@ -18,6 +18,10 @@ export function isBlob(n) {
   return n instanceof Uint8Array
 }
 
+export function isDate(n) {
+  return n instanceof Date
+}
+
 export function pad(n) {
   return (n + 3) & ~0x03
 }

@@ -15,7 +15,7 @@ export default class AtomicFloat64 extends Atomic {
     return super.pack('setFloat64', 8)
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     return super.unpack(dataView, 'getFloat64', 8, offset)
   }
 }

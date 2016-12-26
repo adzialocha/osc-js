@@ -27,7 +27,7 @@ export default class AtomicString extends Atomic {
     return buffer
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     let end = offset
     let charcode
     const data = []

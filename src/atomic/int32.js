@@ -15,7 +15,7 @@ export default class AtomicInt32 extends Atomic {
     return super.pack('setInt32', 4)
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     return super.unpack(dataView, 'getInt32', 4, offset)
   }
 }

@@ -13,6 +13,7 @@ export default class Message {
     this.address = ''
     this.types = ''
     this.args = []
+
     this.timetag = 0
 
     if (args.length > 0) {
@@ -65,14 +66,12 @@ export default class Message {
       })
     }
 
-    this.offset = encoder.byteLength
-
     return encoder.merge()
   }
 
-  unpack(dataView) {
+  unpack(dataView, offset = 0) {
     const address = new AtomicString()
-    address.unpack(dataView, 0)
+    address.unpack(dataView, offset)
 
     const types = new AtomicString()
     types.unpack(dataView, address.offset)
@@ -85,7 +84,7 @@ export default class Message {
       throw new Error('OSC Message found malformed or missing type string.')
     }
 
-    let offset = types.offset
+    let end = types.offset
     let next
     let type
 
@@ -106,14 +105,15 @@ export default class Message {
         throw new Error('OSC Message found non-standard argument type.')
       }
 
-      offset = next.unpack(dataView, offset)
+      end = next.unpack(dataView, end)
       args.push(next.value)
     }
 
+    this.offset = end
     this.address = address.value
     this.types = types.value
     this.args = args
 
-    return this
+    return this.offset
   }
 }

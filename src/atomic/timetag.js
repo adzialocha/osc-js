@@ -1,4 +1,4 @@
-import { isInt } from '../utils'
+import { isInt, isDate } from '../utils'
 
 import Atomic from '../atomic'
 
@@ -35,11 +35,19 @@ export class Timetag {
 
 export default class AtomicTimetag extends Atomic {
   constructor(value) {
-    if (value && !(value instanceof Timetag)) {
-      throw new Error('OSC AtomicTimetag constructor expects value of type Timetag.')
+    let timetag = new Timetag()
+
+    if (value instanceof Timetag) {
+      timetag = value
+    } else if (isInt(value)) {
+      timetag.timestamp(value)
+    } else if (isDate(value)) {
+      timetag.timestamp(value.getTime())
+    } else {
+      timetag.timestamp(Date.now())
     }
 
-    super(value)
+    super(timetag)
   }
 
   pack() {
@@ -57,12 +65,12 @@ export default class AtomicTimetag extends Atomic {
     return data
   }
 
-  unpack(dataView, offset) {
+  unpack(dataView, offset = 0) {
     const seconds = dataView.getUint32(offset, false)
     const fractions = dataView.getUint32(offset + 4, false)
 
     this.value = new Timetag(seconds, fractions)
-    this.offset += 8
+    this.offset = offset + 8
 
     return this.offset
   }

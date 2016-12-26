@@ -14,9 +14,10 @@ export default class Atomic extends Entity {
     return data
   }
 
-  unpack(dataView, type, byteLength, offset) {
+  unpack(dataView, type, byteLength, offset = 0) {
     this.value = dataView[type](offset, false)
     this.offset = offset + byteLength
+
     return this.offset
   }
 }
