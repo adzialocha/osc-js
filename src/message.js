@@ -1,8 +1,11 @@
 import { isString, isArray, isInt, isFloat, isBlob } from './common/utils'
 import Helper, { typeTag, prepareAddress } from './common/helpers'
 
+import { option } from './osc'
+
 import AtomicInt32 from './atomic/int32'
 import AtomicFloat32 from './atomic/float32'
+import AtomicFloat64 from './atomic/float64'
 import AtomicString from './atomic/string'
 import AtomicBlob from './atomic/blob'
 
@@ -81,7 +84,11 @@ export default class Message {
         if (isInt(value)) {
           argument = new AtomicInt32(value)
         } else if (isFloat(value)) {
-          argument = new AtomicFloat32(value)
+          if (option('doublePrecisionFloats')) {
+            argument = new AtomicFloat64(value)
+          } else {
+            argument = new AtomicFloat32(value)
+          }
         } else if (isString(value)) {
           argument = new AtomicString(value)
         } else if (isBlob(value)) {
@@ -137,7 +144,11 @@ export default class Message {
       if (type === 'i') {
         next = new AtomicInt32()
       } else if (type === 'f') {
-        next = new AtomicFloat32()
+        if (option('doublePrecisionFloats')) {
+          next = new AtomicFloat64()
+        } else {
+          next = new AtomicFloat32()
+        }
       } else if (type === 's') {
         next = new AtomicString()
       } else if (type === 'b') {

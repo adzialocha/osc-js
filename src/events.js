@@ -1,13 +1,9 @@
 import { isArray, isString, isInt, isFunction } from './common/utils'
 import { prepareAddress, prepareRegExPattern } from './common/helpers'
 
-import { Timetag } from './atomic/timetag'
+import { option } from './osc'
 
-/**
- * Singleton instance.
- * @private
- */
-let instance = null
+import { Timetag } from './atomic/timetag'
 
 /**
  * EventHandler to notify listener on address pattern match of incoming
@@ -19,12 +15,7 @@ export default class EventHandler {
    * Create an EventHandler instance
    * @param {object} options OSC instance options
    */
-  constructor(options = {}) {
-    // singleton pattern
-    if (!instance) {
-      instance = this
-    }
-
+  constructor() {
     /** @type {array} addressHandlers */
     this.addressHandlers = []
     /** @type {object} eventHandlers */
@@ -35,12 +26,6 @@ export default class EventHandler {
     }
     /** @type {number} uuid */
     this.uuid = 0
-    /** @type {object} options */
-    this.options = {
-      discardLateMessages: options.discardLateMessages,
-    }
-
-    return instance
   }
 
   /**
@@ -62,7 +47,7 @@ export default class EventHandler {
       const now = Date.now()
 
       if (now > timetag.timestamp()) {
-        if (!this.options.discardLateMessages) {
+        if (!option('discardLateMessages')) {
           this.notify(eventName, data)
         }
       } else {

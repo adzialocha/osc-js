@@ -15,12 +15,6 @@ describe('EventHandler', () => {
     handler = new EventHandler()
   })
 
-  it('is a singleton', () => {
-    handler.test = 42
-    const anotherHandler = new EventHandler()
-    expect(anotherHandler.test).to.be.equals(42)
-  })
-
   /** @test {EventHandler#on} */
   describe('on', () => {
     let spy

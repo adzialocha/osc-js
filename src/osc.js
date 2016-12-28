@@ -28,6 +28,28 @@ export const STATUS = {
 }
 
 /**
+ * Singleton instance.
+ * @private
+ */
+let instance = null
+
+/**
+ * Helper method to get options of singleton instance. If instance
+ * does not exist (low level access) we take the default options.
+ * @param {string} key Key of the option
+ * @return {*} Value of requested option
+ */
+export function option(key) {
+  const options = instance ? instance.options : defaultOptions
+
+  if (!(key in options) || !isString(key)) {
+    throw new Error('OSC option key does not exist or is not valid.')
+  }
+
+  return options[key]
+}
+
+/**
  * OSC interface.
  */
 export default class OSC {
@@ -47,6 +69,11 @@ export default class OSC {
    * const osc = new OSC({ connectionPlugin: websocketPlugin })
    */
   constructor(options = {}) {
+    // singleton pattern
+    if (!instance) {
+      instance = this
+    }
+
     if (!isObject(options)) {
       throw new Error('OSC options argument has to be an object.')
     }
@@ -54,12 +81,14 @@ export default class OSC {
     /** @type {object} options */
     this.options = Object.assign({}, defaultOptions, options)
     /** @type {EventHandler} eventHandler */
-    this.eventHandler = new EventHandler(this.options)
+    this.eventHandler = new EventHandler()
 
     // pass over EventHandler to connectionPlugin
     if (this.options.connectionPlugin && this.options.connectionPlugin.registerEventHandler) {
       this.options.connectionPlugin.registerEventHandler(this.eventHandler)
     }
+
+    return instance
   }
 
   /**

@@ -334,14 +334,9 @@ var AtomicTimetag = function (_Atomic) {
   return AtomicTimetag;
 }(Atomic);
 
-var instance = null;
 var EventHandler = function () {
   function EventHandler() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, EventHandler);
-    if (!instance) {
-      instance = this;
-    }
     this.addressHandlers = [];
     this.eventHandlers = {
       open: [],
@@ -349,10 +344,6 @@ var EventHandler = function () {
       close: []
     };
     this.uuid = 0;
-    this.options = {
-      discardLateMessages: options.discardLateMessages
-    };
-    return instance;
   }
   createClass(EventHandler, [{
     key: 'notify',
@@ -367,7 +358,7 @@ var EventHandler = function () {
       if (timetag) {
         var now = Date.now();
         if (now > timetag.timestamp()) {
-          if (!this.options.discardLateMessages) {
+          if (!option('discardLateMessages')) {
             this.notify(eventName, data);
           }
         } else {
@@ -509,6 +500,30 @@ var AtomicFloat32 = function (_Atomic) {
   return AtomicFloat32;
 }(Atomic);
 
+var AtomicFloat64 = function (_Atomic) {
+  inherits(AtomicFloat64, _Atomic);
+  function AtomicFloat64(value) {
+    classCallCheck(this, AtomicFloat64);
+    if (value && !isFloat(value)) {
+      throw new Error('OSC AtomicFloat64 constructor expects value of type float number.');
+    }
+    return possibleConstructorReturn(this, (AtomicFloat64.__proto__ || Object.getPrototypeOf(AtomicFloat64)).call(this, value));
+  }
+  createClass(AtomicFloat64, [{
+    key: 'pack',
+    value: function pack() {
+      return get(AtomicFloat64.prototype.__proto__ || Object.getPrototypeOf(AtomicFloat64.prototype), 'pack', this).call(this, 'setFloat64', 8);
+    }
+  }, {
+    key: 'unpack',
+    value: function unpack(dataView) {
+      var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      return get(AtomicFloat64.prototype.__proto__ || Object.getPrototypeOf(AtomicFloat64.prototype), 'unpack', this).call(this, dataView, 'getFloat64', 8, initialOffset);
+    }
+  }]);
+  return AtomicFloat64;
+}(Atomic);
+
 var AtomicString = function (_Atomic) {
   inherits(AtomicString, _Atomic);
   function AtomicString(value) {
@@ -648,7 +663,11 @@ var Message = function () {
             if (isInt(value)) {
               argument = new AtomicInt32(value);
             } else if (isFloat(value)) {
-              argument = new AtomicFloat32(value);
+              if (option('doublePrecisionFloats')) {
+                argument = new AtomicFloat64(value);
+              } else {
+                argument = new AtomicFloat32(value);
+              }
             } else if (isString(value)) {
               argument = new AtomicString(value);
             } else if (isBlob(value)) {
@@ -688,7 +707,11 @@ var Message = function () {
         if (type === 'i') {
           next = new AtomicInt32();
         } else if (type === 'f') {
-          next = new AtomicFloat32();
+          if (option('doublePrecisionFloats')) {
+            next = new AtomicFloat64();
+          } else {
+            next = new AtomicFloat32();
+          }
         } else if (type === 's') {
           next = new AtomicString();
         } else if (type === 'b') {
@@ -860,18 +883,30 @@ var defaultOptions = {
   discardLateMessages: false
 };
 
+var instance = null;
+function option(key) {
+  var options = instance ? instance.options : defaultOptions;
+  if (!(key in options) || !isString(key)) {
+    throw new Error('OSC option key does not exist or is not valid.');
+  }
+  return options[key];
+}
 var OSC = function () {
   function OSC() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, OSC);
+    if (!instance) {
+      instance = this;
+    }
     if (!isObject(options)) {
       throw new Error('OSC options argument has to be an object.');
     }
     this.options = Object.assign({}, defaultOptions, options);
-    this.eventHandler = new EventHandler(this.options);
+    this.eventHandler = new EventHandler();
     if (this.options.connectionPlugin && this.options.connectionPlugin.registerEventHandler) {
       this.options.connectionPlugin.registerEventHandler(this.eventHandler);
     }
+    return instance;
   }
   createClass(OSC, [{
     key: 'on',
