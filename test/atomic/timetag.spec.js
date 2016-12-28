@@ -5,6 +5,7 @@ import AtomicTimetag, {
   SECONDS_70_YEARS,
 } from '../../src/atomic/timetag'
 
+/** @test {Timetag} */
 describe('Timetag', () => {
   let timetag
 
@@ -17,24 +18,22 @@ describe('Timetag', () => {
     expect(timetag.fractions).to.be.equals(0)
   })
 
-  describe('getting via timestamp', () => {
+  /** @test {Timetag#timestamp} */
+  describe('timestamp', () => {
     it('converts correctly to js timestamps', () => {
       expect(timetag.timestamp()).to.be.equals(1234 * 1000)
     })
-  })
-
-  describe('setting via timestamp', () => {
-    before(() => {
-      timetag.timestamp(1)
-    })
 
     it('converts correctly to NTP timestamps', () => {
+      timetag.timestamp(1)
+
       expect(timetag.seconds).to.be.equals(SECONDS_70_YEARS)
       expect(timetag.fractions).to.be.equals(4294967)
     })
   })
 })
 
+/** @test {AtomicTimetag} */
 describe('AtomicTimetag', () => {
   const bitArray = { 0: 0, 1: 1, 2: 248, 3: 99, 4: 0, 5: 4, 6: 84, 7: 63 }
   let atomic
@@ -43,6 +42,7 @@ describe('AtomicTimetag', () => {
     atomic = new AtomicTimetag(new Timetag(129123, 283711))
   })
 
+  /** @test {AtomicTimetag#pack} */
   describe('pack', () => {
     let result
 
@@ -59,6 +59,7 @@ describe('AtomicTimetag', () => {
     })
   })
 
+  /** @test {AtomicTimetag#unpack} */
   describe('unpack', () => {
     let returnValue
 

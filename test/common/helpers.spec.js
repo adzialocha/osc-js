@@ -1,19 +1,21 @@
 import { expect } from 'chai'
 
-import EncodeHelper, { typeChar, prepareAddress } from '../src/helpers'
+import EncodeHelper, { typeTag, prepareAddress } from '../../src/common/helpers'
 
-import AtomicFloat64 from '../src/atomic/float64'
-import AtomicString from '../src/atomic/string'
+import AtomicFloat64 from '../../src/atomic/float64'
+import AtomicString from '../../src/atomic/string'
 
-describe('typeChar', () => {
-  it('returns the right  type characters', () => {
-    expect(typeChar(2)).to.be.equals('i')
-    expect(typeChar(2.2)).to.be.equals('f')
-    expect(typeChar('joe')).to.be.equals('s')
-    expect(typeChar(new Uint8Array([1, 2, 3]))).to.be.equals('b')
+/** @test {typeTag} */
+describe('typeTag', () => {
+  it('returns the right OSC Type Tag characters', () => {
+    expect(typeTag(2)).to.be.equals('i')
+    expect(typeTag(2.2)).to.be.equals('f')
+    expect(typeTag('joe')).to.be.equals('s')
+    expect(typeTag(new Uint8Array([1, 2, 3]))).to.be.equals('b')
   })
 })
 
+/** @test {prepareAddress} */
 describe('prepareAddress', () => {
   it('builds an valid  address from an array', () => {
     expect(prepareAddress(['hello', 'world'])).to.be.equals('/hello/world')
@@ -28,6 +30,7 @@ describe('prepareAddress', () => {
   })
 })
 
+/** @test {EncodeHelper} */
 describe('EncodeHelper', () => {
   let encoder
 

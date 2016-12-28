@@ -13,6 +13,7 @@ import AtomicTimetag, {
   SECONDS_70_YEARS,
 } from '../src/atomic/timetag'
 
+/** @test {Atomic} */
 describe('Atomic', () => {
   let atomic
   let atomicChildren
@@ -38,6 +39,7 @@ describe('Atomic', () => {
     expect(atomic.offset).to.be.equals(0)
   })
 
+  /** @test {Atomic#unpack} */
   describe('unpack', () => {
     it('exists', () => {
       atomicChildren.forEach((atomicItem) => {

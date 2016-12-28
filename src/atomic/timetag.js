@@ -1,20 +1,40 @@
-import { isInt, isDate } from '../utils'
+import { isInt, isDate } from '../common/utils'
 
 import Atomic from '../atomic'
 
+/** 70 years in seconds */
 export const SECONDS_70_YEARS = 2208988800
+/** 2^32 */
 export const TWO_POWER_32 = 4294967296
 
+/**
+ * Timetag helper class for representing NTP timestamps and conversion between
+ * them and javascript representation.
+ */
 export class Timetag {
+  /**
+   * Create a Timetag instance.
+   * @param {number} seconds Initial NTP seconds value
+   * @param {number} fractions Initial NTP fractions value
+   */
   constructor(seconds = 0, fractions = 0) {
     if (!(isInt(seconds) && isInt(fractions))) {
       throw new Error('OSC Timetag constructor expects values of type integer number.')
     }
 
+    /** @type {number} seconds */
     this.seconds = seconds
+    /** @type {number} fractions */
     this.fractions = fractions
   }
 
+  /**
+   * Converts from NTP to JS representation and back
+   * @param {number} milliseconds Converts from JS milliseconds to NTP and write seconds
+   * and fractions. Leave empty for returning the converted javascript timestamp from the
+   * NTP representation
+   * @return {number} Javascript timestamp
+   */
   timestamp(milliseconds) {
     let seconds
 
@@ -33,7 +53,15 @@ export class Timetag {
   }
 }
 
+/**
+ * 64-bit big-endian fixed-point time tag, semantics defined below OSC Atomic Data Type.
+ */
 export default class AtomicTimetag extends Atomic {
+  /**
+   * Create a AtomicTimetag instance
+   * @param {number|Timetag|Date} value Initial date, leave empty if
+   * you want it to be the current date
+   */
   constructor(value) {
     let timetag = new Timetag()
 
@@ -44,12 +72,17 @@ export default class AtomicTimetag extends Atomic {
     } else if (isDate(value)) {
       timetag.timestamp(value.getTime())
     } else {
+      // set to current date when nothing was given
       timetag.timestamp(Date.now())
     }
 
     super(timetag)
   }
 
+  /**
+   * Interpret the given timetag as packed binary data.
+   * @return {Uint8Array} Packed binary data
+   */
   pack() {
     if (!this.value) {
       throw new Error('OSC AtomicTimetag can not be encoded with empty value.')
@@ -65,12 +98,24 @@ export default class AtomicTimetag extends Atomic {
     return data
   }
 
-  unpack(dataView, offset = 0) {
-    const seconds = dataView.getUint32(offset, false)
-    const fractions = dataView.getUint32(offset + 4, false)
+  /**
+   * Unpack binary data from DataView and read a timetag.
+   * @param {DataView} dataView The DataView holding the binary representation of the timetag
+   * @param {number} initialOffset Offset of DataView before unpacking
+   * @return {number} Offset after unpacking
+   */
+  unpack(dataView, initialOffset = 0) {
+    if (!(dataView instanceof DataView)) {
+      throw new Error('OSC AtomicTimetag expects an instance of type DataView.')
+    }
 
+    const seconds = dataView.getUint32(initialOffset, false)
+    const fractions = dataView.getUint32(initialOffset + 4, false)
+
+    /** @type {Timetag} value */
     this.value = new Timetag(seconds, fractions)
-    this.offset = offset + 8
+    /** @type {number} offset */
+    this.offset = initialOffset + 8
 
     return this.offset
   }

@@ -4,6 +4,7 @@ import Bundle from '../src/bundle'
 import Message from '../src/message'
 import AtomicTimetag, { Timetag } from '../src/atomic/timetag'
 
+/** @test {Bundle} */
 describe('Bundle', () => {
   let bundle
 

@@ -1,6 +1,8 @@
 import { expect } from 'chai'
+
 import AtomicString from '../../src/atomic/string'
 
+/** @test {AtomicString} */
 describe('AtomicString', () => {
   const bitArrayHello = [104, 97, 108, 108, 111, 0, 0, 0]
   let atomic
@@ -9,6 +11,7 @@ describe('AtomicString', () => {
     atomic = new AtomicString('hallo')
   })
 
+  /** @test {AtomicString#pack} */
   describe('unpack', () => {
     let returnValue
 
@@ -32,6 +35,7 @@ describe('AtomicString', () => {
     })
   })
 
+  /** @test {AtomicString#unpack} */
   describe('pack', () => {
     it('returns correct bits', () => {
       expect(JSON.stringify(atomic.pack())).to.equal(

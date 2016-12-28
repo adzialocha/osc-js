@@ -1,6 +1,8 @@
 import { expect } from 'chai'
+
 import AtomicInt32 from '../../src/atomic/int32'
 
+/** @test {AtomicInt32} */
 describe('AtomicInt32', () => {
   const bitArray = { 0: 0, 1: 0, 2: 0, 3: 42 }
   let atomic
@@ -9,6 +11,7 @@ describe('AtomicInt32', () => {
     atomic = new AtomicInt32(42)
   })
 
+  /** @test {AtomicInt32#pack} */
   describe('pack', () => {
     let result
 
@@ -21,6 +24,7 @@ describe('AtomicInt32', () => {
     })
   })
 
+  /** @test {AtomicInt32#unpack} */
   describe('unpack', () => {
     let returnValue
 

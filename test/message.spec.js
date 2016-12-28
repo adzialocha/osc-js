@@ -2,6 +2,7 @@ import { expect } from 'chai'
 
 import Message from '../src/message'
 
+/** @test {Message} */
 describe('Message', () => {
   let message
 
@@ -9,11 +10,10 @@ describe('Message', () => {
     message = new Message()
   })
 
-  it('contains a set of  message data', () => {
+  it('contains a set of osc message data', () => {
     expect(message.address).to.exist
     expect(message.types).to.exist
     expect(message.args).to.exist
-    expect(message.timetag).to.exist
   })
 
   it('fills the arguments and address during its construction', () => {
@@ -24,6 +24,7 @@ describe('Message', () => {
     expect(anotherMessage.types).to.be.equals('fis')
   })
 
+  /** @test {Message#add} */
   describe('add', () => {
     before(() => {
       message = new Message()
@@ -41,6 +42,7 @@ describe('Message', () => {
     })
   })
 
+  /** @test {Message#pack} */
   describe('pack', () => {
     let result
 
@@ -69,6 +71,7 @@ describe('Message', () => {
     })
   })
 
+  /** @test {Message#unpack} */
   describe('unpack', () => {
     let result
     let anotherMessage

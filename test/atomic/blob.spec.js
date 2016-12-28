@@ -1,6 +1,8 @@
 import { expect } from 'chai'
+
 import AtomicBlob from '../../src/atomic/blob'
 
+/** @test {AtomicBlob} */
 describe('AtomicBlob', () => {
   const bitArray = { 0: 0, 1: 0, 2: 0, 3: 5, 4: 54, 5: 42, 6: 11, 7: 33, 8: 66, 9: 0, 10: 0, 11: 0 }
   let atomic
@@ -9,6 +11,7 @@ describe('AtomicBlob', () => {
     atomic = new AtomicBlob(new Uint8Array([54, 42, 11, 33, 66]))
   })
 
+  /** @test {AtomicBlob#pack} */
   describe('pack', () => {
     let result
 
@@ -26,6 +29,7 @@ describe('AtomicBlob', () => {
     })
   })
 
+  /** @test {AtomicBlob#unpack} */
   describe('unpack', () => {
     let returnValue
 

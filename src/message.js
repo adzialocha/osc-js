@@ -1,20 +1,38 @@
-import { isString, isArray, isInt, isFloat, isBlob } from './utils'
-
-import Helper, { typeChar, prepareAddress } from './helpers'
+import { isString, isArray, isInt, isFloat, isBlob } from './common/utils'
+import Helper, { typeTag, prepareAddress } from './common/helpers'
 
 import AtomicInt32 from './atomic/int32'
 import AtomicFloat32 from './atomic/float32'
 import AtomicString from './atomic/string'
 import AtomicBlob from './atomic/blob'
 
+/**
+ * An OSC message consists of an OSC Address Pattern followed
+ * by an OSC Type Tag String followed by zero or more OSC Arguments.
+ */
 export default class Message {
+  /**
+   * Create a Message instance
+   * @param {array|string} args Address
+   * @param {...*} args OSC Atomic Data Types
+   *
+   * @example
+   * const message = new Message(['test', 'path'], 50, 100.52, 'test')
+   *
+   * @example
+   * const message = new Message('/test/path', 51.2)
+   */
   constructor(...args) {
+    /** @type {number} offset */
     this.offset = 0
+    /** @type {string} address */
     this.address = ''
+    /** @type {string} types */
     this.types = ''
+    /** @type {array} args */
     this.args = []
-
-    this.timetag = 0
+    /** @type {AtomicTimetag} timetag */
+    this.timetag = null // non OSC standard
 
     if (args.length > 0) {
       if (!(isString(args[0]) || isArray(args[0]))) {
@@ -22,20 +40,28 @@ export default class Message {
       }
 
       this.address = prepareAddress(args.shift())
-      this.types = args.map(item => typeChar(item)).join('')
+      this.types = args.map(item => typeTag(item)).join('')
       this.args = args
     }
   }
 
-  add(value) {
-    if (!value) {
-      throw new Error('OSC Message expects a valid value for adding.')
+  /**
+   * Add a OSC Atomic Data Type to the list of elements
+   * @param {*} item
+   */
+  add(item) {
+    if (!item) {
+      throw new Error('OSC Message expects a valid item for adding.')
     }
 
-    this.args.push(value)
-    this.types += typeChar(value)
+    this.args.push(item)
+    this.types += typeTag(item)
   }
 
+  /**
+   * Interpret the Message as packed binary data
+   * @return {Uint8Array} Packed binary data
+   */
   pack() {
     if (this.address.length === 0 || this.address[0] !== '/') {
       throw new Error('OSC Message does not have a proper address.')
@@ -43,9 +69,11 @@ export default class Message {
 
     const encoder = new Helper()
 
+    // OSC Address Pattern and Type string
     encoder.add(new AtomicString(this.address))
     encoder.add(new AtomicString(`,${this.types}`))
 
+    // followed by zero or more OSC Arguments
     if (this.args.length > 0) {
       let argument
 
@@ -69,10 +97,22 @@ export default class Message {
     return encoder.merge()
   }
 
-  unpack(dataView, offset = 0) {
-    const address = new AtomicString()
-    address.unpack(dataView, offset)
+  /**
+   * Unpack binary data to read a Message
+   * @param {DataView} dataView The DataView holding the binary representation of a Message
+   * @param {number} initialOffset Offset of DataView before unpacking
+   * @return {number} Offset after unpacking
+   */
+  unpack(dataView, initialOffset = 0) {
+    if (!(dataView instanceof DataView)) {
+      throw new Error('OSC Message expects an instance of type DataView.')
+    }
 
+    // read address pattern
+    const address = new AtomicString()
+    address.unpack(dataView, initialOffset)
+
+    // read type string
     const types = new AtomicString()
     types.unpack(dataView, address.offset)
 
@@ -84,12 +124,13 @@ export default class Message {
       throw new Error('OSC Message found malformed or missing type string.')
     }
 
-    let end = types.offset
+    let offset = types.offset
     let next
     let type
 
     const args = []
 
+    // read message arguments (OSC Atomic Data Types)
     for (let i = 1; i < types.value.length; i += 1) {
       type = types.value[i]
 
@@ -105,11 +146,11 @@ export default class Message {
         throw new Error('OSC Message found non-standard argument type.')
       }
 
-      end = next.unpack(dataView, end)
+      offset = next.unpack(dataView, offset)
       args.push(next.value)
     }
 
-    this.offset = end
+    this.offset = offset
     this.address = address.value
     this.types = types.value
     this.args = args

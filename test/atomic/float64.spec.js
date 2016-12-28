@@ -1,6 +1,8 @@
 import { expect } from 'chai'
+
 import AtomicFloat64 from '../../src/atomic/float64'
 
+/** @test {AtomicFloat64} */
 describe('AtomicFloat64', () => {
   const bitArray = { 0: 64, 1: 195, 2: 47, 3: 157, 4: 152, 5: 120, 6: 49, 7: 106 }
   let atomic
@@ -9,6 +11,7 @@ describe('AtomicFloat64', () => {
     atomic = new AtomicFloat64(9823.2312155)
   })
 
+  /** @test {AtomicFloat64#pack} */
   describe('pack', () => {
     let result
 
@@ -21,6 +24,7 @@ describe('AtomicFloat64', () => {
     })
   })
 
+  /** @test {AtomicFloat64#unpack} */
   describe('unpack', () => {
     let returnValue
 

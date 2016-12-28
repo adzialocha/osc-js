@@ -3,9 +3,11 @@ import { expect } from 'chai'
 import Packet from '../src/packet'
 import Message from '../src/message'
 
+/** @test {Packet} */
 describe('Packet', () => {
   let packet
 
+  /** @test {Packet#pack} */
   describe('pack', () => {
     let result
 
@@ -27,6 +29,7 @@ describe('Packet', () => {
     })
   })
 
+  /** @test {Packet#unpack} */
   describe('unpack', () => {
     let result
 

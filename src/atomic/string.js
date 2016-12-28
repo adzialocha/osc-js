@@ -1,23 +1,36 @@
-import { pad } from '../utils'
+import { pad, isString } from '../common/utils'
 
 import Atomic from '../atomic'
 
+/**
+ * A sequence of non-null ASCII characters OSC Atomic Data Type.
+ */
 export default class AtomicString extends Atomic {
+  /**
+   * Create an AtomicString instance
+   * @param {string} value Initial string value
+   */
   constructor(value) {
-    if (value && typeof value !== 'string') {
+    if (value && !isString(value)) {
       throw new Error('OSC AtomicString constructor expects value of type string.')
     }
 
     super(value)
   }
 
+  /**
+   * Interpret the given string as packed binary data
+   * @return {Uint8Array} Packed binary data
+   */
   pack() {
     if (!this.value) {
       throw new Error('OSC AtomicString can not be encoded with empty value.')
     }
 
+    // add 0-3 null characters for total number of bits a multiple of 32
     const terminated = `${this.value}\u0000`
     const byteLength = pad(terminated.length)
+
     const buffer = new Uint8Array(byteLength)
 
     for (let i = 0; i < terminated.length; i += 1) {
@@ -27,27 +40,40 @@ export default class AtomicString extends Atomic {
     return buffer
   }
 
-  unpack(dataView, offset = 0) {
-    let end = offset
+  /**
+   * Unpack binary data from DataView and read a string
+   * @param {DataView} dataView The DataView holding the binary representation of the string
+   * @param {number} initialOffset Offset of DataView before unpacking
+   * @return {number} Offset after unpacking
+   */
+  unpack(dataView, initialOffset = 0) {
+    if (!(dataView instanceof DataView)) {
+      throw new Error('OSC AtomicString expects an instance of type DataView.')
+    }
+
+    let offset = initialOffset
     let charcode
     const data = []
 
-    for (; end < dataView.byteLength; end += 1) {
-      charcode = dataView.getUint8(end)
+    for (; offset < dataView.byteLength; offset += 1) {
+      charcode = dataView.getUint8(offset)
 
+      // check for terminating null character
       if (charcode !== 0) {
         data.push(charcode)
       } else {
-        end += 1
+        offset += 1
         break
       }
     }
 
-    if (end === dataView.length) {
+    if (offset === dataView.length) {
       throw new Error('OSC AtomicString found a malformed OSC string.')
     }
 
-    this.offset = pad(end)
+    /** @type {number} offset */
+    this.offset = pad(offset)
+    /** @type {string} value */
     this.value = String.fromCharCode.apply(null, data)
 
     return this.offset
