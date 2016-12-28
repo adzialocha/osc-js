@@ -1,3 +1,5 @@
+import EventHandler from './events'
+
 import Bundle, { BUNDLE_TAG } from './bundle'
 import Message from './message'
 import AtomicString from './atomic/string'
@@ -68,16 +70,28 @@ export default class Packet {
     // check if Packet is a Bundle or a Message
     if (head.value === BUNDLE_TAG) {
       item = new Bundle()
+      item.unpack(dataView, initialOffset)
+
+      if (timetag && item.timetag.value.timestamp() < timetag.timestamp()) {
+        throw new Error('OSC Packet timetag of enclosing bundle is past timestamp of enclosed ones.')
+      }
     } else {
       item = new Message()
+      item.unpack(dataView, initialOffset)
+
+      // get singleton instance
+      const eventHandler = new EventHandler()
 
       // inherit the AtomicTimetag from the parent bundle when passed over
       if (timetag) {
         item.timetag = timetag
+
+        // inform event handler with timed message
+        eventHandler.notify(item.address, item, item.timetag.value)
+      } else {
+        eventHandler.notify(item.address, item)
       }
     }
-
-    item.unpack(dataView, initialOffset)
 
     this.offset = item.offset
     this.value = item

@@ -35,6 +35,24 @@ export function isArray(n) {
 }
 
 /**
+ * Check if given object is an object
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isObject(n) {
+  return Object.prototype.toString.call(n) === '[object Object]'
+}
+
+/**
+ * Check if given object is a function
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isFunction(n) {
+  return typeof n === 'function'
+}
+
+/**
  * Check if given object is a Uint8Array
  * @param {*} n
  * @return {boolean}

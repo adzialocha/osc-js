@@ -149,7 +149,7 @@ export default class Bundle {
       const size = new AtomicInt32()
 
       offset = size.unpack(dataView, offset)
-      offset = packet.unpack(dataView, offset)
+      offset = packet.unpack(dataView, offset, this.timetag)
 
       this.bundleElements.push(packet.value)
     }

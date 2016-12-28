@@ -55,6 +55,34 @@ export function prepareAddress(obj) {
 }
 
 /**
+ * Make an OSC address pattern javascript-regex-ready
+ * @param {string} str OSC address pattern
+ * @return {string} Javascript RegEx string
+ */
+export function prepareRegExPattern(str) {
+  let pattern
+
+  if (!(isString(str))) {
+    throw new Error('OSC Helper prepareRegExPattern only accepts strings.')
+  }
+
+  pattern = str.replace(/\./g, '\\.')
+  pattern = pattern.replace(/\(/g, '\\(')
+  pattern = pattern.replace(/\)/g, '\\)')
+
+  pattern = pattern.replace(/\{/g, '(')
+  pattern = pattern.replace(/\}/g, ')')
+  pattern = pattern.replace(/,/g, '|')
+
+  pattern = pattern.replace(/\[!/g, '[^')
+
+  pattern = pattern.replace(/\?/g, '.')
+  pattern = pattern.replace(/\*/g, '.*')
+
+  return pattern
+}
+
+/**
  * Holds a list of items and helps to merge them
  * into a single array of packed binary data.
  */

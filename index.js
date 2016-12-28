@@ -1,3 +1,5 @@
+import OSC from './src/osc'
+
 import Packet from './src/packet'
 import Bundle from './src/bundle'
 import Message from './src/message'
@@ -9,6 +11,8 @@ import AtomicBlob from './src/atomic/blob'
 import AtomicTimetag, { Timetag } from './src/atomic/timetag'
 
 export {
+  OSC,
+
   Packet,
   Bundle,
   Message,
