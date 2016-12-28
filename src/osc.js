@@ -50,7 +50,9 @@ export function option(key) {
 }
 
 /**
- * OSC interface.
+ * OSC interface to send OSC Packets and listen to status changes and
+ * incoming message events. Offers a Plugin API for different network
+ * protocols.
  */
 export default class OSC {
   /**
@@ -84,8 +86,10 @@ export default class OSC {
     this.eventHandler = new EventHandler()
 
     // pass over EventHandler to connectionPlugin
-    if (this.options.connectionPlugin && this.options.connectionPlugin.registerEventHandler) {
-      this.options.connectionPlugin.registerEventHandler(this.eventHandler)
+    if (this.options.connectionPlugin && this.options.connectionPlugin.registerNotify) {
+      this.options.connectionPlugin.registerNotify((...args) =>
+        instance.eventHandler.notify(...args)
+      )
     }
 
     return instance

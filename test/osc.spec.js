@@ -1,64 +1,163 @@
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
+import spies from 'chai-spies'
 
-import OSC, { option } from '../src/osc'
+import OSC, { STATUS, option } from '../src/osc'
+
+import Packet from '../src/packet'
+import Message from '../src/message'
+
+chai.use(spies)
+
+class TestPlugin {
+  constructor() {
+    this.socketStatus = STATUS.IS_NOT_INITIALIZED
+    this.notify = null
+  }
+
+  registerNotify(fn) {
+    this.notify = fn
+  }
+
+  status() {
+    return this.socketStatus
+  }
+
+  open() {
+    this.socketStatus = STATUS.IS_OPEN
+    this.notify('open')
+  }
+
+  send() {
+    // unused
+  }
+
+  close() {
+    this.socketStatus = STATUS.IS_CLOSED
+    this.notify('close')
+  }
+
+  // mocking helpers
+
+  mockError() {
+    this.notify('error', { message: 'An error' })
+  }
+
+  mockMessage() {
+    const message = new Message(['test/path'], 55.1, 224)
+    this.notify(message.address, message)
+  }
+}
+
+const plugin = new TestPlugin()
+
+const osc = new OSC({
+  discardLateMessages: true,
+  connectionPlugin: plugin,
+})
 
 /** @test {option} */
 describe('option', () => {
-  it('returns the default options when no osc instance is given', () => {
-    expect(option('doublePrecisionFloats')).to.be.false
-  })
-
   it('returns the instance options when created', () => {
-    const osc = new OSC({ doublePrecisionFloats: true })
-
-    expect(option('doublePrecisionFloats')).to.be.true
+    expect(option('discardLateMessages')).to.be.true
     expect(osc).to.exist
   })
 })
 
 /** @test {OSC} */
 describe('OSC', () => {
-  it('takes options as an argument', () => {
-    const osc = new OSC({
-      doublePrecisionFloats: true,
+  /** @test {OSC#on} */
+  describe('on', () => {
+    it('calls my subscription when listening to the right address', () => {
+      const spy = chai.spy()
+      osc.on('/test/path', spy)
+
+      plugin.mockMessage()
+
+      expect(spy).to.have.been.called()
     })
 
-    expect(osc.options.doublePrecisionFloats).to.be.true
+    it('calls an error', () => {
+      const spy = chai.spy()
+      osc.on('error', spy)
+
+      plugin.mockError()
+
+      expect(spy).to.have.been.called()
+    })
   })
 
-  it('is a singleton', () => {
-    expect(new OSC() === new OSC()).to.be.true
+  /** @test {OSC#off} */
+  describe('off', () => {
+    it('removes a subscription', () => {
+      const spy = chai.spy()
+      const id = osc.on('error', spy)
+
+      osc.off('error', id)
+
+      plugin.mockError()
+
+      expect(spy).to.not.have.been.called()
+    })
   })
 
-  describe('connection plugin API', () => {
-    /** @test {OSC#on} */
-    describe('on', () => {
+  /** @test {OSC#status} */
+  describe('status', () => {
+    it('returns the initial status', () => {
+      expect(osc.status()).to.be.equals(STATUS.IS_NOT_INITIALIZED)
+    })
+  })
 
+  /** @test {OSC#open} */
+  describe('open', () => {
+    let spy
+
+    beforeEach(() => {
+      spy = chai.spy()
+      osc.on('open', spy)
+      osc.open()
     })
 
-    /** @test {OSC#off} */
-    describe('off', () => {
-
+    it('returns the correct status', () => {
+      expect(osc.status()).to.be.equals(STATUS.IS_OPEN)
     })
 
-    /** @test {OSC#open} */
-    describe('open', () => {
+    it('calls the open event', () => {
+      expect(spy).to.have.been.called()
+    })
+  })
 
+  /** @test {OSC#close} */
+  describe('close', () => {
+    let spy
+
+    beforeEach(() => {
+      spy = chai.spy()
+      osc.on('close', spy)
+      osc.close()
     })
 
-    /** @test {OSC#status} */
-    describe('status', () => {
-
+    it('returns the correct status', () => {
+      expect(osc.status()).to.be.equals(STATUS.IS_CLOSED)
     })
 
-    /** @test {OSC#close} */
-    describe('close', () => {
-
+    it('calls the close event', () => {
+      expect(spy).to.have.been.called()
     })
+  })
 
-    /** @test {OSC#send} */
-    describe('send', () => {
+  /** @test {OSC#send} */
+  describe('send', () => {
+    it('passes over a binary object with configs to the plugin', () => {
+      const message = new Message('/test/path', 122, 554)
+      const packet = new Packet(message)
+      const config = { host: 'localhost', port: 9001 }
+      const spy = chai.spy.on(plugin, 'send')
+      const binary = packet.pack()
 
+      osc.send(packet, config)
+
+      expect(binary).to.be.a('Uint8Array')
+      expect(spy).to.have.been.called.with(binary, config)
     })
   })
 })

@@ -903,8 +903,11 @@ var OSC = function () {
     }
     this.options = Object.assign({}, defaultOptions, options);
     this.eventHandler = new EventHandler();
-    if (this.options.connectionPlugin && this.options.connectionPlugin.registerEventHandler) {
-      this.options.connectionPlugin.registerEventHandler(this.eventHandler);
+    if (this.options.connectionPlugin && this.options.connectionPlugin.registerNotify) {
+      this.options.connectionPlugin.registerNotify(function () {
+        var _instance$eventHandle;
+        return (_instance$eventHandle = instance.eventHandler).notify.apply(_instance$eventHandle, arguments);
+      });
     }
     return instance;
   }
