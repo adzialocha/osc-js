@@ -20,13 +20,11 @@ export default class Bundle {
    * @param {...*} args Timetag and elements
    *
    * @example
-   * const timetag = new AtomicTimetag()
-   * const bundle = new Bundle(timetag)
+   * const bundle = new Bundle(new Date() + 500)
    *
    * @example
-   * const timetag = new AtomicTimetag()
    * const message = new Message('/test/path', 51.2)
-   * const anotherBundle = new Bundle([message], timetag)
+   * const anotherBundle = new Bundle([message], Date.now() + 1500)
    *
    * @example
    * const message = new Message('/test/path', 51.2)
@@ -42,17 +40,17 @@ export default class Bundle {
     this.bundleElements = []
 
     if (args.length > 0) {
-      // first argument is an AtomicTimetag
-      if (args[0] instanceof AtomicTimetag) {
-        this.timetag = args.shift()
+      // first argument is an Date or js timestamp (number)
+      if (args[0] instanceof Date || isInt(args[0])) {
+        this.timetag = new AtomicTimetag(args[0])
       } else if (isArray(args[0])) {
         // first argument is an Array of Bundle elements
         args[0].forEach((item) => {
           this.add(item)
         })
 
-        // second argument is an AtomicTimetag
-        if (args.length > 1 && args[1] instanceof AtomicTimetag) {
+        // second argument is an Date or js timestamp (number)
+        if (args.length > 1 && (args[1] instanceof Date || isInt(args[0]))) {
           this.timetag = new AtomicTimetag(args[1])
         }
       } else {

@@ -2,7 +2,6 @@ import { expect } from 'chai'
 
 import Bundle from '../src/bundle'
 import Message from '../src/message'
-import AtomicTimetag, { Timetag } from '../src/atomic/timetag'
 
 /** @test {Bundle} */
 describe('Bundle', () => {
@@ -19,7 +18,7 @@ describe('Bundle', () => {
 
       bundle = new Bundle([message])
       bundle.add(new Message('/some/path', 42.1))
-      bundle.add(new Bundle(new AtomicTimetag(new Timetag())))
+      bundle.add(new Bundle(Date.now() + 500))
     })
 
     it('contains 3 bundle elements', () => {
