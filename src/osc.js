@@ -6,12 +6,16 @@ import Message from './message'
 
 import EventHandler from './events'
 
+import DatagramPlugin from './plugin/dgram'
+import WebsocketPlugin from './plugin/websocket'
+import BridgePlugin from './plugin/bridge'
+
 /**
  * Default options
  * @private
  */
 const defaultOptions = {
-  plugin: null,
+  plugin: new WebsocketPlugin(),
   discardLateMessages: false,
 }
 
@@ -203,11 +207,17 @@ class OSC {
   }
 }
 
-// expose classes and status flags
+// expose status flags
 OSC.STATUS = STATUS
 
+// expose OSC classes
 OSC.Packet = Packet
 OSC.Bundle = Bundle
 OSC.Message = Message
+
+// expose plugin classes
+OSC.DatagramPlugin = DatagramPlugin
+OSC.WebsocketPlugin = WebsocketPlugin
+OSC.BridgePlugin = BridgePlugin
 
 export default OSC
