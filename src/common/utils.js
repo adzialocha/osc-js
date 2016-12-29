@@ -77,3 +77,18 @@ export function isDate(n) {
 export function pad(n) {
   return (n + 3) & ~0x03
 }
+
+/**
+ * Wrap binary data in DataView
+ * @param {*} obj
+ * @return {DataView}
+ */
+export function dataView(obj) {
+  if (obj.buffer) {
+    return new DataView(obj.buffer)
+  } else if (obj instanceof ArrayBuffer) {
+    return new DataView(obj)
+  }
+
+  return new DataView(new Uint8Array(obj))
+}

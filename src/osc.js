@@ -11,8 +11,7 @@ import EventHandler from './events'
  * @private
  */
 const defaultOptions = {
-  connectionPlugin: null,
-  doublePrecisionFloats: false,
+  plugin: null,
   discardLateMessages: false,
 }
 
@@ -28,37 +27,6 @@ export const STATUS = {
 }
 
 /**
- * Singleton instance.
- * @private
- */
-let instance = null
-
-/**
- * Helper method to get options of singleton instance. If instance
- * does not exist (low level access) we take the default options.
- * @param {string} key Key of the option
- * @return {*} Value of requested option
- */
-export function option(key) {
-  const options = instance ? instance.options : defaultOptions
-
-  if (!(key in options) || !isString(key)) {
-    throw new Error('OSC option key does not exist or is not valid.')
-  }
-
-  return options[key]
-}
-
-/**
- * Helper method to get the notify handler of the current instance.
- * @param {Message} message The message
- * @return {boolean} Success state
- */
-export function notifyEventHandler(message) {
-  return instance ? instance.eventHandler.notify(message) : false
-}
-
-/**
  * OSC interface to send OSC Packets and listen to status changes and
  * incoming message events. Offers a Plugin API for different network
  * protocols.
@@ -67,24 +35,19 @@ export default class OSC {
   /**
    * Create an OSC instance with given options
    * @param {object} options Custom options
-   * @param {boolean} [options.doublePrecisionFloats=false] Use double precision floats (64 bit)
-   * for higher float precision. Default setting uses 32bit floats which is the OSC standard
-   * @param {string} options.connectionPlugin Add a connection plugin to this interface (this
+   * @param {boolean} [options.discardLateMessages=false] Ignore messages when
+   * given timetag is in the past
+   * @param {string} options.plugin Add a connection plugin to this interface (this
    * is recommended). Pass over the instance here. Check out the README for further informations.
    *
    * @example
-   * const osc = new OSC({ doublePrecisionFloats: true })
+   * const osc = new OSC({ discardLateMessages: true })
    *
    * @example
    * const websocketPlugin = new OSCWebsocket()
-   * const osc = new OSC({ connectionPlugin: websocketPlugin })
+   * const osc = new OSC({ plugin: websocketPlugin })
    */
   constructor(options = {}) {
-    // singleton pattern
-    if (!instance) {
-      instance = this
-    }
-
     if (!isObject(options)) {
       throw new Error('OSC options argument has to be an object.')
     }
@@ -92,16 +55,17 @@ export default class OSC {
     /** @type {object} options */
     this.options = Object.assign({}, defaultOptions, options)
     /** @type {EventHandler} eventHandler */
-    this.eventHandler = new EventHandler()
+    this.eventHandler = new EventHandler({
+      discardLateMessages: this.options.discardLateMessages,
+    })
 
-    // pass over EventHandler to connectionPlugin
-    if (this.options.connectionPlugin && this.options.connectionPlugin.registerNotify) {
-      this.options.connectionPlugin.registerNotify((...args) =>
-        instance.eventHandler.notify(...args)
+    // pass over EventHandler notify method to plugin
+    const eventHandler = this.eventHandler
+    if (this.options.plugin && this.options.plugin.registerNotify) {
+      this.options.plugin.registerNotify((...args) =>
+        eventHandler.notify(...args)
       )
     }
-
-    return instance
   }
 
   /**
@@ -158,7 +122,7 @@ export default class OSC {
    * @param {object} options Custom options for plugin instance
    *
    * @example
-   * const osc = new OSC({ connectionPlugin: new OSCDatagramW() })
+   * const osc = new OSC({ plugin: new OSCDatagramW() })
    * osc.open({ host: '127.0.0.1', port: 8080 })
    */
   open(options = {}) {
@@ -166,11 +130,11 @@ export default class OSC {
       throw new Error('OSC connection options argument has to be an object.')
     }
 
-    if (!(this.options.connectionPlugin && isFunction(this.options.connectionPlugin.open))) {
+    if (!(this.options.plugin && isFunction(this.options.plugin.open))) {
       throw new Error('OSC connection#open is not implemented.')
     }
 
-    return this.options.connectionPlugin.open(options)
+    return this.options.plugin.open(options)
   }
 
   /**
@@ -187,11 +151,11 @@ export default class OSC {
    * }
    */
   status() {
-    if (!(this.options.connectionPlugin && isFunction(this.options.connectionPlugin.status))) {
+    if (!(this.options.plugin && isFunction(this.options.plugin.status))) {
       throw new Error('OSC connection#status is not implemented.')
     }
 
-    return this.options.connectionPlugin.status()
+    return this.options.plugin.status()
   }
 
   /**
@@ -199,11 +163,11 @@ export default class OSC {
    * and is not available without (see Plugin API for more informations)
    */
   close() {
-    if (!(this.options.connectionPlugin && isFunction(this.options.connectionPlugin.close))) {
+    if (!(this.options.plugin && isFunction(this.options.plugin.close))) {
       throw new Error('OSC connection#close is not implemented.')
     }
 
-    return this.options.connectionPlugin.close()
+    return this.options.plugin.close()
   }
 
   /**
@@ -213,7 +177,7 @@ export default class OSC {
    * @param {object} options Custom options for transport instance
    *
    * @example
-   * const osc = new OSC({ connectionPlugin: new OSCDatagram() })
+   * const osc = new OSC({ plugin: new OSCDatagram() })
    * osc.open({ host: '127.0.0.1', port: 8080 })
    *
    * const message = new OSC.Message('/test/path', 55.1, 57)
@@ -223,7 +187,7 @@ export default class OSC {
    * osc.send(message, { host: '192.168.178.115', port: 9001 })
    */
   send(packet, options = {}) {
-    if (!(this.options.connectionPlugin && isFunction(this.options.connectionPlugin.send))) {
+    if (!(this.options.plugin && isFunction(this.options.plugin.send))) {
       throw new Error('OSC connection#send is not implemented.')
     }
 
@@ -235,6 +199,6 @@ export default class OSC {
       throw new Error('OSC connection options argument has to be an object.')
     }
 
-    return this.options.connectionPlugin.send(packet.pack(this.options), options)
+    return this.options.plugin.send(packet.pack(this.options), options)
   }
 }

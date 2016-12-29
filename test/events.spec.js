@@ -100,6 +100,16 @@ describe('EventHandler', () => {
       expect(spy[2]).to.have.been.called()
     })
 
+    it('accepts binary packets', () => {
+      const binary = new Uint8Array([
+        47, 97, 110, 100, 47, 97, 110,
+        111, 116, 104, 101, 114, 0, 0, 0, 0, 44, 0, 0, 0,
+      ])
+
+      handler.notify(binary)
+      expect(spy[2]).to.have.been.called()
+    })
+
     describe('event listeners', () => {
       it('notifies error callbacks', () => {
         handler.notify('error', testdata)

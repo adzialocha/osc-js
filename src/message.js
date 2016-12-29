@@ -1,11 +1,8 @@
 import { isString, isArray, isInt, isFloat, isBlob } from './common/utils'
 import Helper, { typeTag, prepareAddress } from './common/helpers'
 
-import { option } from './osc'
-
 import AtomicInt32 from './atomic/int32'
 import AtomicFloat32 from './atomic/float32'
-import AtomicFloat64 from './atomic/float64'
 import AtomicString from './atomic/string'
 import AtomicBlob from './atomic/blob'
 
@@ -34,8 +31,6 @@ export default class Message {
     this.types = ''
     /** @type {array} args */
     this.args = []
-    /** @type {AtomicTimetag} timetag */
-    this.timetag = null // non OSC standard
 
     if (args.length > 0) {
       if (!(isString(args[0]) || isArray(args[0]))) {
@@ -84,11 +79,7 @@ export default class Message {
         if (isInt(value)) {
           argument = new AtomicInt32(value)
         } else if (isFloat(value)) {
-          if (option('doublePrecisionFloats')) {
-            argument = new AtomicFloat64(value)
-          } else {
-            argument = new AtomicFloat32(value)
-          }
+          argument = new AtomicFloat32(value)
         } else if (isString(value)) {
           argument = new AtomicString(value)
         } else if (isBlob(value)) {
@@ -144,11 +135,7 @@ export default class Message {
       if (type === 'i') {
         next = new AtomicInt32()
       } else if (type === 'f') {
-        if (option('doublePrecisionFloats')) {
-          next = new AtomicFloat64()
-        } else {
-          next = new AtomicFloat32()
-        }
+        next = new AtomicFloat32()
       } else if (type === 's') {
         next = new AtomicString()
       } else if (type === 'b') {

@@ -1,5 +1,3 @@
-import { notifyEventHandler } from './osc'
-
 import Bundle, { BUNDLE_TAG } from './bundle'
 import Message from './message'
 import AtomicString from './atomic/string'
@@ -49,11 +47,9 @@ export default class Packet {
    * Unpack binary data from DataView for Messages or Bundles
    * @param {DataView} dataView The DataView holding the binary representation of a Packet
    * @param {number} initialOffset Offset of DataView before unpacking
-   * @param {AtomicTimetag} timetag Pass over a AtomicTimetag, this is needed to inherit
-   * timetags from parent Bundles
    * @return {number} Offset after unpacking
    */
-  unpack(dataView, initialOffset = 0, timetag) {
+  unpack(dataView, initialOffset = 0) {
     if (!(dataView instanceof DataView)) {
       throw new Error('OSC Packet expects an instance of type DataView.')
     }
@@ -70,23 +66,11 @@ export default class Packet {
     // check if Packet is a Bundle or a Message
     if (head.value === BUNDLE_TAG) {
       item = new Bundle()
-      item.unpack(dataView, initialOffset)
-
-      if (timetag && item.timetag.value.timestamp() < timetag.value.timestamp()) {
-        throw new Error('OSC Packet timetag of enclosing bundle is past timestamp of enclosed ones.')
-      }
     } else {
       item = new Message()
-      item.unpack(dataView, initialOffset)
-
-      // inherit the AtomicTimetag from the parent bundle when passed over
-      if (timetag) {
-        item.timetag = timetag
-      }
-
-      // inform event handler when given
-      notifyEventHandler(item)
     }
+
+    item.unpack(dataView, initialOffset)
 
     this.offset = item.offset
     this.value = item

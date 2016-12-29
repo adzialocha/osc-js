@@ -2,7 +2,7 @@ import { expect } from 'chai'
 
 import EncodeHelper, { typeTag, prepareAddress } from '../../src/common/helpers'
 
-import AtomicFloat64 from '../../src/atomic/float64'
+import AtomicFloat32 from '../../src/atomic/float32'
 import AtomicString from '../../src/atomic/string'
 
 /** @test {typeTag} */
@@ -36,19 +36,19 @@ describe('EncodeHelper', () => {
 
   before(() => {
     encoder = new EncodeHelper()
-    encoder.add(new AtomicFloat64(24.12))
+    encoder.add(new AtomicFloat32(24.12))
     encoder.add(new AtomicString('joe'))
   })
 
   it('adds items up and increases the byteLength accordingly', () => {
-    expect(encoder.byteLength).to.be.equals(12)
+    expect(encoder.byteLength).to.be.equals(8)
     expect(encoder.data.length).to.be.equals(2)
   })
 
   it('merges the items to one Uint8Array', () => {
     const merged = encoder.merge()
 
-    expect(merged.length).to.be.equals(12)
+    expect(merged.length).to.be.equals(8)
     expect(merged).to.be.a('uint8array')
   })
 })

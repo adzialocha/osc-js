@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai'
 import spies from 'chai-spies'
 
-import OSC, { STATUS, option } from '../src/osc'
+import OSC, { STATUS } from '../src/osc'
 
 import Packet from '../src/packet'
 import Message from '../src/message'
@@ -37,7 +37,6 @@ class TestPlugin {
   }
 
   // mocking helpers
-
   mockError() {
     this.notify('error', { message: 'An error' })
   }
@@ -47,23 +46,23 @@ class TestPlugin {
   }
 }
 
-const plugin = new TestPlugin()
-
-const osc = new OSC({
-  discardLateMessages: true,
-  connectionPlugin: plugin,
-})
-
-/** @test {option} */
-describe('option', () => {
-  it('returns the instance options when created', () => {
-    expect(option('discardLateMessages')).to.be.true
-    expect(osc).to.exist
-  })
-})
-
 /** @test {OSC} */
 describe('OSC', () => {
+  let osc
+  let plugin
+
+  before(() => {
+    plugin = new TestPlugin()
+    osc = new OSC({
+      discardLateMessages: true,
+      plugin,
+    })
+  })
+
+  it('returns the instance options when created', () => {
+    expect(osc.options.discardLateMessages).to.be.true
+  })
+
   /** @test {OSC#on} */
   describe('on', () => {
     it('calls my subscription when listening to the right address', () => {
