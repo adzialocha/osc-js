@@ -1,4 +1,4 @@
-import EventHandler from './events'
+import { notifyEventHandler } from './osc'
 
 import Bundle, { BUNDLE_TAG } from './bundle'
 import Message from './message'
@@ -72,25 +72,20 @@ export default class Packet {
       item = new Bundle()
       item.unpack(dataView, initialOffset)
 
-      if (timetag && item.timetag.value.timestamp() < timetag.timestamp()) {
+      if (timetag && item.timetag.value.timestamp() < timetag.value.timestamp()) {
         throw new Error('OSC Packet timetag of enclosing bundle is past timestamp of enclosed ones.')
       }
     } else {
       item = new Message()
       item.unpack(dataView, initialOffset)
 
-      // get singleton instance
-      const eventHandler = new EventHandler()
-
       // inherit the AtomicTimetag from the parent bundle when passed over
       if (timetag) {
         item.timetag = timetag
-
-        // inform event handler with timed message
-        eventHandler.notify(item.address, item, item.timetag.value)
-      } else {
-        eventHandler.notify(item.address, item)
       }
+
+      // inform event handler when given
+      notifyEventHandler(item)
     }
 
     this.offset = item.offset

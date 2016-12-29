@@ -3,7 +3,7 @@ import { prepareAddress, prepareRegExPattern } from './common/helpers'
 
 import { option } from './osc'
 
-import { Timetag } from './atomic/timetag'
+import Message from './message'
 
 /**
  * EventHandler to notify listener on address pattern match of incoming
@@ -30,23 +30,44 @@ export default class EventHandler {
 
   /**
    * Find a matching event handler and notify the listeners when given
-   * @param {string} eventName The OSC address pattern or event name
-   * @param {*} data Data which will be passed onto the listeners
-   * @param {Timetag} timetag Execute this notification with a timetag
+   * @param {string|Message} eventItem The OSC address pattern / event name or Message
+   * @param {*} eventData Data which will be passed onto the listeners. This can be
+   * left empty when using Messages
+   * @param {number} timestamp Execute this notification with a timestamp. This can
+   * be left empty when using Messages
    */
-  notify(eventName, data, timetag) {
-    if (!(isString(eventName))) {
-      throw new Error('OSC EventHandler notify method accepts only strings.')
+  notify(...args) {
+    let eventName
+    let data
+    let timestamp
+
+    if (args.length === 1 && args[0] instanceof Message) {
+      const message = args[0]
+
+      eventName = message.address
+      data = message
+
+      if (message.timetag) {
+        timestamp = message.timetag.value.timestamp()
+      }
+    } else if (args.length > 0 && isString(args[0])) {
+      eventName = args[0]
+
+      if (args[1]) {
+        data = args[1]
+      }
+
+      if (args.length > 2 && isInt(args[2])) {
+        timestamp = args[2]
+      }
+    } else {
+      throw new Error('OSC EventHandler was notified with invalid arguments.')
     }
 
-    if (timetag && !(timetag instanceof Timetag)) {
-      throw new Error('OSC EventHandler accepts only timetags of type Timetag.')
-    }
-
-    if (timetag) {
+    if (timestamp) {
       const now = Date.now()
 
-      if (now > timetag.timestamp()) {
+      if (now > timestamp) {
         if (!option('discardLateMessages')) {
           this.notify(eventName, data)
         }
@@ -56,7 +77,7 @@ export default class EventHandler {
         // notify later
         setTimeout(() => {
           that.notify(eventName, data)
-        }, timetag.timestamp() - now)
+        }, timestamp - now)
       }
 
       return true

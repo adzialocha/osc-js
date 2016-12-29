@@ -2,8 +2,7 @@ import chai, { expect } from 'chai'
 import spies from 'chai-spies'
 
 import EventHandler from '../src/events'
-
-import { Timetag } from '../src/atomic/timetag'
+import Message from '../src/message'
 
 chai.use(spies)
 
@@ -96,6 +95,11 @@ describe('EventHandler', () => {
       expect(spy[2]).to.have.been.called.with(testdata)
     })
 
+    it('accepts messages', () => {
+      handler.notify(new Message(['and', 'another']))
+      expect(spy[2]).to.have.been.called()
+    })
+
     describe('event listeners', () => {
       it('notifies error callbacks', () => {
         handler.notify('error', testdata)
@@ -115,7 +119,7 @@ describe('EventHandler', () => {
 
     describe('address listeners with timetags', () => {
       it('calls the handler later', () => {
-        handler.notify('/', testdata, new Timetag(Date.now() + 5000))
+        handler.notify('/', testdata, Date.now() + 5000)
 
         expect(spy[0]).to.not.have.been.called()
       })

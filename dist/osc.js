@@ -256,202 +256,6 @@ var Atomic = function () {
   return Atomic;
 }();
 
-var SECONDS_70_YEARS = 2208988800;
-var TWO_POWER_32 = 4294967296;
-var Timetag = function () {
-  function Timetag() {
-    var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var fractions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    classCallCheck(this, Timetag);
-    if (!(isInt(seconds) && isInt(fractions))) {
-      throw new Error('OSC Timetag constructor expects values of type integer number.');
-    }
-    this.seconds = seconds;
-    this.fractions = fractions;
-  }
-  createClass(Timetag, [{
-    key: 'timestamp',
-    value: function timestamp(milliseconds) {
-      var seconds = void 0;
-      if (typeof milliseconds === 'number') {
-        seconds = milliseconds / 1000;
-        var rounded = Math.floor(seconds);
-        this.seconds = rounded + SECONDS_70_YEARS;
-        this.fractions = Math.round(TWO_POWER_32 * (seconds - rounded));
-        return milliseconds;
-      }
-      seconds = this.seconds - SECONDS_70_YEARS;
-      return (seconds + this.fractions / TWO_POWER_32) * 1000;
-    }
-  }]);
-  return Timetag;
-}();
-var AtomicTimetag = function (_Atomic) {
-  inherits(AtomicTimetag, _Atomic);
-  function AtomicTimetag(value) {
-    classCallCheck(this, AtomicTimetag);
-    var timetag = new Timetag();
-    if (value instanceof Timetag) {
-      timetag = value;
-    } else if (isInt(value)) {
-      timetag.timestamp(value);
-    } else if (isDate(value)) {
-      timetag.timestamp(value.getTime());
-    } else {
-      timetag.timestamp(Date.now());
-    }
-    return possibleConstructorReturn(this, (AtomicTimetag.__proto__ || Object.getPrototypeOf(AtomicTimetag)).call(this, timetag));
-  }
-  createClass(AtomicTimetag, [{
-    key: 'pack',
-    value: function pack() {
-      if (!this.value) {
-        throw new Error('OSC AtomicTimetag can not be encoded with empty value.');
-      }
-      var _value = this.value,
-          seconds = _value.seconds,
-          fractions = _value.fractions;
-      var data = new Uint8Array(8);
-      var dataView = new DataView(data.buffer);
-      dataView.setInt32(0, seconds, false);
-      dataView.setInt32(4, fractions, false);
-      return data;
-    }
-  }, {
-    key: 'unpack',
-    value: function unpack(dataView) {
-      var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      if (!(dataView instanceof DataView)) {
-        throw new Error('OSC AtomicTimetag expects an instance of type DataView.');
-      }
-      var seconds = dataView.getUint32(initialOffset, false);
-      var fractions = dataView.getUint32(initialOffset + 4, false);
-      this.value = new Timetag(seconds, fractions);
-      this.offset = initialOffset + 8;
-      return this.offset;
-    }
-  }]);
-  return AtomicTimetag;
-}(Atomic);
-
-var EventHandler = function () {
-  function EventHandler() {
-    classCallCheck(this, EventHandler);
-    this.addressHandlers = [];
-    this.eventHandlers = {
-      open: [],
-      error: [],
-      close: []
-    };
-    this.uuid = 0;
-  }
-  createClass(EventHandler, [{
-    key: 'notify',
-    value: function notify(eventName, data, timetag) {
-      var _this = this;
-      if (!isString(eventName)) {
-        throw new Error('OSC EventHandler notify method accepts only strings.');
-      }
-      if (timetag && !(timetag instanceof Timetag)) {
-        throw new Error('OSC EventHandler accepts only timetags of type Timetag.');
-      }
-      if (timetag) {
-        var now = Date.now();
-        if (now > timetag.timestamp()) {
-          if (!option('discardLateMessages')) {
-            this.notify(eventName, data);
-          }
-        } else {
-          (function () {
-            var that = _this;
-            setTimeout(function () {
-              that.notify(eventName, data);
-            }, timetag.timestamp() - now);
-          })();
-        }
-        return true;
-      }
-      if (isString(eventName) && eventName in this.eventHandlers) {
-        this.eventHandlers[eventName].forEach(function (handler) {
-          handler.callback(data);
-        });
-        return true;
-      }
-      var handlerKeys = Object.keys(this.addressHandlers);
-      var handlers = this.addressHandlers;
-      handlerKeys.forEach(function (key) {
-        var regex = new RegExp(prepareRegExPattern(prepareAddress(eventName)), 'g');
-        var test = regex.test(key);
-        if (test && key.length === regex.lastIndex) {
-          handlers[key].forEach(function (handler) {
-            handler.callback(data);
-          });
-        }
-      });
-      return true;
-    }
-  }, {
-    key: 'on',
-    value: function on(eventName, callback) {
-      if (!(isString(eventName) || isArray(eventName))) {
-        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
-      }
-      if (!isFunction(callback)) {
-        throw new Error('OSC EventHandler callback has to be a function.');
-      }
-      this.uuid += 1;
-      var handler = {
-        id: this.uuid,
-        callback: callback
-      };
-      if (isString(eventName) && eventName in this.eventHandlers) {
-        this.eventHandlers[eventName].push(handler);
-        return this.uuid;
-      }
-      var address = prepareAddress(eventName);
-      var regex = new RegExp(/[#*\s[\],/{}|?]/g);
-      if (regex.test(address.split('/').join(''))) {
-        throw new Error('OSC EventHandler address string contains invalid characters.');
-      }
-      if (!(address in this.addressHandlers)) {
-        this.addressHandlers[address] = [];
-      }
-      this.addressHandlers[address].push(handler);
-      return this.uuid;
-    }
-  }, {
-    key: 'off',
-    value: function off(eventName, subscriptionId) {
-      if (!(isString(eventName) || isArray(eventName))) {
-        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
-      }
-      if (!isInt(subscriptionId)) {
-        throw new Error('OSC EventHandler subscription id has to be a number.');
-      }
-      var key = void 0;
-      var haystack = void 0;
-      if (isString(eventName) && eventName in this.eventHandlers) {
-        key = eventName;
-        haystack = this.eventHandlers;
-      } else {
-        key = prepareAddress(eventName);
-        haystack = this.addressHandlers;
-      }
-      if (key in haystack) {
-        return haystack[key].some(function (item, index) {
-          if (item.id === subscriptionId) {
-            haystack[key].splice(index, 1);
-            return true;
-          }
-          return false;
-        });
-      }
-      return false;
-    }
-  }]);
-  return EventHandler;
-}();
-
 var AtomicInt32 = function (_Atomic) {
   inherits(AtomicInt32, _Atomic);
   function AtomicInt32(value) {
@@ -732,6 +536,84 @@ var Message = function () {
   return Message;
 }();
 
+var SECONDS_70_YEARS = 2208988800;
+var TWO_POWER_32 = 4294967296;
+var Timetag = function () {
+  function Timetag() {
+    var seconds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var fractions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    classCallCheck(this, Timetag);
+    if (!(isInt(seconds) && isInt(fractions))) {
+      throw new Error('OSC Timetag constructor expects values of type integer number.');
+    }
+    this.seconds = seconds;
+    this.fractions = fractions;
+  }
+  createClass(Timetag, [{
+    key: 'timestamp',
+    value: function timestamp(milliseconds) {
+      var seconds = void 0;
+      if (typeof milliseconds === 'number') {
+        seconds = milliseconds / 1000;
+        var rounded = Math.floor(seconds);
+        this.seconds = rounded + SECONDS_70_YEARS;
+        this.fractions = Math.round(TWO_POWER_32 * (seconds - rounded));
+        return milliseconds;
+      }
+      seconds = this.seconds - SECONDS_70_YEARS;
+      return (seconds + this.fractions / TWO_POWER_32) * 1000;
+    }
+  }]);
+  return Timetag;
+}();
+var AtomicTimetag = function (_Atomic) {
+  inherits(AtomicTimetag, _Atomic);
+  function AtomicTimetag(value) {
+    classCallCheck(this, AtomicTimetag);
+    var timetag = new Timetag();
+    if (value instanceof Timetag) {
+      timetag = value;
+    } else if (isInt(value)) {
+      timetag.timestamp(value);
+    } else if (isDate(value)) {
+      timetag.timestamp(value.getTime());
+    } else {
+      timetag.timestamp(Date.now());
+    }
+    return possibleConstructorReturn(this, (AtomicTimetag.__proto__ || Object.getPrototypeOf(AtomicTimetag)).call(this, timetag));
+  }
+  createClass(AtomicTimetag, [{
+    key: 'pack',
+    value: function pack() {
+      if (!this.value) {
+        throw new Error('OSC AtomicTimetag can not be encoded with empty value.');
+      }
+      var _value = this.value,
+          seconds = _value.seconds,
+          fractions = _value.fractions;
+      var data = new Uint8Array(8);
+      var dataView = new DataView(data.buffer);
+      dataView.setInt32(0, seconds, false);
+      dataView.setInt32(4, fractions, false);
+      return data;
+    }
+  }, {
+    key: 'unpack',
+    value: function unpack(dataView) {
+      var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      if (!(dataView instanceof DataView)) {
+        throw new Error('OSC AtomicTimetag expects an instance of type DataView.');
+      }
+      var seconds = dataView.getUint32(initialOffset, false);
+      var fractions = dataView.getUint32(initialOffset + 4, false);
+      this.value = new Timetag(seconds, fractions);
+      this.offset = initialOffset + 8;
+      return this.offset;
+    }
+  }]);
+  return AtomicTimetag;
+}(Atomic);
+
 var BUNDLE_TAG = '#bundle';
 var Bundle = function () {
   function Bundle() {
@@ -855,19 +737,16 @@ var Packet = function () {
       if (head.value === BUNDLE_TAG) {
         item = new Bundle();
         item.unpack(dataView, initialOffset);
-        if (timetag && item.timetag.value.timestamp() < timetag.timestamp()) {
+        if (timetag && item.timetag.value.timestamp() < timetag.value.timestamp()) {
           throw new Error('OSC Packet timetag of enclosing bundle is past timestamp of enclosed ones.');
         }
       } else {
         item = new Message();
         item.unpack(dataView, initialOffset);
-        var eventHandler = new EventHandler();
         if (timetag) {
           item.timetag = timetag;
-          eventHandler.notify(item.address, item, item.timetag.value);
-        } else {
-          eventHandler.notify(item.address, item);
         }
+        notifyEventHandler(item);
       }
       this.offset = item.offset;
       this.value = item;
@@ -875,6 +754,139 @@ var Packet = function () {
     }
   }]);
   return Packet;
+}();
+
+var EventHandler = function () {
+  function EventHandler() {
+    classCallCheck(this, EventHandler);
+    this.addressHandlers = [];
+    this.eventHandlers = {
+      open: [],
+      error: [],
+      close: []
+    };
+    this.uuid = 0;
+  }
+  createClass(EventHandler, [{
+    key: 'notify',
+    value: function notify() {
+      var _this = this;
+      var eventName = void 0;
+      var data = void 0;
+      var timestamp = void 0;
+      if (arguments.length === 1 && (arguments.length <= 0 ? undefined : arguments[0]) instanceof Message) {
+        var message = arguments.length <= 0 ? undefined : arguments[0];
+        eventName = message.address;
+        data = message;
+        if (message.timetag) {
+          timestamp = message.timetag.value.timestamp();
+        }
+      } else if (arguments.length > 0 && isString(arguments.length <= 0 ? undefined : arguments[0])) {
+        eventName = arguments.length <= 0 ? undefined : arguments[0];
+        if (arguments.length <= 1 ? undefined : arguments[1]) {
+          data = arguments.length <= 1 ? undefined : arguments[1];
+        }
+        if (arguments.length > 2 && isInt(arguments.length <= 2 ? undefined : arguments[2])) {
+          timestamp = arguments.length <= 2 ? undefined : arguments[2];
+        }
+      } else {
+        throw new Error('OSC EventHandler was notified with invalid arguments.');
+      }
+      if (timestamp) {
+        var now = Date.now();
+        if (now > timestamp) {
+          if (!option('discardLateMessages')) {
+            this.notify(eventName, data);
+          }
+        } else {
+          (function () {
+            var that = _this;
+            setTimeout(function () {
+              that.notify(eventName, data);
+            }, timestamp - now);
+          })();
+        }
+        return true;
+      }
+      if (isString(eventName) && eventName in this.eventHandlers) {
+        this.eventHandlers[eventName].forEach(function (handler) {
+          handler.callback(data);
+        });
+        return true;
+      }
+      var handlerKeys = Object.keys(this.addressHandlers);
+      var handlers = this.addressHandlers;
+      handlerKeys.forEach(function (key) {
+        var regex = new RegExp(prepareRegExPattern(prepareAddress(eventName)), 'g');
+        var test = regex.test(key);
+        if (test && key.length === regex.lastIndex) {
+          handlers[key].forEach(function (handler) {
+            handler.callback(data);
+          });
+        }
+      });
+      return true;
+    }
+  }, {
+    key: 'on',
+    value: function on(eventName, callback) {
+      if (!(isString(eventName) || isArray(eventName))) {
+        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
+      }
+      if (!isFunction(callback)) {
+        throw new Error('OSC EventHandler callback has to be a function.');
+      }
+      this.uuid += 1;
+      var handler = {
+        id: this.uuid,
+        callback: callback
+      };
+      if (isString(eventName) && eventName in this.eventHandlers) {
+        this.eventHandlers[eventName].push(handler);
+        return this.uuid;
+      }
+      var address = prepareAddress(eventName);
+      var regex = new RegExp(/[#*\s[\],/{}|?]/g);
+      if (regex.test(address.split('/').join(''))) {
+        throw new Error('OSC EventHandler address string contains invalid characters.');
+      }
+      if (!(address in this.addressHandlers)) {
+        this.addressHandlers[address] = [];
+      }
+      this.addressHandlers[address].push(handler);
+      return this.uuid;
+    }
+  }, {
+    key: 'off',
+    value: function off(eventName, subscriptionId) {
+      if (!(isString(eventName) || isArray(eventName))) {
+        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
+      }
+      if (!isInt(subscriptionId)) {
+        throw new Error('OSC EventHandler subscription id has to be a number.');
+      }
+      var key = void 0;
+      var haystack = void 0;
+      if (isString(eventName) && eventName in this.eventHandlers) {
+        key = eventName;
+        haystack = this.eventHandlers;
+      } else {
+        key = prepareAddress(eventName);
+        haystack = this.addressHandlers;
+      }
+      if (key in haystack) {
+        return haystack[key].some(function (item, index) {
+          if (item.id === subscriptionId) {
+            haystack[key].splice(index, 1);
+            return true;
+          }
+          return false;
+        });
+      }
+      return false;
+    }
+  }]);
+  return EventHandler;
 }();
 
 var defaultOptions = {
@@ -890,6 +902,9 @@ function option(key) {
     throw new Error('OSC option key does not exist or is not valid.');
   }
   return options[key];
+}
+function notifyEventHandler(message) {
+  return instance ? instance.eventHandler.notify(message) : false;
 }
 var OSC = function () {
   function OSC() {

@@ -50,6 +50,15 @@ export function option(key) {
 }
 
 /**
+ * Helper method to get the notify handler of the current instance.
+ * @param {Message} message The message
+ * @return {boolean} Success state
+ */
+export function notifyEventHandler(message) {
+  return instance ? instance.eventHandler.notify(message) : false
+}
+
+/**
  * OSC interface to send OSC Packets and listen to status changes and
  * incoming message events. Offers a Plugin API for different network
  * protocols.

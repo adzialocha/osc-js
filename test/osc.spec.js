@@ -43,8 +43,7 @@ class TestPlugin {
   }
 
   mockMessage() {
-    const message = new Message(['test/path'], 55.1, 224)
-    this.notify(message.address, message)
+    this.notify(new Message(['test/path'], 55.1, 224))
   }
 }
 
