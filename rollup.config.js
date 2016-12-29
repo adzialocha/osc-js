@@ -3,7 +3,7 @@ import uglify from 'rollup-plugin-uglify'
 import cleanup from 'rollup-plugin-cleanup'
 
 const options = {
-  entry: 'index.js',
+  entry: 'src/osc.js',
   dest: 'lib/osc.js',
   sourceMap: false,
   moduleName: 'OSC',

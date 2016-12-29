@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai'
 import spies from 'chai-spies'
 
-import OSC, { STATUS } from '../src/osc'
+import OSC from '../src/osc'
 
 import Packet from '../src/packet'
 import Message from '../src/message'
@@ -10,7 +10,7 @@ chai.use(spies)
 
 class TestPlugin {
   constructor() {
-    this.socketStatus = STATUS.IS_NOT_INITIALIZED
+    this.socketStatus = -1
     this.notify = null
   }
 
@@ -23,7 +23,7 @@ class TestPlugin {
   }
 
   open() {
-    this.socketStatus = STATUS.IS_OPEN
+    this.socketStatus = 1
     this.notify('open')
   }
 
@@ -32,7 +32,7 @@ class TestPlugin {
   }
 
   close() {
-    this.socketStatus = STATUS.IS_CLOSED
+    this.socketStatus = 3
     this.notify('close')
   }
 
@@ -101,7 +101,7 @@ describe('OSC', () => {
   /** @test {OSC#status} */
   describe('status', () => {
     it('returns the initial status', () => {
-      expect(osc.status()).to.be.equals(STATUS.IS_NOT_INITIALIZED)
+      expect(osc.status()).to.be.equals(osc.STATUS.IS_NOT_INITIALIZED)
     })
   })
 
@@ -116,7 +116,7 @@ describe('OSC', () => {
     })
 
     it('returns the correct status', () => {
-      expect(osc.status()).to.be.equals(STATUS.IS_OPEN)
+      expect(osc.status()).to.be.equals(osc.STATUS.IS_OPEN)
     })
 
     it('calls the open event', () => {
@@ -135,7 +135,7 @@ describe('OSC', () => {
     })
 
     it('returns the correct status', () => {
-      expect(osc.status()).to.be.equals(STATUS.IS_CLOSED)
+      expect(osc.status()).to.be.equals(osc.STATUS.IS_CLOSED)
     })
 
     it('calls the close event', () => {

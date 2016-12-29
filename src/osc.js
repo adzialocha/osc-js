@@ -7,7 +7,7 @@ import Message from './message'
 import EventHandler from './events'
 
 /**
- * Default options.
+ * Default options
  * @private
  */
 const defaultOptions = {
@@ -16,9 +16,9 @@ const defaultOptions = {
 }
 
 /**
- * Status flags.
+ * Status flags
  */
-export const STATUS = {
+const STATUS = {
   IS_NOT_INITIALIZED: -1,
   IS_CONNECTING: 0,
   IS_OPEN: 1,
@@ -29,9 +29,9 @@ export const STATUS = {
 /**
  * OSC interface to send OSC Packets and listen to status changes and
  * incoming message events. Offers a Plugin API for different network
- * protocols.
+ * protocols
  */
-export default class OSC {
+class OSC {
   /**
    * Create an OSC instance with given options
    * @param {object} options Custom options
@@ -199,6 +199,15 @@ export default class OSC {
       throw new Error('OSC connection options argument has to be an object.')
     }
 
-    return this.options.plugin.send(packet.pack(this.options), options)
+    return this.options.plugin.send(packet.pack(), options)
   }
 }
+
+// expose classes and status flags
+OSC.STATUS = STATUS
+
+OSC.Packet = Packet
+OSC.Bundle = Bundle
+OSC.Message = Message
+
+export default OSC
