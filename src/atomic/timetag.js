@@ -9,7 +9,7 @@ export const TWO_POWER_32 = 4294967296
 
 /**
  * Timetag helper class for representing NTP timestamps and conversion between
- * them and javascript representation.
+ * them and javascript representation
  */
 export class Timetag {
   /**

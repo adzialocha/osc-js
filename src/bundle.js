@@ -12,7 +12,7 @@ export const BUNDLE_TAG = '#bundle'
 
 /**
  * An OSC Bundle consist of an Timetag and Bundle Elements.
- * The contents are either OSC Messages or more OSC Bundles.
+ * The contents are either OSC Messages or more OSC Bundles
  */
 export default class Bundle {
   /**

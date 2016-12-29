@@ -3,7 +3,7 @@ import { isInt } from '../common/utils'
 import Atomic from '../atomic'
 
 /**
- * 32-bit big-endian two's complement integer OSC Atomic Data Type.
+ * 32-bit big-endian two's complement integer OSC Atomic Data Type
  */
 export default class AtomicInt32 extends Atomic {
   /**

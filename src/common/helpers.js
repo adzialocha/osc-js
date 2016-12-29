@@ -84,7 +84,7 @@ export function prepareRegExPattern(str) {
 
 /**
  * Holds a list of items and helps to merge them
- * into a single array of packed binary data.
+ * into a single array of packed binary data
  */
 export default class EncodeHelper {
   /**

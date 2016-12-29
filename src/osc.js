@@ -44,7 +44,7 @@ class OSC {
    * const osc = new OSC({ discardLateMessages: true })
    *
    * @example
-   * const websocketPlugin = new OSCWebsocket()
+   * const websocketPlugin = new OSC.WebsocketPlugin()
    * const osc = new OSC({ plugin: websocketPlugin })
    */
   constructor(options = {}) {
@@ -122,7 +122,7 @@ class OSC {
    * @param {object} options Custom options for plugin instance
    *
    * @example
-   * const osc = new OSC({ plugin: new OSCDatagramW() })
+   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })
    * osc.open({ host: '127.0.0.1', port: 8080 })
    */
   open(options = {}) {
@@ -177,7 +177,7 @@ class OSC {
    * @param {object} options Custom options for transport instance
    *
    * @example
-   * const osc = new OSC({ plugin: new OSCDatagram() })
+   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })
    * osc.open({ host: '127.0.0.1', port: 8080 })
    *
    * const message = new OSC.Message('/test/path', 55.1, 57)

@@ -1,5 +1,5 @@
 /**
- * Base class for OSC Atomic Data Types.
+ * Base class for OSC Atomic Data Types
  */
 export default class Atomic {
   /**

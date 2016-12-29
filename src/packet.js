@@ -4,7 +4,7 @@ import AtomicString from './atomic/string'
 
 /**
  * The unit of transmission of OSC is an OSC Packet. The contents
- * of an OSC packet must be either an OSC Message or an OSC Bundle.
+ * of an OSC packet must be either an OSC Message or an OSC Bundle
  */
 export default class Packet {
   /**

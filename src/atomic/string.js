@@ -3,7 +3,7 @@ import { pad, isString } from '../common/utils'
 import Atomic from '../atomic'
 
 /**
- * A sequence of non-null ASCII characters OSC Atomic Data Type.
+ * A sequence of non-null ASCII characters OSC Atomic Data Type
  */
 export default class AtomicString extends Atomic {
   /**

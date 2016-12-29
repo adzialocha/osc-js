@@ -3,7 +3,7 @@ import { isFloat } from '../common/utils'
 import Atomic from '../atomic'
 
 /**
- * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type.
+ * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type
  */
 export default class AtomicFloat32 extends Atomic {
   /**

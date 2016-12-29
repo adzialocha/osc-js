@@ -8,7 +8,7 @@ import AtomicBlob from './atomic/blob'
 
 /**
  * An OSC message consists of an OSC Address Pattern followed
- * by an OSC Type Tag String followed by zero or more OSC Arguments.
+ * by an OSC Type Tag String followed by zero or more OSC Arguments
  */
 export default class Message {
   /**

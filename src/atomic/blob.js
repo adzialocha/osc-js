@@ -3,7 +3,7 @@ import { pad, isBlob } from '../common/utils'
 import Atomic from '../atomic'
 
 /**
- * 8-bit bytes of arbitrary binary data OSC Atomic Data Type.
+ * 8-bit bytes of arbitrary binary data OSC Atomic Data Type
  */
 export default class AtomicBlob extends Atomic {
   /**
