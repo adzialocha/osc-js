@@ -101,7 +101,7 @@ describe('OSC', () => {
   /** @test {OSC#status} */
   describe('status', () => {
     it('returns the initial status', () => {
-      expect(osc.status()).to.be.equals(osc.STATUS.IS_NOT_INITIALIZED)
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_NOT_INITIALIZED)
     })
   })
 
@@ -116,7 +116,7 @@ describe('OSC', () => {
     })
 
     it('returns the correct status', () => {
-      expect(osc.status()).to.be.equals(osc.STATUS.IS_OPEN)
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_OPEN)
     })
 
     it('calls the open event', () => {
@@ -135,7 +135,7 @@ describe('OSC', () => {
     })
 
     it('returns the correct status', () => {
-      expect(osc.status()).to.be.equals(osc.STATUS.IS_CLOSED)
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_CLOSED)
     })
 
     it('calls the close event', () => {
