@@ -3,29 +3,29 @@ osc-js
 
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *udp*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
-# Features
+## Features
 
-- osc-js is a UMD Module running in node or your browser (without dependencies)
-- osc-js offers a simple interface
-- osc-js offers built-in udp, WebSocket support as plugins
-- osc-js comes with a special bridge plugin for easy communication between udp- and WebSocket clients
-- osc-js has a Plugin API for your own custom networking solutions
-- osc-js features all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
-- osc-js uses OSC Address pattern matching
-- osc-js reads time-critical OSC Bundles with Timetags
+- UMD Module running in node or your browser (without dependencies)
+- simple interface
+- built-in udp, WebSocket support as plugins
+- special bridge plugin for easy communication between udp- and WebSocket clients
+- Plugin API for your own custom networking solutions
+- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
+- OSC Address pattern matching
+- Time-critical OSC Bundles with Timetags
 - osc-js is written in ES6 :-)
 
-# Documentation
+## Documentation
 
 Read more about osc-js and how to use it here: [https://osc-js.github.io](https://osc-js.github.io).
 
-# Installation and Usage
+## Installation and Usage
 
-Use [bower](https://bower.io) `bower install osc-js --save` or [npm](https://www.npmjs.com) `npm install osc-js --save` for installing osc-js as your project dependency.
+Use bower via `bower install osc-js --save` or npm via `npm install osc-js --save` for installing osc-js as your project dependency.
 
-Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or 'dist/osc.min.js' (minified version) for usage in a browser. Read below for more examples.
+Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or ?`dist/osc.min.js` (minified version) for usage in a browser. Read below for more examples.
 
-# Example
+## Example
 
 ```
 const osc = new OSC()
@@ -50,7 +50,7 @@ osc.on('open', () => {
 osc.open({ port: 9000 })
 ```
 
-# Plugins
+## Plugins
 
 osc-js offers a plugin architecture for extending it's networking capabilities. The library comes already with four built-in plugins. This is propably all you will ever need for your OSC applications:
 
@@ -59,7 +59,7 @@ osc-js offers a plugin architecture for extending it's networking capabilities. 
 - `DatagramPlugin` for UDP network messaging
 - `BridgePlugin` useful Bridge between WebSocket- and UDP Clients
 
-## Example: WebSocket Server
+### Example: WebSocket Server
 
 Register the plugin when creating the OSC instance:
 
@@ -68,7 +68,7 @@ const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() }
 osc.open() // listening on 'ws://localhost:8080'
 ```
 
-## Example: OSC between Max/PD/SC etc. and your browser
+### Example: OSC between Max/PD/SC etc. and your browser
 
 1. Write a simple webpage. The library will use a WebSocket client
 by default.
@@ -104,7 +104,7 @@ by default.
   [udpreceive 9129] // incoming '/test/random' messages with random number
   ```
 
-## Custom solutions with Plugin API
+### Custom solutions with Plugin API
 
 It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://osc-js.github.io) for further information.
 
@@ -121,7 +121,7 @@ osc.on('/test', (message) => {
 })
 ```
 
-## Usage without plugins
+### Usage without plugins
 
 The library can also be used without the mentioned features in case you only need to write and read binary OSC data. See this example below (even though the library already has a solution for handling udp like in this example):
 
@@ -144,7 +144,7 @@ socket.on('message', (data) => {
 })
 ```
 
-# Development
+## Development
 
 osc-js uses [Babel](http://babeljs.io) for ES6 support, [ESDoc](https://esdoc.org) for documentation, [Mocha](https://mochajs.org/) + [Chai](http://chaijs.com/) for testing and [Rollup](https://rollupjs.org) for generating the UMD module.
 
@@ -156,15 +156,15 @@ cd osc-js
 npm install
 ```
 
-# Testing
+### Testing
 
 `npm run test` for running the test suites.
 `npm run test:watch` for running specs during development. Check your style guide violations with `npm run lint`.
 
-# Deployment
+### Deployment
 
 `npm run build` for creating a UMD module in `lib` folder and a browser distribution in `dist` folder.
 
-# ESDocs
+### ESDocs
 
 `npm run docs` for generating a `docs` folder with HTML files documenting the library.
