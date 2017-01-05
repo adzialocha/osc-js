@@ -1,5 +1,9 @@
 const dgram = typeof __dirname !== 'undefined' ? require('dgram') : undefined
 
+/**
+ * Status flags
+ * @private
+ */
 const STATUS = {
   IS_NOT_INITIALIZED: -1,
   IS_CONNECTING: 0,
@@ -8,35 +12,77 @@ const STATUS = {
   IS_CLOSED: 3,
 }
 
-const defaultBindOptions = {
+/**
+ * Default options for open method
+ * @private
+ */
+const defaultOpenOptions = {
   host: 'localhost',
   port: 41234,
   exclusive: false,
 }
 
+/**
+ * Default options for send method
+ * @private
+ */
 const defaultSendOptions = {
   host: 'localhost',
-  port: 41234,
+  port: 41235,
 }
 
+/**
+ * Default options
+ * @private
+ */
 const defaultOptions = {
   type: 'udp4',
-  bind: defaultBindOptions,
+  open: defaultOpenOptions,
   send: defaultSendOptions,
 }
 
+/**
+ * OSC plugin for simple OSC messaging via udp client
+ * and udp server
+ */
 export default class DatagramPlugin {
+  /**
+   * Create an OSC Plugin instance with given options. Defaults to
+   * localhost:41234 for serving and localhost:41235 for sending
+   * @param {object} [options] Custom options
+   * @param {string} [options.type='udp4'] UDP4 or UDP6
+   * @param {string} [options.open.host='localhost'] Hostname of udp server to bind to
+   * @param {number} [options.open.port=41234] Port of udp server to bind to
+   * @param {boolean} [options.open.exclusive=false] Exclusive flag
+   * @param {string} [options.send.host='localhost'] Hostname of udp client for messaging
+   * @param {number} [options.send.port=41235] Port of udp client for messaging
+   *
+   * @example
+   * const plugin = new OSC.DatagramPlugin({ send: { port: 9912 } })
+   * const osc = new OSC({ plugin: plugin })
+   */
   constructor(customOptions = {}) {
     if (!dgram) {
       throw new Error('DatagramPlugin can not be used in browser context.')
     }
 
+    /** @type {object} options
+     * @private
+     */
     this.options = Object.assign({}, defaultOptions, customOptions)
 
-    // create udp socket and register events
+    /**
+     * @type {object} socket
+     * @private
+     */
     this.socket = dgram.createSocket(this.options.type)
+    /**
+     * @type {number} socketStatus
+     * @private
+     */
     this.socketStatus = STATUS.IS_NOT_INITIALIZED
 
+    // register events
     this.socket.on('message', (message) => {
       this.notify(message)
     })
@@ -45,20 +91,40 @@ export default class DatagramPlugin {
       this.notify('error', error)
     })
 
-    // prepare notify method
+    /**
+     * @type {function} notify
+     * @private
+     */
     this.notify = () => {}
   }
 
+  /**
+   * Internal method to hook into osc library's
+   * EventHandler notify method
+   * @param {function} fn Notify callback
+   * @private
+   */
   registerNotify(fn) {
     this.notify = fn
   }
 
+  /**
+   * Returns the current status of the connection
+   * @return {number} Status ID
+   */
   status() {
     return this.socketStatus
   }
 
+  /**
+   * Bind a udp socket to a hostname and port
+   * @param {object} [customOptions] Custom options
+   * @param {string} [customOptions.host='localhost'] Hostname of udp server to bind to
+   * @param {number} [customOptions.port=41234] Port of udp server to bind to
+   * @param {boolean} [customOptions.exclusive=false] Exclusive flag
+   */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options.bindOptions, customOptions)
+    const options = Object.assign({}, this.options.openOptions, customOptions)
     const { port, exclusive } = options
 
     this.socketStatus = STATUS.IS_CONNECTING
@@ -73,6 +139,9 @@ export default class DatagramPlugin {
     })
   }
 
+  /**
+   * Close udp socket
+   */
   close() {
     this.socketStatus = STATUS.IS_CLOSING
 
@@ -82,6 +151,15 @@ export default class DatagramPlugin {
     })
   }
 
+  /**
+   * Send an OSC Packet, Bundle or Message. Use options here for
+   * custom port and hostname, otherwise the global options will
+   * be taken
+   * @param {Uint8Array} binary Binary representation of OSC Packet
+   * @param {object} [customOptions] Custom options for udp socket
+   * @param {string} [customOptions.host] Hostname of udp client
+   * @param {number} [customOptions.port] Port of udp client
+   */
   send(binary, customOptions = {}) {
     const options = Object.assign({}, this.options.sendOptions, customOptions)
     const { port, host } = options

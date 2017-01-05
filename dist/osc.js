@@ -940,18 +940,18 @@ var STATUS$1 = {
   IS_CLOSING: 2,
   IS_CLOSED: 3
 };
-var defaultBindOptions = {
+var defaultOpenOptions = {
   host: 'localhost',
   port: 41234,
   exclusive: false
 };
 var defaultSendOptions = {
   host: 'localhost',
-  port: 41234
+  port: 41235
 };
 var defaultOptions$2 = {
   type: 'udp4',
-  bind: defaultBindOptions,
+  open: defaultOpenOptions,
   send: defaultSendOptions
 };
 var DatagramPlugin = function () {
@@ -988,7 +988,7 @@ var DatagramPlugin = function () {
     value: function open() {
       var _this2 = this;
       var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = Object.assign({}, this.options.bindOptions, customOptions);
+      var options = Object.assign({}, this.options.openOptions, customOptions);
       var port = options.port,
           exclusive = options.exclusive;
       this.socketStatus = STATUS$1.IS_CONNECTING;
@@ -1142,6 +1142,7 @@ var BridgePlugin = function () {
     this.options = mergeOptions({}, customOptions);
     this.websocket = null;
     this.socket = dgram$1.createSocket('udp4');
+    this.socketStatus = STATUS$3.IS_NOT_INITIALIZED;
     this.socket.on('message', function (message) {
       _this.send(message, { receiver: 'ws' });
       _this.notify(message.buffer);
