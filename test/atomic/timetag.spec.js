@@ -91,7 +91,9 @@ describe('AtomicTimetag', () => {
     })
 
     it('with a Date instance', () => {
-      atomic = new AtomicTimetag(new Date(2015, 2, 21, 5, 0, 21))
+      const date = new Date(2015, 2, 21, 5, 0, 21)
+      date.setUTCHours(4)
+      atomic = new AtomicTimetag(date)
       expect(atomic.value.seconds).to.equal(3635899221)
     })
   })
