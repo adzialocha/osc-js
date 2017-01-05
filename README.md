@@ -29,7 +29,7 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all 
 
 ## Documentation
 
-Read more about osc-js and how to use it here: [https://osc-js.github.io](https://osc-js.github.io).
+Read more about osc-js and how to use it in the [Wiki](https://github.com/adzialocha/osc-js/wiki).
 
 ## Example
 
@@ -118,7 +118,7 @@ by default.
 
 ### Custom solutions with Plugin API
 
-It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://osc-js.github.io) for further information.
+It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
 
 ```js
 class MyCustomPlugin {
@@ -155,6 +155,8 @@ socket.on('message', (data) => {
   console.log(msg.args)
 })
 ```
+
+More information here: [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API)
 
 ## Development
 
