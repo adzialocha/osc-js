@@ -1,14 +1,14 @@
 osc-js
 ======
 
-osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *udp*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
+osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
 ## Features
 
 - UMD Module running in node or your browser (without dependencies)
 - simple interface
-- built-in udp, WebSocket support as plugins
-- special bridge plugin for easy communication between udp- and WebSocket clients
+- built-in *UDP*, *WebSocket* networking support as plugins
+- special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
 - Plugin API for your own custom networking solutions
 - Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
 - OSC Address pattern matching
@@ -19,15 +19,9 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all 
 
 Read more about osc-js and how to use it here: [https://osc-js.github.io](https://osc-js.github.io).
 
-## Installation and Usage
-
-Use bower via `bower install osc-js --save` or npm via `npm install osc-js --save` for installing osc-js as your project dependency.
-
-Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or ?`dist/osc.min.js` (minified version) for usage in a browser. Read below for more examples.
-
 ## Example
 
-```
+```js
 const osc = new OSC()
 
 osc.on('/param/density', (message) => {
@@ -50,6 +44,12 @@ osc.on('open', () => {
 osc.open({ port: 9000 })
 ```
 
+## Installation and Usage
+
+Use bower via `bower install osc-js --save` or npm via `npm install osc-js --save` for installing osc-js as your project dependency.
+
+Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser. Read below for more examples.
+
 ## Plugins
 
 osc-js offers a plugin architecture for extending it's networking capabilities. The library comes already with four built-in plugins. This is propably all you will ever need for your OSC applications:
@@ -63,7 +63,7 @@ osc-js offers a plugin architecture for extending it's networking capabilities. 
 
 Register the plugin when creating the OSC instance:
 
-```
+```js
 const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() }
 osc.open() // listening on 'ws://localhost:8080'
 ```
@@ -73,7 +73,7 @@ osc.open() // listening on 'ws://localhost:8080'
 1. Write a simple webpage. The library will use a WebSocket client
 by default.
 
-  ```
+  ```html
   <button id="send">Send Message</button>
   <script type="text/javascript" src="dist/osc.min.js"></script>
   <script type="text/javascript">
@@ -89,7 +89,7 @@ by default.
 
 2. Write a Node app (the "bridge" between your UDP and WebSocket clients).
 
-  ```
+  ```js
   const OSC = require('osc-js')
 
   const config = { udpClient: { port: 9129 } }
@@ -108,7 +108,7 @@ by default.
 
 It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://osc-js.github.io) for further information.
 
-```
+```js
 class MyCustomPlugin {
   // ... read docs for implementation details
 }
@@ -123,9 +123,9 @@ osc.on('/test', (message) => {
 
 ### Usage without plugins
 
-The library can also be used without the mentioned features in case you only need to write and read binary OSC data. See this example below (even though the library already has a solution for handling udp like in this example):
+The library can also be used without the mentioned features in case you only need to write and read binary OSC data. See this example below (even though the library already has a solution for handling UDP like in this example):
 
-```
+```js
 const dgram = require('dgram')
 const OSC = require('osc-js')
 
@@ -136,7 +136,7 @@ const message = new OSC.Message('/some/path', 21)
 const binary = message.pack()
 socket.send(new Buffer(binary), 0, binary.byteLength, 41234, 'localhost')
 
-// receive a message via udp
+// receive a message via UDP
 socket.on('message', (data) => {
   const msg = new OSC.Message()
   msg.unpack(data)
