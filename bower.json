@@ -1,37 +1,30 @@
 {
   "name": "osc-js",
-  "description": "OSC protocol interface with address pattern matching for javascript applications",
-  "version": "0.1.1",
+  "description": "OSC library for node and the browser, with Plugin API for WebSocket, UDP and bridge networking or any other custom solution",
+  "main": "dist/osc.js",
   "authors": [
-    "marmorkuchen.net <andreas@marmorkuchen.net>"
+    "adzialocha"
   ],
-  "homepage": "https://github.com/marmorkuchen-net/osc-js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/marmorkuchen-net/osc-js.git"
-  },
+  "license": "MIT",
   "keywords": [
     "osc",
-    "websockets",
-    "server",
-    "composition",
+    "data",
+    "open",
     "sound",
-    "address",
-    "max",
-    "puredata",
-    "audio",
-    "music"
+    "control",
+    "websocket",
+    "udp",
+    "datagram",
+    "network"
   ],
-  "main": "dist/osc-js.js",
+  "homepage": "https://github.com/adzialocha/osc-js",
   "ignore": [
-    ".jshintrc",
-    "Gruntfile.js",
-    "package.json",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "lib",
     "src",
-    "test"
-  ],
-  "dependencies": {},
-  "devDependencies": {},
-  "private": false,
-  "license": "MIT"
+    "*.config.js"
+  ]
 }

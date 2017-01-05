@@ -1,85 +1,170 @@
 osc-js
 ======
 
-OSC protocol interface ([OSC specs](http://opensoundcontrol.org/spec-1_0)) with address pattern matching for javascript applications - based on WebSocket API.
-```
-// setup connection
+osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
-var osc = new OSC();
-osc.connect('localhost', 8080);
+## Features
 
-// listen to osc messages with address
+- UMD Module running in node or your browser (without dependencies)
+- simple interface
+- built-in *UDP*, *WebSocket* networking support as plugins
+- special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
+- Plugin API for your own custom networking solutions
+- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
+- OSC Address pattern matching
+- Time-critical OSC Bundles with Timetags
+- osc-js is written in ES6 :-)
 
-var listener = osc.on('/instrument/1/delay', function(message) {
-  // do stuff
-  console.log(message.args, message.addressPattern);
-});
+## Documentation
 
-// unregister address listener
+Read more about osc-js and how to use it here: [https://osc-js.github.io](https://osc-js.github.io).
 
-osc.off('/instrument/1/delay', listener);
+## Example
 
-// send a OSC message to server
+```js
+const osc = new OSC()
 
-var msg = new OSC.Message('/controls/*', 21.211, 'somestring', new Blob('binarydata'));
+osc.on('/param/density', (message) => {
+  console.log(message.args)
+})
 
-msg.add(912);
-msg.add("another string");
+osc.on(['param', 'volume'], (message) => {
+  console.log(message.args)
+})
 
-osc.send(msg);
+osc.on('open', () => {
+  const message = new OSC.Message('/test', 12.221, 'hello')
+  osc.send(message)
 
-// send a OSC bundle to server
+  const bundle = new OSC.Bundle(Date.now() + 5000)
+  bundle.add(message)
+  osc.send(bundle, { host: '192.168.178.5' })
+})
 
-var bundle = new OSC.Bundle();
-bundle.timestamp(new Date().getTime() + 5000);
-
-bundle.add(msg);
-bundle.add(new OSC.message('/controls/21', 19.1));
-
-osc.send(bundle);
-
-// send another OSC bundle
-
-var bundle2 = new OSC.Bundle([ msg ], new Date().getTime() + 7500);
-osc.send(bundle2);
-
-// close session
-
-osc.disconnect();
+osc.open({ port: 9000 })
 ```
 
-## Address Pattern Matching
+## Installation and Usage
 
-The OSC address listener notification (on methods) is capable of address pattern matching. Example:
+Use bower via `bower install osc-js --save` or npm via `npm install osc-js --save` for installing osc-js as your project dependency.
+
+Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser. Read below for more examples.
+
+## Plugins
+
+osc-js offers a plugin architecture for extending it's networking capabilities. The library comes already with four built-in plugins. This is propably all you will ever need for your OSC applications:
+
+- `WebsocketClientPlugin` (default)
+- `WebsocketServerPlugin`
+- `DatagramPlugin` for UDP network messaging
+- `BridgePlugin` useful Bridge between WebSocket- and UDP Clients
+
+### Example: WebSocket Server
+
+Register the plugin when creating the OSC instance:
+
+```js
+const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() }
+osc.open() // listening on 'ws://localhost:8080'
 ```
-// server sends to address /in!trument/*, on client-side these will be called:
-osc.on('/instrument/1', function(message) { });
-osc.on('/instrument/2', function(message) { });
-osc.on('/instrument/3', function(message) { });
+
+### Example: OSC between Max/PD/SC etc. and your browser
+
+1. Write a simple webpage. The library will use a WebSocket client
+by default.
+
+  ```html
+  <button id="send">Send Message</button>
+  <script type="text/javascript" src="dist/osc.min.js"></script>
+  <script type="text/javascript">
+    var osc = new OSC();
+    osc.open(); // connect by default to ws://localhost:8080
+
+    document.getElementById('send').addEventListener('click', function() {
+      var message = new OSC.Message('/test/random', Math.random());
+      osc.send(message);
+    });
+  </script>
+  ```
+
+2. Write a Node app (the "bridge" between your UDP and WebSocket clients).
+
+  ```js
+  const OSC = require('osc-js')
+
+  const config = { udpClient: { port: 9129 } }
+  const osc = new OSC({ plugin: new OSC.BridgePlugin(config) })
+
+  osc.open() // start a WebSocket server on port 8080
+  ```
+
+3. Create your Max/MSP patch (or PD, or SuperCollider or whatever you need).
+
+  ```
+  [udpreceive 9129] // incoming '/test/random' messages with random number
+  ```
+
+### Custom solutions with Plugin API
+
+It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://osc-js.github.io) for further information.
+
+```js
+class MyCustomPlugin {
+  // ... read docs for implementation details
+}
+
+const osc = new OSC({ plugin: MyCustomPlugin() })
+osc.open()
+
+osc.on('/test', (message) => {
+  // use event listener with your plugin
+})
 ```
-Read more about this topic in the OSC [specs](http://opensoundcontrol.org/spec-1_0) and [examples](http://opensoundcontrol.org/spec-1_0-examples#addressparts).
 
-## WebSocket Servers
+### Usage without plugins
 
-To connect your Max MSP / PD etc. to your WebSocket client (propably a browser) you can use a NodeJS server as a bridge or these new solutions (some of them with a direct websocket link):
+The library can also be used without the mentioned features in case you only need to write and read binary OSC data. See this example below (even though the library already has a solution for handling UDP like in this example):
 
-* [Pure Data patch by Nicolas Lhommet](http://puredata.hurleur.com/sujet-10062-websocket-server-patch-extended-demo)
-* [ol.wsserver object for Max by Oli Larkin](https://github.com/olilarkin/wsserver)
-* [Autobahn framework for Python](http://autobahn.ws/)
-* [Websocket to UDP Bridge with HTTP server](https://gist.github.com/marmorkuchen-net/48544bd61183da666e6d)
-* [Turn any program that uses STDIN/STDOUT into a WebSocket server](https://github.com/joewalnes/websocketd)
+```js
+const dgram = require('dgram')
+const OSC = require('osc-js')
+
+const socket = dgram.createSocket('udp4')
+
+// send a messsage via udp
+const message = new OSC.Message('/some/path', 21)
+const binary = message.pack()
+socket.send(new Buffer(binary), 0, binary.byteLength, 41234, 'localhost')
+
+// receive a message via UDP
+socket.on('message', (data) => {
+  const msg = new OSC.Message()
+  msg.unpack(data)
+  console.log(msg.args)
+})
+```
 
 ## Development
 
-Fetch repository and set up environment
+osc-js uses [Babel](http://babeljs.io) for ES6 support, [ESDoc](https://esdoc.org) for documentation, [Mocha](https://mochajs.org/) + [Chai](http://chaijs.com/) for testing and [Rollup](https://rollupjs.org) for generating the UMD module.
 
-    git clone git@github.com:marmorkuchen-net/osc-js.git
-    npm install && bower install
+Clone the repository and install all dependencies:
 
-Start a server on localhost:9000 which is checking your js syntax and running the tests in background after every save. You can also open a browser and check the examples here.
+```
+git clone git://github.com/adzialocha/osc-js.git
+cd osc-js
+npm install
+```
 
-    grunt serve
+### Testing
 
-To build the source (in dist folder) just run
+`npm run test` for running the test suites.
+`npm run test:watch` for running specs during development. Check your style guide violations with `npm run lint`.
 
-    grunt
+### Deployment
+
+`npm run build` for creating a UMD module in `lib` folder and a browser distribution in `dist` folder.
+
+### ESDocs
+
+`npm run docs` for generating a `docs` folder with HTML files documenting the library.
