@@ -6,7 +6,7 @@ import Bundle from './bundle'
 import Message from './message'
 
 /**
- * Default options.
+ * Default options
  * @private
  */
 const defaultOptions = {
@@ -15,42 +15,54 @@ const defaultOptions = {
 
 /**
  * EventHandler to notify listeners on matching OSC messages and
- * status changes of connection plugins
+ * status changes of plugins
  */
 export default class EventHandler {
   /**
    * Create an EventHandler instance
    * @param {object} options Custom options
    */
-  constructor(options = {}) {
-    /** @type {object} options */
+  constructor(options) {
+    /**
+     * @type {object} options
+     * @private
+     */
     this.options = Object.assign({}, defaultOptions, options)
-    /** @type {array} addressHandlers */
+    /**
+     * @type {array} addressHandlers
+     * @private
+     */
     this.addressHandlers = []
-    /** @type {object} eventHandlers */
+    /**
+     * @type {object} eventHandlers
+     * @private
+     */
     this.eventHandlers = {
       open: [],
       error: [],
       close: [],
     }
-    /** @type {number} uuid */
+    /**
+     * @type {number} uuid
+     * @private
+     */
     this.uuid = 0
   }
 
   /**
    * Internally used method to dispatch OSC Packets. Extracts
-   * given Timetag's and dispatches them accordingly
+   * given Timetags and dispatches them accordingly
    * @param {Packet} packet
    * @return {boolean} Success state
    * @private
    */
   dispatch(packet) {
     if (!(packet instanceof Packet)) {
-      throw new Error('OSC EventHander dispatch method only accepts arguments of type Packet.')
+      throw new Error('OSC EventHander dispatch() accepts only arguments of type Packet')
     }
 
     if (!packet.value) {
-      throw new Error('OSC EventHander dispatch method cant read empty Packets.')
+      throw new Error('OSC EventHander dispatch() can\'t read empty Packets')
     }
 
     if (packet.value instanceof Bundle) {
@@ -59,7 +71,7 @@ export default class EventHandler {
       return bundle.bundleElements.forEach((bundleItem) => {
         if (packet.value instanceof Bundle) {
           if (bundle.timetag.value.timestamp() < bundleItem.timetag.value.timestamp()) {
-            throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles.')
+            throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles')
           }
           return this.dispatch(bundleItem)
         } else if (bundleItem instanceof Message) {
@@ -67,21 +79,21 @@ export default class EventHandler {
           return this.notify(message.address, message, bundle.timetag.value.timestamp())
         }
 
-        throw new Error('OSC EventHander dispatch method can\'t dispatch unknown Packet value.')
+        throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value')
       })
     } else if (packet.value instanceof Message) {
       const message = packet.value
       return this.notify(message.address, message)
     }
 
-    throw new Error('OSC EventHander dispatch method can\'t dispatch unknown Packet value.')
+    throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value')
   }
 
   /**
-   * Internally used method to invoke listener callbacks. Uses RegEx
-   * pattern matching for OSC address patterns
+   * Internally used method to invoke listener callbacks. Uses regular
+   * expression pattern matching for OSC addresses
    * @param {string} name OSC address or event name
-   * @param {*} data The data of the event
+   * @param {*} [data] The data of the event
    * @return {boolean} Success state
    * @private
    */
@@ -122,13 +134,13 @@ export default class EventHandler {
    * Notify the EventHandler of incoming OSC messages or status
    * changes (*open*, *close*, *error*). Handles OSC address patterns
    * and executes timed messages. Use binary arrays when
-   * handling directly incoming network data, Packet's or Messages can
+   * handling directly incoming network data. Packet's or Messages can
    * also be used
    * @param {...*} args
    * The OSC address pattern / event name as string}. For convenience and
    * Plugin API communication you can also use Message or Packet instances
    * or ArrayBuffer, Buffer instances (low-level access). The latter will
-   * automatically be unpacked.
+   * automatically be unpacked
    * When using a string you can also pass on data as a second argument
    * (any type). All regarding listeners will be notified with this data.
    * As a third argument you can define a javascript timestamp (number or
@@ -155,7 +167,7 @@ export default class EventHandler {
    */
   notify(...args) {
     if (args.length === 0) {
-      throw new Error('OSC EventHandler can not be called without any argument.')
+      throw new Error('OSC EventHandler can not be called without any argument')
     }
 
     // check for incoming dispatchable OSC data
@@ -187,7 +199,7 @@ export default class EventHandler {
       } else if (args[2] instanceof Date) {
         timestamp = args[2].getTime()
       } else {
-        throw new Error('OSC EventHandler timestamp has to be a number or Date.')
+        throw new Error('OSC EventHandler timestamp has to be a number or Date')
       }
     }
 
@@ -219,15 +231,15 @@ export default class EventHandler {
    * Subscribe to a new address or event you want to listen to
    * @param {string} name The OSC address or event name
    * @param {function} callback Callback function on notification
-   * @return {number} Subscription Id (needed to unsubscribe)
+   * @return {number} Subscription identifier (needed to unsubscribe)
    */
   on(name, callback) {
     if (!(isString(name) || isArray(name))) {
-      throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.')
+      throw new Error('OSC EventHandler accepts only strings or arrays for address patterns')
     }
 
     if (!isFunction(callback)) {
-      throw new Error('OSC EventHandler callback has to be a function.')
+      throw new Error('OSC EventHandler callback has to be a function')
     }
 
     // get next id
@@ -250,7 +262,7 @@ export default class EventHandler {
     const regex = new RegExp(/[#*\s[\],/{}|?]/g)
 
     if (regex.test(address.split('/').join(''))) {
-      throw new Error('OSC EventHandler address string contains invalid characters.')
+      throw new Error('OSC EventHandler address string contains invalid characters')
     }
 
     if (!(address in this.addressHandlers)) {
@@ -270,11 +282,11 @@ export default class EventHandler {
    */
   off(name, subscriptionId) {
     if (!(isString(name) || isArray(name))) {
-      throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.')
+      throw new Error('OSC EventHandler accepts only strings or arrays for address patterns')
     }
 
     if (!isInt(subscriptionId)) {
-      throw new Error('OSC EventHandler subscription id has to be a number.')
+      throw new Error('OSC EventHandler subscription id has to be a number')
     }
 
     let key

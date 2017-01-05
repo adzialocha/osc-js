@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 
-import WebsocketPlugin from '../../src/plugin/websocket'
+import WebsocketServerPlugin from '../../src/plugin/wsserver'
 
-/** @test {WebsocketPlugin} */
-describe('WebsocketPlugin', () => {
+/** @test {WebsocketServerPlugin} */
+describe('WebsocketServerPlugin', () => {
   let plugin
 
   before(() => {
-    plugin = new WebsocketPlugin({
+    plugin = new WebsocketServerPlugin({
       udpServer: {
         port: 8129,
       },

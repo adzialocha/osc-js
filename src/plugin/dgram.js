@@ -48,9 +48,9 @@ const defaultOptions = {
 export default class DatagramPlugin {
   /**
    * Create an OSC Plugin instance with given options. Defaults to
-   * localhost:41234 for serving and localhost:41235 for sending
+   * localhost:41234 for server and localhost:41235 for client messaging
    * @param {object} [options] Custom options
-   * @param {string} [options.type='udp4'] UDP4 or UDP6
+   * @param {string} [options.type='udp4'] 'udp4' or 'udp6'
    * @param {string} [options.open.host='localhost'] Hostname of udp server to bind to
    * @param {number} [options.open.port=41234] Port of udp server to bind to
    * @param {boolean} [options.open.exclusive=false] Exclusive flag
@@ -63,10 +63,11 @@ export default class DatagramPlugin {
    */
   constructor(customOptions = {}) {
     if (!dgram) {
-      throw new Error('DatagramPlugin can not be used in browser context.')
+      throw new Error('DatagramPlugin can not be used in browser context')
     }
 
-    /** @type {object} options
+    /**
+     * @type {object} options
      * @private
      */
     this.options = Object.assign({}, defaultOptions, customOptions)

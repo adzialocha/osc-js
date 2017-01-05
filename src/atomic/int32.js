@@ -8,11 +8,11 @@ import Atomic from '../atomic'
 export default class AtomicInt32 extends Atomic {
   /**
    * Create an AtomicInt32 instance
-   * @param {number} value Initial integer value
+   * @param {number} [value] Initial integer value
    */
   constructor(value) {
     if (value && !isInt(value)) {
-      throw new Error('OSC AtomicInt32 constructor expects value of type number.')
+      throw new Error('OSC AtomicInt32 constructor expects value of type number')
     }
 
     super(value)
@@ -29,7 +29,7 @@ export default class AtomicInt32 extends Atomic {
   /**
    * Unpack binary data from DataView and read a Int32 number
    * @param {DataView} dataView The DataView holding the binary representation of the value
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {

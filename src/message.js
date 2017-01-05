@@ -23,7 +23,10 @@ export default class Message {
    * const message = new Message('/test/path', 51.2)
    */
   constructor(...args) {
-    /** @type {number} offset */
+    /**
+     * @type {number} offset
+     * @private
+     */
     this.offset = 0
     /** @type {string} address */
     this.address = ''
@@ -34,7 +37,7 @@ export default class Message {
 
     if (args.length > 0) {
       if (!(isString(args[0]) || isArray(args[0]))) {
-        throw new Error('OSC Message constructor first argument (address) must be a string or array.')
+        throw new Error('OSC Message constructor first argument (address) must be a string or array')
       }
 
       this.address = prepareAddress(args.shift())
@@ -44,12 +47,12 @@ export default class Message {
   }
 
   /**
-   * Add a OSC Atomic Data Type to the list of elements
+   * Add an OSC Atomic Data Type to the list of elements
    * @param {*} item
    */
   add(item) {
     if (!item) {
-      throw new Error('OSC Message expects a valid item for adding.')
+      throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
     this.args.push(item)
@@ -62,7 +65,7 @@ export default class Message {
    */
   pack() {
     if (this.address.length === 0 || this.address[0] !== '/') {
-      throw new Error('OSC Message does not have a proper address.')
+      throw new Error('OSC Message has an invalid address')
     }
 
     const encoder = new Helper()
@@ -85,7 +88,7 @@ export default class Message {
         } else if (isBlob(value)) {
           argument = new AtomicBlob(value)
         } else {
-          throw new Error('OSC Message found unknown argument type.')
+          throw new Error('OSC Message found unknown argument type')
         }
 
         encoder.add(argument)
@@ -98,7 +101,7 @@ export default class Message {
   /**
    * Unpack binary data to read a Message
    * @param {DataView} dataView The DataView holding the binary representation of a Message
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
@@ -115,11 +118,11 @@ export default class Message {
     types.unpack(dataView, address.offset)
 
     if (address.value.length === 0 || address.value[0] !== '/') {
-      throw new Error('OSC Message found malformed or missing address string.')
+      throw new Error('OSC Message found malformed or missing address string')
     }
 
     if (types.value.length === 0 && types.value[0] !== ',') {
-      throw new Error('OSC Message found malformed or missing type string.')
+      throw new Error('OSC Message found malformed or missing type string')
     }
 
     let offset = types.offset
@@ -141,7 +144,7 @@ export default class Message {
       } else if (type === 'b') {
         next = new AtomicBlob()
       } else {
-        throw new Error('OSC Message found non-standard argument type.')
+        throw new Error('OSC Message found non-standard argument type')
       }
 
       offset = next.unpack(dataView, offset)

@@ -9,22 +9,26 @@ import AtomicString from './atomic/string'
 export default class Packet {
   /**
    * Create a Packet instance holding a Message or Bundle
-   * @param {Message|Bundle} value Initial Packet value
+   * @param {Message|Bundle} [value] Initial Packet value
    */
   constructor(value) {
     if (value && !(value instanceof Message || value instanceof Bundle)) {
-      throw new Error('OSC Packet can only consist of Message or Bundle.')
+      throw new Error('OSC Packet value has to be Message or Bundle')
     }
 
     /** @type {Message|Bundle} value */
     this.value = value
-    /** @type {number} offset */
+    /**
+     * @type {number} offset
+     * @private
+     */
     this.offset = 0
   }
 
   /**
-   * Packs the Packet value, this is more like a wrapper, you could also skip
-   * the Packet and directly pack the Message or Bundle.
+   * Packs the Packet value. This implementation is more like
+   * a wrapper due to OSC specifications, you could also skip the
+   * Packet and directly work with the Message or Bundle instance
    * @return {Uint8Array} Packed binary data
    *
    * @example
@@ -37,25 +41,25 @@ export default class Packet {
    */
   pack() {
     if (!this.value) {
-      throw new Error('OSC Packet can not be encoded with empty body.')
+      throw new Error('OSC Packet can not be encoded with empty body')
     }
 
     return this.value.pack()
   }
 
   /**
-   * Unpack binary data from DataView for Messages or Bundles
-   * @param {DataView} dataView The DataView holding the binary representation of a Packet
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * Unpack binary data from DataView to read Messages or Bundles
+   * @param {DataView} dataView The DataView holding a binary representation of a Packet
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
     if (!(dataView instanceof DataView)) {
-      throw new Error('OSC Packet expects an instance of type DataView.')
+      throw new Error('OSC Packet expects an instance of type DataView')
     }
 
     if (dataView.byteLength % 4 !== 0) {
-      throw new Error('OSC Packet byteLength has to be a multiple of four.')
+      throw new Error('OSC Packet byteLength has to be a multiple of four')
     }
 
     const head = new AtomicString()

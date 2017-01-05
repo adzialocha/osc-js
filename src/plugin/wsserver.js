@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-undef, no-use-before-define
-const WS = typeof __dirname === 'undefined' ? WebSocket : require('ws')
+const WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined
 
 /**
  * Status flags
@@ -23,22 +22,29 @@ const defaultOptions = {
 }
 
 /**
- * OSC plugin for Websocket messaging
+ * OSC plugin for a Websocket client running in node or browser context
  */
-export default class WebsocketPlugin {
+export default class WebsocketServerPlugin {
   /**
-   * Create an OSC Plugin instance with given options. Defaults to
-   * localhost:8080 for Websocket server. Needs 'ws' npm package
+   * Create an OSC WebsocketServerPlugin instance with given options.
+   * Defaults to *localhost:8080* for the Websocket server
    * @param {object} [options] Custom options
-   * @param {string} [options.host='localhost'] Hostname of websocket server to bind to
-   * @param {number} [options.port=8080] Port of websocket server to bind to
+   * @param {string} [options.host='localhost'] Hostname of Websocket server
+   * @param {number} [options.port=8080] Port of Websocket server
    *
    * @example
-   * const plugin = new OSC.WebsocketPlugin({ port: 9912 })
+   * const plugin = new OSC.WebsocketServerPlugin({ port: 9912 })
    * const osc = new OSC({ plugin: plugin })
+   *
+   * osc.open() // start server
    */
-  constructor(customOptions = {}) {
-    /** @type {object} options
+  constructor(customOptions) {
+    if (!WebsocketServer) {
+      throw new Error('WebsocketServerPlugin can not be used in browser context')
+    }
+
+    /**
+     * @type {object} options
      * @private
      */
     this.options = Object.assign({}, defaultOptions, customOptions)
@@ -73,17 +79,17 @@ export default class WebsocketPlugin {
 
   /**
    * Returns the current status of the connection
-   * @return {number} Status ID
+   * @return {number} Status identifier
    */
   status() {
     return this.socketStatus
   }
 
   /**
-   * Start a websocket server instance
+   * Start a Websocket server. Defaults to global options
    * @param {object} [customOptions] Custom options
-   * @param {string} [customOptions.host='localhost'] Hostname of websocket server to bind to
-   * @param {number} [customOptions.port=41234] Port of websocket server to bind to
+   * @param {string} [customOptions.host] Hostname of Websocket server
+   * @param {number} [customOptions.port] Port of Websocket server
    */
   open(customOptions = {}) {
     const options = Object.assign({}, this.options, customOptions)
@@ -95,32 +101,34 @@ export default class WebsocketPlugin {
     }
 
     // create websocket server
-    this.socket = new WS(`ws://${host}:${port}`)
+    this.socket = new WebsocketServer({ host, port })
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
     // register events
-    this.socket.onopen = () => {
+    this.socket.on('open', () => {
       this.socketStatus = STATUS.IS_OPEN
       this.notify('open')
-    }
+    })
 
-    this.socket.onclose = () => {
+    this.socket.on('close', () => {
       this.socketStatus = STATUS.IS_CLOSED
       this.notify('close')
-    }
+    })
 
-    this.socket.onerror = (error) => {
+    this.socket.on('error', (error) => {
       this.notify('error', error)
-    }
+    })
 
-    this.socket.onmessage = (message) => {
-      this.notify(message.data)
-    }
+    this.socket.on('connection', (client) => {
+      client.on('message', (message) => {
+        this.notify(new Uint8Array(message))
+      })
+    })
   }
 
   /**
-   * Close websocket
+   * Close Websocket server
    */
   close() {
     this.socketStatus = STATUS.IS_CLOSING
@@ -132,6 +140,8 @@ export default class WebsocketPlugin {
    * @param {Uint8Array} binary Binary representation of OSC Packet
    */
   send(binary) {
-    this.socket.send(binary)
+    this.socket.clients.forEach((client) => {
+      client.send(binary, { binary: true })
+    })
   }
 }

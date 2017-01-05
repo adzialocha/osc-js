@@ -11,13 +11,13 @@ import AtomicTimetag from './atomic/timetag'
 export const BUNDLE_TAG = '#bundle'
 
 /**
- * An OSC Bundle consist of an Timetag and Bundle Elements.
- * The contents are either OSC Messages or more OSC Bundles
+ * An OSC Bundle consist of a Timetag and one or many Bundle Elements.
+ * The elements are either OSC Messages or more OSC Bundles
  */
 export default class Bundle {
   /**
    * Create a Bundle instance
-   * @param {...*} args Timetag and elements
+   * @param {...*} [args] Timetag and elements. See examples for options
    *
    * @example
    * const bundle = new Bundle(new Date() + 500)
@@ -32,7 +32,10 @@ export default class Bundle {
    * const anotherBundle = new Bundle(message, anotherMessage)
    */
   constructor(...args) {
-    /** @type {number} offset */
+    /**
+     * @type {number} offset
+     * @private
+     */
     this.offset = 0
     /** @type {AtomicTimetag} timetag */
     this.timetag = new AtomicTimetag()
@@ -72,7 +75,7 @@ export default class Bundle {
    */
   timestamp(ms) {
     if (!isInt(ms)) {
-      throw new Error('OSC Bundle needs an Integer for setting its timestamp.')
+      throw new Error('OSC Bundle needs an integer for setting the timestamp')
     }
 
     this.timetag = new AtomicTimetag(ms)
@@ -84,7 +87,7 @@ export default class Bundle {
    */
   add(item) {
     if (!(item instanceof Message || item instanceof Bundle)) {
-      throw new Error('OSC Bundle contains only Messages and Bundles.')
+      throw new Error('OSC Bundle contains only Messages and Bundles')
     }
 
     this.bundleElements.push(item)
@@ -119,12 +122,12 @@ export default class Bundle {
   /**
    * Unpack binary data to read a Bundle
    * @param {DataView} dataView The DataView holding the binary representation of a Bundle
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
     if (!(dataView instanceof DataView)) {
-      throw new Error('OSC Bundle expects an instance of type DataView.')
+      throw new Error('OSC Bundle expects an instance of type DataView')
     }
 
     // read the beginning bundle string
@@ -132,7 +135,7 @@ export default class Bundle {
     head.unpack(dataView, initialOffset)
 
     if (head.value !== BUNDLE_TAG) {
-      throw new Error('OSC Bundle does not contain a valid #bundle head.')
+      throw new Error('OSC Bundle does not contain a valid #bundle head')
     }
 
     // read the timetag

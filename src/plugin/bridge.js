@@ -47,24 +47,24 @@ function mergeOptions(base, custom) {
 }
 
 /**
- * OSC plugin for setting up communication between a websocket
+ * OSC plugin for setting up communication between a Websocket
  * client and a udp client with a bridge inbetween
  */
 export default class BridgePlugin {
   /**
    * Create an OSC Bridge instance with given options. Defaults to
    * localhost:41234 for udp server, localhost:41235 for udp client and
-   * localhost:8080 for websocket server
+   * localhost:8080 for Websocket server
    * @param {object} [options] Custom options
    * @param {string} [options.udpServer.host='localhost'] Hostname of udp server to bind to
    * @param {number} [options.udpServer.port=41234] Port of udp server to bind to
    * @param {boolean} [options.udpServer.exclusive=false] Exclusive flag
    * @param {string} [options.udpClient.host='localhost'] Hostname of udp client for messaging
    * @param {number} [options.udpClient.port=41235] Port of udp client for messaging
-   * @param {string} [options.wsServer.host='localhost'] Hostname of websocket server
-   * @param {number} [options.wsServer.port=8080] Port of websocket server
+   * @param {string} [options.wsServer.host='localhost'] Hostname of Websocket server
+   * @param {number} [options.wsServer.port=8080] Port of Websocket server
    * @param {string} [options.receiver='ws'] Where messages sent via 'send' method will be
-   * delivered to, 'ws' for websocket clients, 'udp' for udp client
+   * delivered to, 'ws' for Websocket clients, 'udp' for udp client
    *
    * @example
    * const plugin = new OSC.BridgePlugin({ wsServer: { port: 9912 } })
@@ -72,7 +72,7 @@ export default class BridgePlugin {
    */
   constructor(customOptions = {}) {
     if (!dgram || !WebSocket) {
-      throw new Error('BridgePlugin can not be used in browser context.')
+      throw new Error('BridgePlugin can not be used in browser context')
     }
 
     /** @type {object} options
@@ -150,11 +150,11 @@ export default class BridgePlugin {
       port: options.udpServer.port,
       exclusive: options.udpServer.exclusive,
     }, () => {
-      // bind websocket server
+      // bind Websocket server
       this.websocket = new WebSocket({ host: options.wsServer.host, port: options.wsServer.port })
       this.websocket.binaryType = 'arraybuffer'
 
-      // register websocket events
+      // register Websocket events
       this.websocket.on('error', (error) => {
         this.notify('error', error)
       })
@@ -171,7 +171,7 @@ export default class BridgePlugin {
   }
 
   /**
-   * Close udp socket and websocket server
+   * Close udp socket and Websocket server
    */
   close() {
     this.socketStatus = STATUS.IS_CLOSING
@@ -181,7 +181,7 @@ export default class BridgePlugin {
       this.socketStatus = STATUS.IS_CLOSED
       this.notify('close')
 
-      // close websocket
+      // close Websocket
       this.websocket.close()
     })
   }
@@ -211,12 +211,12 @@ export default class BridgePlugin {
         options.udpClient.host,
       )
     } else if (receiver === 'ws') {
-      // send data to all websocket clients
+      // send data to all Websocket clients
       this.websocket.clients.forEach((client) => {
         client.send(binary, { binary: true })
       })
     } else {
-      throw new Error('BridgePlugin can not send message to unknown receiver.')
+      throw new Error('BridgePlugin can not send message to unknown receiver')
     }
   }
 }

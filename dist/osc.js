@@ -179,7 +179,7 @@ function typeTag(item) {
   } else if (isBlob(item)) {
     return 'b';
   }
-  throw new Error('OSC Message found unknown value type.');
+  throw new Error('OSC typeTag() found unknown value type');
 }
 function prepareAddress(obj) {
   var address = '';
@@ -195,12 +195,12 @@ function prepareAddress(obj) {
     }
     return address;
   }
-  throw new Error('OSC Helpers can only prepare addresses which are of type array or string.');
+  throw new Error('OSC prepareAddress() needs addresses of type array or string');
 }
 function prepareRegExPattern(str) {
   var pattern = void 0;
   if (!isString(str)) {
-    throw new Error('OSC Helper prepareRegExPattern only accepts strings.');
+    throw new Error('OSC prepareRegExPattern() needs strings');
   }
   pattern = str.replace(/\./g, '\\.');
   pattern = pattern.replace(/\(/g, '\\(');
@@ -252,12 +252,12 @@ var Atomic = function () {
     key: 'pack',
     value: function pack(method, byteLength) {
       if (!(method && byteLength)) {
-        throw new Error('OSC Atomic cant\'t be packed without given method or byteLength.');
+        throw new Error('OSC Atomic cant\'t be packed without given method or byteLength');
       }
       var data = new Uint8Array(byteLength);
       var dataView = new DataView(data.buffer);
       if (!this.value) {
-        throw new Error('OSC Atomic cant\'t be encoded with empty value.');
+        throw new Error('OSC Atomic cant\'t be encoded with empty value');
       }
       dataView[method](this.offset, this.value, false);
       return data;
@@ -267,10 +267,10 @@ var Atomic = function () {
     value: function unpack(dataView, method, byteLength) {
       var initialOffset = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
       if (!(dataView && method && byteLength)) {
-        throw new Error('OSC Atomic cant\'t be unpacked without given dataView, method or byteLength.');
+        throw new Error('OSC Atomic cant\'t be unpacked without given dataView, method or byteLength');
       }
       if (!(dataView instanceof DataView)) {
-        throw new Error('OSC Atomic expects an instance of type DataView.');
+        throw new Error('OSC Atomic expects an instance of type DataView');
       }
       this.value = dataView[method](initialOffset, false);
       this.offset = initialOffset + byteLength;
@@ -285,7 +285,7 @@ var AtomicInt32 = function (_Atomic) {
   function AtomicInt32(value) {
     classCallCheck(this, AtomicInt32);
     if (value && !isInt(value)) {
-      throw new Error('OSC AtomicInt32 constructor expects value of type number.');
+      throw new Error('OSC AtomicInt32 constructor expects value of type number');
     }
     return possibleConstructorReturn(this, (AtomicInt32.__proto__ || Object.getPrototypeOf(AtomicInt32)).call(this, value));
   }
@@ -309,7 +309,7 @@ var AtomicFloat32 = function (_Atomic) {
   function AtomicFloat32(value) {
     classCallCheck(this, AtomicFloat32);
     if (value && !isFloat(value)) {
-      throw new Error('OSC AtomicFloat32 constructor expects value of type float.');
+      throw new Error('OSC AtomicFloat32 constructor expects value of type float');
     }
     return possibleConstructorReturn(this, (AtomicFloat32.__proto__ || Object.getPrototypeOf(AtomicFloat32)).call(this, value));
   }
@@ -333,7 +333,7 @@ var AtomicString = function (_Atomic) {
   function AtomicString(value) {
     classCallCheck(this, AtomicString);
     if (value && !isString(value)) {
-      throw new Error('OSC AtomicString constructor expects value of type string.');
+      throw new Error('OSC AtomicString constructor expects value of type string');
     }
     return possibleConstructorReturn(this, (AtomicString.__proto__ || Object.getPrototypeOf(AtomicString)).call(this, value));
   }
@@ -341,7 +341,7 @@ var AtomicString = function (_Atomic) {
     key: 'pack',
     value: function pack() {
       if (!this.value) {
-        throw new Error('OSC AtomicString can not be encoded with empty value.');
+        throw new Error('OSC AtomicString can not be encoded with empty value');
       }
       var terminated = this.value + '\0';
       var byteLength = pad(terminated.length);
@@ -356,7 +356,7 @@ var AtomicString = function (_Atomic) {
     value: function unpack(dataView$$1) {
       var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (!(dataView$$1 instanceof DataView)) {
-        throw new Error('OSC AtomicString expects an instance of type DataView.');
+        throw new Error('OSC AtomicString expects an instance of type DataView');
       }
       var offset = initialOffset;
       var charcode = void 0;
@@ -371,7 +371,7 @@ var AtomicString = function (_Atomic) {
         }
       }
       if (offset === dataView$$1.length) {
-        throw new Error('OSC AtomicString found a malformed OSC string.');
+        throw new Error('OSC AtomicString found a malformed OSC string');
       }
       this.offset = pad(offset);
       this.value = String.fromCharCode.apply(null, data);
@@ -386,7 +386,7 @@ var AtomicBlob = function (_Atomic) {
   function AtomicBlob(value) {
     classCallCheck(this, AtomicBlob);
     if (value && !isBlob(value)) {
-      throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array.');
+      throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array');
     }
     return possibleConstructorReturn(this, (AtomicBlob.__proto__ || Object.getPrototypeOf(AtomicBlob)).call(this, value));
   }
@@ -394,7 +394,7 @@ var AtomicBlob = function (_Atomic) {
     key: 'pack',
     value: function pack() {
       if (!this.value) {
-        throw new Error('OSC AtomicBlob can not be encoded with empty value.');
+        throw new Error('OSC AtomicBlob can not be encoded with empty value');
       }
       var byteLength = pad(this.value.byteLength);
       var data = new Uint8Array(byteLength + 4);
@@ -408,7 +408,7 @@ var AtomicBlob = function (_Atomic) {
     value: function unpack(dataView$$1) {
       var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (!(dataView$$1 instanceof DataView)) {
-        throw new Error('OSC AtomicBlob expects an instance of type DataView.');
+        throw new Error('OSC AtomicBlob expects an instance of type DataView');
       }
       var byteLength = dataView$$1.getInt32(initialOffset, false);
       this.value = new Uint8Array(dataView$$1.buffer, initialOffset + 4, byteLength);
@@ -431,7 +431,7 @@ var Message = function () {
     }
     if (args.length > 0) {
       if (!(isString(args[0]) || isArray(args[0]))) {
-        throw new Error('OSC Message constructor first argument (address) must be a string or array.');
+        throw new Error('OSC Message constructor first argument (address) must be a string or array');
       }
       this.address = prepareAddress(args.shift());
       this.types = args.map(function (item) {
@@ -444,7 +444,7 @@ var Message = function () {
     key: 'add',
     value: function add(item) {
       if (!item) {
-        throw new Error('OSC Message expects a valid item for adding.');
+        throw new Error('OSC Message needs a valid OSC Atomic Data Type');
       }
       this.args.push(item);
       this.types += typeTag(item);
@@ -454,7 +454,7 @@ var Message = function () {
     value: function pack() {
       var _this = this;
       if (this.address.length === 0 || this.address[0] !== '/') {
-        throw new Error('OSC Message does not have a proper address.');
+        throw new Error('OSC Message has an invalid address');
       }
       var encoder = new EncodeHelper();
       encoder.add(new AtomicString(this.address));
@@ -472,7 +472,7 @@ var Message = function () {
             } else if (isBlob(value)) {
               argument = new AtomicBlob(value);
             } else {
-              throw new Error('OSC Message found unknown argument type.');
+              throw new Error('OSC Message found unknown argument type');
             }
             encoder.add(argument);
           });
@@ -492,10 +492,10 @@ var Message = function () {
       var types = new AtomicString();
       types.unpack(dataView$$1, address.offset);
       if (address.value.length === 0 || address.value[0] !== '/') {
-        throw new Error('OSC Message found malformed or missing address string.');
+        throw new Error('OSC Message found malformed or missing address string');
       }
       if (types.value.length === 0 && types.value[0] !== ',') {
-        throw new Error('OSC Message found malformed or missing type string.');
+        throw new Error('OSC Message found malformed or missing type string');
       }
       var offset = types.offset;
       var next = void 0;
@@ -512,7 +512,7 @@ var Message = function () {
         } else if (type === 'b') {
           next = new AtomicBlob();
         } else {
-          throw new Error('OSC Message found non-standard argument type.');
+          throw new Error('OSC Message found non-standard argument type');
         }
         offset = next.unpack(dataView$$1, offset);
         args.push(next.value);
@@ -535,7 +535,7 @@ var Timetag = function () {
     var fractions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     classCallCheck(this, Timetag);
     if (!(isInt(seconds) && isInt(fractions))) {
-      throw new Error('OSC Timetag constructor expects values of type integer number.');
+      throw new Error('OSC Timetag constructor expects values of type integer number');
     }
     this.seconds = seconds;
     this.fractions = fractions;
@@ -559,7 +559,8 @@ var Timetag = function () {
 }();
 var AtomicTimetag = function (_Atomic) {
   inherits(AtomicTimetag, _Atomic);
-  function AtomicTimetag(value) {
+  function AtomicTimetag() {
+    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Date.now();
     classCallCheck(this, AtomicTimetag);
     var timetag = new Timetag();
     if (value instanceof Timetag) {
@@ -568,8 +569,6 @@ var AtomicTimetag = function (_Atomic) {
       timetag.timestamp(value);
     } else if (isDate(value)) {
       timetag.timestamp(value.getTime());
-    } else {
-      timetag.timestamp(Date.now());
     }
     return possibleConstructorReturn(this, (AtomicTimetag.__proto__ || Object.getPrototypeOf(AtomicTimetag)).call(this, timetag));
   }
@@ -577,7 +576,7 @@ var AtomicTimetag = function (_Atomic) {
     key: 'pack',
     value: function pack() {
       if (!this.value) {
-        throw new Error('OSC AtomicTimetag can not be encoded with empty value.');
+        throw new Error('OSC AtomicTimetag can not be encoded with empty value');
       }
       var _value = this.value,
           seconds = _value.seconds,
@@ -593,7 +592,7 @@ var AtomicTimetag = function (_Atomic) {
     value: function unpack(dataView$$1) {
       var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (!(dataView$$1 instanceof DataView)) {
-        throw new Error('OSC AtomicTimetag expects an instance of type DataView.');
+        throw new Error('OSC AtomicTimetag expects an instance of type DataView');
       }
       var seconds = dataView$$1.getUint32(initialOffset, false);
       var fractions = dataView$$1.getUint32(initialOffset + 4, false);
@@ -637,7 +636,7 @@ var Bundle = function () {
     key: 'timestamp',
     value: function timestamp(ms) {
       if (!isInt(ms)) {
-        throw new Error('OSC Bundle needs an Integer for setting its timestamp.');
+        throw new Error('OSC Bundle needs an integer for setting the timestamp');
       }
       this.timetag = new AtomicTimetag(ms);
     }
@@ -645,7 +644,7 @@ var Bundle = function () {
     key: 'add',
     value: function add(item) {
       if (!(item instanceof Message || item instanceof Bundle)) {
-        throw new Error('OSC Bundle contains only Messages and Bundles.');
+        throw new Error('OSC Bundle contains only Messages and Bundles');
       }
       this.bundleElements.push(item);
     }
@@ -669,12 +668,12 @@ var Bundle = function () {
     value: function unpack(dataView$$1) {
       var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (!(dataView$$1 instanceof DataView)) {
-        throw new Error('OSC Bundle expects an instance of type DataView.');
+        throw new Error('OSC Bundle expects an instance of type DataView');
       }
       var head = new AtomicString();
       head.unpack(dataView$$1, initialOffset);
       if (head.value !== BUNDLE_TAG) {
-        throw new Error('OSC Bundle does not contain a valid #bundle head.');
+        throw new Error('OSC Bundle does not contain a valid #bundle head');
       }
       var timetag = new AtomicTimetag();
       var offset = timetag.unpack(dataView$$1, head.offset);
@@ -698,7 +697,7 @@ var Packet = function () {
   function Packet(value) {
     classCallCheck(this, Packet);
     if (value && !(value instanceof Message || value instanceof Bundle)) {
-      throw new Error('OSC Packet can only consist of Message or Bundle.');
+      throw new Error('OSC Packet value has to be Message or Bundle');
     }
     this.value = value;
     this.offset = 0;
@@ -707,7 +706,7 @@ var Packet = function () {
     key: 'pack',
     value: function pack() {
       if (!this.value) {
-        throw new Error('OSC Packet can not be encoded with empty body.');
+        throw new Error('OSC Packet can not be encoded with empty body');
       }
       return this.value.pack();
     }
@@ -716,10 +715,10 @@ var Packet = function () {
     value: function unpack(dataView) {
       var initialOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (!(dataView instanceof DataView)) {
-        throw new Error('OSC Packet expects an instance of type DataView.');
+        throw new Error('OSC Packet expects an instance of type DataView');
       }
       if (dataView.byteLength % 4 !== 0) {
-        throw new Error('OSC Packet byteLength has to be a multiple of four.');
+        throw new Error('OSC Packet byteLength has to be a multiple of four');
       }
       var head = new AtomicString();
       head.unpack(dataView, initialOffset);
@@ -742,8 +741,7 @@ var defaultOptions$1 = {
   discardLateMessages: false
 };
 var EventHandler = function () {
-  function EventHandler() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  function EventHandler(options) {
     classCallCheck(this, EventHandler);
     this.options = Object.assign({}, defaultOptions$1, options);
     this.addressHandlers = [];
@@ -759,10 +757,10 @@ var EventHandler = function () {
     value: function dispatch(packet) {
       var _this = this;
       if (!(packet instanceof Packet)) {
-        throw new Error('OSC EventHander dispatch method only accepts arguments of type Packet.');
+        throw new Error('OSC EventHander dispatch() accepts only arguments of type Packet');
       }
       if (!packet.value) {
-        throw new Error('OSC EventHander dispatch method cant read empty Packets.');
+        throw new Error('OSC EventHander dispatch() can\'t read empty Packets');
       }
       if (packet.value instanceof Bundle) {
         var _ret = function () {
@@ -771,14 +769,14 @@ var EventHandler = function () {
             v: bundle.bundleElements.forEach(function (bundleItem) {
               if (packet.value instanceof Bundle) {
                 if (bundle.timetag.value.timestamp() < bundleItem.timetag.value.timestamp()) {
-                  throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles.');
+                  throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles');
                 }
                 return _this.dispatch(bundleItem);
               } else if (bundleItem instanceof Message) {
                 var message = bundleItem;
                 return _this.notify(message.address, message, bundle.timetag.value.timestamp());
               }
-              throw new Error('OSC EventHander dispatch method can\'t dispatch unknown Packet value.');
+              throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value');
             })
           };
         }();
@@ -787,7 +785,7 @@ var EventHandler = function () {
         var message = packet.value;
         return this.notify(message.address, message);
       }
-      throw new Error('OSC EventHander dispatch method can\'t dispatch unknown Packet value.');
+      throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value');
     }
   }, {
     key: 'call',
@@ -822,7 +820,7 @@ var EventHandler = function () {
         args[_key] = arguments[_key];
       }
       if (args.length === 0) {
-        throw new Error('OSC EventHandler can not be called without any argument.');
+        throw new Error('OSC EventHandler can not be called without any argument');
       }
       if (args[0] instanceof Packet) {
         return this.dispatch(args[0]);
@@ -845,7 +843,7 @@ var EventHandler = function () {
         } else if (args[2] instanceof Date) {
           timestamp = args[2].getTime();
         } else {
-          throw new Error('OSC EventHandler timestamp has to be a number or Date.');
+          throw new Error('OSC EventHandler timestamp has to be a number or Date');
         }
       }
       if (timestamp) {
@@ -874,10 +872,10 @@ var EventHandler = function () {
     key: 'on',
     value: function on(name, callback) {
       if (!(isString(name) || isArray(name))) {
-        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
+        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns');
       }
       if (!isFunction(callback)) {
-        throw new Error('OSC EventHandler callback has to be a function.');
+        throw new Error('OSC EventHandler callback has to be a function');
       }
       this.uuid += 1;
       var handler = {
@@ -891,7 +889,7 @@ var EventHandler = function () {
       var address = prepareAddress(name);
       var regex = new RegExp(/[#*\s[\],/{}|?]/g);
       if (regex.test(address.split('/').join(''))) {
-        throw new Error('OSC EventHandler address string contains invalid characters.');
+        throw new Error('OSC EventHandler address string contains invalid characters');
       }
       if (!(address in this.addressHandlers)) {
         this.addressHandlers[address] = [];
@@ -903,10 +901,10 @@ var EventHandler = function () {
     key: 'off',
     value: function off(name, subscriptionId) {
       if (!(isString(name) || isArray(name))) {
-        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns.');
+        throw new Error('OSC EventHandler accepts only strings or arrays for address patterns');
       }
       if (!isInt(subscriptionId)) {
-        throw new Error('OSC EventHandler subscription id has to be a number.');
+        throw new Error('OSC EventHandler subscription id has to be a number');
       }
       var key = void 0;
       var haystack = void 0;
@@ -960,7 +958,7 @@ var DatagramPlugin = function () {
     var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, DatagramPlugin);
     if (!dgram) {
-      throw new Error('DatagramPlugin can not be used in browser context.');
+      throw new Error('DatagramPlugin can not be used in browser context');
     }
     this.options = Object.assign({}, defaultOptions$2, customOptions);
     this.socket = dgram.createSocket(this.options.type);
@@ -1024,7 +1022,8 @@ var DatagramPlugin = function () {
   return DatagramPlugin;
 }();
 
-var WS = typeof __dirname === 'undefined' ? WebSocket : require('ws');
+var dgram$1 = typeof __dirname !== 'undefined' ? require('dgram') : undefined;
+var WebSocket$1 = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
 var STATUS$2 = {
   IS_NOT_INITIALIZED: -1,
   IS_CONNECTING: 0,
@@ -1033,82 +1032,6 @@ var STATUS$2 = {
   IS_CLOSED: 3
 };
 var defaultOptions$3 = {
-  host: 'localhost',
-  port: 8080
-};
-var WebsocketPlugin = function () {
-  function WebsocketPlugin() {
-    var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    classCallCheck(this, WebsocketPlugin);
-    this.options = Object.assign({}, defaultOptions$3, customOptions);
-    this.socket = null;
-    this.socketStatus = STATUS$2.IS_NOT_INITIALIZED;
-    this.notify = function () {};
-  }
-  createClass(WebsocketPlugin, [{
-    key: 'registerNotify',
-    value: function registerNotify(fn) {
-      this.notify = fn;
-    }
-  }, {
-    key: 'status',
-    value: function status() {
-      return this.socketStatus;
-    }
-  }, {
-    key: 'open',
-    value: function open() {
-      var _this = this;
-      var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = Object.assign({}, this.options, customOptions);
-      var port = options.port,
-          host = options.host;
-      if (this.socket) {
-        this.close();
-      }
-      this.socket = new WS('ws://' + host + ':' + port);
-      this.socket.binaryType = 'arraybuffer';
-      this.socketStatus = STATUS$2.IS_CONNECTING;
-      this.socket.onopen = function () {
-        _this.socketStatus = STATUS$2.IS_OPEN;
-        _this.notify('open');
-      };
-      this.socket.onclose = function () {
-        _this.socketStatus = STATUS$2.IS_CLOSED;
-        _this.notify('close');
-      };
-      this.socket.onerror = function (error) {
-        _this.notify('error', error);
-      };
-      this.socket.onmessage = function (message) {
-        _this.notify(message.data);
-      };
-    }
-  }, {
-    key: 'close',
-    value: function close() {
-      this.socketStatus = STATUS$2.IS_CLOSING;
-      this.socket.close();
-    }
-  }, {
-    key: 'send',
-    value: function send(binary) {
-      this.socket.send(binary);
-    }
-  }]);
-  return WebsocketPlugin;
-}();
-
-var dgram$1 = typeof __dirname !== 'undefined' ? require('dgram') : undefined;
-var WebSocket$1 = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
-var STATUS$3 = {
-  IS_NOT_INITIALIZED: -1,
-  IS_CONNECTING: 0,
-  IS_OPEN: 1,
-  IS_CLOSING: 2,
-  IS_CLOSED: 3
-};
-var defaultOptions$4 = {
   udpServer: {
     host: 'localhost',
     port: 41234,
@@ -1125,10 +1048,10 @@ var defaultOptions$4 = {
   receiver: 'ws'
 };
 function mergeOptions(base, custom) {
-  return Object.assign({}, defaultOptions$4, base, custom, {
-    udpServer: Object.assign({}, defaultOptions$4.udpServer, base.udpServer, custom.udpServer),
-    udpClient: Object.assign({}, defaultOptions$4.udpClient, base.udpClient, custom.udpClient),
-    wsServer: Object.assign({}, defaultOptions$4.wsServer, base.wsServer, custom.wsServer)
+  return Object.assign({}, defaultOptions$3, base, custom, {
+    udpServer: Object.assign({}, defaultOptions$3.udpServer, base.udpServer, custom.udpServer),
+    udpClient: Object.assign({}, defaultOptions$3.udpClient, base.udpClient, custom.udpClient),
+    wsServer: Object.assign({}, defaultOptions$3.wsServer, base.wsServer, custom.wsServer)
   });
 }
 var BridgePlugin = function () {
@@ -1137,12 +1060,12 @@ var BridgePlugin = function () {
     var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, BridgePlugin);
     if (!dgram$1 || !WebSocket$1) {
-      throw new Error('BridgePlugin can not be used in browser context.');
+      throw new Error('BridgePlugin can not be used in browser context');
     }
     this.options = mergeOptions({}, customOptions);
     this.websocket = null;
     this.socket = dgram$1.createSocket('udp4');
-    this.socketStatus = STATUS$3.IS_NOT_INITIALIZED;
+    this.socketStatus = STATUS$2.IS_NOT_INITIALIZED;
     this.socket.on('message', function (message) {
       _this.send(message, { receiver: 'ws' });
       _this.notify(message.buffer);
@@ -1168,7 +1091,7 @@ var BridgePlugin = function () {
       var _this2 = this;
       var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var options = mergeOptions(this.options, customOptions);
-      this.socketStatus = STATUS$3.IS_CONNECTING;
+      this.socketStatus = STATUS$2.IS_CONNECTING;
       this.socket.bind({
         address: options.udpServer.host,
         port: options.udpServer.port,
@@ -1192,9 +1115,9 @@ var BridgePlugin = function () {
     key: 'close',
     value: function close() {
       var _this3 = this;
-      this.socketStatus = STATUS$3.IS_CLOSING;
+      this.socketStatus = STATUS$2.IS_CLOSING;
       this.socket.close(function () {
-        _this3.socketStatus = STATUS$3.IS_CLOSED;
+        _this3.socketStatus = STATUS$2.IS_CLOSED;
         _this3.notify('close');
         _this3.websocket.close();
       });
@@ -1213,15 +1136,173 @@ var BridgePlugin = function () {
           client.send(binary, { binary: true });
         });
       } else {
-        throw new Error('BridgePlugin can not send message to unknown receiver.');
+        throw new Error('BridgePlugin can not send message to unknown receiver');
       }
     }
   }]);
   return BridgePlugin;
 }();
 
+var WebsocketClient = typeof __dirname === 'undefined' ? WebSocket : require('ws');
+var STATUS$3 = {
+  IS_NOT_INITIALIZED: -1,
+  IS_CONNECTING: 0,
+  IS_OPEN: 1,
+  IS_CLOSING: 2,
+  IS_CLOSED: 3
+};
+var defaultOptions$4 = {
+  host: 'localhost',
+  port: 8080
+};
+var WebsocketClientPlugin = function () {
+  function WebsocketClientPlugin(customOptions) {
+    classCallCheck(this, WebsocketClientPlugin);
+    if (!WebsocketClient) {
+      throw new Error('WebsocketClientPlugin can\'t find a WebSocket class');
+    }
+    this.options = Object.assign({}, defaultOptions$4, customOptions);
+    this.socket = null;
+    this.socketStatus = STATUS$3.IS_NOT_INITIALIZED;
+    this.notify = function () {};
+  }
+  createClass(WebsocketClientPlugin, [{
+    key: 'registerNotify',
+    value: function registerNotify(fn) {
+      this.notify = fn;
+    }
+  }, {
+    key: 'status',
+    value: function status() {
+      return this.socketStatus;
+    }
+  }, {
+    key: 'open',
+    value: function open() {
+      var _this = this;
+      var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var options = Object.assign({}, this.options, customOptions);
+      var port = options.port,
+          host = options.host;
+      if (this.socket) {
+        this.close();
+      }
+      this.socket = new WebsocketClient('ws://' + host + ':' + port);
+      this.socket.binaryType = 'arraybuffer';
+      this.socketStatus = STATUS$3.IS_CONNECTING;
+      this.socket.onopen = function () {
+        _this.socketStatus = STATUS$3.IS_OPEN;
+        _this.notify('open');
+      };
+      this.socket.onclose = function () {
+        _this.socketStatus = STATUS$3.IS_CLOSED;
+        _this.notify('close');
+      };
+      this.socket.onerror = function (error) {
+        _this.notify('error', error);
+      };
+      this.socket.onmessage = function (message) {
+        _this.notify(message.data);
+      };
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      this.socketStatus = STATUS$3.IS_CLOSING;
+      this.socket.close();
+    }
+  }, {
+    key: 'send',
+    value: function send(binary) {
+      this.socket.send(binary);
+    }
+  }]);
+  return WebsocketClientPlugin;
+}();
+
+var WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
+var STATUS$4 = {
+  IS_NOT_INITIALIZED: -1,
+  IS_CONNECTING: 0,
+  IS_OPEN: 1,
+  IS_CLOSING: 2,
+  IS_CLOSED: 3
+};
+var defaultOptions$5 = {
+  host: 'localhost',
+  port: 8080
+};
+var WebsocketServerPlugin = function () {
+  function WebsocketServerPlugin(customOptions) {
+    classCallCheck(this, WebsocketServerPlugin);
+    if (!WebsocketServer) {
+      throw new Error('WebsocketServerPlugin can not be used in browser context');
+    }
+    this.options = Object.assign({}, defaultOptions$5, customOptions);
+    this.socket = null;
+    this.socketStatus = STATUS$4.IS_NOT_INITIALIZED;
+    this.notify = function () {};
+  }
+  createClass(WebsocketServerPlugin, [{
+    key: 'registerNotify',
+    value: function registerNotify(fn) {
+      this.notify = fn;
+    }
+  }, {
+    key: 'status',
+    value: function status() {
+      return this.socketStatus;
+    }
+  }, {
+    key: 'open',
+    value: function open() {
+      var _this = this;
+      var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var options = Object.assign({}, this.options, customOptions);
+      var port = options.port,
+          host = options.host;
+      if (this.socket) {
+        this.close();
+      }
+      this.socket = new WebsocketServer({ host: host, port: port });
+      this.socket.binaryType = 'arraybuffer';
+      this.socketStatus = STATUS$4.IS_CONNECTING;
+      this.socket.on('open', function () {
+        _this.socketStatus = STATUS$4.IS_OPEN;
+        _this.notify('open');
+      });
+      this.socket.on('close', function () {
+        _this.socketStatus = STATUS$4.IS_CLOSED;
+        _this.notify('close');
+      });
+      this.socket.on('error', function (error) {
+        _this.notify('error', error);
+      });
+      this.socket.on('connection', function (client) {
+        client.on('message', function (message) {
+          _this.notify(new Uint8Array(message));
+        });
+      });
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      this.socketStatus = STATUS$4.IS_CLOSING;
+      this.socket.close();
+    }
+  }, {
+    key: 'send',
+    value: function send(binary) {
+      this.socket.clients.forEach(function (client) {
+        client.send(binary, { binary: true });
+      });
+    }
+  }]);
+  return WebsocketServerPlugin;
+}();
+
 var defaultOptions = {
-  plugin: new WebsocketPlugin(),
+  plugin: new WebsocketClientPlugin(),
   discardLateMessages: false
 };
 var STATUS = {
@@ -1232,10 +1313,9 @@ var STATUS = {
   IS_CLOSED: 3
 };
 var OSC = function () {
-  function OSC() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  function OSC(options) {
     classCallCheck(this, OSC);
-    if (!isObject(options)) {
+    if (options && !isObject(options)) {
       throw new Error('OSC options argument has to be an object.');
     }
     this.options = Object.assign({}, defaultOptions, options);
@@ -1253,7 +1333,7 @@ var OSC = function () {
     key: 'on',
     value: function on(eventName, callback) {
       if (!(isString(eventName) && isFunction(callback))) {
-        throw new Error('OSC event listener needs an event or address string and a function as callback.');
+        throw new Error('OSC on() needs event- or address string and callback function');
       }
       return this.eventHandler.on(eventName, callback);
     }
@@ -1261,19 +1341,18 @@ var OSC = function () {
     key: 'off',
     value: function off(eventName, subscriptionId) {
       if (!(isString(eventName) && isInt(subscriptionId))) {
-        throw new Error('OSC listener needs a string and a listener id number to unsubscribe from event.');
+        throw new Error('OSC off() needs string and number (subscriptionId) to unsubscribe');
       }
       return this.eventHandler.off(eventName, subscriptionId);
     }
   }, {
     key: 'open',
-    value: function open() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      if (!isObject(options)) {
-        throw new Error('OSC connection options argument has to be an object.');
+    value: function open(options) {
+      if (options && !isObject(options)) {
+        throw new Error('OSC open() options argument needs to be an object');
       }
       if (!(this.options.plugin && isFunction(this.options.plugin.open))) {
-        throw new Error('OSC connection#open is not implemented.');
+        throw new Error('OSC Plugin API #open is not implemented!');
       }
       return this.options.plugin.open(options);
     }
@@ -1281,7 +1360,7 @@ var OSC = function () {
     key: 'status',
     value: function status() {
       if (!(this.options.plugin && isFunction(this.options.plugin.status))) {
-        throw new Error('OSC connection#status is not implemented.');
+        throw new Error('OSC Plugin API #status is not implemented!');
       }
       return this.options.plugin.status();
     }
@@ -1289,37 +1368,39 @@ var OSC = function () {
     key: 'close',
     value: function close() {
       if (!(this.options.plugin && isFunction(this.options.plugin.close))) {
-        throw new Error('OSC connection#close is not implemented.');
+        throw new Error('OSC Plugin API #close is not implemented!');
       }
       return this.options.plugin.close();
     }
   }, {
     key: 'send',
-    value: function send(packet) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    value: function send(packet, options) {
       if (!(this.options.plugin && isFunction(this.options.plugin.send))) {
-        throw new Error('OSC connection#send is not implemented.');
+        throw new Error('OSC Plugin API #send is not implemented!');
       }
       if (!(packet instanceof Message || packet instanceof Bundle || packet instanceof Packet)) {
-        throw new Error('OSC can only send Messages, Bundles or Packets.');
+        throw new Error('OSC send() needs Messages, Bundles or Packets');
       }
-      if (!isObject(options)) {
-        throw new Error('OSC connection options argument has to be an object.');
+      if (options && !isObject(options)) {
+        throw new Error('OSC send() options argument has to be an object');
       }
       return this.options.plugin.send(packet.pack(), options);
     }
   }]);
   return OSC;
 }();
-OSC.STATUS = STATUS;
-OSC.Packet = Packet;
-OSC.Bundle = Bundle;
-OSC.Message = Message;
-OSC.DatagramPlugin = DatagramPlugin;
-OSC.WebsocketPlugin = WebsocketPlugin;
-OSC.BridgePlugin = BridgePlugin;
+var osc = Object.assign(OSC, {
+  STATUS: STATUS,
+  Packet: Packet,
+  Bundle: Bundle,
+  Message: Message,
+  DatagramPlugin: DatagramPlugin,
+  WebsocketClientPlugin: WebsocketClientPlugin,
+  WebsocketServerPlugin: WebsocketServerPlugin,
+  BridgePlugin: BridgePlugin
+});
 
-return OSC;
+return osc;
 
 })));
 //# sourceMappingURL=osc.js.map

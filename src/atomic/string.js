@@ -8,11 +8,11 @@ import Atomic from '../atomic'
 export default class AtomicString extends Atomic {
   /**
    * Create an AtomicString instance
-   * @param {string} value Initial string value
+   * @param {string} [value] Initial string value
    */
   constructor(value) {
     if (value && !isString(value)) {
-      throw new Error('OSC AtomicString constructor expects value of type string.')
+      throw new Error('OSC AtomicString constructor expects value of type string')
     }
 
     super(value)
@@ -24,7 +24,7 @@ export default class AtomicString extends Atomic {
    */
   pack() {
     if (!this.value) {
-      throw new Error('OSC AtomicString can not be encoded with empty value.')
+      throw new Error('OSC AtomicString can not be encoded with empty value')
     }
 
     // add 0-3 null characters for total number of bits a multiple of 32
@@ -43,12 +43,12 @@ export default class AtomicString extends Atomic {
   /**
    * Unpack binary data from DataView and read a string
    * @param {DataView} dataView The DataView holding the binary representation of the string
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
     if (!(dataView instanceof DataView)) {
-      throw new Error('OSC AtomicString expects an instance of type DataView.')
+      throw new Error('OSC AtomicString expects an instance of type DataView')
     }
 
     let offset = initialOffset
@@ -68,7 +68,7 @@ export default class AtomicString extends Atomic {
     }
 
     if (offset === dataView.length) {
-      throw new Error('OSC AtomicString found a malformed OSC string.')
+      throw new Error('OSC AtomicString found a malformed OSC string')
     }
 
     /** @type {number} offset */

@@ -8,11 +8,11 @@ import Atomic from '../atomic'
 export default class AtomicBlob extends Atomic {
   /**
    * Create an AtomicBlob instance
-   * @param {Uint8Array} value Binary data
+   * @param {Uint8Array} [value] Binary data
    */
   constructor(value) {
     if (value && !isBlob(value)) {
-      throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array.')
+      throw new Error('OSC AtomicBlob constructor expects value of type Uint8Array')
     }
 
     super(value)
@@ -24,7 +24,7 @@ export default class AtomicBlob extends Atomic {
    */
   pack() {
     if (!this.value) {
-      throw new Error('OSC AtomicBlob can not be encoded with empty value.')
+      throw new Error('OSC AtomicBlob can not be encoded with empty value')
     }
 
     const byteLength = pad(this.value.byteLength)
@@ -42,12 +42,12 @@ export default class AtomicBlob extends Atomic {
   /**
    * Unpack binary data from DataView and read a blob
    * @param {DataView} dataView The DataView holding the binary representation of the blob
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
     if (!(dataView instanceof DataView)) {
-      throw new Error('OSC AtomicBlob expects an instance of type DataView.')
+      throw new Error('OSC AtomicBlob expects an instance of type DataView')
     }
 
     const byteLength = dataView.getInt32(initialOffset, false)

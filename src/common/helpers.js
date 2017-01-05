@@ -1,9 +1,10 @@
 import { isArray, isInt, isFloat, isString, isBlob } from './utils'
 
 /**
- * Checks type of given item and returns its OSC Type tag
+ * Checks type of given object and returns the regarding OSC
+ * Type tag character
  * @param {*} item Any object
- * @return {string} OSC Type tag of given object as string
+ * @return {string} OSC Type tag character
  */
 export function typeTag(item) {
   if (isInt(item)) {
@@ -16,16 +17,16 @@ export function typeTag(item) {
     return 'b'
   }
 
-  throw new Error('OSC Message found unknown value type.')
+  throw new Error('OSC typeTag() found unknown value type')
 }
 
 /**
- * Sanitizes an OSC ready OSC Address Pattern
+ * Sanitizes an OSC-ready Address Pattern
  * @param {array|string} obj Address as string or array of strings
- * @return {string} Correct address string
+ * @return {string} Corrected address string
  *
  * @example
- * // returns '/test/path' string:
+ * // all calls return '/test/path' string:
  * prepareAddress('test/path')
  * prepareAddress('/test/path/')
  * prepareAddress([test, path])
@@ -51,7 +52,7 @@ export function prepareAddress(obj) {
     return address
   }
 
-  throw new Error('OSC Helpers can only prepare addresses which are of type array or string.')
+  throw new Error('OSC prepareAddress() needs addresses of type array or string')
 }
 
 /**
@@ -63,7 +64,7 @@ export function prepareRegExPattern(str) {
   let pattern
 
   if (!(isString(str))) {
-    throw new Error('OSC Helper prepareRegExPattern only accepts strings.')
+    throw new Error('OSC prepareRegExPattern() needs strings')
   }
 
   pattern = str.replace(/\./g, '\\.')

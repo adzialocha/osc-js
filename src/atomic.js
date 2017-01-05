@@ -4,7 +4,7 @@
 export default class Atomic {
   /**
    * Create an Atomic instance
-   * @param {*} value Initial value of any type
+   * @param {*} [value] Initial value of any type
    */
   constructor(value) {
     /** @type {*} value */
@@ -21,14 +21,14 @@ export default class Atomic {
    */
   pack(method, byteLength) {
     if (!(method && byteLength)) {
-      throw new Error('OSC Atomic cant\'t be packed without given method or byteLength.')
+      throw new Error('OSC Atomic cant\'t be packed without given method or byteLength')
     }
 
     const data = new Uint8Array(byteLength)
     const dataView = new DataView(data.buffer)
 
     if (!this.value) {
-      throw new Error('OSC Atomic cant\'t be encoded with empty value.')
+      throw new Error('OSC Atomic cant\'t be encoded with empty value')
     }
 
     // use DataView to write to ArrayBuffer
@@ -43,16 +43,16 @@ export default class Atomic {
    * @param {DataView} dataView The DataView holding the binary representation of the value
    * @param {string} method The DataView method to read the format from the ArrayBuffer
    * @param {number} byteLength Size of array in bytes
-   * @param {number} initialOffset Offset of DataView before unpacking
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, method, byteLength, initialOffset = 0) {
     if (!(dataView && method && byteLength)) {
-      throw new Error('OSC Atomic cant\'t be unpacked without given dataView, method or byteLength.')
+      throw new Error('OSC Atomic cant\'t be unpacked without given dataView, method or byteLength')
     }
 
     if (!(dataView instanceof DataView)) {
-      throw new Error('OSC Atomic expects an instance of type DataView.')
+      throw new Error('OSC Atomic expects an instance of type DataView')
     }
 
     // use DataView to read from ArrayBuffer and add offset
