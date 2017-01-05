@@ -1,6 +1,18 @@
 osc-js
 ======
 
+<p>
+  <a href="https://travis-ci.org/adzialocha/osc-js">
+    <img src="https://img.shields.io/travis/adzialocha/osc-js/master.svg?style=flat-square" alt="Build Status">
+  </a>
+  <a href="https://www.npmjs.org/package/osc-js">
+    <img src="https://img.shields.io/npm/v/osc-js.svg?style=flat-square" alt="npm version">
+  </a>
+  <a href="http://spdx.org/licenses/MIT">
+    <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
+  </a>
+</p>
+
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
 ## Features
@@ -151,7 +163,7 @@ osc-js uses [Babel](http://babeljs.io) for ES6 support, [ESDoc](https://esdoc.or
 Clone the repository and install all dependencies:
 
 ```
-git clone git://github.com/adzialocha/osc-js.git
+git clone git@github.com:adzialocha/osc-js.git
 cd osc-js
 npm install
 ```
