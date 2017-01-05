@@ -1,11 +1,17 @@
 {
   "name": "osc-js",
-  "description": "OSC library for node and the browser, with Plugin API for WebSocket, UDP and bridge networking or any other custom solution",
+  "description": "OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking",
+  "version": "1.0.1",
   "main": "dist/osc.js",
   "authors": [
-    "adzialocha"
+    "Andreas Dzialocha"
   ],
   "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/adzialocha/osc-js.git"
+  },
   "keywords": [
     "osc",
     "data",

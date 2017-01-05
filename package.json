@@ -1,8 +1,8 @@
 {
   "name": "osc-js",
-  "version": "1.0.0",
-  "description": "OSC library for node and the browser, with Plugin API for WebSocket, UDP and bridge networking or any other custom solution",
-  "main": "dist/osc.js",
+  "version": "1.0.1",
+  "description": "OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking",
+  "main": "lib/osc.js",
   "scripts": {
     "lint": "eslint build.js src/** test/**; exit 0",
     "test": "mocha test/** --compilers js:babel-register; exit 0",
@@ -25,7 +25,7 @@
     "datagram",
     "network"
   ],
-  "author": "adzialocha",
+  "author": "Andreas Dzialocha",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/adzialocha/osc-js/issues"
