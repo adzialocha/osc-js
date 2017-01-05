@@ -1,7 +1,7 @@
 {
   "name": "osc-js",
   "version": "1.0.0",
-  "description": "OSC protocol interface for js",
+  "description": "OSC library for node and the browser, with Plugin API for WebSocket, UDP and bridge networking or any other custom solution",
   "main": "dist/osc.js",
   "scripts": {
     "lint": "eslint build.js src/** test/**; exit 0",
@@ -15,11 +15,15 @@
     "url": "git+ssh://git@github.com/adzialocha/osc-js.git"
   },
   "keywords": [
-    "OSC",
+    "osc",
     "data",
     "open",
     "sound",
-    "control"
+    "control",
+    "websocket",
+    "udp",
+    "datagram",
+    "network"
   ],
   "author": "adzialocha",
   "license": "MIT",
@@ -38,13 +42,13 @@
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
     "del": "^2.2.2",
-    "esdoc": "^0.5.1",
+    "esdoc": "^0.5.2",
     "eslint": "^3.12.2",
     "eslint-config-airbnb-base": "^11.0.0",
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
     "rollem": "^1.8.1",
-    "rollup": "^0.38.0",
+    "rollup": "^0.40.2",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-cleanup": "^0.1.4",
     "rollup-plugin-uglify": "^1.0.1"

@@ -1,17 +1,21 @@
 {
   "name": "osc-js",
-  "description": "OSC protocol interface for js",
+  "description": "OSC library for node and the browser, with Plugin API for WebSocket, UDP and bridge networking or any other custom solution",
   "main": "dist/osc.js",
   "authors": [
     "adzialocha"
   ],
   "license": "MIT",
   "keywords": [
-    "OSC",
+    "osc",
     "data",
     "open",
     "sound",
-    "control"
+    "control",
+    "websocket",
+    "udp",
+    "datagram",
+    "network"
   ],
   "homepage": "https://github.com/adzialocha/osc-js",
   "ignore": [
@@ -20,6 +24,7 @@
     "bower_components",
     "test",
     "lib",
+    "src",
     "*.config.js"
   ]
 }
