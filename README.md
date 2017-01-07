@@ -3,13 +3,16 @@ osc-js
 
 <p>
   <a href="https://travis-ci.org/adzialocha/osc-js">
-    <img src="https://img.shields.io/travis/adzialocha/osc-js/master.svg?style=flat-square" alt="Build Status">
+    <img src="https://img.shields.io/travis/adzialocha/osc-js/master.svg?style=flat-square" alt="Build status">
   </a>
   <a href="https://www.npmjs.org/package/osc-js">
     <img src="https://img.shields.io/npm/v/osc-js.svg?style=flat-square" alt="npm version">
   </a>
   <a href="http://spdx.org/licenses/MIT">
     <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
+  </a>
+  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/">
+    <img src="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg" alt="ESDoc status">
   </a>
 </p>
 
@@ -181,4 +184,4 @@ npm install
 
 ### ESDocs
 
-`npm run docs` for generating a `docs` folder with HTML files documenting the library.
+`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://doc.esdoc.org/github.com/adzialocha/osc-js/](https://doc.esdoc.org/github.com/adzialocha/osc-js/)
