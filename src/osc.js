@@ -234,15 +234,18 @@ class OSC {
   }
 }
 
-export default Object.assign(OSC, {
-  STATUS,
+// expose status flags
+OSC.STATUS = STATUS
 
-  Packet,
-  Bundle,
-  Message,
+// expose OSC classes
+OSC.Packet = Packet
+OSC.Bundle = Bundle
+OSC.Message = Message
 
-  DatagramPlugin,
-  WebsocketClientPlugin,
-  WebsocketServerPlugin,
-  BridgePlugin,
-})
+// expose plugins
+OSC.DatagramPlugin = DatagramPlugin
+OSC.WebsocketClientPlugin = WebsocketClientPlugin
+OSC.WebsocketServerPlugin = WebsocketServerPlugin
+OSC.BridgePlugin = BridgePlugin
+
+export default OSC
