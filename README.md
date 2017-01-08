@@ -18,9 +18,12 @@ osc-js
 
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
+[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://doc.esdoc.org/github.com/adzialocha/osc-js/) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
+
 ## Features
 
-- UMD Module running in node or your browser (without dependencies)
+- UMD Module running in Node.js, Electron, Chrome Apps, your browser or any other JS environment
+- no dependencies (except of `ws` if you need Websockets in Node.js)
 - simple interface
 - built-in *UDP*, *WebSocket* networking support as plugins
 - special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
@@ -61,9 +64,9 @@ osc.open({ port: 9000 })
 
 ## Installation and Usage
 
-Use bower via `bower install osc-js --save` or npm via `npm install osc-js --save` for installing osc-js as your project dependency.
+Recommended installation via bower `bower install osc-js --save` or npm `npm install osc-js --save`.
 
-Import the library via `const OSC = require('osc-js')` when using it in a Node app or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser. Read below for more examples.
+Import the library `const OSC = require('osc-js')` or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser.
 
 ## Plugins
 
@@ -74,6 +77,8 @@ osc-js offers a plugin architecture for extending it's networking capabilities. 
 - `DatagramPlugin` for UDP network messaging
 - `BridgePlugin` useful Bridge between WebSocket- and UDP Clients
 
+Configuration and examples of every plugin can be read here: [Wiki](https://github.com/adzialocha/osc-js/wiki).
+
 ### Example: WebSocket Server
 
 Register the plugin when creating the OSC instance:
@@ -83,7 +88,7 @@ const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() }
 osc.open() // listening on 'ws://localhost:8080'
 ```
 
-### Example: OSC between Max/PD/SC etc. and your browser
+### Example: OSC between MaxMSP/PD/SC etc. and your browser
 
 1. Write a simple webpage. The library will use a WebSocket client
 by default.
@@ -121,7 +126,7 @@ by default.
 
 ### Custom solutions with Plugin API
 
-It is possible to write even more sophisticated or custom solutions for your OSC application while keeping the simple OSC library interface including all message handling etc. Read the [documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
+It is possible to write even more sophisticated solutions for your OSC application without loosing the simple osc-js interface (including it's nice message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
 
 ```js
 class MyCustomPlugin {
@@ -138,7 +143,7 @@ osc.on('/test', (message) => {
 
 ### Usage without plugins
 
-The library can also be used without the mentioned features in case you only need to write and read binary OSC data. See this example below (even though the library already has a solution for handling UDP like in this example):
+The library can also be used without the mentioned features in case you need to write and read binary OSC data. See this example below for using the [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API) (even though the library already has a solution for handling UDP like in this example):
 
 ```js
 const dgram = require('dgram')
@@ -158,8 +163,6 @@ socket.on('message', (data) => {
   console.log(msg.args)
 })
 ```
-
-More information here: [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API)
 
 ## Development
 
