@@ -1,4 +1,4 @@
-import { isInt, isDate } from '../common/utils'
+import { isInt, isDate, isUndefined } from '../common/utils'
 
 import Atomic from '../atomic'
 
@@ -81,7 +81,7 @@ export default class AtomicTimetag extends Atomic {
    * @return {Uint8Array} Packed binary data
    */
   pack() {
-    if (!this.value) {
+    if (isUndefined(this.value)) {
       throw new Error('OSC AtomicTimetag can not be encoded with empty value')
     }
 

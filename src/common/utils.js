@@ -71,6 +71,15 @@ export function isDate(n) {
 }
 
 /**
+ * Check if given object is undefined
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isUndefined(n) {
+  return typeof n === 'undefined'
+}
+
+/**
  * Return the next multiple of four
  * @param {number} n
  */

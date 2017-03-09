@@ -1,3 +1,5 @@
+import { isUndefined } from './common/utils'
+
 /**
  * Base class for OSC Atomic Data Types
  */
@@ -27,7 +29,7 @@ export default class Atomic {
     const data = new Uint8Array(byteLength)
     const dataView = new DataView(data.buffer)
 
-    if (!this.value) {
+    if (isUndefined(this.value)) {
       throw new Error('OSC Atomic cant\'t be encoded with empty value')
     }
 
