@@ -1,4 +1,4 @@
-import { pad, isBlob } from '../common/utils'
+import { pad, isBlob, isUndefined } from '../common/utils'
 
 import Atomic from '../atomic'
 
@@ -23,7 +23,7 @@ export default class AtomicBlob extends Atomic {
    * @return {Uint8Array} Packed binary data
    */
   pack() {
-    if (!this.value) {
+    if (isUndefined(this.value)) {
       throw new Error('OSC AtomicBlob can not be encoded with empty value')
     }
 

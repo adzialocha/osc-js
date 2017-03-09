@@ -1,4 +1,4 @@
-import { pad, isString } from '../common/utils'
+import { pad, isString, isUndefined } from '../common/utils'
 
 import Atomic from '../atomic'
 
@@ -23,7 +23,7 @@ export default class AtomicString extends Atomic {
    * @return {Uint8Array} Packed binary data
    */
   pack() {
-    if (!this.value) {
+    if (isUndefined(this.value)) {
       throw new Error('OSC AtomicString can not be encoded with empty value')
     }
 

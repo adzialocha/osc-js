@@ -21,9 +21,11 @@ describe('Atomic', () => {
     atomic = new Atomic(2)
 
     atomicChildren = [
+      new AtomicInt32(0),
       new AtomicInt32(123132132),
       new AtomicFloat32(1299389992.342243),
       new AtomicString('hello'),
+      new AtomicString(''),
       new AtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),
       new AtomicTimetag(new Timetag(SECONDS_70_YEARS + 123, 3312123)),
     ]
