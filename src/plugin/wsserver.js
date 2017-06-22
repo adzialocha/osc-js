@@ -106,14 +106,9 @@ export default class WebsocketServerPlugin {
     this.socketStatus = STATUS.IS_CONNECTING
 
     // register events
-    this.socket.on('open', () => {
+    this.socket.on('listening', () => {
       this.socketStatus = STATUS.IS_OPEN
       this.notify('open')
-    })
-
-    this.socket.on('close', () => {
-      this.socketStatus = STATUS.IS_CLOSED
-      this.notify('close')
     })
 
     this.socket.on('error', (error) => {
@@ -132,7 +127,10 @@ export default class WebsocketServerPlugin {
    */
   close() {
     this.socketStatus = STATUS.IS_CLOSING
-    this.socket.close()
+    this.socket.close(() => {
+      this.socketStatus = STATUS.IS_CLOSED
+      this.notify('close')
+    })
   }
 
   /**
