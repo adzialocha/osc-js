@@ -965,7 +965,7 @@ var DatagramPlugin = function () {
 }();
 
 var dgram$1 = typeof __dirname !== 'undefined' ? require('dgram') : undefined;
-var WebSocket$1 = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
+var WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
 var STATUS$2 = {
   IS_NOT_INITIALIZED: -1,
   IS_CONNECTING: 0,
@@ -999,7 +999,7 @@ var BridgePlugin = function () {
     var _this = this;
     var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, BridgePlugin);
-    if (!dgram$1 || !WebSocket$1) {
+    if (!dgram$1 || !WebsocketServer) {
       throw new Error('BridgePlugin can not be used in browser context');
     }
     this.options = mergeOptions({}, customOptions);
@@ -1037,8 +1037,15 @@ var BridgePlugin = function () {
         port: options.udpServer.port,
         exclusive: options.udpServer.exclusive
       }, function () {
-        _this2.websocket = new WebSocket$1({ host: options.wsServer.host, port: options.wsServer.port });
+        _this2.websocket = new WebsocketServer({
+          host: options.wsServer.host,
+          port: options.wsServer.port
+        });
         _this2.websocket.binaryType = 'arraybuffer';
+        _this2.websocket.on('listening', function () {
+          _this2.socketStatus = STATUS$2.IS_OPEN;
+          _this2.notify('open');
+        });
         _this2.websocket.on('error', function (error) {
           _this2.notify('error', error);
         });
@@ -1048,7 +1055,6 @@ var BridgePlugin = function () {
             _this2.notify(new Uint8Array(message));
           });
         });
-        _this2.notify('open');
       });
     }
   }, {
@@ -1057,9 +1063,10 @@ var BridgePlugin = function () {
       var _this3 = this;
       this.socketStatus = STATUS$2.IS_CLOSING;
       this.socket.close(function () {
-        _this3.socketStatus = STATUS$2.IS_CLOSED;
-        _this3.notify('close');
-        _this3.websocket.close();
+        _this3.websocket.close(function () {
+          _this3.socketStatus = STATUS$2.IS_CLOSED;
+          _this3.notify('close');
+        });
       });
     }
   }, {
@@ -1159,7 +1166,7 @@ var WebsocketClientPlugin = function () {
   return WebsocketClientPlugin;
 }();
 
-var WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
+var WebsocketServer$1 = typeof __dirname !== 'undefined' ? require('ws').Server : undefined;
 var STATUS$4 = {
   IS_NOT_INITIALIZED: -1,
   IS_CONNECTING: 0,
@@ -1173,7 +1180,7 @@ var STATUS$4 = {
 var WebsocketServerPlugin = function () {
   function WebsocketServerPlugin(customOptions) {
     classCallCheck(this, WebsocketServerPlugin);
-    if (!WebsocketServer) {
+    if (!WebsocketServer$1) {
       throw new Error('WebsocketServerPlugin can not be used in browser context');
     }
     this.options = Object.assign({}, defaultOptions$5, customOptions);
@@ -1202,7 +1209,7 @@ var WebsocketServerPlugin = function () {
       if (this.socket) {
         this.close();
       }
-      this.socket = new WebsocketServer({ host: host, port: port });
+      this.socket = new WebsocketServer$1({ host: host, port: port });
       this.socket.binaryType = 'arraybuffer';
       this.socketStatus = STATUS$4.IS_CONNECTING;
       this.socket.on('listening', function () {

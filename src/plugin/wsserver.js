@@ -127,6 +127,7 @@ export default class WebsocketServerPlugin {
    */
   close() {
     this.socketStatus = STATUS.IS_CLOSING
+
     this.socket.close(() => {
       this.socketStatus = STATUS.IS_CLOSED
       this.notify('close')
