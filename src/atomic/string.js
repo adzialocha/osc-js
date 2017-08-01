@@ -74,7 +74,7 @@ export default class AtomicString extends Atomic {
     /** @type {number} offset */
     this.offset = pad(offset)
     /** @type {string} value */
-    this.value = new TextDecoder("utf-8").decode(new Uint8Array(data));
+    this.value = String.fromCharCode.apply(null, data);
 
     return this.offset
   }
