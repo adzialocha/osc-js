@@ -337,7 +337,7 @@ var AtomicString = function (_Atomic) {
         throw new Error('OSC AtomicString found a malformed OSC string');
       }
       this.offset = pad(offset);
-      this.value =  new TextDecoder("utf-8").decode(new Uint8Array(data));
+      this.value = String.fromCharCode.apply(null, data);
       return this.offset;
     }
   }]);
