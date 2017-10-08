@@ -88,6 +88,18 @@ export function pad(n) {
 }
 
 /**
+ * Checks if environment provides a feature
+ * @param {string} name Name of needed feature
+ * @return {boolean}
+ */
+export function hasProperty(name) {
+  return Object.prototype.hasOwnProperty.call(
+    (typeof global !== 'undefined' ? global : window), // eslint-disable-line no-undef
+    name
+  )
+}
+
+/**
  * Wrap binary data in DataView
  * @param {*} obj
  * @return {DataView}

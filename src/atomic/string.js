@@ -1,6 +1,39 @@
-import { pad, isString, isUndefined } from '../common/utils'
+import { pad, isString, isUndefined, hasProperty } from '../common/utils'
 
 import Atomic from '../atomic'
+
+/** Slice size of large strings for fallback method */
+const STR_SLICE_SIZE = 65537
+
+/** Text encoding format */
+const STR_ENCODING = 'utf-8'
+
+/**
+ * Helper method to decode a string using different methods depending on environment
+ * @param {array} charCodes Array of char codes
+ * @return {string} Decoded string
+ */
+function charCodesToString(charCodes) {
+  // Use these methods to be able to convert large strings
+  if (hasProperty('Buffer')) {
+    return Buffer.from(charCodes).toString(STR_ENCODING)
+  } else if (hasProperty('TextDecoder')) {
+    return new TextDecoder(STR_ENCODING) // eslint-disable-line no-undef
+      .decode(new Int8Array(charCodes))
+  }
+
+  // Fallback method
+  let str = ''
+
+  for (let i = 0; i < charCodes.length; i += STR_SLICE_SIZE) {
+    str += String.fromCharCode.apply(
+      null,
+      charCodes.slice(i, i + STR_SLICE_SIZE)
+    )
+  }
+
+  return str
+}
 
 /**
  * A sequence of non-null ASCII characters OSC Atomic Data Type
@@ -53,14 +86,14 @@ export default class AtomicString extends Atomic {
 
     let offset = initialOffset
     let charcode
-    const data = []
+    const charCodes = []
 
     for (; offset < dataView.byteLength; offset += 1) {
       charcode = dataView.getUint8(offset)
 
       // check for terminating null character
       if (charcode !== 0) {
-        data.push(charcode)
+        charCodes.push(charcode)
       } else {
         offset += 1
         break
@@ -74,7 +107,7 @@ export default class AtomicString extends Atomic {
     /** @type {number} offset */
     this.offset = pad(offset)
     /** @type {string} value */
-    this.value = String.fromCharCode.apply(null, data)
+    this.value = charCodesToString(charCodes)
 
     return this.offset
   }
