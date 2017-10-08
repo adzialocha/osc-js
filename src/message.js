@@ -125,7 +125,7 @@ export default class Message {
       throw new Error('OSC Message found malformed or missing type string')
     }
 
-    let offset = types.offset
+    let { offset } = types
     let next
     let type
 

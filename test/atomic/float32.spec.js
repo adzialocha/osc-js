@@ -2,9 +2,12 @@ import { expect } from 'chai'
 
 import AtomicFloat32 from '../../src/atomic/float32'
 
-  /** @test {AtomicFloat32} */
+/** @test {AtomicFloat32} */
 describe('AtomicFloat32', () => {
-  const bitArray = { 0: 70, 1: 25, 2: 124, 3: 237 }
+  const bitArray = {
+    0: 70, 1: 25, 2: 124, 3: 237,
+  }
+
   let atomic
 
   before(() => {

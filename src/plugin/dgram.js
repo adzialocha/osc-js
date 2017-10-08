@@ -176,6 +176,6 @@ export default class DatagramPlugin {
     const options = Object.assign({}, this.options.send, customOptions)
     const { port, host } = options
 
-    this.socket.send(new Buffer(binary), 0, binary.byteLength, port, host)
+    this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host)
   }
 }

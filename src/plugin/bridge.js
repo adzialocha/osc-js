@@ -208,7 +208,7 @@ export default class BridgePlugin {
 
     if (receiver === 'udp') {
       // send data to udp client
-      const data = binary instanceof Buffer ? binary : new Buffer(binary)
+      const data = binary instanceof Buffer ? binary : Buffer.from(binary)
       this.socket.send(
         data,
         0,

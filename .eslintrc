@@ -12,6 +12,14 @@
     "no-unused-expressions": "off",
     "class-methods-use-this": "off",
     "no-bitwise": "off",
+    "function-paren-newline": ["error", "consistent"],
+    "prefer-destructuring": [
+      "error",
+      {
+        "object": true,
+        "array": false
+      }
+    ],
     "import/no-extraneous-dependencies": [
       "error",
       {

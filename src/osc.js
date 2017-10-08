@@ -92,11 +92,9 @@ class OSC {
     })
 
     // pass EventHandler's notify() to plugin
-    const eventHandler = this.eventHandler
+    const { eventHandler } = this
     if (this.options.plugin && this.options.plugin.registerNotify) {
-      this.options.plugin.registerNotify((...args) =>
-        eventHandler.notify(...args)
-      )
+      this.options.plugin.registerNotify((...args) => eventHandler.notify(...args))
     }
   }
 

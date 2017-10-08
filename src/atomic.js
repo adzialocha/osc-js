@@ -40,7 +40,7 @@ export default class Atomic {
     return data
   }
 
- /**
+  /**
    * Unpack binary data from DataView according to the given format
    * @param {DataView} dataView The DataView holding the binary representation of the value
    * @param {string} method The DataView method to read the format from the ArrayBuffer
