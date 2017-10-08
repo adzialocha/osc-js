@@ -893,7 +893,12 @@ var STATUS$1 = {
   type: 'udp4',
   open: defaultOpenOptions,
   send: defaultSendOptions
-};
+};function mergeOptions(base, custom) {
+  return Object.assign({}, defaultOptions$2, base, custom, {
+    open: Object.assign({}, defaultOptions$2.open, base.open, custom.open),
+    send: Object.assign({}, defaultOptions$2.send, base.send, custom.send)
+  });
+}
 var DatagramPlugin = function () {
   function DatagramPlugin() {
     var _this = this;
@@ -902,7 +907,7 @@ var DatagramPlugin = function () {
     if (!dgram) {
       throw new Error('DatagramPlugin can not be used in browser context');
     }
-    this.options = Object.assign({}, defaultOptions$2, customOptions);
+    this.options = mergeOptions({}, customOptions);
     this.socket = dgram.createSocket(this.options.type);
     this.socketStatus = STATUS$1.IS_NOT_INITIALIZED;
     this.socket.on('message', function (message) {
@@ -928,7 +933,7 @@ var DatagramPlugin = function () {
     value: function open() {
       var _this2 = this;
       var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = Object.assign({}, this.options.openOptions, customOptions);
+      var options = Object.assign({}, this.options.open, customOptions);
       var port = options.port,
           exclusive = options.exclusive;
       this.socketStatus = STATUS$1.IS_CONNECTING;
@@ -955,7 +960,7 @@ var DatagramPlugin = function () {
     key: 'send',
     value: function send(binary) {
       var customOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var options = Object.assign({}, this.options.sendOptions, customOptions);
+      var options = Object.assign({}, this.options.send, customOptions);
       var port = options.port,
           host = options.host;
       this.socket.send(new Buffer(binary), 0, binary.byteLength, port, host);
@@ -987,7 +992,7 @@ var STATUS$2 = {
     port: 8080
   },
   receiver: 'ws'
-};function mergeOptions(base, custom) {
+};function mergeOptions$1(base, custom) {
   return Object.assign({}, defaultOptions$3, base, custom, {
     udpServer: Object.assign({}, defaultOptions$3.udpServer, base.udpServer, custom.udpServer),
     udpClient: Object.assign({}, defaultOptions$3.udpClient, base.udpClient, custom.udpClient),
@@ -1002,7 +1007,7 @@ var BridgePlugin = function () {
     if (!dgram$1 || !WebsocketServer) {
       throw new Error('BridgePlugin can not be used in browser context');
     }
-    this.options = mergeOptions({}, customOptions);
+    this.options = mergeOptions$1({}, customOptions);
     this.websocket = null;
     this.socket = dgram$1.createSocket('udp4');
     this.socketStatus = STATUS$2.IS_NOT_INITIALIZED;
@@ -1030,7 +1035,7 @@ var BridgePlugin = function () {
     value: function open() {
       var _this2 = this;
       var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = mergeOptions(this.options, customOptions);
+      var options = mergeOptions$1(this.options, customOptions);
       this.socketStatus = STATUS$2.IS_CONNECTING;
       this.socket.bind({
         address: options.udpServer.host,
@@ -1073,7 +1078,7 @@ var BridgePlugin = function () {
     key: 'send',
     value: function send(binary) {
       var customOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var options = mergeOptions(this.options, customOptions);
+      var options = mergeOptions$1(this.options, customOptions);
       var receiver = options.receiver;
       if (receiver === 'udp') {
         var data = binary instanceof Buffer ? binary : new Buffer(binary);
