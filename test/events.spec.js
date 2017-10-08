@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai'
-import spies from 'chai-spies'
+import spies from 'chai-spies-next'
 
 import EventHandler from '../src/events'
 import Message from '../src/message'

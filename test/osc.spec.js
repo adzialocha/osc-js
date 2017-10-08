@@ -1,5 +1,5 @@
 import chai, { expect } from 'chai'
-import spies from 'chai-spies'
+import spies from 'chai-spies-next'
 
 import OSC from '../src/osc'
 
