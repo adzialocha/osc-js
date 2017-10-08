@@ -1,5 +1,5 @@
 const dgram = typeof __dirname !== 'undefined' ? require('dgram') : undefined
-const WebSocket = typeof __dirname !== 'undefined' ? require('ws').Server : undefined
+const WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined
 
 /**
  * Status flags
@@ -71,7 +71,7 @@ export default class BridgePlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions = {}) {
-    if (!dgram || !WebSocket) {
+    if (!dgram || !WebsocketServer) {
       throw new Error('BridgePlugin can not be used in browser context')
     }
 
@@ -151,10 +151,18 @@ export default class BridgePlugin {
       exclusive: options.udpServer.exclusive,
     }, () => {
       // bind Websocket server
-      this.websocket = new WebSocket({ host: options.wsServer.host, port: options.wsServer.port })
+      this.websocket = new WebsocketServer({
+        host: options.wsServer.host,
+        port: options.wsServer.port,
+      })
       this.websocket.binaryType = 'arraybuffer'
 
       // register Websocket events
+      this.websocket.on('listening', () => {
+        this.socketStatus = STATUS.IS_OPEN
+        this.notify('open')
+      })
+
       this.websocket.on('error', (error) => {
         this.notify('error', error)
       })
@@ -165,8 +173,6 @@ export default class BridgePlugin {
           this.notify(new Uint8Array(message))
         })
       })
-
-      this.notify('open')
     })
   }
 
@@ -178,11 +184,11 @@ export default class BridgePlugin {
 
     // close udp socket
     this.socket.close(() => {
-      this.socketStatus = STATUS.IS_CLOSED
-      this.notify('close')
-
       // close Websocket
-      this.websocket.close()
+      this.websocket.close(() => {
+        this.socketStatus = STATUS.IS_CLOSED
+        this.notify('close')
+      })
     })
   }
 

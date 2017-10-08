@@ -42,6 +42,17 @@ const defaultOptions = {
 }
 
 /**
+ * Helper method to merge nested objects
+ * @private
+ */
+function mergeOptions(base, custom) {
+  return Object.assign({}, defaultOptions, base, custom, {
+    open: Object.assign({}, defaultOptions.open, base.open, custom.open),
+    send: Object.assign({}, defaultOptions.send, base.send, custom.send),
+  })
+}
+
+/**
  * OSC plugin for simple OSC messaging via udp client
  * and udp server
  */
@@ -70,7 +81,7 @@ export default class DatagramPlugin {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, customOptions)
+    this.options = mergeOptions({}, customOptions)
 
     /**
      * @type {object} socket
@@ -125,7 +136,7 @@ export default class DatagramPlugin {
    * @param {boolean} [customOptions.exclusive=false] Exclusive flag
    */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options.openOptions, customOptions)
+    const options = Object.assign({}, this.options.open, customOptions)
     const { port, exclusive } = options
 
     this.socketStatus = STATUS.IS_CONNECTING
@@ -162,7 +173,7 @@ export default class DatagramPlugin {
    * @param {number} [customOptions.port] Port of udp client
    */
   send(binary, customOptions = {}) {
-    const options = Object.assign({}, this.options.sendOptions, customOptions)
+    const options = Object.assign({}, this.options.send, customOptions)
     const { port, host } = options
 
     this.socket.send(new Buffer(binary), 0, binary.byteLength, port, host)
