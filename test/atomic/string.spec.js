@@ -11,7 +11,7 @@ describe('AtomicString', () => {
     atomic = new AtomicString('hallo')
   })
 
-  /** @test {AtomicString#pack} */
+  /** @test {AtomicString#unpack} */
   describe('unpack', () => {
     let returnValue
 
@@ -35,7 +35,7 @@ describe('AtomicString', () => {
     })
   })
 
-  /** @test {AtomicString#unpack} */
+  /** @test {AtomicString#pack} */
   describe('pack', () => {
     it('returns correct bits', () => {
       expect(JSON.stringify(atomic.pack())).to.equal(
