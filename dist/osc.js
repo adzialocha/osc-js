@@ -963,7 +963,7 @@ var DatagramPlugin = function () {
       var options = Object.assign({}, this.options.send, customOptions);
       var port = options.port,
           host = options.host;
-      this.socket.send(new Buffer(binary), 0, binary.byteLength, port, host);
+      this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host);
     }
   }]);
   return DatagramPlugin;
@@ -1081,7 +1081,7 @@ var BridgePlugin = function () {
       var options = mergeOptions$1(this.options, customOptions);
       var receiver = options.receiver;
       if (receiver === 'udp') {
-        var data = binary instanceof Buffer ? binary : new Buffer(binary);
+        var data = binary instanceof Buffer ? binary : Buffer.from(binary);
         this.socket.send(data, 0, data.byteLength, options.udpClient.port, options.udpClient.host);
       } else if (receiver === 'ws') {
         this.websocket.clients.forEach(function (client) {

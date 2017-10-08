@@ -35,7 +35,10 @@ describe('Timetag', () => {
 
 /** @test {AtomicTimetag} */
 describe('AtomicTimetag', () => {
-  const bitArray = { 0: 0, 1: 1, 2: 248, 3: 99, 4: 0, 5: 4, 6: 84, 7: 63 }
+  const bitArray = {
+    0: 0, 1: 1, 2: 248, 3: 99, 4: 0, 5: 4, 6: 84, 7: 63,
+  }
+
   let atomic
 
   before(() => {

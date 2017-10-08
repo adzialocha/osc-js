@@ -4,7 +4,10 @@ import AtomicBlob from '../../src/atomic/blob'
 
 /** @test {AtomicBlob} */
 describe('AtomicBlob', () => {
-  const bitArray = { 0: 0, 1: 0, 2: 0, 3: 5, 4: 54, 5: 42, 6: 11, 7: 33, 8: 66, 9: 0, 10: 0, 11: 0 }
+  const bitArray = {
+    0: 0, 1: 0, 2: 0, 3: 5, 4: 54, 5: 42, 6: 11, 7: 33, 8: 66, 9: 0, 10: 0, 11: 0,
+  }
+
   let atomic
 
   before(() => {
@@ -50,7 +53,9 @@ describe('AtomicBlob', () => {
 
     it('sets the value to our blob', () => {
       expect(JSON.stringify(atomic.value)).to.equal(
-        JSON.stringify({ 0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7 })
+        JSON.stringify({
+          0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7,
+        })
       )
     })
   })
