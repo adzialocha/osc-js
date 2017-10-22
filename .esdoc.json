@@ -6,7 +6,6 @@
       "name": "esdoc-standard-plugin",
       "option": {
         "test": {
-          "type": "mocha",
           "source": "./test"
         }
       }
