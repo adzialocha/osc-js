@@ -12,7 +12,7 @@ describe('Timetag', () => {
 
   before(() => {
     timetag = new Timetag(SECONDS_70_YEARS + 1234, 0)
-    anotherTimetag = new Timetag(3718480147, 131799040)
+    anotherTimetag = new Timetag(3718482449, 131799040)
   })
 
   it('sets the values correctly on initialization', () => {
@@ -24,7 +24,7 @@ describe('Timetag', () => {
   describe('timestamp', () => {
     it('converts correctly to js timestamps', () => {
       expect(timetag.timestamp()).to.be.equals(1234 * 1000)
-      expect(anotherTimetag.timestamp()).to.be.equals(1509492565)
+      expect(anotherTimetag.timestamp()).to.be.equals(1509493649000)
     })
 
     it('converts correctly to NTP timestamps', () => {
