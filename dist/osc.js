@@ -531,7 +531,7 @@ var Timetag = function () {
         return milliseconds;
       }
       seconds = this.seconds - SECONDS_70_YEARS;
-      return (seconds + this.fractions / TWO_POWER_32) * 1000;
+      return (seconds + Math.round(this.fractions / TWO_POWER_32)) * 1000;
     }
   }]);
   return Timetag;
@@ -743,7 +743,7 @@ var EventHandler = function () {
       if (packet.value instanceof Bundle) {
         var bundle = packet.value;
         return bundle.bundleElements.forEach(function (bundleItem) {
-          if (packet.value instanceof Bundle) {
+          if (bundleItem instanceof Bundle) {
             if (bundle.timetag.value.timestamp() < bundleItem.timetag.value.timestamp()) {
               throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles');
             }
