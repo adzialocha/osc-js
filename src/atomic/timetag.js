@@ -48,7 +48,7 @@ export class Timetag {
     }
 
     seconds = this.seconds - SECONDS_70_YEARS
-    return (seconds + (this.fractions / TWO_POWER_32)) * 1000
+    return (seconds + Math.round(this.fractions / TWO_POWER_32)) * 1000
   }
 }
 
