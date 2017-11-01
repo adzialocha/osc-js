@@ -69,14 +69,18 @@ export default class EventHandler {
       const bundle = packet.value
 
       return bundle.bundleElements.forEach((bundleItem) => {
-        if (packet.value instanceof Bundle) {
+        if (bundleItem instanceof Bundle) {
           if (bundle.timetag.value.timestamp() < bundleItem.timetag.value.timestamp()) {
             throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles')
           }
           return this.dispatch(bundleItem)
         } else if (bundleItem instanceof Message) {
           const message = bundleItem
-          return this.notify(message.address, message, bundle.timetag.value.timestamp())
+          return this.notify(
+            message.address,
+            message,
+            bundle.timetag.value.timestamp()
+          )
         }
 
         throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value')
