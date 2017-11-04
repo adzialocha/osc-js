@@ -23,14 +23,15 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all 
 ## Features
 
 - UMD Module running in Node.js, Electron, Chrome Apps, your browser or any other JS environment
-- no dependencies (except of `ws` if you need Websockets in Node.js)
+- can be used with Webpack and Browserify
+- no dependencies (except of `ws` in Node.js or similar environments)
 - simple interface
 - built-in *UDP*, *WebSocket* networking support as plugins
 - special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
 - Plugin API for your own custom networking solutions
-- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
+- featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
 - OSC Address pattern matching
-- Time-critical OSC Bundles with Timetags
+- time-critical OSC Bundles with Timetags
 - osc-js is written in ES6 :-)
 
 ## Documentation
@@ -68,6 +69,8 @@ Recommended installation via bower `bower install osc-js --save` or npm `npm ins
 
 Import the library `const OSC = require('osc-js')` or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser.
 
+To build the library with Webpack or similar tools without errors, use the `alias` configuration and point the module to `node_modules/osc-js/lib/osc.browser.js`. Read more about bundling issues here: [Webpack Bundling](https://github.com/adzialocha/osc-js/wiki/Webpack-bundling).
+
 ## Plugins
 
 osc-js offers a plugin architecture for extending it's networking capabilities. The library comes already with four built-in plugins. This is propably all you will ever need for your OSC applications:
@@ -84,7 +87,7 @@ Configuration and examples of every plugin can be read here: [Wiki](https://gith
 Register the plugin when creating the OSC instance:
 
 ```js
-const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() }
+const osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() })
 osc.open() // listening on 'ws://localhost:8080'
 ```
 
