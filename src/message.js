@@ -1,4 +1,12 @@
-import { isString, isArray, isInt, isFloat, isBlob } from './common/utils'
+import {
+  isArray,
+  isBlob,
+  isFloat,
+  isInt,
+  isString,
+  isUndefined,
+} from './common/utils'
+
 import Helper, { typeTag, prepareAddress } from './common/helpers'
 
 import AtomicInt32 from './atomic/int32'
@@ -51,7 +59,7 @@ export default class Message {
    * @param {*} item
    */
   add(item) {
-    if (!item) {
+    if (isUndefined(item)) {
       throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
