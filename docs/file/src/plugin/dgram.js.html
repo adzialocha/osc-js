@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/plugin/dgram.js | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/plugin/dgram.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const dgram = typeof __dirname !== &apos;undefined&apos; ? require(&apos;dgram&apos;) : undefined
+
+/**
+ * Status flags
+ * @private
+ */
+const STATUS = {
+  IS_NOT_INITIALIZED: -1,
+  IS_CONNECTING: 0,
+  IS_OPEN: 1,
+  IS_CLOSING: 2,
+  IS_CLOSED: 3,
+}
+
+/**
+ * Default options for open method
+ * @private
+ */
+const defaultOpenOptions = {
+  host: &apos;localhost&apos;,
+  port: 41234,
+  exclusive: false,
+}
+
+/**
+ * Default options for send method
+ * @private
+ */
+const defaultSendOptions = {
+  host: &apos;localhost&apos;,
+  port: 41235,
+}
+
+/**
+ * Default options
+ * @private
+ */
+const defaultOptions = {
+  type: &apos;udp4&apos;,
+  open: defaultOpenOptions,
+  send: defaultSendOptions,
+}
+
+/**
+ * Helper method to merge nested objects
+ * @private
+ */
+function mergeOptions(base, custom) {
+  return Object.assign({}, defaultOptions, base, custom, {
+    open: Object.assign({}, defaultOptions.open, base.open, custom.open),
+    send: Object.assign({}, defaultOptions.send, base.send, custom.send),
+  })
+}
+
+/**
+ * OSC plugin for simple OSC messaging via udp client
+ * and udp server
+ */
+export default class DatagramPlugin {
+  /**
+   * Create an OSC Plugin instance with given options. Defaults to
+   * localhost:41234 for server and localhost:41235 for client messaging
+   * @param {object} [options] Custom options
+   * @param {string} [options.type=&apos;udp4&apos;] &apos;udp4&apos; or &apos;udp6&apos;
+   * @param {string} [options.open.host=&apos;localhost&apos;] Hostname of udp server to bind to
+   * @param {number} [options.open.port=41234] Port of udp server to bind to
+   * @param {boolean} [options.open.exclusive=false] Exclusive flag
+   * @param {string} [options.send.host=&apos;localhost&apos;] Hostname of udp client for messaging
+   * @param {number} [options.send.port=41235] Port of udp client for messaging
+   *
+   * @example
+   * const plugin = new OSC.DatagramPlugin({ send: { port: 9912 } })
+   * const osc = new OSC({ plugin: plugin })
+   */
+  constructor(customOptions = {}) {
+    if (!dgram) {
+      throw new Error(&apos;DatagramPlugin can not be used in browser context&apos;)
+    }
+
+    /**
+     * @type {object} options
+     * @private
+     */
+    this.options = mergeOptions({}, customOptions)
+
+    /**
+     * @type {object} socket
+     * @private
+     */
+    this.socket = dgram.createSocket(this.options.type)
+    /**
+     * @type {number} socketStatus
+     * @private
+     */
+    this.socketStatus = STATUS.IS_NOT_INITIALIZED
+
+    // register events
+    this.socket.on(&apos;message&apos;, (message) =&gt; {
+      this.notify(message)
+    })
+
+    this.socket.on(&apos;error&apos;, (error) =&gt; {
+      this.notify(&apos;error&apos;, error)
+    })
+
+    /**
+     * @type {function} notify
+     * @private
+     */
+    this.notify = () =&gt; {}
+  }
+
+  /**
+   * Internal method to hook into osc library&apos;s
+   * EventHandler notify method
+   * @param {function} fn Notify callback
+   * @private
+   */
+  registerNotify(fn) {
+    this.notify = fn
+  }
+
+  /**
+   * Returns the current status of the connection
+   * @return {number} Status ID
+   */
+  status() {
+    return this.socketStatus
+  }
+
+  /**
+   * Bind a udp socket to a hostname and port
+   * @param {object} [customOptions] Custom options
+   * @param {string} [customOptions.host=&apos;localhost&apos;] Hostname of udp server to bind to
+   * @param {number} [customOptions.port=41234] Port of udp server to bind to
+   * @param {boolean} [customOptions.exclusive=false] Exclusive flag
+   */
+  open(customOptions = {}) {
+    const options = Object.assign({}, this.options.open, customOptions)
+    const { port, exclusive } = options
+
+    this.socketStatus = STATUS.IS_CONNECTING
+
+    this.socket.bind({
+      address: options.host,
+      port,
+      exclusive,
+    }, () =&gt; {
+      this.socketStatus = STATUS.IS_OPEN
+      this.notify(&apos;open&apos;)
+    })
+  }
+
+  /**
+   * Close udp socket
+   */
+  close() {
+    this.socketStatus = STATUS.IS_CLOSING
+
+    this.socket.close(() =&gt; {
+      this.socketStatus = STATUS.IS_CLOSED
+      this.notify(&apos;close&apos;)
+    })
+  }
+
+  /**
+   * Send an OSC Packet, Bundle or Message. Use options here for
+   * custom port and hostname, otherwise the global options will
+   * be taken
+   * @param {Uint8Array} binary Binary representation of OSC Packet
+   * @param {object} [customOptions] Custom options for udp socket
+   * @param {string} [customOptions.host] Hostname of udp client
+   * @param {number} [customOptions.port] Port of udp client
+   */
+  send(binary, customOptions = {}) {
+    const options = Object.assign({}, this.options.send, customOptions)
+    const { port, host } = options
+
+    this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host)
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

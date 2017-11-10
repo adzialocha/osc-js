@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/osc.js | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/osc.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { isObject, isString, isFunction, isInt } from &apos;./common/utils&apos;
+
+import Packet from &apos;./packet&apos;
+import Bundle from &apos;./bundle&apos;
+import Message from &apos;./message&apos;
+
+import EventHandler from &apos;./events&apos;
+
+/**
+ * Default options
+ * @private
+ */
+const defaultOptions = {
+  plugin: null,
+  discardLateMessages: false,
+}
+
+/**
+ * Status flags
+ */
+const STATUS = {
+  IS_NOT_INITIALIZED: -1,
+  IS_CONNECTING: 0,
+  IS_OPEN: 1,
+  IS_CLOSING: 2,
+  IS_CLOSED: 3,
+}
+
+/**
+ * OSC interface to send OSC Packets and to listen to status-changes and
+ * incoming message events. Offers a Plugin API for different network
+ * protocols, defaults to a simple Websocket client for OSC communication
+ * between a browser js-app and a js-node server
+ *
+ * @example
+ * const osc = new OSC()
+ *
+ * osc.on(&apos;/input/test&apos;, (message) =&gt; {
+ *   // print incoming OSC message arguments
+ *   console.log(message.args)
+ * })
+ *
+ * osc.on(&apos;open&apos;, () =&gt; {
+ *   const message = new Message(&apos;/test/path&apos;, 55.12, &apos;hello&apos;)
+ *   osc.send(message)
+ * })
+ *
+ * osc.open({ host: &apos;192.168.178.115&apos;, port: 9012 })
+ */
+class OSC {
+  /**
+   * Create an OSC instance with given options
+   * @param {object} [options] Custom options
+   * @param {boolean} [options.discardLateMessages=false] Ignore incoming
+   * messages when given timetag lies in the past
+   * @param {Plugin} [options.plugin=WebsocketClientPlugin] Add a connection plugin
+   * to this interface, defaults to a plugin with Websocket client.
+   * Open README.md for further information on how to handle plugins or
+   * how to write your own with the Plugin API
+   *
+   * @example
+   * const osc = new OSC() // default options with Websocket client
+   *
+   * @example
+   * const osc = new OSC({ discardLateMessages: true })
+   *
+   * @example
+   * const websocketPlugin = new OSC.WebsocketClientPlugin()
+   * const osc = new OSC({ plugin: websocketPlugin })
+   */
+  constructor(options) {
+    if (options &amp;&amp; !isObject(options)) {
+      throw new Error(&apos;OSC options argument has to be an object.&apos;)
+    }
+
+    /**
+     * @type {object} options
+     * @private
+     */
+    this.options = Object.assign({}, defaultOptions, options)
+    /**
+     * @type {EventHandler} eventHandler
+     * @private
+     */
+    this.eventHandler = new EventHandler({
+      discardLateMessages: this.options.discardLateMessages,
+    })
+
+    // pass EventHandler&apos;s notify() to plugin
+    const { eventHandler } = this
+    if (this.options.plugin &amp;&amp; this.options.plugin.registerNotify) {
+      this.options.plugin.registerNotify((...args) =&gt; eventHandler.notify(...args))
+    }
+  }
+
+  /**
+   * Listen to a status-change event or incoming OSC message with
+   * address pattern matching
+   * @param {string} eventName Event name or OSC address pattern
+   * @param {function} callback Function which is called on notification
+   * @return {number} Subscription id (needed to unsubscribe)
+   *
+   * @example
+   * // will be called when server receives /in!trument/* for example
+   * osc.on(&apos;/instrument/1&apos;, (message) =&gt; {
+   *   console.log(message)
+   * })
+   *
+   * @example
+   * // will be called on network socket error
+   * osc.on(&apos;error&apos;, (message) =&gt; {
+   *   console.log(message)
+   * })
+   */
+  on(eventName, callback) {
+    if (!(isString(eventName) &amp;&amp; isFunction(callback))) {
+      throw new Error(&apos;OSC on() needs event- or address string and callback function&apos;)
+    }
+
+    return this.eventHandler.on(eventName, callback)
+  }
+
+  /**
+   * Unsubscribe an event listener
+   * @param {string} eventName Event name or OSC address pattern
+   * @param {number} subscriptionId The subscription id
+   * @return {boolean} Success state
+   *
+   * @example
+   * const listenerId = osc.on(&apos;error&apos;, (message) =&gt; {
+   *   console.log(message)
+   * })
+   * osc.off(&apos;error&apos;, listenerId) // unsubscribe from error event
+   */
+  off(eventName, subscriptionId) {
+    if (!(isString(eventName) &amp;&amp; isInt(subscriptionId))) {
+      throw new Error(&apos;OSC off() needs string and number (subscriptionId) to unsubscribe&apos;)
+    }
+
+    return this.eventHandler.off(eventName, subscriptionId)
+  }
+
+  /**
+   * Open network socket with plugin. This method is used by
+   * plugins and is not available without (see Plugin API for more information)
+   * @param {object} [options] Custom global options for plugin instance
+   *
+   * @example
+   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })
+   * osc.open({ host: &apos;127.0.0.1&apos;, port: 8080 })
+   */
+  open(options) {
+    if (options &amp;&amp; !isObject(options)) {
+      throw new Error(&apos;OSC open() options argument needs to be an object&apos;)
+    }
+
+    if (!(this.options.plugin &amp;&amp; isFunction(this.options.plugin.open))) {
+      throw new Error(&apos;OSC Plugin API #open is not implemented!&apos;)
+    }
+
+    return this.options.plugin.open(options)
+  }
+
+  /**
+   * Returns the current status of the connection. See *STATUS* for
+   * different possible states. This method is used by plugins
+   * and is not available without (see Plugin API for more information)
+   * @return {number} Status identifier
+   *
+   * @example
+   * import OSC, { STATUS } from &apos;osc&apos;
+   * const osc = new OSC()
+   * if (osc.status() === STATUS.IS_CONNECTING) {
+   *   // do something
+   * }
+   */
+  status() {
+    if (!(this.options.plugin &amp;&amp; isFunction(this.options.plugin.status))) {
+      throw new Error(&apos;OSC Plugin API #status is not implemented!&apos;)
+    }
+
+    return this.options.plugin.status()
+  }
+
+  /**
+   * Close connection. This method is used by plugins and is not
+   * available without (see Plugin API for more information)
+   */
+  close() {
+    if (!(this.options.plugin &amp;&amp; isFunction(this.options.plugin.close))) {
+      throw new Error(&apos;OSC Plugin API #close is not implemented!&apos;)
+    }
+
+    return this.options.plugin.close()
+  }
+
+  /**
+   * Send an OSC Packet, Bundle or Message. This method is used by plugins
+   * and is not available without (see Plugin API for more information)
+   * @param {Packet|Bundle|Message} packet OSC Packet, Bundle or Message instance
+   * @param {object} [options] Custom options
+   *
+   * @example
+   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })
+   * osc.open({ host: &apos;127.0.0.1&apos;, port: 8080 })
+   *
+   * const message = new OSC.Message(&apos;/test/path&apos;, 55.1, 57)
+   * osc.send(message)
+   *
+   * // send message again to custom address
+   * osc.send(message, { host: &apos;192.168.178.115&apos;, port: 9001 })
+   */
+  send(packet, options) {
+    if (!(this.options.plugin &amp;&amp; isFunction(this.options.plugin.send))) {
+      throw new Error(&apos;OSC Plugin API #send is not implemented!&apos;)
+    }
+
+    if (!(packet instanceof Message || packet instanceof Bundle || packet instanceof Packet)) {
+      throw new Error(&apos;OSC send() needs Messages, Bundles or Packets&apos;)
+    }
+
+    if (options &amp;&amp; !isObject(options)) {
+      throw new Error(&apos;OSC send() options argument has to be an object&apos;)
+    }
+
+    return this.options.plugin.send(packet.pack(), options)
+  }
+}
+
+// expose status flags
+OSC.STATUS = STATUS
+
+// expose OSC classes
+OSC.Packet = Packet
+OSC.Bundle = Bundle
+OSC.Message = Message
+
+export default OSC
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

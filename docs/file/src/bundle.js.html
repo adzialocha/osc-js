@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/bundle.js | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/bundle.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { isArray, isInt } from &apos;./common/utils&apos;
+import EncodeHelper from &apos;./common/helpers&apos;
+
+import Packet from &apos;./packet&apos;
+import Message from &apos;./message&apos;
+import AtomicString from &apos;./atomic/string&apos;
+import AtomicInt32 from &apos;./atomic/int32&apos;
+import AtomicTimetag from &apos;./atomic/timetag&apos;
+
+/** OSC Bundle string */
+export const BUNDLE_TAG = &apos;#bundle&apos;
+
+/**
+ * An OSC Bundle consist of a Timetag and one or many Bundle Elements.
+ * The elements are either OSC Messages or more OSC Bundles
+ */
+export default class Bundle {
+  /**
+   * Create a Bundle instance
+   * @param {...*} [args] Timetag and elements. See examples for options
+   *
+   * @example
+   * const bundle = new Bundle(new Date() + 500)
+   *
+   * @example
+   * const message = new Message(&apos;/test/path&apos;, 51.2)
+   * const anotherBundle = new Bundle([message], Date.now() + 1500)
+   *
+   * @example
+   * const message = new Message(&apos;/test/path&apos;, 51.2)
+   * const anotherMessage = new Message(&apos;/test/message&apos;, &apos;test&apos;, 12)
+   * const anotherBundle = new Bundle(message, anotherMessage)
+   */
+  constructor(...args) {
+    /**
+     * @type {number} offset
+     * @private
+     */
+    this.offset = 0
+    /** @type {AtomicTimetag} timetag */
+    this.timetag = new AtomicTimetag()
+    /** @type {array} bundleElements */
+    this.bundleElements = []
+
+    if (args.length &gt; 0) {
+      // first argument is an Date or js timestamp (number)
+      if (args[0] instanceof Date || isInt(args[0])) {
+        this.timetag = new AtomicTimetag(args[0])
+      } else if (isArray(args[0])) {
+        // first argument is an Array of Bundle elements
+        args[0].forEach((item) =&gt; {
+          this.add(item)
+        })
+
+        // second argument is an Date or js timestamp (number)
+        if (args.length &gt; 1 &amp;&amp; (args[1] instanceof Date || isInt(args[0]))) {
+          this.timetag = new AtomicTimetag(args[1])
+        }
+      } else {
+        // take all arguments as Bundle elements
+        args.forEach((item) =&gt; {
+          this.add(item)
+        })
+      }
+    }
+  }
+
+  /**
+   * Take a JavaScript timestamp to set the Bundle&apos;s timetag
+   * @param {number} ms JS timestamp in milliseconds
+   *
+   * @example
+   * const bundle = new Bundle()
+   * bundle.timestamp(Date.now() + 5000) // in 5 seconds
+   */
+  timestamp(ms) {
+    if (!isInt(ms)) {
+      throw new Error(&apos;OSC Bundle needs an integer for setting the timestamp&apos;)
+    }
+
+    this.timetag = new AtomicTimetag(ms)
+  }
+
+  /**
+   * Add a Message or Bundle to the list of elements
+   * @param {Bundle|Message} item
+   */
+  add(item) {
+    if (!(item instanceof Message || item instanceof Bundle)) {
+      throw new Error(&apos;OSC Bundle contains only Messages and Bundles&apos;)
+    }
+
+    this.bundleElements.push(item)
+  }
+
+  /**
+   * Interpret the Bundle as packed binary data
+   * @return {Uint8Array} Packed binary data
+   */
+  pack() {
+    const encoder = new EncodeHelper()
+
+    // an OSC Bundle consists of the OSC-string &quot;#bundle&quot;
+    encoder.add(new AtomicString(BUNDLE_TAG))
+
+    // followed by an OSC Time Tag
+    if (!this.timetag) {
+      this.timetag = new AtomicTimetag()
+    }
+
+    encoder.add(this.timetag)
+
+    // followed by zero or more OSC Bundle Elements
+    this.bundleElements.forEach((item) =&gt; {
+      encoder.add(new AtomicInt32(item.pack().byteLength))
+      encoder.add(item)
+    })
+
+    return encoder.merge()
+  }
+
+  /**
+   * Unpack binary data to read a Bundle
+   * @param {DataView} dataView The DataView holding the binary representation of a Bundle
+   * @param {number} [initialOffset=0] Offset of DataView before unpacking
+   * @return {number} Offset after unpacking
+   */
+  unpack(dataView, initialOffset = 0) {
+    if (!(dataView instanceof DataView)) {
+      throw new Error(&apos;OSC Bundle expects an instance of type DataView&apos;)
+    }
+
+    // read the beginning bundle string
+    const head = new AtomicString()
+    head.unpack(dataView, initialOffset)
+
+    if (head.value !== BUNDLE_TAG) {
+      throw new Error(&apos;OSC Bundle does not contain a valid #bundle head&apos;)
+    }
+
+    // read the timetag
+    const timetag = new AtomicTimetag()
+    let offset = timetag.unpack(dataView, head.offset)
+
+    // read the bundle elements
+    this.bundleElements = []
+
+    while (offset &lt; dataView.byteLength) {
+      const packet = new Packet()
+      const size = new AtomicInt32()
+
+      offset = size.unpack(dataView, offset)
+      offset = packet.unpack(dataView, offset, this.timetag)
+
+      this.bundleElements.push(packet.value)
+    }
+
+    this.offset = offset
+    this.timetag = timetag
+
+    return this.offset
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
