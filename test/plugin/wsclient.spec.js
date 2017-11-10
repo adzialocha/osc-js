@@ -8,18 +8,15 @@ describe('WebsocketClientPlugin', () => {
 
   before(() => {
     plugin = new WebsocketClientPlugin({
-      udpServer: {
-        port: 8129,
-      },
-      wsServer: {
-        host: '127.0.0.1',
-      },
+      port: 8129,
+      host: '127.0.0.1',
     })
   })
 
   it('merges the given options correctly', () => {
-    expect(plugin.options.udpServer.port).to.be.equals(8129)
-    expect(plugin.options.wsServer.host).to.be.equals('127.0.0.1')
+    expect(plugin.options.port).to.be.equals(8129)
+    expect(plugin.options.host).to.be.equals('127.0.0.1')
+    expect(plugin.options.secure).to.be.equals(false)
   })
 
   describe('status', () => {
