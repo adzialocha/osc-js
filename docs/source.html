@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="">
+  <title data-ice="title">Source | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">182/187</span></h1>
+
+<table class="files-summary" data-ice="files" data-use-coverage="true">
+  <thead>
+    <tr>
+      <td>File</td>
+      <td>Identifier</td>
+      <td class="coverage">Document</td>
+      <td style="display: none;">Size</td>
+      <td style="display: none;">Lines</td>
+      <td style="display: none;">Updated</td>
+    </tr>
+  </thead>
+  <tbody>
+    
+  <tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic.js.html">src/atomic.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">2157 byte</td>
+      <td style="display: none;" data-ice="lines">67</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 10:49:24 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/blob.js.html">src/atomic/blob.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">1787 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2017-03-05 22:29:38 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/float32.js.html">src/atomic/float32.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">1037 byte</td>
+      <td style="display: none;" data-ice="lines">38</td>
+      <td style="display: none;" data-ice="updated">2017-01-05 22:39:09 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/int32.js.html">src/atomic/int32.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">1025 byte</td>
+      <td style="display: none;" data-ice="lines">38</td>
+      <td style="display: none;" data-ice="updated">2017-01-05 22:39:09 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/string.js.html">src/atomic/string.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
+      <td style="display: none;" data-ice="size">3052 byte</td>
+      <td style="display: none;" data-ice="lines">114</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 11:55:28 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/timetag.js.html">src/atomic/timetag.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span>
+<span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span>
+<span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span>
+<span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
+      <td style="display: none;" data-ice="size">3396 byte</td>
+      <td style="display: none;" data-ice="lines">119</td>
+      <td style="display: none;" data-ice="updated">2017-11-04 00:02:28 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/bundle.js.html">src/bundle.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span>
+<span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
+      <td style="display: none;" data-ice="size">4535 byte</td>
+      <td style="display: none;" data-ice="lines">163</td>
+      <td style="display: none;" data-ice="updated">2017-01-05 22:39:09 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/common/helpers.js.html">src/common/helpers.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span>
+<span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span>
+<span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span>
+<span><a href="function/index.html#static-function-typeTag">typeTag</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
+      <td style="display: none;" data-ice="size">2987 byte</td>
+      <td style="display: none;" data-ice="lines">129</td>
+      <td style="display: none;" data-ice="updated">2017-01-05 22:39:09 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/common/utils.js.html">src/common/utils.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-dataView">dataView</a></span>
+<span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span>
+<span><a href="function/index.html#static-function-isArray">isArray</a></span>
+<span><a href="function/index.html#static-function-isBlob">isBlob</a></span>
+<span><a href="function/index.html#static-function-isDate">isDate</a></span>
+<span><a href="function/index.html#static-function-isFloat">isFloat</a></span>
+<span><a href="function/index.html#static-function-isFunction">isFunction</a></span>
+<span><a href="function/index.html#static-function-isInt">isInt</a></span>
+<span><a href="function/index.html#static-function-isObject">isObject</a></span>
+<span><a href="function/index.html#static-function-isString">isString</a></span>
+<span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span>
+<span><a href="function/index.html#static-function-pad">pad</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">12/12</span></td>
+      <td style="display: none;" data-ice="size">2133 byte</td>
+      <td style="display: none;" data-ice="lines">115</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 11:55:28 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/events.js.html">src/events.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">12/12</span></td>
+      <td style="display: none;" data-ice="size">8776 byte</td>
+      <td style="display: none;" data-ice="lines">322</td>
+      <td style="display: none;" data-ice="updated">2017-11-04 00:02:28 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/message.js.html">src/message.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/message.js~Message.html">Message</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
+      <td style="display: none;" data-ice="size">4456 byte</td>
+      <td style="display: none;" data-ice="lines">169</td>
+      <td style="display: none;" data-ice="updated">2017-11-01 18:53:45 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/osc.js.html">src/osc.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">12/12</span></td>
+      <td style="display: none;" data-ice="size">7031 byte</td>
+      <td style="display: none;" data-ice="lines">238</td>
+      <td style="display: none;" data-ice="updated">2017-11-07 23:35:08 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/packet.js.html">src/packet.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">2369 byte</td>
+      <td style="display: none;" data-ice="lines">84</td>
+      <td style="display: none;" data-ice="updated">2017-01-05 22:39:09 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/plugin/bridge.js.html#errorLines=1,2">src/plugin/bridge.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></td>
+      <td class="coverage"><span data-ice="coverage">88 %</span><span data-ice="coverageCount" class="coverage-count">15/17</span></td>
+      <td style="display: none;" data-ice="size">6542 byte</td>
+      <td style="display: none;" data-ice="lines">228</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 10:49:24 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/plugin/dgram.js.html#errorLines=1">src/plugin/dgram.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></td>
+      <td class="coverage"><span data-ice="coverage">94 %</span><span data-ice="coverageCount" class="coverage-count">16/17</span></td>
+      <td style="display: none;" data-ice="size">4515 byte</td>
+      <td style="display: none;" data-ice="lines">181</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 10:49:24 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/plugin/wsbrowser.js.html">src/plugin/wsbrowser.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
+      <td style="display: none;" data-ice="size">3501 byte</td>
+      <td style="display: none;" data-ice="lines">145</td>
+      <td style="display: none;" data-ice="updated">2017-11-06 13:24:13 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/plugin/wsclient.js.html#errorLines=2">src/plugin/wsclient.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></td>
+      <td class="coverage"><span data-ice="coverage">92 %</span><span data-ice="coverageCount" class="coverage-count">13/14</span></td>
+      <td style="display: none;" data-ice="size">3556 byte</td>
+      <td style="display: none;" data-ice="lines">146</td>
+      <td style="display: none;" data-ice="updated">2017-11-06 13:24:13 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/plugin/wsserver.js.html#errorLines=1">src/plugin/wsserver.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></td>
+      <td class="coverage"><span data-ice="coverage">92 %</span><span data-ice="coverageCount" class="coverage-count">13/14</span></td>
+      <td style="display: none;" data-ice="size">3389 byte</td>
+      <td style="display: none;" data-ice="lines">146</td>
+      <td style="display: none;" data-ice="updated">2017-10-01 10:15:07 (UTC)</td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
