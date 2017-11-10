@@ -19,6 +19,7 @@ const STATUS = {
 const defaultOptions = {
   host: 'localhost',
   port: 8080,
+  secure: false,
 }
 
 /**
@@ -31,6 +32,7 @@ export default class WebsocketBrowserPlugin {
    * @param {object} [options] Custom options
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
+   * @param {boolean} [options.secure=false] Use wss:// for secure connections
    *
    * @example
    * const plugin = new OSC.WebsocketBrowserPlugin({ port: 9912 })
@@ -88,10 +90,11 @@ export default class WebsocketBrowserPlugin {
    * @param {object} [customOptions] Custom options
    * @param {string} [customOptions.host] Hostname of Websocket server
    * @param {number} [customOptions.port] Port of Websocket server
+   * @param {boolean} [customOptions.secure] Use wss:// for secure connections
    */
   open(customOptions = {}) {
     const options = Object.assign({}, this.options, customOptions)
-    const { port, host } = options
+    const { port, host, secure } = options
 
     // close socket when already given
     if (this.socket) {
@@ -99,7 +102,8 @@ export default class WebsocketBrowserPlugin {
     }
 
     // create websocket client
-    this.socket = new WebSocket(`ws://${host}:${port}`) // eslint-disable-line no-undef
+    const protocol = secure ? 'wss' : 'ws'
+    this.socket = new WebSocket(`${protocol}://${host}:${port}`) // eslint-disable-line no-undef
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
