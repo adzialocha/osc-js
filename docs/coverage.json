@@ -1,0 +1,106 @@
+{
+  "coverage": "97.32%",
+  "expectCount": 187,
+  "actualCount": 182,
+  "files": {
+    "src/atomic/blob.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/atomic/float32.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/atomic/int32.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/atomic/string.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/atomic/timetag.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "src/atomic.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/bundle.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/common/helpers.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/common/utils.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/events.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/message.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/osc.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/packet.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/plugin/bridge.js": {
+      "expectCount": 17,
+      "actualCount": 15,
+      "undocumentLines": [
+        1,
+        2
+      ]
+    },
+    "src/plugin/dgram.js": {
+      "expectCount": 17,
+      "actualCount": 16,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/plugin/wsbrowser.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "src/plugin/wsclient.js": {
+      "expectCount": 14,
+      "actualCount": 13,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/plugin/wsserver.js": {
+      "expectCount": 14,
+      "actualCount": 13,
+      "undocumentLines": [
+        1
+      ]
+    }
+  }
+}

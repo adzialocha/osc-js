@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/osc.spec.js | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/osc.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import chai, { expect } from &apos;chai&apos;
+import spies from &apos;chai-spies-next&apos;
+
+import OSC from &apos;../src/osc&apos;
+
+import Packet from &apos;../src/packet&apos;
+import Message from &apos;../src/message&apos;
+
+chai.use(spies)
+
+class TestPlugin {
+  constructor() {
+    this.socketStatus = -1
+    this.notify = null
+  }
+
+  registerNotify(fn) {
+    this.notify = fn
+  }
+
+  status() {
+    return this.socketStatus
+  }
+
+  open() {
+    this.socketStatus = 1
+    this.notify(&apos;open&apos;)
+  }
+
+  send() {
+    // unused
+  }
+
+  close() {
+    this.socketStatus = 3
+    this.notify(&apos;close&apos;)
+  }
+
+  // mocking helpers
+  mockError() {
+    this.notify(&apos;error&apos;, { message: &apos;An error&apos; })
+  }
+
+  mockMessage() {
+    this.notify(new Message([&apos;test/path&apos;], 55.1, 224))
+  }
+}
+
+/** @test {OSC} */
+describe(&apos;OSC&apos;, () =&gt; {
+  let osc
+  let plugin
+
+  before(() =&gt; {
+    plugin = new TestPlugin()
+    osc = new OSC({
+      discardLateMessages: true,
+      plugin,
+    })
+  })
+
+  it(&apos;returns the instance options when created&apos;, () =&gt; {
+    expect(osc.options.discardLateMessages).to.be.true
+  })
+
+  /** @test {OSC#on} */
+  describe(&apos;on&apos;, () =&gt; {
+    it(&apos;calls my subscription when listening to the right address&apos;, () =&gt; {
+      const spy = chai.spy()
+      osc.on(&apos;/test/path&apos;, spy)
+
+      plugin.mockMessage()
+
+      expect(spy).to.have.been.called()
+    })
+
+    it(&apos;calls an error&apos;, () =&gt; {
+      const spy = chai.spy()
+      osc.on(&apos;error&apos;, spy)
+
+      plugin.mockError()
+
+      expect(spy).to.have.been.called()
+    })
+  })
+
+  /** @test {OSC#off} */
+  describe(&apos;off&apos;, () =&gt; {
+    it(&apos;removes a subscription&apos;, () =&gt; {
+      const spy = chai.spy()
+      const id = osc.on(&apos;error&apos;, spy)
+
+      osc.off(&apos;error&apos;, id)
+
+      plugin.mockError()
+
+      expect(spy).to.not.have.been.called()
+    })
+  })
+
+  /** @test {OSC#status} */
+  describe(&apos;status&apos;, () =&gt; {
+    it(&apos;returns the initial status&apos;, () =&gt; {
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_NOT_INITIALIZED)
+    })
+  })
+
+  /** @test {OSC#open} */
+  describe(&apos;open&apos;, () =&gt; {
+    let spy
+
+    beforeEach(() =&gt; {
+      spy = chai.spy()
+      osc.on(&apos;open&apos;, spy)
+      osc.open()
+    })
+
+    it(&apos;returns the correct status&apos;, () =&gt; {
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_OPEN)
+    })
+
+    it(&apos;calls the open event&apos;, () =&gt; {
+      expect(spy).to.have.been.called()
+    })
+  })
+
+  /** @test {OSC#close} */
+  describe(&apos;close&apos;, () =&gt; {
+    let spy
+
+    beforeEach(() =&gt; {
+      spy = chai.spy()
+      osc.on(&apos;close&apos;, spy)
+      osc.close()
+    })
+
+    it(&apos;returns the correct status&apos;, () =&gt; {
+      expect(osc.status()).to.be.equals(OSC.STATUS.IS_CLOSED)
+    })
+
+    it(&apos;calls the close event&apos;, () =&gt; {
+      expect(spy).to.have.been.called()
+    })
+  })
+
+  /** @test {OSC#send} */
+  describe(&apos;send&apos;, () =&gt; {
+    it(&apos;passes over a binary object with configs to the plugin&apos;, () =&gt; {
+      const message = new Message(&apos;/test/path&apos;, 122, 554)
+      const packet = new Packet(message)
+      const config = { host: &apos;localhost&apos;, port: 9001 }
+      const spy = chai.spy.on(plugin, &apos;send&apos;)
+      const binary = packet.pack()
+
+      osc.send(packet, config)
+
+      expect(binary).to.be.a(&apos;Uint8Array&apos;)
+      expect(spy).to.have.been.called.with(binary, config)
+    })
+  })
+})
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

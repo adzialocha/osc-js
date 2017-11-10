@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/events.spec.js | osc-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="osc-js"><meta property="twitter:description" content="OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAddress">prepareAddress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-typeTag">typeTag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataView">dataView</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsbrowser.js~WebsocketBrowserPlugin.html">WebsocketBrowserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/events.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import chai, { expect } from &apos;chai&apos;
+import spies from &apos;chai-spies-next&apos;
+
+import EventHandler from &apos;../src/events&apos;
+import Message from &apos;../src/message&apos;
+
+chai.use(spies)
+
+/** @test {EventHandler} */
+describe(&apos;EventHandler&apos;, () =&gt; {
+  let handler
+
+  before(() =&gt; {
+    handler = new EventHandler()
+  })
+
+  /** @test {EventHandler#on} */
+  describe(&apos;on&apos;, () =&gt; {
+    let spy
+    let id
+
+    before(() =&gt; {
+      spy = chai.spy()
+      id = handler.on(&apos;/test/path&apos;, spy)
+    })
+
+    it(&apos;returns different subscription ids for each listener&apos;, () =&gt; {
+      const anotherId = handler.on([&apos;test&apos;, &apos;path&apos;], () =&gt; {})
+      expect(id !== anotherId).to.be.true
+    })
+
+    it(&apos;registers a handler which can be called&apos;, () =&gt; {
+      handler.notify(&apos;/test/path&apos;, {})
+      expect(spy).to.have.been.called()
+    })
+  })
+
+  /** @test {EventHandler#off} */
+  describe(&apos;off&apos;, () =&gt; {
+    let spy
+    let id
+
+    before(() =&gt; {
+      spy = chai.spy()
+      id = handler.on(&apos;/test/path&apos;, spy)
+    })
+
+    it(&apos;removes a handler&apos;, () =&gt; {
+      const success = handler.off(&apos;/test/path&apos;, id)
+      handler.notify(&apos;/test/path&apos;, {})
+
+      expect(spy).to.not.have.been.called()
+      expect(success).to.be.true
+    })
+
+    it(&apos;returns false when handler was not found&apos;, () =&gt; {
+      const success = handler.off(&apos;/test/path/which/does/not/exist&apos;, id)
+      expect(success).to.be.false
+    })
+  })
+
+  /** @test {EventHandler#notify} */
+  describe(&apos;notify&apos;, () =&gt; {
+    const testdata = {
+      test: &apos;data&apos;,
+    }
+
+    const spy = []
+
+    before(() =&gt; {
+      for (let i = 0; i &lt; 9; i += 1) {
+        spy.push(chai.spy())
+      }
+
+      handler.on(&apos;/&apos;, spy[0])
+      handler.on(&apos;/one/test&apos;, spy[1])
+      handler.on(&apos;/and/another&apos;, spy[2])
+      handler.on(&apos;/two/test/path&apos;, spy[3])
+      handler.on([&apos;two&apos;, &apos;test&apos;, &apos;path&apos;], spy[4])
+      handler.on(&apos;/two/some/path&apos;, spy[5])
+
+      handler.on(&apos;error&apos;, spy[6])
+      handler.on(&apos;close&apos;, spy[7])
+      handler.on(&apos;open&apos;, spy[8])
+    })
+
+    afterEach(() =&gt; {
+      spy.forEach((item) =&gt; {
+        item.reset()
+      })
+    })
+
+    it(&apos;passes over the event data&apos;, () =&gt; {
+      handler.notify(&apos;/and/another&apos;, testdata)
+      expect(spy[2]).to.have.been.called.with(testdata)
+    })
+
+    it(&apos;accepts messages&apos;, () =&gt; {
+      handler.notify(new Message([&apos;and&apos;, &apos;another&apos;]))
+      expect(spy[2]).to.have.been.called()
+    })
+
+    it(&apos;accepts binary packets&apos;, () =&gt; {
+      const binary = new Uint8Array([
+        47, 97, 110, 100, 47, 97, 110,
+        111, 116, 104, 101, 114, 0, 0, 0, 0, 44, 0, 0, 0,
+      ])
+
+      handler.notify(binary)
+      expect(spy[2]).to.have.been.called()
+    })
+
+    describe(&apos;event listeners&apos;, () =&gt; {
+      it(&apos;notifies error callbacks&apos;, () =&gt; {
+        handler.notify(&apos;error&apos;, testdata)
+        expect(spy[6]).to.have.been.called.with(testdata)
+      })
+
+      it(&apos;notifies close callbacks&apos;, () =&gt; {
+        handler.notify(&apos;close&apos;, testdata)
+        expect(spy[7]).to.have.been.called.with(testdata)
+      })
+
+      it(&apos;notifies open callbacks&apos;, () =&gt; {
+        handler.notify(&apos;open&apos;, testdata)
+        expect(spy[8]).to.have.been.called.with(testdata)
+      })
+    })
+
+    describe(&apos;address listeners with timetags&apos;, () =&gt; {
+      it(&apos;calls the handler later&apos;, () =&gt; {
+        handler.notify(&apos;/&apos;, testdata, Date.now() + 5000)
+
+        expect(spy[0]).to.not.have.been.called()
+      })
+    })
+
+    describe(&apos;address listeners&apos;, () =&gt; {
+      it(&apos;calls the root listener&apos;, () =&gt; {
+        handler.notify(&apos;/&apos;, testdata)
+
+        expect(spy[0]).to.have.been.called()
+        expect(spy[1]).to.not.have.been.called()
+        expect(spy[4]).to.not.have.been.called()
+      })
+
+      it(&apos;calls two listeners with the same address&apos;, () =&gt; {
+        handler.notify(&apos;/two/test/path&apos;, testdata)
+
+        expect(spy[3]).to.have.been.called()
+        expect(spy[4]).to.have.been.called()
+      })
+
+      it(&apos;works with {} wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/two/{test,some}/path&apos;, testdata)
+
+        expect(spy[1]).to.not.have.been.called()
+        expect(spy[3]).to.have.been.called()
+        expect(spy[4]).to.have.been.called()
+        expect(spy[5]).to.have.been.called()
+      })
+
+      it(&apos;works with [] wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/[pawgfo]ne/[bnit]est&apos;, testdata)
+
+        expect(spy[1]).to.have.been.called()
+        expect(spy[2]).to.not.have.been.called()
+      })
+
+      it(&apos;works with [!] wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/two/[!s][eso][tspm][tea]/path&apos;, testdata)
+
+        expect(spy[3]).have.been.called()
+        expect(spy[5]).not.have.been.called()
+      })
+
+      it(&apos;works with [a-z] wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/two/[a-z]est/p[a-c]t[e-i]&apos;, testdata)
+
+        expect(spy[3]).have.been.called()
+        expect(spy[5]).not.have.been.called()
+      })
+
+      it(&apos;works with * wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/two/*&apos;, testdata)
+
+        expect(spy[3]).have.been.called()
+        expect(spy[4]).have.been.called()
+        expect(spy[5]).have.been.called()
+        expect(spy[1]).not.have.been.called()
+      })
+
+      it(&apos;works with * wildcard calling all&apos;, () =&gt; {
+        handler.notify(&apos;/*&apos;, testdata)
+
+        expect(spy[0]).have.been.called()
+        expect(spy[1]).have.been.called()
+        expect(spy[2]).have.been.called()
+        expect(spy[3]).have.been.called()
+        expect(spy[4]).have.been.called()
+        expect(spy[5]).have.been.called()
+      })
+
+      it(&apos;works with ? wildcard&apos;, () =&gt; {
+        handler.notify(&apos;/two/????/pa?h&apos;, testdata)
+
+        expect(spy[0]).not.have.been.called()
+        expect(spy[3]).have.been.called()
+        expect(spy[5]).have.been.called()
+      })
+    })
+  })
+})
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
