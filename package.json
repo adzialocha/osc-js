@@ -5,8 +5,8 @@
   "main": "lib/osc.js",
   "scripts": {
     "lint": "eslint build.js src/** test/**; exit 0",
-    "test": "mocha test/** --compilers js:babel-register; exit 0",
-    "test:watch": "mocha test/** --compilers js:babel-register --reporter min --watch test/** src/**",
+    "test": "mocha test/** --require babel-core/register; exit 0",
+    "test:watch": "mocha test/** --require babel-core/register --reporter min --watch test/** src/**",
     "build": "rollem -c rollup.config.js",
     "docs": "esdoc"
   },
