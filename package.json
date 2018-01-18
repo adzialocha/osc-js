@@ -31,7 +31,6 @@
     "url": "https://github.com/adzialocha/osc-js/issues"
   },
   "files": [
-    "dist",
     "lib"
   ],
   "homepage": "https://github.com/adzialocha/osc-js#readme",
@@ -42,7 +41,6 @@
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "chai-spies-next": "^0.9.3",
-    "del": "^3.0.0",
     "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.15.0",
