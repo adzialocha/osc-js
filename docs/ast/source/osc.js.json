@@ -718,7 +718,25 @@
                       }
                     },
                     "value": false
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Status flags\n ",
+                      "start": 315,
+                      "end": 338,
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 20,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
@@ -809,8 +827,7 @@
                 },
                 "identifierName": "STATUS"
               },
-              "name": "STATUS",
-              "leadingComments": null
+              "name": "STATUS"
             },
             "init": {
               "type": "ObjectExpression",
@@ -1120,34 +1137,33 @@
                       "raw": "3"
                     },
                     "value": 3
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * OSC interface to send OSC Packets and to listen to status-changes and\n * incoming message events. Offers a Plugin API for different network\n * protocols, defaults to a simple Websocket client for OSC communication\n * between a browser js-app and a js-node server\n *\n * @example\n * const osc = new OSC()\n *\n * osc.on('/input/test', (message) => {\n *   // print incoming OSC message arguments\n *   console.log(message.args)\n * })\n *\n * osc.on('open', () => {\n *   const message = new Message('/test/path', 55.12, 'hello')\n *   osc.send(message)\n * })\n *\n * osc.open({ host: '192.168.178.115', port: 9012 })\n ",
+                      "start": 452,
+                      "end": 1067,
+                      "loc": {
+                        "start": {
+                          "line": 29,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
             },
-            "leadingComments": null,
             "trailingComments": null
           }
         ],
         "kind": "const",
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Status flags\n ",
-            "start": 315,
-            "end": 338,
-            "loc": {
-              "start": {
-                "line": 18,
-                "column": 0
-              },
-              "end": {
-                "line": 20,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -1196,8 +1212,7 @@
             },
             "identifierName": "OSC"
           },
-          "name": "OSC",
-          "leadingComments": null
+          "name": "OSC"
         },
         "superClass": null,
         "body": {
@@ -1229,6 +1244,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -1248,7 +1264,6 @@
                 "name": "constructor",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "constructor",
               "id": null,
               "generator": false,
@@ -2778,6 +2793,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -2797,7 +2813,6 @@
                 "name": "on",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -3301,6 +3316,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -3320,7 +3336,6 @@
                 "name": "off",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -3824,6 +3839,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -3843,7 +3859,6 @@
                 "name": "open",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -4680,6 +4695,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -4699,7 +4715,6 @@
                 "name": "status",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -5293,6 +5308,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -5312,7 +5328,6 @@
                 "name": "close",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -5906,6 +5921,7 @@
                   "column": 3
                 }
               },
+              "static": false,
               "computed": false,
               "key": {
                 "type": "Identifier",
@@ -5925,7 +5941,6 @@
                 "name": "send",
                 "leadingComments": null
               },
-              "static": false,
               "kind": "method",
               "id": null,
               "generator": false,
@@ -7124,9 +7139,9 @@
           ],
           "trailingComments": null
         },
-        "leadingComments": [],
         "trailingComments": [],
-        "name": "_"
+        "name": "_",
+        "leadingComments": []
       },
       {
         "type": "ExpressionStatement",
@@ -7661,8 +7676,7 @@
               },
               "identifierName": "OSC"
             },
-            "name": "OSC",
-            "leadingComments": null
+            "name": "OSC"
           },
           "superClass": null,
           "body": {
@@ -7694,6 +7708,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -7713,7 +7728,6 @@
                   "name": "constructor",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -9243,6 +9257,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -9262,7 +9277,6 @@
                   "name": "on",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -9766,6 +9780,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -9785,7 +9800,6 @@
                   "name": "off",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -10289,6 +10303,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -10308,7 +10323,6 @@
                   "name": "open",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -11145,6 +11159,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -11164,7 +11179,6 @@
                   "name": "status",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -11758,6 +11772,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -11777,7 +11792,6 @@
                   "name": "close",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -12371,6 +12385,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -12390,7 +12405,6 @@
                   "name": "send",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -13589,24 +13603,6 @@
             ],
             "trailingComments": null
           },
-          "leadingComments": [
-            {
-              "type": "CommentBlock",
-              "value": "*\n * OSC interface to send OSC Packets and to listen to status-changes and\n * incoming message events. Offers a Plugin API for different network\n * protocols, defaults to a simple Websocket client for OSC communication\n * between a browser js-app and a js-node server\n *\n * @example\n * const osc = new OSC()\n *\n * osc.on('/input/test', (message) => {\n *   // print incoming OSC message arguments\n *   console.log(message.args)\n * })\n *\n * osc.on('open', () => {\n *   const message = new Message('/test/path', 55.12, 'hello')\n *   osc.send(message)\n * })\n *\n * osc.open({ host: '192.168.178.115', port: 9012 })\n ",
-              "start": 452,
-              "end": 1067,
-              "loc": {
-                "start": {
-                  "line": 29,
-                  "column": 0
-                },
-                "end": {
-                  "line": 49,
-                  "column": 3
-                }
-              }
-            }
-          ],
           "trailingComments": [
             {
               "type": "CommentLine",
@@ -13625,7 +13621,8 @@
               }
             }
           ],
-          "__PseudoExport__": false
+          "__PseudoExport__": false,
+          "leadingComments": []
         },
         "leadingComments": null
       }
@@ -13880,7 +13877,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -14193,7 +14190,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -14300,7 +14297,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -14407,7 +14404,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -14514,7 +14511,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,

@@ -633,7 +633,25 @@
                       "raw": "3"
                     },
                     "value": 3
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Default options\n * @private\n ",
+                      "start": 294,
+                      "end": 332,
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 19,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
@@ -724,8 +742,7 @@
                 },
                 "identifierName": "defaultOptions"
               },
-              "name": "defaultOptions",
-              "leadingComments": null
+              "name": "defaultOptions"
             },
             "init": {
               "type": "ObjectExpression",
@@ -901,34 +918,33 @@
                       }
                     },
                     "value": false
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * OSC plugin for a Websocket client running in node or browser context\n ",
+                      "start": 413,
+                      "end": 492,
+                      "loc": {
+                        "start": {
+                          "line": 26,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 28,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
             },
-            "leadingComments": null,
             "trailingComments": null
           }
         ],
         "kind": "const",
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Default options\n * @private\n ",
-            "start": 294,
-            "end": 332,
-            "loc": {
-              "start": {
-                "line": 16,
-                "column": 0
-              },
-              "end": {
-                "line": 19,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -991,8 +1007,7 @@
               },
               "identifierName": "WebsocketClientPlugin"
             },
-            "name": "WebsocketClientPlugin",
-            "leadingComments": null
+            "name": "WebsocketClientPlugin"
           },
           "superClass": null,
           "body": {
@@ -1024,6 +1039,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -1043,7 +1059,6 @@
                   "name": "constructor",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -1979,6 +1994,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -1998,7 +2014,6 @@
                   "name": "registerNotify",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -2189,6 +2204,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -2208,7 +2224,6 @@
                   "name": "status",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -2348,6 +2363,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -2367,7 +2383,6 @@
                   "name": "open",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5237,6 +5252,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5256,7 +5272,6 @@
                   "name": "close",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5574,6 +5589,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5593,7 +5609,6 @@
                   "name": "send",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5787,44 +5802,9 @@
               }
             ]
           },
-          "leadingComments": [
-            {
-              "type": "CommentBlock",
-              "value": "*\n * OSC plugin for a Websocket client running in node or browser context\n ",
-              "start": 413,
-              "end": 492,
-              "loc": {
-                "start": {
-                  "line": 26,
-                  "column": 0
-                },
-                "end": {
-                  "line": 28,
-                  "column": 3
-                }
-              }
-            }
-          ],
+          "leadingComments": [],
           "trailingComments": []
-        },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * OSC plugin for a Websocket client running in node or browser context\n ",
-            "start": 413,
-            "end": 492,
-            "loc": {
-              "start": {
-                "line": 26,
-                "column": 0
-              },
-              "end": {
-                "line": 28,
-                "column": 3
-              }
-            }
-          }
-        ]
+        }
       }
     ],
     "directives": []

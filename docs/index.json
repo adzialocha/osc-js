@@ -2702,8 +2702,9 @@
     "export": true,
     "importPath": "osc-js/src/events.js",
     "importStyle": "EventHandler",
-    "description": "EventHandler to notify listeners on matching OSC messages and\nstatus changes of plugins",
+    "description": null,
     "lineNumber": 20,
+    "undocument": true,
     "interface": false
   },
   {
@@ -2795,16 +2796,14 @@
     "memberof": "src/events.js~EventHandler",
     "static": false,
     "longname": "src/events.js~EventHandler#uuid",
-    "access": "private",
-    "description": "",
+    "access": "public",
+    "description": null,
     "lineNumber": 49,
+    "undocument": true,
     "type": {
-      "nullable": null,
       "types": [
         "number"
-      ],
-      "spread": false,
-      "description": null
+      ]
     }
   },
   {
@@ -3285,8 +3284,9 @@
     "export": false,
     "importPath": "osc-js/src/osc.js",
     "importStyle": null,
-    "description": "Status flags",
+    "description": null,
     "lineNumber": 21,
+    "undocument": true,
     "type": {
       "types": [
         "{\"IS_NOT_INITIALIZED\": *, \"IS_CONNECTING\": *, \"IS_OPEN\": number, \"IS_CLOSING\": number, \"IS_CLOSED\": number}"
@@ -3305,11 +3305,9 @@
     "export": true,
     "importPath": "osc-js/src/osc.js",
     "importStyle": "OSC",
-    "description": "OSC interface to send OSC Packets and to listen to status-changes and\nincoming message events. Offers a Plugin API for different network\nprotocols, defaults to a simple Websocket client for OSC communication\nbetween a browser js-app and a js-node server",
-    "examples": [
-      "const osc = new OSC()\n\nosc.on('/input/test', (message) => {\n  // print incoming OSC message arguments\n  console.log(message.args)\n})\n\nosc.on('open', () => {\n  const message = new Message('/test/path', 55.12, 'hello')\n  osc.send(message)\n})\n\nosc.open({ host: '192.168.178.115', port: 9012 })"
-    ],
+    "description": null,
     "lineNumber": 50,
+    "undocument": true,
     "interface": false
   },
   {
@@ -3860,12 +3858,13 @@
     "memberof": "src/plugin/bridge.js",
     "static": true,
     "longname": "src/plugin/bridge.js~defaultOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/bridge.js",
     "importStyle": null,
-    "description": "Default options",
+    "description": null,
     "lineNumber": 20,
+    "undocument": true,
     "type": {
       "types": [
         "{\"udpServer\": *, \"udpClient\": *, \"wsServer\": *, \"receiver\": string}"
@@ -3882,12 +3881,13 @@
     "async": false,
     "static": true,
     "longname": "src/plugin/bridge.js~mergeOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/bridge.js",
     "importStyle": null,
-    "description": "Helper method to merge nested objects",
+    "description": null,
     "lineNumber": 41,
+    "undocument": true,
     "params": [
       {
         "name": "base",
@@ -4399,12 +4399,13 @@
     "memberof": "src/plugin/dgram.js",
     "static": true,
     "longname": "src/plugin/dgram.js~defaultOpenOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/dgram.js",
     "importStyle": null,
-    "description": "Default options for open method",
+    "description": null,
     "lineNumber": 19,
+    "undocument": true,
     "type": {
       "types": [
         "{\"host\": string, \"port\": number, \"exclusive\": *}"
@@ -4419,12 +4420,13 @@
     "memberof": "src/plugin/dgram.js",
     "static": true,
     "longname": "src/plugin/dgram.js~defaultSendOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/dgram.js",
     "importStyle": null,
-    "description": "Default options for send method",
+    "description": null,
     "lineNumber": 29,
+    "undocument": true,
     "type": {
       "types": [
         "{\"host\": string, \"port\": number}"
@@ -4439,12 +4441,13 @@
     "memberof": "src/plugin/dgram.js",
     "static": true,
     "longname": "src/plugin/dgram.js~defaultOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/dgram.js",
     "importStyle": null,
-    "description": "Default options",
+    "description": null,
     "lineNumber": 38,
+    "undocument": true,
     "type": {
       "types": [
         "{\"type\": string, \"open\": *, \"send\": *}"
@@ -4461,12 +4464,13 @@
     "async": false,
     "static": true,
     "longname": "src/plugin/dgram.js~mergeOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/dgram.js",
     "importStyle": null,
-    "description": "Helper method to merge nested objects",
+    "description": null,
     "lineNumber": 48,
+    "undocument": true,
     "params": [
       {
         "name": "base",
@@ -4898,12 +4902,13 @@
     "memberof": "src/plugin/wsbrowser.js",
     "static": true,
     "longname": "src/plugin/wsbrowser.js~defaultOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/wsbrowser.js",
     "importStyle": null,
-    "description": "Default options",
+    "description": null,
     "lineNumber": 19,
+    "undocument": true,
     "type": {
       "types": [
         "{\"host\": string, \"port\": number, \"secure\": *}"
@@ -4922,8 +4927,9 @@
     "export": true,
     "importPath": "osc-js/src/plugin/wsbrowser.js",
     "importStyle": "WebsocketBrowserPlugin",
-    "description": "OSC plugin for a Websocket client running in only browser contexts",
+    "description": null,
     "lineNumber": 28,
+    "undocument": true,
     "interface": false
   },
   {
@@ -5270,12 +5276,13 @@
     "memberof": "src/plugin/wsclient.js",
     "static": true,
     "longname": "src/plugin/wsclient.js~defaultOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/wsclient.js",
     "importStyle": null,
-    "description": "Default options",
+    "description": null,
     "lineNumber": 20,
+    "undocument": true,
     "type": {
       "types": [
         "{\"host\": string, \"port\": number, \"secure\": *}"
@@ -5294,8 +5301,9 @@
     "export": true,
     "importPath": "osc-js/src/plugin/wsclient.js",
     "importStyle": "WebsocketClientPlugin",
-    "description": "OSC plugin for a Websocket client running in node or browser context",
+    "description": null,
     "lineNumber": 29,
+    "undocument": true,
     "interface": false
   },
   {
@@ -5642,12 +5650,13 @@
     "memberof": "src/plugin/wsserver.js",
     "static": true,
     "longname": "src/plugin/wsserver.js~defaultOptions",
-    "access": "private",
+    "access": "public",
     "export": false,
     "importPath": "osc-js/src/plugin/wsserver.js",
     "importStyle": null,
-    "description": "Default options",
+    "description": null,
     "lineNumber": 19,
+    "undocument": true,
     "type": {
       "types": [
         "{\"host\": string, \"port\": number}"
@@ -5666,8 +5675,9 @@
     "export": true,
     "importPath": "osc-js/src/plugin/wsserver.js",
     "importStyle": "WebsocketServerPlugin",
-    "description": "OSC plugin for a Websocket client running in node or browser context",
+    "description": null,
     "lineNumber": 27,
+    "undocument": true,
     "interface": false
   },
   {
@@ -5943,7 +5953,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"osc-js\",\n  \"version\": \"1.1.1\",\n  \"description\": \"OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking\",\n  \"main\": \"lib/osc.js\",\n  \"scripts\": {\n    \"lint\": \"eslint build.js src/** test/**; exit 0\",\n    \"test\": \"mocha test/** --compilers js:babel-register; exit 0\",\n    \"test:watch\": \"mocha test/** --compilers js:babel-register --reporter min --watch test/** src/**\",\n    \"build\": \"rollem -c rollup.config.js\",\n    \"docs\": \"esdoc\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+ssh://git@github.com/adzialocha/osc-js.git\"\n  },\n  \"keywords\": [\n    \"osc\",\n    \"data\",\n    \"open\",\n    \"sound\",\n    \"control\",\n    \"websocket\",\n    \"udp\",\n    \"datagram\",\n    \"network\"\n  ],\n  \"author\": \"Andreas Dzialocha\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/adzialocha/osc-js/issues\"\n  },\n  \"files\": [\n    \"dist\",\n    \"lib\"\n  ],\n  \"homepage\": \"https://github.com/adzialocha/osc-js#readme\",\n  \"devDependencies\": {\n    \"babel-eslint\": \"^8.0.1\",\n    \"babel-preset-es2015\": \"^6.18.0\",\n    \"babel-preset-es2015-rollup\": \"^3.0.0\",\n    \"babel-register\": \"^6.26.0\",\n    \"chai\": \"^4.1.2\",\n    \"chai-spies-next\": \"^0.9.3\",\n    \"del\": \"^3.0.0\",\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^4.8.0\",\n    \"eslint-config-airbnb-base\": \"^12.0.2\",\n    \"eslint-plugin-import\": \"^2.7.0\",\n    \"mocha\": \"^4.0.1\",\n    \"rollem\": \"^1.8.1\",\n    \"rollup\": \"^0.50.0\",\n    \"rollup-plugin-babel\": \"^3.0.2\",\n    \"rollup-plugin-cleanup\": \"^1.0.1\",\n    \"rollup-plugin-uglify\": \"^2.0.1\"\n  },\n  \"dependencies\": {\n    \"ws\": \"^3.2.0\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"osc-js\",\n  \"version\": \"1.2.0\",\n  \"description\": \"OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking\",\n  \"main\": \"lib/osc.js\",\n  \"scripts\": {\n    \"lint\": \"eslint build.js src/** test/**; exit 0\",\n    \"test\": \"mocha test/** --require babel-core/register; exit 0\",\n    \"test:watch\": \"mocha test/** --require babel-core/register --reporter min --watch test/** src/**\",\n    \"build\": \"rollup -c\",\n    \"docs\": \"esdoc\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+ssh://git@github.com/adzialocha/osc-js.git\"\n  },\n  \"keywords\": [\n    \"osc\",\n    \"data\",\n    \"open\",\n    \"sound\",\n    \"control\",\n    \"websocket\",\n    \"udp\",\n    \"datagram\",\n    \"network\"\n  ],\n  \"author\": \"Andreas Dzialocha\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/adzialocha/osc-js/issues\"\n  },\n  \"files\": [\n    \"dist\",\n    \"lib\"\n  ],\n  \"homepage\": \"https://github.com/adzialocha/osc-js#readme\",\n  \"devDependencies\": {\n    \"babel-eslint\": \"^8.2.1\",\n    \"babel-preset-es2015\": \"^6.18.0\",\n    \"babel-preset-es2015-rollup\": \"^3.0.0\",\n    \"babel-register\": \"^6.26.0\",\n    \"chai\": \"^4.1.2\",\n    \"chai-spies-next\": \"^0.9.3\",\n    \"del\": \"^3.0.0\",\n    \"esdoc\": \"^1.0.4\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^4.15.0\",\n    \"eslint-config-airbnb-base\": \"^12.1.0\",\n    \"eslint-plugin-import\": \"^2.8.0\",\n    \"mocha\": \"^5.0.0\",\n    \"rollup\": \"^0.54.1\",\n    \"rollup-plugin-babel\": \"^3.0.3\",\n    \"rollup-plugin-cleanup\": \"^2.0.0\",\n    \"rollup-plugin-uglify\": \"^2.0.1\"\n  },\n  \"dependencies\": {\n    \"ws\": \"^4.0.0\"\n  }\n}\n",
     "longname": "/Users/adz/dev/osc-js/package.json",
     "name": "package.json",
     "static": true,

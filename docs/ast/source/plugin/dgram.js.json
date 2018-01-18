@@ -614,7 +614,25 @@
                       "raw": "3"
                     },
                     "value": 3
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Default options for open method\n * @private\n ",
+                      "start": 228,
+                      "end": 282,
+                      "loc": {
+                        "start": {
+                          "line": 15,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 18,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
@@ -705,8 +723,7 @@
                 },
                 "identifierName": "defaultOpenOptions"
               },
-              "name": "defaultOpenOptions",
-              "leadingComments": null
+              "name": "defaultOpenOptions"
             },
             "init": {
               "type": "ObjectExpression",
@@ -882,34 +899,33 @@
                       }
                     },
                     "value": false
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Default options for send method\n * @private\n ",
+                      "start": 371,
+                      "end": 425,
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 28,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
             },
-            "leadingComments": null,
             "trailingComments": null
           }
         ],
         "kind": "const",
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Default options for open method\n * @private\n ",
-            "start": 228,
-            "end": 282,
-            "loc": {
-              "start": {
-                "line": 15,
-                "column": 0
-              },
-              "end": {
-                "line": 18,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -973,8 +989,7 @@
                 },
                 "identifierName": "defaultSendOptions"
               },
-              "name": "defaultSendOptions",
-              "leadingComments": null
+              "name": "defaultSendOptions"
             },
             "init": {
               "type": "ObjectExpression",
@@ -1099,34 +1114,33 @@
                       "raw": "41235"
                     },
                     "value": 41235
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Default options\n * @private\n ",
+                      "start": 494,
+                      "end": 532,
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 37,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
             },
-            "leadingComments": null,
             "trailingComments": null
           }
         ],
         "kind": "const",
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Default options for send method\n * @private\n ",
-            "start": 371,
-            "end": 425,
-            "loc": {
-              "start": {
-                "line": 25,
-                "column": 0
-              },
-              "end": {
-                "line": 28,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -1190,8 +1204,7 @@
                 },
                 "identifierName": "defaultOptions"
               },
-              "name": "defaultOptions",
-              "leadingComments": null
+              "name": "defaultOptions"
             },
             "init": {
               "type": "ObjectExpression",
@@ -1365,34 +1378,33 @@
                       "identifierName": "defaultSendOptions"
                     },
                     "name": "defaultSendOptions"
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * Helper method to merge nested objects\n * @private\n ",
+                      "start": 633,
+                      "end": 693,
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
             },
-            "leadingComments": null,
             "trailingComments": null
           }
         ],
         "kind": "const",
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Default options\n * @private\n ",
-            "start": 494,
-            "end": 532,
-            "loc": {
-              "start": {
-                "line": 34,
-                "column": 0
-              },
-              "end": {
-                "line": 37,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -1441,8 +1453,7 @@
             },
             "identifierName": "mergeOptions"
           },
-          "name": "mergeOptions",
-          "leadingComments": null
+          "name": "mergeOptions"
         },
         "generator": false,
         "expression": false,
@@ -2204,24 +2215,6 @@
           "directives": [],
           "trailingComments": null
         },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * Helper method to merge nested objects\n * @private\n ",
-            "start": 633,
-            "end": 693,
-            "loc": {
-              "start": {
-                "line": 44,
-                "column": 0
-              },
-              "end": {
-                "line": 47,
-                "column": 3
-              }
-            }
-          }
-        ],
         "trailingComments": [
           {
             "type": "CommentBlock",
@@ -2317,6 +2310,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -2336,7 +2330,6 @@
                   "name": "constructor",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -4018,6 +4011,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4037,7 +4031,6 @@
                   "name": "registerNotify",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -4228,6 +4221,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4247,7 +4241,6 @@
                   "name": "status",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -4387,6 +4380,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4406,7 +4400,6 @@
                   "name": "open",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5661,6 +5654,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5680,7 +5674,6 @@
                   "name": "close",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -6266,6 +6259,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -6285,7 +6279,6 @@
                   "name": "send",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
