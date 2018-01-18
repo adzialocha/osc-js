@@ -65,9 +65,9 @@ osc.open({ port: 9000 })
 
 ## Installation and Usage
 
-Recommended installation via bower `bower install osc-js --save` or npm `npm install osc-js --save`.
+Recommended installation via npm: `npm install osc-js --save`.
 
-Import the library `const OSC = require('osc-js')` or add the script `dist/osc.js` or `dist/osc.min.js` (minified version) for usage in a browser.
+Import the library `const OSC = require('osc-js')` or add the script `lib/osc.browser.js` or `lib/osc.browser.min.js` (minified version) for usage in a browser.
 
 To build the library with Webpack or similar tools without errors, use the `alias` configuration and point the module to `node_modules/osc-js/lib/osc.browser.js`. Read more about bundling issues here: [Webpack Bundling](https://github.com/adzialocha/osc-js/wiki/Webpack-bundling).
 
@@ -98,7 +98,7 @@ by default.
 
   ```html
   <button id="send">Send Message</button>
-  <script type="text/javascript" src="dist/osc.min.js"></script>
+  <script type="text/javascript" src="lib/osc.browser.min.js"></script>
   <script type="text/javascript">
     var osc = new OSC();
     osc.open(); // connect by default to ws://localhost:8080
@@ -186,7 +186,7 @@ npm install
 
 ### Deployment
 
-`npm run build` for creating a UMD module in `lib` folder and a browser distribution in `dist` folder.
+`npm run build` for creating all UMD modules in `lib` folder.
 
 ### ESDocs
 

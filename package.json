@@ -1,13 +1,13 @@
 {
   "name": "osc-js",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking",
   "main": "lib/osc.js",
   "scripts": {
     "lint": "eslint build.js src/** test/**; exit 0",
-    "test": "mocha test/** --compilers js:babel-register; exit 0",
-    "test:watch": "mocha test/** --compilers js:babel-register --reporter min --watch test/** src/**",
-    "build": "rollem -c rollup.config.js",
+    "test": "mocha test/** --require babel-core/register; exit 0",
+    "test:watch": "mocha test/** --require babel-core/register --reporter min --watch test/** src/**",
+    "build": "rollup -c",
     "docs": "esdoc"
   },
   "repository": {
@@ -31,31 +31,28 @@
     "url": "https://github.com/adzialocha/osc-js/issues"
   },
   "files": [
-    "dist",
     "lib"
   ],
   "homepage": "https://github.com/adzialocha/osc-js#readme",
   "devDependencies": {
-    "babel-eslint": "^8.0.1",
+    "babel-eslint": "^8.2.1",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "chai-spies-next": "^0.9.3",
-    "del": "^3.0.0",
-    "esdoc": "^1.0.3",
+    "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^4.8.0",
-    "eslint-config-airbnb-base": "^12.0.2",
-    "eslint-plugin-import": "^2.7.0",
-    "mocha": "^4.0.1",
-    "rollem": "^1.8.1",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-cleanup": "^1.0.1",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^5.0.0",
+    "rollup": "^0.54.1",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-cleanup": "^2.0.0",
     "rollup-plugin-uglify": "^2.0.1"
   },
   "dependencies": {
-    "ws": "^3.2.0"
+    "ws": "^4.0.0"
   }
 }

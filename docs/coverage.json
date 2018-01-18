@@ -1,7 +1,7 @@
 {
-  "coverage": "97.32%",
+  "coverage": "88.77%",
   "expectCount": 187,
-  "actualCount": 182,
+  "actualCount": 166,
   "files": {
     "src/atomic/blob.js": {
       "expectCount": 6,
@@ -50,8 +50,11 @@
     },
     "src/events.js": {
       "expectCount": 12,
-      "actualCount": 12,
-      "undocumentLines": []
+      "actualCount": 10,
+      "undocumentLines": [
+        20,
+        49
+      ]
     },
     "src/message.js": {
       "expectCount": 9,
@@ -60,8 +63,11 @@
     },
     "src/osc.js": {
       "expectCount": 12,
-      "actualCount": 12,
-      "undocumentLines": []
+      "actualCount": 10,
+      "undocumentLines": [
+        21,
+        50
+      ]
     },
     "src/packet.js": {
       "expectCount": 6,
@@ -70,36 +76,49 @@
     },
     "src/plugin/bridge.js": {
       "expectCount": 17,
-      "actualCount": 15,
+      "actualCount": 13,
       "undocumentLines": [
         1,
-        2
+        2,
+        20,
+        41
       ]
     },
     "src/plugin/dgram.js": {
       "expectCount": 17,
-      "actualCount": 16,
+      "actualCount": 12,
       "undocumentLines": [
-        1
+        1,
+        19,
+        29,
+        38,
+        48
       ]
     },
     "src/plugin/wsbrowser.js": {
       "expectCount": 13,
-      "actualCount": 13,
-      "undocumentLines": []
+      "actualCount": 11,
+      "undocumentLines": [
+        19,
+        28
+      ]
     },
     "src/plugin/wsclient.js": {
       "expectCount": 14,
-      "actualCount": 13,
+      "actualCount": 11,
       "undocumentLines": [
-        2
+        2,
+        20,
+        29
       ]
     },
     "src/plugin/wsserver.js": {
       "expectCount": 14,
-      "actualCount": 13,
+      "actualCount": 11,
       "undocumentLines": [
-        1
+        1,
+        19,
+        27
       ]
     }
   }

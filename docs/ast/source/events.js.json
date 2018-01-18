@@ -783,7 +783,25 @@
                       }
                     },
                     "value": false
-                  }
+                  },
+                  "trailingComments": [
+                    {
+                      "type": "CommentBlock",
+                      "value": "*\n * EventHandler to notify listeners on matching OSC messages and\n * status changes of plugins\n ",
+                      "start": 342,
+                      "end": 443,
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 19,
+                          "column": 3
+                        }
+                      }
+                    }
+                  ]
                 }
               ],
               "trailingComments": null
@@ -873,8 +891,7 @@
               },
               "identifierName": "EventHandler"
             },
-            "name": "EventHandler",
-            "leadingComments": null
+            "name": "EventHandler"
           },
           "superClass": null,
           "body": {
@@ -906,6 +923,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -925,7 +943,6 @@
                   "name": "constructor",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -1584,7 +1601,25 @@
                                   }
                                 },
                                 "elements": []
-                              }
+                              },
+                              "trailingComments": [
+                                {
+                                  "type": "CommentBlock",
+                                  "value": "*\n     * @type {number} uuid\n     * @private\n     ",
+                                  "start": 976,
+                                  "end": 1030,
+                                  "loc": {
+                                    "start": {
+                                      "line": 45,
+                                      "column": 4
+                                    },
+                                    "end": {
+                                      "line": 48,
+                                      "column": 7
+                                    }
+                                  }
+                                }
+                              ]
                             }
                           ],
                           "trailingComments": null
@@ -1685,8 +1720,7 @@
                                 "line": 49,
                                 "column": 8
                               }
-                            },
-                            "leadingComments": null
+                            }
                           },
                           "property": {
                             "type": "Identifier",
@@ -1705,8 +1739,7 @@
                             },
                             "name": "uuid"
                           },
-                          "computed": false,
-                          "leadingComments": null
+                          "computed": false
                         },
                         "right": {
                           "type": "NumericLiteral",
@@ -1727,27 +1760,8 @@
                             "raw": "0"
                           },
                           "value": 0
-                        },
-                        "leadingComments": null
-                      },
-                      "leadingComments": [
-                        {
-                          "type": "CommentBlock",
-                          "value": "*\n     * @type {number} uuid\n     * @private\n     ",
-                          "start": 976,
-                          "end": 1030,
-                          "loc": {
-                            "start": {
-                              "line": 45,
-                              "column": 4
-                            },
-                            "end": {
-                              "line": 48,
-                              "column": 7
-                            }
-                          }
                         }
-                      ]
+                      }
                     }
                   ],
                   "directives": [],
@@ -1804,6 +1818,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -1823,7 +1838,6 @@
                   "name": "dispatch",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -4150,6 +4164,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4169,7 +4184,6 @@
                   "name": "call",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -6320,6 +6334,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -6339,7 +6354,6 @@
                   "name": "notify",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -10118,6 +10132,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -10137,7 +10152,6 @@
                   "name": "on",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -10971,7 +10985,25 @@
                                 },
                                 "extra": {
                                   "shorthand": true
-                                }
+                                },
+                                "trailingComments": [
+                                  {
+                                    "type": "CommentLine",
+                                    "value": " register event listener",
+                                    "start": 7096,
+                                    "end": 7122,
+                                    "loc": {
+                                      "start": {
+                                        "line": 258,
+                                        "column": 4
+                                      },
+                                      "end": {
+                                        "line": 258,
+                                        "column": 30
+                                      }
+                                    }
+                                  }
+                                ]
                               }
                             ],
                             "trailingComments": null
@@ -11075,8 +11107,7 @@
                               },
                               "identifierName": "isString"
                             },
-                            "name": "isString",
-                            "leadingComments": null
+                            "name": "isString"
                           },
                           "arguments": [
                             {
@@ -11096,8 +11127,7 @@
                               },
                               "name": "name"
                             }
-                          ],
-                          "leadingComments": null
+                          ]
                         },
                         "operator": "&&",
                         "right": {
@@ -11180,8 +11210,7 @@
                             },
                             "computed": false
                           }
-                        },
-                        "leadingComments": null
+                        }
                       },
                       "consequent": {
                         "type": "BlockStatement",
@@ -11429,24 +11458,6 @@
                         "trailingComments": null
                       },
                       "alternate": null,
-                      "leadingComments": [
-                        {
-                          "type": "CommentLine",
-                          "value": " register event listener",
-                          "start": 7096,
-                          "end": 7122,
-                          "loc": {
-                            "start": {
-                              "line": 258,
-                              "column": 4
-                            },
-                            "end": {
-                              "line": 258,
-                              "column": 30
-                            }
-                          }
-                        }
-                      ],
                       "trailingComments": [
                         {
                           "type": "CommentLine",
@@ -12566,6 +12577,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -12585,7 +12597,6 @@
                   "name": "off",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -14457,44 +14468,9 @@
               }
             ]
           },
-          "leadingComments": [
-            {
-              "type": "CommentBlock",
-              "value": "*\n * EventHandler to notify listeners on matching OSC messages and\n * status changes of plugins\n ",
-              "start": 342,
-              "end": 443,
-              "loc": {
-                "start": {
-                  "line": 16,
-                  "column": 0
-                },
-                "end": {
-                  "line": 19,
-                  "column": 3
-                }
-              }
-            }
-          ],
+          "leadingComments": [],
           "trailingComments": []
-        },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\n * EventHandler to notify listeners on matching OSC messages and\n * status changes of plugins\n ",
-            "start": 342,
-            "end": 443,
-            "loc": {
-              "start": {
-                "line": 16,
-                "column": 0
-              },
-              "end": {
-                "line": 19,
-                "column": 3
-              }
-            }
-          }
-        ]
+        }
       }
     ],
     "directives": []
@@ -14939,7 +14915,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -15304,7 +15280,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -15513,7 +15489,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -15620,7 +15596,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -15727,7 +15703,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
