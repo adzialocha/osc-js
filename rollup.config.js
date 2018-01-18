@@ -2,12 +2,8 @@ import babel from 'rollup-plugin-babel'
 import uglify from 'rollup-plugin-uglify'
 import cleanup from 'rollup-plugin-cleanup'
 
-const options = {
-  entry: 'entry/osc.js',
-  dest: 'lib/osc.js',
-  sourceMap: false,
-  moduleName: 'OSC',
-  plugins: [
+function rollupPlugins(isUglified = false) {
+  const plugins = [
     babel({
       babelrc: false,
       presets: ['es2015-rollup'],
@@ -16,24 +12,41 @@ const options = {
       exclude: 'node_modules/**',
     }),
     cleanup(),
-  ],
-  format: 'umd',
+  ]
+
+  return isUglified ? plugins.concat(uglify()) : plugins
+}
+
+function buildOptions(customOptions = {}, isUglified = false) {
+  const { input, file, sourcemap } = customOptions
+
+  const defaultOptions = {
+    input: input || 'entry/osc.js',
+    plugins: isUglified ? rollupPlugins(true) : rollupPlugins(),
+    output: {
+      file: file || 'lib/osc.js',
+      name: 'OSC',
+      format: 'umd',
+      sourcemap: sourcemap || false,
+    },
+  }
+
+  return defaultOptions
 }
 
 export default [
-  options,
-  Object.assign({}, options, {
-    entry: 'entry/osc.browser.js',
-    dest: 'lib/osc.browser.js',
+  buildOptions(),
+  buildOptions({
+    input: 'entry/osc.browser.js',
+    file: 'lib/osc.browser.js',
   }),
-  Object.assign({}, options, {
-    entry: 'entry/osc.browser.js',
-    dest: 'dist/osc.js',
-    sourceMap: true,
+  buildOptions({
+    input: 'entry/osc.browser.js',
+    file: 'dist/osc.js',
+    sourcemap: true,
   }),
-  Object.assign({}, options, {
-    entry: 'entry/osc.browser.js',
-    dest: 'dist/osc.min.js',
-    plugins: options.plugins.concat(uglify()),
-  }),
+  buildOptions({
+    input: 'entry/osc.browser.js',
+    file: 'dist/osc.min.js',
+  }, true),
 ]
