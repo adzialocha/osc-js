@@ -68,10 +68,11 @@ describe('EventHandler', () => {
     const spy = []
 
     before(() => {
-      for (let i = 0; i < 9; i += 1) {
+      for (let i = 0; i < 12; i += 1) {
         spy.push(chai.spy())
       }
 
+      // regular address handlers
       handler.on('/', spy[0])
       handler.on('/one/test', spy[1])
       handler.on('/and/another', spy[2])
@@ -79,9 +80,15 @@ describe('EventHandler', () => {
       handler.on(['two', 'test', 'path'], spy[4])
       handler.on('/two/some/path', spy[5])
 
+      // system event handlers
       handler.on('error', spy[6])
       handler.on('close', spy[7])
       handler.on('open', spy[8])
+
+      // pattern address handlers
+      handler.on('/two/*/path', spy[9])
+      handler.on('*', spy[10])
+      handler.on('/o?e/{test,bar}', spy[11])
     })
 
     afterEach(() => {
@@ -92,12 +99,12 @@ describe('EventHandler', () => {
 
     it('passes over the event data', () => {
       handler.notify('/and/another', testdata)
-      expect(spy[2]).to.have.been.called.with(testdata)
+      expect(spy[2]).have.been.called.with(testdata)
     })
 
     it('accepts messages', () => {
       handler.notify(new Message(['and', 'another']))
-      expect(spy[2]).to.have.been.called()
+      expect(spy[2]).have.been.called()
     })
 
     it('accepts binary packets', () => {
@@ -107,23 +114,23 @@ describe('EventHandler', () => {
       ])
 
       handler.notify(binary)
-      expect(spy[2]).to.have.been.called()
+      expect(spy[2]).have.been.called()
     })
 
     describe('event listeners', () => {
       it('notifies error callbacks', () => {
         handler.notify('error', testdata)
-        expect(spy[6]).to.have.been.called.with(testdata)
+        expect(spy[6]).have.been.called.with(testdata)
       })
 
       it('notifies close callbacks', () => {
         handler.notify('close', testdata)
-        expect(spy[7]).to.have.been.called.with(testdata)
+        expect(spy[7]).have.been.called.with(testdata)
       })
 
       it('notifies open callbacks', () => {
         handler.notify('open', testdata)
-        expect(spy[8]).to.have.been.called.with(testdata)
+        expect(spy[8]).have.been.called.with(testdata)
       })
     })
 
@@ -131,40 +138,40 @@ describe('EventHandler', () => {
       it('calls the handler later', () => {
         handler.notify('/', testdata, Date.now() + 5000)
 
-        expect(spy[0]).to.not.have.been.called()
+        expect(spy[0]).not.have.been.called()
       })
     })
 
-    describe('address listeners', () => {
+    describe('address listeners with regular strings', () => {
       it('calls the root listener', () => {
         handler.notify('/', testdata)
 
-        expect(spy[0]).to.have.been.called()
-        expect(spy[1]).to.not.have.been.called()
-        expect(spy[4]).to.not.have.been.called()
+        expect(spy[0]).have.been.called()
+        expect(spy[1]).not.have.been.called()
+        expect(spy[4]).not.have.been.called()
       })
 
       it('calls two listeners with the same address', () => {
         handler.notify('/two/test/path', testdata)
 
-        expect(spy[3]).to.have.been.called()
-        expect(spy[4]).to.have.been.called()
+        expect(spy[3]).have.been.called()
+        expect(spy[4]).have.been.called()
       })
 
       it('works with {} wildcard', () => {
         handler.notify('/two/{test,some}/path', testdata)
 
-        expect(spy[1]).to.not.have.been.called()
-        expect(spy[3]).to.have.been.called()
-        expect(spy[4]).to.have.been.called()
-        expect(spy[5]).to.have.been.called()
+        expect(spy[1]).not.have.been.called()
+        expect(spy[3]).have.been.called()
+        expect(spy[4]).have.been.called()
+        expect(spy[5]).have.been.called()
       })
 
       it('works with [] wildcard', () => {
         handler.notify('/[pawgfo]ne/[bnit]est', testdata)
 
-        expect(spy[1]).to.have.been.called()
-        expect(spy[2]).to.not.have.been.called()
+        expect(spy[1]).have.been.called()
+        expect(spy[2]).not.have.been.called()
       })
 
       it('works with [!] wildcard', () => {
@@ -207,6 +214,25 @@ describe('EventHandler', () => {
         expect(spy[0]).not.have.been.called()
         expect(spy[3]).have.been.called()
         expect(spy[5]).have.been.called()
+      })
+    })
+
+    describe('address listeners with pattern matching', () => {
+      it('calls wildcard listeners', () => {
+        handler.notify('/two/bar/path', testdata)
+
+        expect(spy[9]).have.been.called()
+        expect(spy[10]).have.been.called()
+        expect(spy[4]).not.have.been.called()
+      })
+
+      it('calls group matching listener', () => {
+        handler.notify('/ose/test', testdata)
+
+        expect(spy[10]).have.been.called()
+        expect(spy[11]).have.been.called()
+        expect(spy[1]).not.have.been.called()
+        expect(spy[9]).not.have.been.called()
       })
     })
   })
