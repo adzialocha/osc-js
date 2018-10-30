@@ -11,8 +11,8 @@ osc-js
   <a href="http://spdx.org/licenses/MIT">
     <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
   </a>
-  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/">
-    <img src="https://doc.esdoc.org/github.com/adzialocha/osc-js/" alt="ESDoc status">
+  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg">
+    <img src="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg" alt="ESDoc status">
   </a>
 </p>
 
