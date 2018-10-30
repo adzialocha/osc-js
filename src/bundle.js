@@ -1,7 +1,6 @@
 import { isArray, isInt } from './common/utils'
 import EncodeHelper from './common/helpers'
 
-import Packet from './packet'
 import Message from './message'
 import AtomicString from './atomic/string'
 import AtomicInt32 from './atomic/int32'
@@ -146,13 +145,24 @@ export default class Bundle {
     this.bundleElements = []
 
     while (offset < dataView.byteLength) {
-      const packet = new Packet()
+      const head = new AtomicString()
       const size = new AtomicInt32()
 
       offset = size.unpack(dataView, offset)
-      offset = packet.unpack(dataView, offset, this.timetag)
 
-      this.bundleElements.push(packet.value)
+      // check if Packet is a Bundle or a Message
+      let item
+      head.unpack(dataView, offset)
+
+      if (head.value === BUNDLE_TAG) {
+        item = new Bundle()
+      } else {
+        item = new Message()
+      }
+
+      offset = item.unpack(dataView, offset)
+
+      this.bundleElements.push(item)
     }
 
     this.offset = offset

@@ -18,7 +18,7 @@ osc-js
 
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
 
-[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://adzialocha.github.io/osc-js/) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
+[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://doc.esdoc.org/github.com/adzialocha/osc-js/) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
 
 ## Features
 
@@ -190,4 +190,4 @@ npm install
 
 ### ESDocs
 
-`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://adzialocha.github.io/osc-js/](https://adzialocha.github.io/osc-js/)
+`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://doc.esdoc.org/github.com/adzialocha/osc-js/](https://doc.esdoc.org/github.com/adzialocha/osc-js/)
