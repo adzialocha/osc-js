@@ -1,31 +1,47 @@
-{
-  "env": {
-    "mocha": true,
-    "node": true
-  },
-  "parser": "babel-eslint",
-  "extends": "airbnb-base",
-  "rules": {
-    "strict": ["error", "global"],
-    "semi": ["error", "never"],
-    "comma-dangle": ["error", "always-multiline"],
-    "no-unused-expressions": "off",
-    "class-methods-use-this": "off",
-    "no-bitwise": "off",
-    "function-paren-newline": ["error", "consistent"],
-    "prefer-destructuring": [
-      "error",
-      {
-        "object": true,
-        "array": false
-      }
-    ],
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "optionalDependencies": false,
-        "peerDependencies": false
-      }
-    ]
+[
+  {
+    "env": {
+      "mocha": true,
+      "node": true
+    },
+    "parser": "babel-eslint",
+    "extends": "airbnb-base",
+    "rules": {
+      "class-methods-use-this": "off",
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
+      "function-paren-newline": [
+        "error",
+        "consistent"
+      ],
+      "no-bitwise": "off",
+      "no-else-return": "off",
+      "no-unused-expressions": "off",
+      "object-curly-newline": "off",
+      "semi": [
+        "error",
+        "never"
+      ],
+      "strict": [
+        "error",
+        "global"
+      ],
+      "prefer-destructuring": [
+        "error",
+        {
+          "object": true,
+          "array": false
+        }
+      ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "optionalDependencies": false,
+          "peerDependencies": false
+        }
+      ]
+    }
   }
-}
+]

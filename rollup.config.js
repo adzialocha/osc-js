@@ -1,14 +1,10 @@
 import babel from 'rollup-plugin-babel'
-import uglify from 'rollup-plugin-uglify'
 import cleanup from 'rollup-plugin-cleanup'
+import { uglify } from 'rollup-plugin-uglify'
 
 function rollupPlugins(isUglified = false) {
   const plugins = [
     babel({
-      babelrc: false,
-      presets: ['es2015-rollup'],
-      runtimeHelpers: false,
-      externalHelpers: false,
       exclude: 'node_modules/**',
     }),
     cleanup(),
