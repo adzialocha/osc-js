@@ -119,11 +119,27 @@ export default class EventHandler {
     const handlers = this.addressHandlers
 
     handlerKeys.forEach((key) => {
+      let foundMatch = false
+
       const regex = new RegExp(prepareRegExPattern(prepareAddress(name)), 'g')
       const test = regex.test(key)
 
       // found a matching address in our callback handlers
       if (test && key.length === regex.lastIndex) {
+        foundMatch = true
+      }
+
+      if (!foundMatch) {
+        // try matching address from callback handlers (when given)
+        const reverseRegex = new RegExp(prepareRegExPattern(prepareAddress(key)), 'g')
+        const reverseTest = reverseRegex.test(name)
+
+        if (reverseTest && name.length === reverseRegex.lastIndex) {
+          foundMatch = true
+        }
+      }
+
+      if (foundMatch) {
         handlers[key].forEach((handler) => {
           handler.callback(data)
           success = true
@@ -263,11 +279,6 @@ export default class EventHandler {
 
     // register address listener
     const address = prepareAddress(name)
-    const regex = new RegExp(/[#*\s[\],/{}|?]/g)
-
-    if (regex.test(address.split('/').join(''))) {
-      throw new Error('OSC EventHandler address string contains invalid characters')
-    }
 
     if (!(address in this.addressHandlers)) {
       this.addressHandlers[address] = []
