@@ -1,4 +1,10 @@
-import { isArray, isInt, isFloat, isString, isBlob } from './utils'
+import {
+  isArray,
+  isBlob,
+  isFloat,
+  isInt,
+  isString,
+} from './utils'
 
 /**
  * Checks type of given object and returns the regarding OSC

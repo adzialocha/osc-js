@@ -11,28 +11,26 @@ osc-js
   <a href="http://spdx.org/licenses/MIT">
     <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
   </a>
-  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg">
+  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/">
     <img src="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg" alt="ESDoc status">
   </a>
 </p>
 
-osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for all your JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a highly customizable Plugin API for your own network solutions.
+osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a customizable Plugin API for network protocols.
 
 [Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://doc.esdoc.org/github.com/adzialocha/osc-js/) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
 
 ## Features
 
 - UMD Module running in Node.js, Electron, Chrome Apps, your browser or any other JS environment
-- can be used with Webpack and Browserify
-- no dependencies (except of `ws` in Node.js or similar environments)
-- simple interface
-- built-in *UDP*, *WebSocket* networking support as plugins
-- special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
-- Plugin API for your own custom networking solutions
-- featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
+- Can be used with Webpack and Browserify
+- No dependencies (except of `ws` in Node.js or similar environments)
+- Built-in *UDP*, *WebSocket* networking support as plugins
+- Special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
+- Plugin API for custom networking protocols
+- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
 - OSC Address pattern matching
-- time-critical OSC Bundles with Timetags
-- osc-js is written in ES6 :-)
+- Rime-critical OSC Bundles with Timetags
 
 ## Documentation
 
@@ -43,11 +41,19 @@ Read more about osc-js and how to use it in the [Wiki](https://github.com/adzial
 ```js
 const osc = new OSC()
 
-osc.on('/param/density', (message) => {
+osc.on('/param/density', message => {
   console.log(message.args)
 })
 
-osc.on(['param', 'volume'], (message) => {
+osc.on(['param', 'volume'], message => {
+  console.log(message.args)
+})
+
+osc.on('*', message => {
+  console.log(message.args)
+})
+
+osc.on('/{foo,bar}/*/param', message => {
   console.log(message.args)
 })
 
@@ -65,7 +71,7 @@ osc.open({ port: 9000 })
 
 ## Installation and Usage
 
-Recommended installation via npm: `npm install osc-js --save`.
+Recommended installation via npm: `npm install osc-js --save` or yarn `yarn add osc-js`.
 
 Import the library `const OSC = require('osc-js')` or add the script `lib/osc.browser.js` or `lib/osc.browser.min.js` (minified version) for usage in a browser.
 
@@ -103,7 +109,7 @@ by default.
     var osc = new OSC();
     osc.open(); // connect by default to ws://localhost:8080
 
-    document.getElementById('send').addEventListener('click', function() {
+    document.getElementById('send').addEventListener('click', () => {
       var message = new OSC.Message('/test/random', Math.random());
       osc.send(message);
     });
@@ -139,7 +145,7 @@ class MyCustomPlugin {
 const osc = new OSC({ plugin: MyCustomPlugin() })
 osc.open()
 
-osc.on('/test', (message) => {
+osc.on('/test', message => {
   // use event listener with your plugin
 })
 ```
@@ -160,7 +166,7 @@ const binary = message.pack()
 socket.send(new Buffer(binary), 0, binary.byteLength, 41234, 'localhost')
 
 // receive a message via UDP
-socket.on('message', (data) => {
+socket.on('message', data => {
   const msg = new OSC.Message()
   msg.unpack(data)
   console.log(msg.args)

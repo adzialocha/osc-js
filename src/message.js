@@ -9,10 +9,10 @@ import {
 
 import Helper, { typeTag, prepareAddress } from './common/helpers'
 
-import AtomicInt32 from './atomic/int32'
-import AtomicFloat32 from './atomic/float32'
-import AtomicString from './atomic/string'
 import AtomicBlob from './atomic/blob'
+import AtomicFloat32 from './atomic/float32'
+import AtomicInt32 from './atomic/int32'
+import AtomicString from './atomic/string'
 
 /**
  * An OSC message consists of an OSC Address Pattern followed

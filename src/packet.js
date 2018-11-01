@@ -1,6 +1,6 @@
+import AtomicString from './atomic/string'
 import Bundle, { BUNDLE_TAG } from './bundle'
 import Message from './message'
-import AtomicString from './atomic/string'
 
 /**
  * The unit of transmission of OSC is an OSC Packet. The contents

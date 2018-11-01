@@ -1,4 +1,8 @@
-import { isInt, isDate, isUndefined } from '../common/utils'
+import {
+  isDate,
+  isInt,
+  isUndefined,
+} from '../common/utils'
 
 import Atomic from '../atomic'
 

@@ -1,4 +1,8 @@
-import { pad, isBlob, isUndefined } from '../common/utils'
+import {
+  isBlob,
+  isUndefined,
+  pad,
+} from '../common/utils'
 
 import Atomic from '../atomic'
 

@@ -1,4 +1,9 @@
-import { pad, isString, isUndefined, hasProperty } from '../common/utils'
+import {
+  hasProperty,
+  isString,
+  isUndefined,
+  pad,
+} from '../common/utils'
 
 import Atomic from '../atomic'
 

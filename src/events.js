@@ -1,9 +1,19 @@
-import { isArray, isString, isInt, isFunction, dataView } from './common/utils'
-import { prepareAddress, prepareRegExPattern } from './common/helpers'
+import {
+  dataView,
+  isArray,
+  isFunction,
+  isInt,
+  isString,
+} from './common/utils'
 
-import Packet from './packet'
+import {
+  prepareAddress,
+  prepareRegExPattern,
+} from './common/helpers'
+
 import Bundle from './bundle'
 import Message from './message'
+import Packet from './packet'
 
 /**
  * Default options
