@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-undef, no-use-before-define
-const WebsocketClient = typeof __dirname === 'undefined' ? WebSocket : require('ws')
+const WebSocket = require('isomorphic-ws')
 
 /**
  * Status flags
@@ -40,7 +39,7 @@ export default class WebsocketClientPlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions) {
-    if (!WebsocketClient) {
+    if (!WebSocket) {
       throw new Error('WebsocketClientPlugin can\'t find a WebSocket class')
     }
 
@@ -104,7 +103,7 @@ export default class WebsocketClientPlugin {
 
     // create websocket client
     const protocol = secure ? 'wss' : 'ws'
-    this.socket = new WebSocket(`${protocol}://${host}:${port}`) // eslint-disable-line no-undef
+    this.socket = new WebSocket(`${protocol}://${host}:${port}`)
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 

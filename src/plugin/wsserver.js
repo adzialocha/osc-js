@@ -1,4 +1,4 @@
-const WebsocketServer = typeof __dirname !== 'undefined' ? require('ws').Server : undefined
+const WebSocketServer = typeof __dirname !== 'undefined' ? require('isomorphic-ws').Server : undefined
 
 /**
  * Status flags
@@ -39,7 +39,7 @@ export default class WebsocketServerPlugin {
    * osc.open() // start server
    */
   constructor(customOptions) {
-    if (!WebsocketServer) {
+    if (!WebSocketServer) {
       throw new Error('WebsocketServerPlugin can not be used in browser context')
     }
 
@@ -101,7 +101,7 @@ export default class WebsocketServerPlugin {
     }
 
     // create websocket server
-    this.socket = new WebsocketServer({ host, port })
+    this.socket = new WebSocketServer({ host, port })
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 

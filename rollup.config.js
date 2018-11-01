@@ -14,10 +14,10 @@ function rollupPlugins(isUglified = false) {
 }
 
 function buildOptions(customOptions = {}) {
-  const { input, file, isUglified } = customOptions
+  const { file, isUglified } = customOptions
 
   const defaultOptions = {
-    input: input || 'entry/osc.js',
+    input: 'src/osc.js',
     plugins: isUglified ? rollupPlugins(true) : rollupPlugins(),
     output: {
       file: file || 'lib/osc.js',
@@ -33,12 +33,7 @@ function buildOptions(customOptions = {}) {
 export default [
   buildOptions(),
   buildOptions({
-    input: 'entry/osc.browser.js',
-    file: 'lib/osc.browser.js',
-  }),
-  buildOptions({
-    input: 'entry/osc.browser.js',
-    file: 'lib/osc.browser.min.js',
+    file: 'lib/osc.min.js',
     isUglified: true,
   }),
 ]
