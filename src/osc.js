@@ -1,18 +1,22 @@
-import { isObject, isString, isFunction, isInt } from './common/utils'
+import {
+  isFunction,
+  isInt,
+  isObject,
+  isString,
+} from './common/utils'
 
-import Packet from './packet'
 import Bundle from './bundle'
-import Message from './message'
-
 import EventHandler from './events'
+import Message from './message'
+import Packet from './packet'
 
 /**
  * Default options
  * @private
  */
 const defaultOptions = {
-  plugin: null,
   discardLateMessages: false,
+  plugin: null,
 }
 
 /**
@@ -27,7 +31,7 @@ const STATUS = {
 }
 
 /**
- * OSC interface to send OSC Packets and to listen to status-changes and
+ * OSC interface to send OSC Packets and listen to status changes and
  * incoming message events. Offers a Plugin API for different network
  * protocols, defaults to a simple Websocket client for OSC communication
  * between a browser js-app and a js-node server
@@ -35,7 +39,7 @@ const STATUS = {
  * @example
  * const osc = new OSC()
  *
- * osc.on('/input/test', (message) => {
+ * osc.on('/input/test', message => {
  *   // print incoming OSC message arguments
  *   console.log(message.args)
  * })
@@ -102,13 +106,19 @@ class OSC {
    *
    * @example
    * // will be called when server receives /in!trument/* for example
-   * osc.on('/instrument/1', (message) => {
+   * osc.on('/instrument/1', message => {
+   *   console.log(message)
+   * })
+   *
+   * @example
+   * // will be called for every message since it uses the wildcard symbol
+   * osc.on('*', message => {
    *   console.log(message)
    * })
    *
    * @example
    * // will be called on network socket error
-   * osc.on('error', (message) => {
+   * osc.on('error', message => {
    *   console.log(message)
    * })
    */
@@ -127,7 +137,7 @@ class OSC {
    * @return {boolean} Success state
    *
    * @example
-   * const listenerId = osc.on('error', (message) => {
+   * const listenerId = osc.on('error', message => {
    *   console.log(message)
    * })
    * osc.off('error', listenerId) // unsubscribe from error event

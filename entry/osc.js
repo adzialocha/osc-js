@@ -1,7 +1,7 @@
 import OSCBase from '../src/osc'
 
-import DatagramPlugin from '../src/plugin/dgram'
 import BridgePlugin from '../src/plugin/bridge'
+import DatagramPlugin from '../src/plugin/dgram'
 import WebsocketClientPlugin from '../src/plugin/wsclient'
 import WebsocketServerPlugin from '../src/plugin/wsserver'
 
@@ -15,9 +15,9 @@ class OSC extends OSCBase {
   }
 }
 
+OSC.BridgePlugin = BridgePlugin
 OSC.DatagramPlugin = DatagramPlugin
 OSC.WebsocketClientPlugin = WebsocketClientPlugin
 OSC.WebsocketServerPlugin = WebsocketServerPlugin
-OSC.BridgePlugin = BridgePlugin
 
 export default OSC

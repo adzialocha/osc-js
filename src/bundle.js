@@ -1,10 +1,10 @@
-import { isArray, isInt } from './common/utils'
 import EncodeHelper from './common/helpers'
+import { isArray, isInt } from './common/utils'
 
-import Message from './message'
-import AtomicString from './atomic/string'
 import AtomicInt32 from './atomic/int32'
+import AtomicString from './atomic/string'
 import AtomicTimetag from './atomic/timetag'
+import Message from './message'
 
 /** OSC Bundle string */
 export const BUNDLE_TAG = '#bundle'
@@ -130,16 +130,16 @@ export default class Bundle {
     }
 
     // read the beginning bundle string
-    const head = new AtomicString()
-    head.unpack(dataView, initialOffset)
+    const parentHead = new AtomicString()
+    parentHead.unpack(dataView, initialOffset)
 
-    if (head.value !== BUNDLE_TAG) {
+    if (parentHead.value !== BUNDLE_TAG) {
       throw new Error('OSC Bundle does not contain a valid #bundle head')
     }
 
     // read the timetag
     const timetag = new AtomicTimetag()
-    let offset = timetag.unpack(dataView, head.offset)
+    let offset = timetag.unpack(dataView, parentHead.offset)
 
     // read the bundle elements
     this.bundleElements = []
