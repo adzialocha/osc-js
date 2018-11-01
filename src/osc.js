@@ -10,13 +10,18 @@ import EventHandler from './events'
 import Message from './message'
 import Packet from './packet'
 
+import DatagramPlugin from './plugin/dgram'
+import BridgePlugin from './plugin/bridge'
+import WebsocketClientPlugin from './plugin/wsclient'
+import WebsocketServerPlugin from './plugin/wsserver'
+
 /**
  * Default options
  * @private
  */
 const defaultOptions = {
   discardLateMessages: false,
-  plugin: null,
+  plugin: new WebsocketClientPlugin(),
 }
 
 /**
@@ -244,5 +249,11 @@ OSC.STATUS = STATUS
 OSC.Packet = Packet
 OSC.Bundle = Bundle
 OSC.Message = Message
+
+// expose plugins
+OSC.DatagramPlugin = DatagramPlugin
+OSC.WebsocketClientPlugin = WebsocketClientPlugin
+OSC.WebsocketServerPlugin = WebsocketServerPlugin
+OSC.BridgePlugin = BridgePlugin
 
 export default OSC

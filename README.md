@@ -73,9 +73,7 @@ osc.open({ port: 9000 })
 
 Recommended installation via npm: `npm install osc-js --save` or yarn `yarn add osc-js`.
 
-Import the library `const OSC = require('osc-js')` or add the script `lib/osc.browser.js` or `lib/osc.browser.min.js` (minified version) for usage in a browser.
-
-To build the library with Webpack or similar tools without errors, use the `alias` configuration and point the module to `node_modules/osc-js/lib/osc.browser.js`. Read more about bundling issues here: [Webpack Bundling](https://github.com/adzialocha/osc-js/wiki/Webpack-bundling).
+Import the library `const OSC = require('osc-js')` or add the script `lib/osc.js` or `lib/osc.min.js` (minified version) for usage in a browser.
 
 ## Plugins
 
