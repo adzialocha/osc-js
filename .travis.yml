@@ -1,10 +1,9 @@
 language: node_js
 node_js:
   - "node"
-  - "8"
-  - "6"
-  - "5"
+  - "10"
+  - "9"
 install:
   - npm install
 script:
-  - mocha test/** --compilers js:babel-register
+  - mocha test/** --compilers js:@babel/register
