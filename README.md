@@ -22,12 +22,12 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for Java
 
 ## Features
 
-- UMD Module running in Node.js, Electron, Chrome Apps, your browser or any other JS environment
+- UMD Module running in Node.js, Electron, Chrome Apps, browser or any other JS environment
 - Can be used with Webpack and Browserify
 - No dependencies (except of `ws` in Node.js or similar environments)
 - Built-in *UDP*, *WebSocket* networking support as plugins
 - Special bridge plugin for easy communication between *UDP*- and *WebSocket* clients
-- Plugin API for custom networking protocols
+- Plugin API for custom network protocols
 - Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
 - OSC Address pattern matching
 - Time-critical OSC Bundles with Timetags
@@ -45,10 +45,6 @@ osc.on('/param/density', message => {
   console.log(message.args)
 })
 
-osc.on(['param', 'volume'], message => {
-  console.log(message.args)
-})
-
 osc.on('*', message => {
   console.log(message.args)
 })
@@ -60,10 +56,6 @@ osc.on('/{foo,bar}/*/param', message => {
 osc.on('open', () => {
   const message = new OSC.Message('/test', 12.221, 'hello')
   osc.send(message)
-
-  const bundle = new OSC.Bundle(Date.now() + 5000)
-  bundle.add(message)
-  osc.send(bundle, { host: '192.168.178.5' })
 })
 
 osc.open({ port: 9000 })
@@ -71,13 +63,13 @@ osc.open({ port: 9000 })
 
 ## Installation and Usage
 
-Recommended installation via npm: `npm install osc-js --save` or yarn `yarn add osc-js`.
+Recommended installation via npm: `npm install osc-js --save` or `yarn add osc-js`.
 
 Import the library `const OSC = require('osc-js')` or add the script `lib/osc.js` or `lib/osc.min.js` (minified version) for usage in a browser.
 
 ## Plugins
 
-osc-js offers a plugin architecture for extending it's networking capabilities. The library comes already with four built-in plugins. This is propably all you will ever need for your OSC applications:
+osc-js offers a plugin architecture for extending it's networking capabilities. The library comes with four built-in plugins. This is propably all you need for an OSC application:
 
 - `WebsocketClientPlugin` (default)
 - `WebsocketServerPlugin`
@@ -133,7 +125,7 @@ by default.
 
 ### Custom solutions with Plugin API
 
-It is possible to write even more sophisticated solutions for your OSC application without loosing the simple osc-js interface (including it's nice message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
+It is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including it's message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
 
 ```js
 class MyCustomPlugin {
@@ -150,7 +142,7 @@ osc.on('/test', message => {
 
 ### Usage without plugins
 
-The library can also be used without the mentioned features in case you need to write and read binary OSC data. See this example below for using the [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API) (even though the library already has a solution for handling UDP like in this example):
+The library can be used without the mentioned features in case you need to write and read binary OSC data. See this example below for using the [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API) (even though the library already has a solution for handling UDP like in this example):
 
 ```js
 const dgram = require('dgram')
