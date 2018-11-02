@@ -1,4 +1,6 @@
-const WebSocket = require('isomorphic-ws')
+// eslint-disable-next-line no-undef
+const scope = typeof global === 'undefined' ? window : global
+const WebSocket = typeof __dirname === 'undefined' ? scope.WebSocket : require('isomorphic-ws')
 
 /**
  * Status flags
