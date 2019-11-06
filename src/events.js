@@ -66,7 +66,7 @@ export default class EventHandler {
    * @return {boolean} Success state
    * @private
    */
-  dispatch(packet) {
+  dispatch(packet, rinfo) {
     if (!(packet instanceof Packet)) {
       throw new Error('OSC EventHander dispatch() accepts only arguments of type Packet')
     }
@@ -97,7 +97,7 @@ export default class EventHandler {
       })
     } else if (packet.value instanceof Message) {
       const message = packet.value
-      return this.notify(message.address, message)
+      return this.notify(message.address, message, 0, rinfo)
     }
 
     throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value')
@@ -204,7 +204,7 @@ export default class EventHandler {
     if (args[0] instanceof Packet) {
       return this.dispatch(args[0])
     } else if (args[0] instanceof Bundle || args[0] instanceof Message) {
-      return this.dispatch(new Packet(args[0]))
+      return this.dispatch(new Packet(args[0]), args[1])
     } else if (!isString(args[0])) {
       const packet = new Packet()
       packet.unpack(dataView(args[0]))

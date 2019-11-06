@@ -95,8 +95,8 @@ export default class DatagramPlugin {
     this.socketStatus = STATUS.IS_NOT_INITIALIZED
 
     // register events
-    this.socket.on('message', (message) => {
-      this.notify(message)
+    this.socket.on('message', (message, rinfo) => {
+      this.notify(message, rinfo)
     })
 
     this.socket.on('error', (error) => {
