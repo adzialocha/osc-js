@@ -63,6 +63,7 @@ export default class EventHandler {
    * Internally used method to dispatch OSC Packets. Extracts
    * given Timetags and dispatches them accordingly
    * @param {Packet} packet
+   * @param {*} [rinfo] Remove address info
    * @return {boolean} Success state
    * @private
    */
@@ -109,6 +110,7 @@ export default class EventHandler {
    * expression pattern matching for OSC addresses
    * @param {string} name OSC address or event name
    * @param {*} [data] The data of the event
+   * @param {*} [rinfo] Remove address info
    * @return {boolean} Success state
    * @private
    */
@@ -176,6 +178,7 @@ export default class EventHandler {
    * (any type). All regarding listeners will be notified with this data.
    * As a third argument you can define a javascript timestamp (number or
    * Date instance) for timed notification of the listeners.
+   * @param {*} [rinfo] Remote address info
    * @return {boolean} Success state of notification
    *
    * @example
