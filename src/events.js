@@ -89,7 +89,8 @@ export default class EventHandler {
           return this.notify(
             message.address,
             message,
-            bundle.timetag.value.timestamp()
+            bundle.timetag.value.timestamp(),
+            rinfo
           )
         }
 
@@ -111,13 +112,13 @@ export default class EventHandler {
    * @return {boolean} Success state
    * @private
    */
-  call(name, data) {
+  call(name, data, rinfo) {
     let success = false
 
     // call event handlers
     if (isString(name) && name in this.eventHandlers) {
       this.eventHandlers[name].forEach((handler) => {
-        handler.callback(data)
+        handler.callback(data, rinfo)
         success = true
       })
 
@@ -151,7 +152,7 @@ export default class EventHandler {
 
       if (foundMatch) {
         handlers[key].forEach((handler) => {
-          handler.callback(data)
+          handler.callback(data, rinfo)
           success = true
         })
       }
@@ -202,13 +203,13 @@ export default class EventHandler {
 
     // check for incoming dispatchable OSC data
     if (args[0] instanceof Packet) {
-      return this.dispatch(args[0])
+      return this.dispatch(args[0], args[1])
     } else if (args[0] instanceof Bundle || args[0] instanceof Message) {
       return this.dispatch(new Packet(args[0]), args[1])
     } else if (!isString(args[0])) {
       const packet = new Packet()
       packet.unpack(dataView(args[0]))
-      return this.dispatch(packet)
+      return this.dispatch(packet, args[1])
     }
 
     const name = args[0]
@@ -233,6 +234,13 @@ export default class EventHandler {
       }
     }
 
+    // remote address info
+    let rinfo = null
+
+    if (args.length >= 3) {
+      rinfo = args[3]
+    }
+
     // notify now or later
     if (timestamp) {
       const now = Date.now()
@@ -240,7 +248,7 @@ export default class EventHandler {
       // is message outdated?
       if (now > timestamp) {
         if (!this.options.discardLateMessages) {
-          return this.call(name, data)
+          return this.call(name, data, rinfo)
         }
       }
 
@@ -248,13 +256,13 @@ export default class EventHandler {
       const that = this
 
       setTimeout(() => {
-        that.call(name, data)
+        that.call(name, data, rinfo)
       }, timestamp - now)
 
       return true
     }
 
-    return this.call(name, data)
+    return this.call(name, data, rinfo)
   }
 
   /**
