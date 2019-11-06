@@ -5,6 +5,7 @@ import {
   isString,
 } from './common/utils'
 
+import AtomicFloat32 from './atomic/float32'
 import Bundle from './bundle'
 import EventHandler from './events'
 import Message from './message'
@@ -244,6 +245,8 @@ class OSC {
 
 // expose status flags
 OSC.STATUS = STATUS
+
+OSC.AtomicFloat32 = AtomicFloat32
 
 // expose OSC classes
 OSC.Packet = Packet

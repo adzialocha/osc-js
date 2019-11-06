@@ -95,6 +95,8 @@ export default class Message {
           argument = new AtomicString(value)
         } else if (isBlob(value)) {
           argument = new AtomicBlob(value)
+        } else if (value instanceof AtomicFloat32) {
+          argument = value
         } else {
           throw new Error('OSC Message found unknown argument type')
         }

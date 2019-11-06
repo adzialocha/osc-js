@@ -6,6 +6,7 @@ import {
   isString,
 } from './utils'
 
+import AtomicFloat32 from '../atomic/float32'
 /**
  * Checks type of given object and returns the regarding OSC
  * Type tag character
@@ -15,7 +16,7 @@ import {
 export function typeTag(item) {
   if (isInt(item)) {
     return 'i'
-  } else if (isFloat(item)) {
+  } else if (isFloat(item) || item instanceof AtomicFloat32) {
     return 'f'
   } else if (isString(item)) {
     return 's'
