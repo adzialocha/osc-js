@@ -49,7 +49,7 @@ export default class WebsocketClientPlugin {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, customOptions)
+    this.options = { ...defaultOptions, ...customOptions}
 
     /**
      * @type {object} socket
@@ -95,7 +95,7 @@ export default class WebsocketClientPlugin {
    * @param {boolean} [customOptions.secure] Use wss:// for secure connections
    */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options, customOptions)
+    const options = { ...this.options, ...customOptions}
     const { port, host, secure } = options
 
     // close socket when already given
@@ -105,6 +105,13 @@ export default class WebsocketClientPlugin {
 
     // create websocket client
     const protocol = secure ? 'wss' : 'ws'
+    const rinfo = {
+      address: host,
+      family: protocol,
+      port,
+      size: 0,
+    }
+
     this.socket = new WebSocket(`${protocol}://${host}:${port}`)
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
@@ -125,7 +132,7 @@ export default class WebsocketClientPlugin {
     }
 
     this.socket.onmessage = (message) => {
-      this.notify(message.data)
+      this.notify(message.data, rinfo)
     }
   }
 

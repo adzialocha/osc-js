@@ -168,9 +168,9 @@ export default class BridgePlugin {
       })
 
       this.websocket.on('connection', (client) => {
-        client.on('message', (message) => {
+        client.on('message', (message, rinfo) => {
           this.send(message, { receiver: 'udp' })
-          this.notify(new Uint8Array(message))
+          this.notify(new Uint8Array(message), rinfo)
         })
       })
     })
