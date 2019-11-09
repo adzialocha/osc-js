@@ -41,8 +41,6 @@ describe('DatagramPlugin', () => {
   describe('remote address info', () => {
     it('returns the remote address info', () => new Promise((resolve, reject) => {
 
-      let message
-      let rinfo
       let resolved = false
 
       const expectedMessage = {
@@ -60,10 +58,7 @@ describe('DatagramPlugin', () => {
       }
 
       osc.open()
-      osc.on('/test/path', (a, b) => {
-        message = a
-        rinfo = b
-
+      osc.on('/test/path', (message, rinfo) => {
         expect(message).to.deep.equal(expectedMessage)
         expect(rinfo).to.deep.equal(expectedRinfo)
 
