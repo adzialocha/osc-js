@@ -1,9 +1,9 @@
-import chai, { expect } from 'chai'
+import { expect } from 'chai'
 
 import OSC from '../../src/osc'
-import DatagramPlugin from '../../src/plugin/dgram'
 import Message from '../../src/message'
 
+import DatagramPlugin from '../../src/plugin/dgram'
 
 /** @test {DatagramPlugin} */
 describe('DatagramPlugin', () => {
@@ -37,7 +37,6 @@ describe('DatagramPlugin', () => {
       expect(plugin.status()).to.be.equals(-1)
     })
   })
-
 
   describe('remote address info', () => {
     it('returns the remote address info', () => new Promise((resolve, reject) => {
@@ -74,7 +73,7 @@ describe('DatagramPlugin', () => {
 
       osc.send(new Message('/test/path', 122, 554))
 
-      setTimeout(() => !resolved && reject(), 1000)
+      setTimeout(() => !resolved && reject(new Error('Timeout')), 1000)
     }))
   })
 })
