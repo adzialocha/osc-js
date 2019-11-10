@@ -35,7 +35,7 @@ describe('WebsocketClient/ServerPlugin', () => {
   describe('remote address info', () => {
     it('returns the remote address info', () => new Promise((resolve, reject) => {
 
-      let resolved = false
+      let timer
 
       const expectedMessage = {
         offset: 24,
@@ -58,13 +58,13 @@ describe('WebsocketClient/ServerPlugin', () => {
         expect(message).to.deep.equal(expectedMessage)
         expect(rinfo).to.deep.equal(expectedRinfo)
 
+        timer = null
         resolve()
-        resolved = true
       })
 
       osc.on('open', () => osc.send(new Message('/test/path', 122, 554)))
 
-      setTimeout(() => !resolved && reject(new Error('Timeout')), 1000)
+      timer = setTimeout(() => reject(new Error('Timeout')), 1000)
     }))
   })
 })
