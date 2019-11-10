@@ -61,4 +61,12 @@ describe('Atomic', () => {
       })
     })
   })
+
+  describe('value types', () => {
+    it('able to create float32 with round values', () => {
+      expect(() => new AtomicFloat32(0.0)).to.not.throw()
+      expect(() => new AtomicFloat32(1.0)).to.not.throw()
+      expect(() => new AtomicFloat32(2.0)).to.not.throw()
+    })
+  })
 })
