@@ -7,8 +7,9 @@ import BridgePlugin from '../../src/plugin/bridge'
 import DatagramPlugin from '../../src/plugin/dgram'
 import WebsocketClientPlugin from '../../src/plugin/wsclient'
 
-const wsPort = 9129
-const udpPort = 9130
+const PORT_WEBSOCKET = 9129
+const PORT_UDP_SERVER = 9130
+const PORT_UDP_CLIENT = 9131
 
 /** @test {BridgePlugin} */
 describe('BridgePlugin', () => {
@@ -20,11 +21,15 @@ describe('BridgePlugin', () => {
   before(() => {
     plugin = new BridgePlugin({
       wsServer: {
-        port: wsPort,
+        port: PORT_WEBSOCKET,
+      },
+      udpClient: {
+        host: '127.0.0.1',
+        port: PORT_UDP_CLIENT,
       },
       udpServer: {
         host: '127.0.0.1',
-        port: udpPort,
+        port: PORT_UDP_SERVER,
       },
     })
 
@@ -34,22 +39,22 @@ describe('BridgePlugin', () => {
 
     oscWsClient = new OSC({
       plugin: new WebsocketClientPlugin({
-        port: wsPort,
-      })
+        port: PORT_WEBSOCKET,
+      }),
     })
 
     oscUdpClient = new OSC({
       plugin: new DatagramPlugin({
-        send: {
+        open: {
           host: '127.0.0.1',
-          port: udpPort,
-        }
-      })
+          port: PORT_UDP_CLIENT,
+        },
+      }),
     })
   })
 
   it('merges the given options correctly', () => {
-    expect(plugin.options.wsServer.port).to.be.equals(wsPort)
+    expect(plugin.options.wsServer.port).to.be.equals(PORT_WEBSOCKET)
     expect(plugin.options.udpServer.host).to.be.equals('127.0.0.1')
     expect(plugin.options.receiver).to.be.equals('ws')
   })
@@ -60,42 +65,42 @@ describe('BridgePlugin', () => {
     })
   })
 
-
   describe('remote address info', () => {
-    it('returns the remote address info', () => new Promise((resolve, reject) => {
-
-      let timer
-
+    it('returns the remote address info', (done) => {
       const expectedMessage = {
         offset: 24,
         address: '/test/path',
         types: ',ii',
-        args: [122, 554]
+        args: [122, 554],
       }
 
       const expectedRinfo = {
         address: '127.0.0.1',
-        family: 'ws',
-        port: wsPort,
-        size: 0,
+        family: 'IPv4',
+        port: PORT_UDP_SERVER,
+        size: 24,
       }
-
-      osc.open()
-
-      oscWsClient.open()
-      oscUdpClient.open()
 
       oscUdpClient.on('/test/path', (message, rinfo) => {
         expect(message).to.deep.equal(expectedMessage)
         expect(rinfo).to.deep.equal(expectedRinfo)
 
-        timer = null
-        resolve()
+        done()
       })
 
-      oscWsClient.on('open', () => oscWsClient.send(new Message('/test/path', 122, 554)))
+      oscWsClient.on('open', () => {
+        oscWsClient.send(new Message('/test/path', 122, 554))
+      })
 
-      timer = setTimeout(() => reject(new Error('Timeout')), 1000)
-    }))
+      oscUdpClient.on('open', () => {
+        oscWsClient.open()
+      })
+
+      osc.on('open', () => {
+        oscUdpClient.open()
+      })
+
+      osc.open()
+    })
   })
 })
