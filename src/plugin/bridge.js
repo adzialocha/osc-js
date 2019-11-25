@@ -39,11 +39,14 @@ const defaultOptions = {
  * @private
  */
 function mergeOptions(base, custom) {
-  return Object.assign({}, defaultOptions, base, custom, {
-    udpServer: Object.assign({}, defaultOptions.udpServer, base.udpServer, custom.udpServer),
-    udpClient: Object.assign({}, defaultOptions.udpClient, base.udpClient, custom.udpClient),
-    wsServer: Object.assign({}, defaultOptions.wsServer, base.wsServer, custom.wsServer),
-  })
+  return {
+    ...defaultOptions,
+    ...base,
+    ...custom,
+    udpServer: { ...defaultOptions.udpServer, ...base.udpServer, ...custom.udpServer },
+    udpClient: { ...defaultOptions.udpClient, ...base.udpClient, ...custom.udpClient },
+    wsServer: { ...defaultOptions.wsServer, ...base.wsServer, ...custom.wsServer },
+  }
 }
 
 /**

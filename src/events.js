@@ -37,7 +37,7 @@ export default class EventHandler {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, options)
+    this.options = { ...defaultOptions, ...options }
     /**
      * @type {array} addressHandlers
      * @private

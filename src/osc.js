@@ -86,7 +86,7 @@ class OSC {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, options)
+    this.options = { ...defaultOptions, ...options }
     /**
      * @type {EventHandler} eventHandler
      * @private

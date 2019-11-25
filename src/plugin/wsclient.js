@@ -49,7 +49,7 @@ export default class WebsocketClientPlugin {
      * @type {object} options
      * @private
      */
-    this.options = { ...defaultOptions, ...customOptions}
+    this.options = { ...defaultOptions, ...customOptions }
 
     /**
      * @type {object} socket
@@ -95,7 +95,7 @@ export default class WebsocketClientPlugin {
    * @param {boolean} [customOptions.secure] Use wss:// for secure connections
    */
   open(customOptions = {}) {
-    const options = { ...this.options, ...customOptions}
+    const options = { ...this.options, ...customOptions }
     const { port, host, secure } = options
 
     // close socket when already given

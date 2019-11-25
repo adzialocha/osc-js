@@ -49,7 +49,7 @@ export default class Message {
       }
 
       this.address = prepareAddress(args.shift())
-      this.types = args.map(item => typeTag(item)).join('')
+      this.types = args.map((item) => typeTag(item)).join('')
       this.args = args
     }
   }

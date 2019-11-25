@@ -46,10 +46,13 @@ const defaultOptions = {
  * @private
  */
 function mergeOptions(base, custom) {
-  return Object.assign({}, defaultOptions, base, custom, {
-    open: Object.assign({}, defaultOptions.open, base.open, custom.open),
-    send: Object.assign({}, defaultOptions.send, base.send, custom.send),
-  })
+  return {
+    ...defaultOptions,
+    ...base,
+    ...custom,
+    open: { ...defaultOptions.open, ...base.open, ...custom.open },
+    send: { ...defaultOptions.send, ...base.send, ...custom.send },
+  }
 }
 
 /**
@@ -136,7 +139,7 @@ export default class DatagramPlugin {
    * @param {boolean} [customOptions.exclusive=false] Exclusive flag
    */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options.open, customOptions)
+    const options = { ...this.options.open, ...customOptions }
     const { port, exclusive } = options
 
     this.socketStatus = STATUS.IS_CONNECTING
@@ -173,7 +176,7 @@ export default class DatagramPlugin {
    * @param {number} [customOptions.port] Port of udp client
    */
   send(binary, customOptions = {}) {
-    const options = Object.assign({}, this.options.send, customOptions)
+    const options = { ...this.options.send, ...customOptions }
     const { port, host } = options
 
     this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host)

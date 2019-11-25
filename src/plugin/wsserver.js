@@ -47,7 +47,7 @@ export default class WebsocketServerPlugin {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, customOptions)
+    this.options = { ...defaultOptions, ...customOptions }
 
     /**
      * @type {object} socket
@@ -92,7 +92,7 @@ export default class WebsocketServerPlugin {
    * @param {number} [customOptions.port] Port of Websocket server
    */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options, customOptions)
+    const options = { ...this.options, ...customOptions }
     const { port, host } = options
     const rinfo = {
       address: host,
