@@ -1,9 +1,10 @@
 import { expect } from 'chai'
 
-import OSC from '../../src/osc'
-import Message from '../../src/message'
-
 import DatagramPlugin from '../../src/plugin/dgram'
+import Message from '../../src/message'
+import OSC from '../../src/osc'
+
+const PORT_UDP = 8129
 
 /** @test {DatagramPlugin} */
 describe('DatagramPlugin', () => {
@@ -13,11 +14,11 @@ describe('DatagramPlugin', () => {
   before(() => {
     plugin = new DatagramPlugin({
       send: {
-        port: 8129,
+        port: PORT_UDP,
       },
       open: {
         host: '127.0.0.1',
-        port: 8129,
+        port: PORT_UDP,
       },
     })
 
@@ -28,7 +29,7 @@ describe('DatagramPlugin', () => {
   })
 
   it('merges the given options correctly', () => {
-    expect(plugin.options.send.port).to.be.equals(8129)
+    expect(plugin.options.send.port).to.be.equals(PORT_UDP)
     expect(plugin.options.open.host).to.be.equals('127.0.0.1')
   })
 
@@ -39,36 +40,31 @@ describe('DatagramPlugin', () => {
   })
 
   describe('remote address info', () => {
-    it('returns the remote address info', () => new Promise((resolve, reject) => {
-
-      let timer
-
+    it('returns the remote address info', (done) => {
       const expectedMessage = {
         offset: 24,
         address: '/test/path',
         types: ',ii',
-        args: [ 122, 554 ]
+        args: [122, 554],
       }
 
       const expectedRinfo = {
         address: '127.0.0.1',
         family: 'IPv4',
-        port: 8129,
+        port: PORT_UDP,
         size: 24,
       }
 
       osc.open()
+
       osc.on('/test/path', (message, rinfo) => {
         expect(message).to.deep.equal(expectedMessage)
         expect(rinfo).to.deep.equal(expectedRinfo)
 
-        timer = null
-        resolve()
+        done()
       })
 
       osc.send(new Message('/test/path', 122, 554))
-
-      timer = setTimeout(() => reject(new Error('Timeout')), 1000)
-    }))
+    })
   })
 })

@@ -6,6 +6,8 @@ import Message from '../../src/message'
 import WebsocketClientPlugin from '../../src/plugin/wsclient'
 import WebsocketServerPlugin from '../../src/plugin/wsserver'
 
+const PORT_WEBSOCKET = 8129
+
 /** @test {WebsocketClientPlugin} */
 describe('WebsocketClient/ServerPlugin', () => {
   let plugin
@@ -14,7 +16,7 @@ describe('WebsocketClient/ServerPlugin', () => {
 
   before(() => {
     plugin = new WebsocketClientPlugin({
-      port: 8129,
+      port: PORT_WEBSOCKET,
       host: '127.0.0.1',
     })
 
@@ -26,45 +28,39 @@ describe('WebsocketClient/ServerPlugin', () => {
     oscServer = new OSC({
       discardLateMessages: true,
       plugin: new WebsocketServerPlugin({
-        port: 8129,
+        port: PORT_WEBSOCKET,
         host: '127.0.0.1',
       }),
     })
   })
 
   describe('remote address info', () => {
-    it('returns the remote address info', () => new Promise((resolve, reject) => {
-
-      let timer
-
+    it('returns the remote address info', (done) => {
       const expectedMessage = {
         offset: 24,
         address: '/test/path',
         types: ',ii',
-        args: [122, 554]
+        args: [122, 554],
       }
 
       const expectedRinfo = {
         address: '127.0.0.1',
         family: 'wsserver',
-        port: 8129,
+        port: PORT_WEBSOCKET,
         size: 0,
       }
-
-      oscServer.open()
-      osc.open()
 
       oscServer.on('/test/path', (message, rinfo) => {
         expect(message).to.deep.equal(expectedMessage)
         expect(rinfo).to.deep.equal(expectedRinfo)
 
-        timer = null
-        resolve()
+        done()
       })
 
       osc.on('open', () => osc.send(new Message('/test/path', 122, 554)))
 
-      timer = setTimeout(() => reject(new Error('Timeout')), 1000)
-    }))
+      oscServer.open()
+      osc.open()
+    })
   })
 })
