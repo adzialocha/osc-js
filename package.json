@@ -6,8 +6,8 @@
   "scripts": {
     "build": "rollup -c",
     "docs": "esdoc",
-    "lint": "eslint rollup.config.js src/** test/**; exit 0",
-    "test": "mocha test/** --require @babel/register; exit 0",
+    "lint": "eslint rollup.config.js src/** test/**",
+    "test": "mocha test/** --require @babel/register --exit",
     "test:watch": "mocha test/** --require @babel/register --reporter min --watch test/** src/**"
   },
   "repository": {
