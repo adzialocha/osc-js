@@ -47,7 +47,7 @@ export default class WebsocketServerPlugin {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, customOptions)
+    this.options = { ...defaultOptions, ...customOptions }
 
     /**
      * @type {object} socket
@@ -92,8 +92,14 @@ export default class WebsocketServerPlugin {
    * @param {number} [customOptions.port] Port of Websocket server
    */
   open(customOptions = {}) {
-    const options = Object.assign({}, this.options, customOptions)
+    const options = { ...this.options, ...customOptions }
     const { port, host } = options
+    const rinfo = {
+      address: host,
+      family: 'wsserver',
+      port,
+      size: 0,
+    }
 
     // close socket when already given
     if (this.socket) {
@@ -117,7 +123,7 @@ export default class WebsocketServerPlugin {
 
     this.socket.on('connection', (client) => {
       client.on('message', (message) => {
-        this.notify(new Uint8Array(message))
+        this.notify(new Uint8Array(message), rinfo)
       })
     })
   }

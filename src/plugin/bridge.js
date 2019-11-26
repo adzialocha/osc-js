@@ -39,11 +39,14 @@ const defaultOptions = {
  * @private
  */
 function mergeOptions(base, custom) {
-  return Object.assign({}, defaultOptions, base, custom, {
-    udpServer: Object.assign({}, defaultOptions.udpServer, base.udpServer, custom.udpServer),
-    udpClient: Object.assign({}, defaultOptions.udpClient, base.udpClient, custom.udpClient),
-    wsServer: Object.assign({}, defaultOptions.wsServer, base.wsServer, custom.wsServer),
-  })
+  return {
+    ...defaultOptions,
+    ...base,
+    ...custom,
+    udpServer: { ...defaultOptions.udpServer, ...base.udpServer, ...custom.udpServer },
+    udpClient: { ...defaultOptions.udpClient, ...base.udpClient, ...custom.udpClient },
+    wsServer: { ...defaultOptions.wsServer, ...base.wsServer, ...custom.wsServer },
+  }
 }
 
 /**
@@ -168,9 +171,9 @@ export default class BridgePlugin {
       })
 
       this.websocket.on('connection', (client) => {
-        client.on('message', (message) => {
+        client.on('message', (message, rinfo) => {
           this.send(message, { receiver: 'udp' })
-          this.notify(new Uint8Array(message))
+          this.notify(new Uint8Array(message), rinfo)
         })
       })
     })

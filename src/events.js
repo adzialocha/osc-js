@@ -37,7 +37,7 @@ export default class EventHandler {
      * @type {object} options
      * @private
      */
-    this.options = Object.assign({}, defaultOptions, options)
+    this.options = { ...defaultOptions, ...options }
     /**
      * @type {array} addressHandlers
      * @private
@@ -63,10 +63,11 @@ export default class EventHandler {
    * Internally used method to dispatch OSC Packets. Extracts
    * given Timetags and dispatches them accordingly
    * @param {Packet} packet
+   * @param {*} [rinfo] Remote address info
    * @return {boolean} Success state
    * @private
    */
-  dispatch(packet) {
+  dispatch(packet, rinfo) {
     if (!(packet instanceof Packet)) {
       throw new Error('OSC EventHander dispatch() accepts only arguments of type Packet')
     }
@@ -89,7 +90,8 @@ export default class EventHandler {
           return this.notify(
             message.address,
             message,
-            bundle.timetag.value.timestamp()
+            bundle.timetag.value.timestamp(),
+            rinfo
           )
         }
 
@@ -97,7 +99,7 @@ export default class EventHandler {
       })
     } else if (packet.value instanceof Message) {
       const message = packet.value
-      return this.notify(message.address, message)
+      return this.notify(message.address, message, 0, rinfo)
     }
 
     throw new Error('OSC EventHander dispatch() can\'t dispatch unknown Packet value')
@@ -108,16 +110,17 @@ export default class EventHandler {
    * expression pattern matching for OSC addresses
    * @param {string} name OSC address or event name
    * @param {*} [data] The data of the event
+   * @param {*} [rinfo] Remote address info
    * @return {boolean} Success state
    * @private
    */
-  call(name, data) {
+  call(name, data, rinfo) {
     let success = false
 
     // call event handlers
     if (isString(name) && name in this.eventHandlers) {
       this.eventHandlers[name].forEach((handler) => {
-        handler.callback(data)
+        handler.callback(data, rinfo)
         success = true
       })
 
@@ -151,7 +154,7 @@ export default class EventHandler {
 
       if (foundMatch) {
         handlers[key].forEach((handler) => {
-          handler.callback(data)
+          handler.callback(data, rinfo)
           success = true
         })
       }
@@ -175,6 +178,7 @@ export default class EventHandler {
    * (any type). All regarding listeners will be notified with this data.
    * As a third argument you can define a javascript timestamp (number or
    * Date instance) for timed notification of the listeners.
+   * @param {*} [rinfo] Remote address info
    * @return {boolean} Success state of notification
    *
    * @example
@@ -202,13 +206,13 @@ export default class EventHandler {
 
     // check for incoming dispatchable OSC data
     if (args[0] instanceof Packet) {
-      return this.dispatch(args[0])
+      return this.dispatch(args[0], args[1])
     } else if (args[0] instanceof Bundle || args[0] instanceof Message) {
-      return this.dispatch(new Packet(args[0]))
+      return this.dispatch(new Packet(args[0]), args[1])
     } else if (!isString(args[0])) {
       const packet = new Packet()
       packet.unpack(dataView(args[0]))
-      return this.dispatch(packet)
+      return this.dispatch(packet, args[1])
     }
 
     const name = args[0]
@@ -233,6 +237,13 @@ export default class EventHandler {
       }
     }
 
+    // remote address info
+    let rinfo = null
+
+    if (args.length >= 3) {
+      rinfo = args[3]
+    }
+
     // notify now or later
     if (timestamp) {
       const now = Date.now()
@@ -240,7 +251,7 @@ export default class EventHandler {
       // is message outdated?
       if (now > timestamp) {
         if (!this.options.discardLateMessages) {
-          return this.call(name, data)
+          return this.call(name, data, rinfo)
         }
       }
 
@@ -248,13 +259,13 @@ export default class EventHandler {
       const that = this
 
       setTimeout(() => {
-        that.call(name, data)
+        that.call(name, data, rinfo)
       }, timestamp - now)
 
       return true
     }
 
-    return this.call(name, data)
+    return this.call(name, data, rinfo)
   }
 
   /**
