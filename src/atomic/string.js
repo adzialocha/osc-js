@@ -33,7 +33,7 @@ function charCodesToString(charCodes) {
   for (let i = 0; i < charCodes.length; i += STR_SLICE_SIZE) {
     str += String.fromCharCode.apply(
       null,
-      charCodes.slice(i, i + STR_SLICE_SIZE)
+      charCodes.slice(i, i + STR_SLICE_SIZE),
     )
   }
 

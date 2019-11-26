@@ -95,7 +95,7 @@ export function pad(n) {
 export function hasProperty(name) {
   return Object.prototype.hasOwnProperty.call(
     (typeof global !== 'undefined' ? global : window), // eslint-disable-line no-undef
-    name
+    name,
   )
 }
 

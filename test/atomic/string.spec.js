@@ -50,7 +50,7 @@ describe('AtomicString', () => {
   describe('pack', () => {
     it('returns correct bits', () => {
       expect(JSON.stringify(atomic.pack())).to.equal(
-        JSON.stringify(new Int8Array(bitArrayHello))
+        JSON.stringify(new Int8Array(bitArrayHello)),
       )
     })
 

@@ -91,7 +91,7 @@ export default class EventHandler {
             message.address,
             message,
             bundle.timetag.value.timestamp(),
-            rinfo
+            rinfo,
           )
         }
 
