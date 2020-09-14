@@ -1,8 +1,5 @@
 import {
   isArray,
-  isBlob,
-  isFloat,
-  isInt,
   isString,
   isUndefined,
 } from './common/utils'
@@ -11,26 +8,27 @@ import Helper, { typeTag, prepareAddress } from './common/helpers'
 
 import AtomicBlob from './atomic/blob'
 import AtomicFloat32 from './atomic/float32'
+import AtomicFloat64 from './atomic/float64'
 import AtomicInt32 from './atomic/int32'
 import AtomicString from './atomic/string'
 
 /**
- * An OSC message consists of an OSC Address Pattern followed
- * by an OSC Type Tag String followed by zero or more OSC Arguments
+ * TypedMessage
  */
-export default class Message {
+export class TypedMessage {
   /**
-   * Create a Message instance
+   * Create a TypedMessage instance
    * @param {array|string} args Address
+   * @param {string} types Types
    * @param {...*} args OSC Atomic Data Types
    *
    * @example
-   * const message = new Message(['test', 'path'], 50, 100.52, 'test')
+   * const message = new TypedMessage(['test', 'path'], 'ifs', 50, 100.52, 'test')
    *
    * @example
-   * const message = new Message('/test/path', 51.2)
+   * const message = new Message('/test/path', 'd', 51.12345678)
    */
-  constructor(...args) {
+  constructor(address, types, args) {
     /**
      * @type {number} offset
      * @private
@@ -43,28 +41,31 @@ export default class Message {
     /** @type {array} args */
     this.args = []
 
-    if (args.length > 0) {
-      if (!(isString(args[0]) || isArray(args[0]))) {
-        throw new Error('OSC Message constructor first argument (address) must be a string or array')
-      }
+    if (!(isString(address) || isArray(address))) {
+      throw new Error('OSC Message constructor first argument (address) must be a string or array')
+    }
 
-      this.address = prepareAddress(args.shift())
-      this.types = args.map((item) => typeTag(item)).join('')
+    this.address = prepareAddress(address)
+    if (types.length > 0) {
+      this.types = types
+    }
+    if (args.length > 0) {
       this.args = args
     }
   }
 
   /**
    * Add an OSC Atomic Data Type to the list of elements
+   * @param {string} type
    * @param {*} item
    */
-  add(item) {
-    if (isUndefined(item)) {
+  add(type, item) {
+    if (isUndefined(type) || isUndefined(item)) {
       throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
     this.args.push(item)
-    this.types += typeTag(item)
+    this.types += type
   }
 
   /**
@@ -85,20 +86,22 @@ export default class Message {
     // followed by zero or more OSC Arguments
     if (this.args.length > 0) {
       let argument
-
-      this.args.forEach((value) => {
-        if (isInt(value)) {
+      // TODO: Handle boolean type
+      this.args.forEach((value, index) => {
+        const type = this.types.charAt(index)
+        if (type === 'i') {
           argument = new AtomicInt32(value)
-        } else if (isFloat(value)) {
+        } else if (type === 'f') {
           argument = new AtomicFloat32(value)
-        } else if (isString(value)) {
+        } else if (type === 'd') {
+          argument = new AtomicFloat64(value)
+        } else if (type === 's') {
           argument = new AtomicString(value)
-        } else if (isBlob(value)) {
+        } else if (type === 'b') {
           argument = new AtomicBlob(value)
         } else {
           throw new Error('OSC Message found unknown argument type')
         }
-
         encoder.add(argument)
       })
     }
@@ -147,6 +150,8 @@ export default class Message {
         next = new AtomicInt32()
       } else if (type === 'f') {
         next = new AtomicFloat32()
+      } else if (type === 'd') {
+        next = new AtomicFloat64()
       } else if (type === 's') {
         next = new AtomicString()
       } else if (type === 'b') {
@@ -165,5 +170,40 @@ export default class Message {
     this.args = args
 
     return this.offset
+  }
+}
+
+/**
+ * An OSC message consists of an OSC Address Pattern followed
+ * by an OSC Type Tag String followed by zero or more OSC Arguments
+ */
+export default class Message extends TypedMessage {
+  /**
+   * Create a Message instance
+   * @param {array|string} args Address
+   * @param {...*} args OSC Atomic Data Types
+   *
+   * @example
+   * const message = new Message(['test', 'path'], 50, 100.52, 'test')
+   *
+   * @example
+   * const message = new Message('/test/path', 51.2)
+   */
+  constructor(...args) {
+    let address = ''
+    let types = ''
+    if (args.length > 0) {
+      address = args.shift()
+      types = args.map((item) => typeTag(item)).join('')
+    }
+    super(address, types, args)
+  }
+
+  /**
+   * Add an OSC Atomic Data Type to the list of elements
+   * @param {*} item
+   */
+  add(item) {
+    super.add(typeTag(item), item)
   }
 }
