@@ -7,7 +7,7 @@ import {
 
 import Bundle from './bundle'
 import EventHandler from './events'
-import Message from './message'
+import Message, { TypedMessage } from './message'
 import Packet from './packet'
 
 import DatagramPlugin from './plugin/dgram'
@@ -249,6 +249,7 @@ OSC.STATUS = STATUS
 OSC.Packet = Packet
 OSC.Bundle = Bundle
 OSC.Message = Message
+OSC.TypedMessage = TypedMessage
 
 // expose plugins
 OSC.DatagramPlugin = DatagramPlugin
