@@ -17,6 +17,15 @@ export function isFloat(n) {
 }
 
 /**
+ * Check if given object is a number
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isNumber(n) {
+  return Number(n) === n
+}
+
+/**
  * Check if given object is a string
  * @param {*} n
  * @return {boolean}

@@ -1,4 +1,4 @@
-import { isFloat } from '../common/utils'
+import { isNumber } from '../common/utils'
 
 import Atomic from '../atomic'
 
@@ -11,7 +11,7 @@ export default class AtomicFloat32 extends Atomic {
    * @param {number} [value] Float number
    */
   constructor(value) {
-    if (value && !isFloat(value)) {
+    if (value && !isNumber(value)) {
       throw new Error('OSC AtomicFloat32 constructor expects value of type float')
     }
 
