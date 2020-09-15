@@ -4,6 +4,7 @@ import Atomic from '../src/atomic'
 
 import AtomicInt32 from '../src/atomic/int32'
 import AtomicFloat32 from '../src/atomic/float32'
+import AtomicFloat64 from '../src/atomic/float64'
 import AtomicString from '../src/atomic/string'
 import AtomicBlob from '../src/atomic/blob'
 
@@ -24,6 +25,7 @@ describe('Atomic', () => {
       new AtomicInt32(0),
       new AtomicInt32(123132132),
       new AtomicFloat32(1299389992.342243),
+      new AtomicFloat64(1299389992.342243),
       new AtomicString('hello'),
       new AtomicString(''),
       new AtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),
