@@ -57,11 +57,15 @@ export class TypedMessage {
    * @param {*} item
    */
   add(type, item) {
-    if (isUndefined(type) || isUndefined(item)) {
+    if (isUndefined(type)) {
       throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
-    this.args.push(item)
+    // Some data types e.g. boolean does not require item
+    if (!isUndefined(item)) {
+      this.args.push(item)
+    }
+
     this.types += type
   }
 
@@ -81,26 +85,37 @@ export class TypedMessage {
     encoder.add(new AtomicString(`,${this.types}`))
 
     // followed by zero or more OSC Arguments
-    if (this.args.length > 0) {
+    if (this.types.length > 0) {
       let argument
-      // TODO: Handle boolean type
-      this.args.forEach((value, index) => {
-        const type = this.types.charAt(index)
+      let index = 0
+      for (const type of this.types) {
+        const value = this.args[index]
+
         if (type === 'i') {
           argument = new AtomicInt32(value)
+          index += 1
         } else if (type === 'f') {
           argument = new AtomicFloat32(value)
+          index += 1
         } else if (type === 'd') {
           argument = new AtomicFloat64(value)
+          index += 1
         } else if (type === 's') {
           argument = new AtomicString(value)
+          index += 1
         } else if (type === 'b') {
           argument = new AtomicBlob(value)
+          index += 1
+        } else if (type === 'T' || type === 'F') {
+          argument = null
         } else {
           throw new Error('OSC Message found unknown argument type')
         }
-        encoder.add(argument)
-      })
+
+        if (argument !== null) {
+          encoder.add(argument)
+        }
+      }
     }
 
     return encoder.merge()
@@ -153,12 +168,16 @@ export class TypedMessage {
         next = new AtomicString()
       } else if (type === 'b') {
         next = new AtomicBlob()
+      } else if (type === 'T' || type === 'F') {
+        next = null
       } else {
         throw new Error('OSC Message found non-standard argument type')
       }
 
-      offset = next.unpack(dataView, offset)
-      args.push(next.value)
+      if (next !== null) {
+        offset = next.unpack(dataView, offset)
+        args.push(next.value)
+      }
     }
 
     this.offset = offset

@@ -29,14 +29,16 @@ describe('TypedMessage', () => {
       typedMessage.add('s', 'Hello World')
       typedMessage.add('i', 121123)
       typedMessage.add('d', 123.123456789)
+      typedMessage.add('T')
+      typedMessage.add('i', 10)
     })
 
     it('pushes the values to our args array', () => {
-      expect(typedMessage.args).to.deep.equal(['Hello World', 121123, 123.123456789])
+      expect(typedMessage.args).to.deep.equal(['Hello World', 121123, 123.123456789, 10])
     })
 
     it('adds to the types string accordingly', () => {
-      expect(typedMessage.types).to.equal('sid')
+      expect(typedMessage.types).to.equal('sidTi')
     })
   })
 
@@ -51,6 +53,7 @@ describe('TypedMessage', () => {
       typedMessage.add('i', 12)
       typedMessage.add('s','Hello World')
       typedMessage.add('d', 22111.344)
+      typedMessage.add('T')
       typedMessage.add('b', new Uint8Array([100, 52]))
 
       result = typedMessage.pack()
@@ -62,6 +65,7 @@ describe('TypedMessage', () => {
 
       expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')
       expect(anotherMessage.args[3][0]).to.equal(100)
+      expect(anotherMessage.types[4]).to.equal('T')
     })
 
     it('returns a multiple of 32', () => {
