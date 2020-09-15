@@ -13,22 +13,23 @@ import AtomicInt32 from './atomic/int32'
 import AtomicString from './atomic/string'
 
 /**
- * TypedMessage
+ * TypedMessage is the superclass of Message. It can be used to compose an OSC
+ * message with explicit data types.
  */
 export class TypedMessage {
   /**
    * Create a TypedMessage instance
    * @param {array|string} args Address
-   * @param {string} types Types
-   * @param {...*} args OSC Atomic Data Types
    *
    * @example
-   * const message = new TypedMessage(['test', 'path'], 'ifs', 50, 100.52, 'test')
+   * const message = new TypedMessage(['test', 'path'])
+   * message.add('d', 123.123456789)
+   * message.add('s', 'hello')
    *
    * @example
-   * const message = new Message('/test/path', 'd', 51.12345678)
+   * const message = new Message('/test/path')
    */
-  constructor(address, types, args) {
+  constructor(address) {
     /**
      * @type {number} offset
      * @private
@@ -41,16 +42,12 @@ export class TypedMessage {
     /** @type {array} args */
     this.args = []
 
-    if (!(isString(address) || isArray(address))) {
-      throw new Error('OSC Message constructor first argument (address) must be a string or array')
-    }
+    if (!isUndefined(address)) {
+      if (!(isString(address) || isArray(address))) {
+        throw new Error('OSC Message constructor first argument (address) must be a string or array')
+      }
 
-    this.address = prepareAddress(address)
-    if (types.length > 0) {
-      this.types = types
-    }
-    if (args.length > 0) {
-      this.args = args
+      this.address = prepareAddress(address)
     }
   }
 
@@ -190,13 +187,17 @@ export default class Message extends TypedMessage {
    * const message = new Message('/test/path', 51.2)
    */
   constructor(...args) {
-    let address = ''
-    let types = ''
+    let address
     if (args.length > 0) {
       address = args.shift()
-      types = args.map((item) => typeTag(item)).join('')
     }
-    super(address, types, args)
+
+    super(address)
+
+    if (args.length > 0) {
+      this.types = args.map((item) => typeTag(item)).join('')
+      this.args = args
+    }
   }
 
   /**
