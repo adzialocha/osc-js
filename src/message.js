@@ -87,48 +87,35 @@ export class TypedMessage {
     encoder.add(new AtomicString(`,${this.types}`))
 
     // followed by zero or more OSC Arguments
-    if (this.types.length > 0) {
+    if (this.args.length > 0) {
       let argument
-      let index = 0
-      for (let i = 0; i < this.types.length; i += 1) {
-        const type = this.types[i]
-        const value = this.args[index]
 
+      if (this.args.length > this.types.length) {
+        throw new Error('OSC Message argument and type tag mismatch')
+      }
+
+      this.args.forEach((value, index) => {
+        const type = this.types[index]
         if (type === 'i') {
           argument = new AtomicInt32(value)
-          index += 1
         } else if (type === 'h') {
           argument = new AtomicInt64(value)
-          index += 1
         } else if (type === 't') {
           argument = new AtomicUInt64(value)
-          index += 1
         } else if (type === 'f') {
           argument = new AtomicFloat32(value)
-          index += 1
         } else if (type === 'd') {
           argument = new AtomicFloat64(value)
-          index += 1
         } else if (type === 's') {
           argument = new AtomicString(value)
-          index += 1
         } else if (type === 'b') {
           argument = new AtomicBlob(value)
-          index += 1
-        } else if (type === 'T' || type === 'F') {
-          argument = null
-        } else if (type === 'N') {
-          argument = null
-        } else if (type === 'I') {
-          argument = null
         } else {
           throw new Error('OSC Message found unknown argument type')
         }
 
-        if (argument !== null) {
-          encoder.add(argument)
-        }
-      }
+        encoder.add(argument)
+      })
     }
 
     return encoder.merge()
