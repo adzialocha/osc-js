@@ -98,6 +98,9 @@ export class TypedMessage {
         } else if (type === 'h') {
           argument = new AtomicInt64(value)
           index += 1
+        } else if (type === 't') {
+          argument = new AtomicUInt64(value)
+          index += 1
         } else if (type === 'f') {
           argument = new AtomicFloat32(value)
           index += 1
@@ -166,6 +169,8 @@ export class TypedMessage {
         next = new AtomicInt32()
       } else if (type === 'h') {
         next = new AtomicInt64()
+      } else if (type === 't') {
+        next = new AtomicUInt64()
       } else if (type === 'f') {
         next = new AtomicFloat32()
       } else if (type === 'd') {
