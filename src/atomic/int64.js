@@ -14,15 +14,19 @@ export default class AtomicInt64 extends Atomic {
    * @param {number} [value] Initial integer value
    */
   constructor(value) {
-    if (typeof value !== 'bigint') {
-      throw new Error('OSC AtomicInt64 constructor expects value of type number')
+    if (value && typeof value !== 'bigint') {
+      throw new Error('OSC AtomicInt64 constructor expects value of type BigInt')
     }
 
-    if (value > INT64_MAX) {
+    if (value && value > INT64_MAX) {
       throw new Error('OSC AtomicInt64 value is out of bounds')
     }
 
-    super(BigInt.asIntN(64, value))
+    if (value) {
+      value = BigInt.asIntN(64, value)
+    }
+
+    super(value)
   }
 
   /**
