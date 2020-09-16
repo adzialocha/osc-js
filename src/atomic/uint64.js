@@ -1,8 +1,6 @@
-import { isNumber } from '../common/utils'
-
 import Atomic from '../atomic'
 
-const MAX_UINT64 = BigInt("18446744073709551615")
+const MAX_UINT64 = BigInt('18446744073709551615')
 
 /**
  * Unsigned 64-bit big-endian two's complement integer OSC Atomic Data Type
@@ -21,11 +19,12 @@ export default class AtomicUInt64 extends Atomic {
       throw new Error('OSC AtomicUInt64 value is out of bounds')
     }
 
+    let tmp
     if (value) {
-      value = BigInt.asUintN(64, value)
+      tmp = BigInt.asUintN(64, value)
     }
 
-    super(value)
+    super(tmp)
   }
 
   /**

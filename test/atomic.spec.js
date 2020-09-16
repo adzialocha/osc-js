@@ -26,8 +26,8 @@ describe('Atomic', () => {
     atomicChildren = [
       new AtomicInt32(0),
       new AtomicInt32(123132132),
-      new AtomicInt64(BigInt("0x7FFFFFFFFFFFFFFF")),
-      new AtomicUInt64(BigInt("0xFFFFFFFFFFFFFFFF")),
+      new AtomicInt64(BigInt('0x7FFFFFFFFFFFFFFF')),
+      new AtomicUInt64(BigInt('0xFFFFFFFFFFFFFFFF')),
       new AtomicFloat32(1299389992.342243),
       new AtomicFloat64(1299389992.342243),
       new AtomicString('hello'),

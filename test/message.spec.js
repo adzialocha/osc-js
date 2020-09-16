@@ -50,8 +50,8 @@ describe('TypedMessage', () => {
       typedMessage = new TypedMessage('/test/types')
 
       typedMessage.add('i', 1)
-      typedMessage.add('h', BigInt("0x7FFFFFFFFFFFFFFF"))
-      typedMessage.add('t', BigInt("0xFFFFFFFFFFFFFFFF"))
+      typedMessage.add('h', BigInt('0x7FFFFFFFFFFFFFFF'))
+      typedMessage.add('t', BigInt('0xFFFFFFFFFFFFFFFF'))
       typedMessage.add('f', 123.123)
       typedMessage.add('d', 123.123456789)
       typedMessage.add('s', 'stringValue')
@@ -72,8 +72,8 @@ describe('TypedMessage', () => {
       expect(anotherMessage.args.length).to.equal(7)
       expect(anotherMessage.args[0]).to.equal(1)
       // chai.expect cannot handle BigInt directly
-      expect(anotherMessage.args[1] === BigInt("0x7FFFFFFFFFFFFFFF")).to.be.true
-      expect(anotherMessage.args[2] === BigInt("0xFFFFFFFFFFFFFFFF")).to.be.true
+      expect(anotherMessage.args[1] === BigInt('0x7FFFFFFFFFFFFFFF')).to.be.true
+      expect(anotherMessage.args[2] === BigInt('0xFFFFFFFFFFFFFFFF')).to.be.true
       expect(anotherMessage.args[3]).to.be.closeTo(123.123, 0.00001)
       expect(anotherMessage.args[4]).to.be.closeTo(123.123456789, 0.00001)
       expect(anotherMessage.args[5]).to.equal('stringValue')

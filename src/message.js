@@ -90,7 +90,8 @@ export class TypedMessage {
     if (this.types.length > 0) {
       let argument
       let index = 0
-      for (const type of this.types) {
+      for (let i = 0; i < this.types.length; i += 1) {
+        const type = this.types[i]
         const value = this.args[index]
 
         if (type === 'i') {

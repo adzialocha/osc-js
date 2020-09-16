@@ -2,13 +2,13 @@ import { expect } from 'chai'
 
 import AtomicInt64 from '../../src/atomic/int64'
 
-const MAX_INT64 = BigInt("9223372036854775807")
-const MIN_INT64 = BigInt("-9223372036854775808")
+const MAX_INT64 = BigInt('9223372036854775807')
+const MIN_INT64 = BigInt('-9223372036854775808')
 
 /** @test {AtomicInt64} */
 describe('AtomicInt64', () => {
   const bitArray = {
-    0: 127, 1:255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,
+    0: 127, 1: 255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,
   }
 
   let atomic
@@ -19,8 +19,10 @@ describe('AtomicInt64', () => {
 
   describe('bounds', () => {
     it('throws an error in constructor if out of bounds', () => {
-      expect(() => { new AtomicInt64(MAX_INT64 + BigInt("1")) }).to.throw('OSC AtomicInt64 value is out of bounds')
-      expect(() => { new AtomicInt64(MIN_INT64 + BigInt("-1")) }).to.throw('OSC AtomicInt64 value is out of bounds')
+      /* eslint-disable no-new */
+      expect(() => { new AtomicInt64(MAX_INT64 + BigInt('1')) }).to.throw('OSC AtomicInt64 value is out of bounds')
+      expect(() => { new AtomicInt64(MIN_INT64 + BigInt('-1')) }).to.throw('OSC AtomicInt64 value is out of bounds')
+      /* eslint-enable no-new */
     })
   })
 
