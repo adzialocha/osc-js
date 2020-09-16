@@ -55,6 +55,7 @@ describe('TypedMessage', () => {
       typedMessage.add('d', 22111.344)
       typedMessage.add('T')
       typedMessage.add('b', new Uint8Array([100, 52]))
+      typedMessage.add('h', BigInt("9223372036854775807"))
 
       result = typedMessage.pack()
     })
@@ -66,6 +67,7 @@ describe('TypedMessage', () => {
       expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')
       expect(anotherMessage.args[3][0]).to.equal(100)
       expect(anotherMessage.types[4]).to.equal('T')
+      expect(anotherMessage.types[6]).to.equal('h')
     })
 
     it('returns a multiple of 32', () => {
@@ -73,7 +75,7 @@ describe('TypedMessage', () => {
     })
   })
 
-  /** @test {Message#unpack} */
+  /** @test {TypedMessage#unpack} */
   describe('unpack', () => {
     let result
     let anotherMessage

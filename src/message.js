@@ -10,6 +10,7 @@ import AtomicBlob from './atomic/blob'
 import AtomicFloat32 from './atomic/float32'
 import AtomicFloat64 from './atomic/float64'
 import AtomicInt32 from './atomic/int32'
+import AtomicInt64 from './atomic/int64'
 import AtomicString from './atomic/string'
 
 /**
@@ -94,6 +95,9 @@ export class TypedMessage {
         if (type === 'i') {
           argument = new AtomicInt32(value)
           index += 1
+        } else if (type === 'h') {
+          argument = new AtomicInt64(value)
+          index += 1
         } else if (type === 'f') {
           argument = new AtomicFloat32(value)
           index += 1
@@ -160,6 +164,8 @@ export class TypedMessage {
 
       if (type === 'i') {
         next = new AtomicInt32()
+      } else if (type === 'h') {
+        next = new AtomicInt64()
       } else if (type === 'f') {
         next = new AtomicFloat32()
       } else if (type === 'd') {
