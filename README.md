@@ -32,6 +32,7 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for Java
 - Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)
 - OSC Address pattern matching
 - Time-critical OSC Bundles with Timetags
+- Extended (nonstandard) argument types
 
 ## Documentation
 

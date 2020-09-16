@@ -16,6 +16,21 @@ import AtomicString from './atomic/string'
 
 /**
  * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
+ *
+ * ## Supported types
+ *
+ * - `i` - int32
+ * - `f` - float32
+ * - `s` - string
+ * - `b` - blob
+ * - `h` - int64
+ * - `t` - uint64
+ * - `d` - double
+ * - `T` - True (no argument data)
+ * - `F` - False (no argument data)
+ * - `N` - Nil (no argument data)
+ * - `I` - Infinitum (no argument data)
+ *
  */
 export class TypedMessage {
   /**
