@@ -11,6 +11,7 @@ import AtomicFloat32 from './atomic/float32'
 import AtomicFloat64 from './atomic/float64'
 import AtomicInt32 from './atomic/int32'
 import AtomicInt64 from './atomic/int64'
+import AtomicUInt64 from './atomic/uint64'
 import AtomicString from './atomic/string'
 
 /**
@@ -115,6 +116,10 @@ export class TypedMessage {
           index += 1
         } else if (type === 'T' || type === 'F') {
           argument = null
+        } else if (type === 'N') {
+          argument = null
+        } else if (type === 'I') {
+          argument = null
         } else {
           throw new Error('OSC Message found unknown argument type')
         }
@@ -180,6 +185,10 @@ export class TypedMessage {
       } else if (type === 'b') {
         next = new AtomicBlob()
       } else if (type === 'T' || type === 'F') {
+        next = null
+      } else if (type === 'N') {
+        next = null
+      } else if (type === 'I') {
         next = null
       } else {
         throw new Error('OSC Message found non-standard argument type')
