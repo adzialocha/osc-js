@@ -21,6 +21,17 @@ describe('TypedMessage', () => {
     expect(anotherMessage.address).to.be.equals('/somekind/of/path')
   })
 
+  it('can be initialized with an address and argument array', () => {
+    const anotherMessage = new TypedMessage('/a/path', [
+      { type: 'i', value: 123 },
+      { type: 'd', value: 123.123 },
+      { type: 'h', value: BigInt('0xFFFFFF') },
+      { type: 'T', value: null },
+    ])
+    expect(anotherMessage.types.length).to.equal(4)
+    expect(anotherMessage.args.length).to.equal(3)
+  })
+
   /** @test {TypedMessage#add} */
   describe('add', () => {
     before(() => {

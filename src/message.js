@@ -15,13 +15,13 @@ import AtomicUInt64 from './atomic/uint64'
 import AtomicString from './atomic/string'
 
 /**
- * TypedMessage is the superclass of Message. It can be used to compose an OSC
- * message with explicit data types.
+ * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
  */
 export class TypedMessage {
   /**
    * Create a TypedMessage instance
-   * @param {array|string} args Address
+   * @param {array|string} address Address
+   * @param {array} args Arguments
    *
    * @example
    * const message = new TypedMessage(['test', 'path'])
@@ -29,9 +29,14 @@ export class TypedMessage {
    * message.add('s', 'hello')
    *
    * @example
-   * const message = new Message('/test/path')
+   * const message = new TypedMessage('/test/path', [
+   *   { type: 'i', value: 123 },
+   *   { type: 'd', value: 123.123 },
+   *   { type: 'h', value: 0xFFFFFFn },
+   *   { type: 'T', value: null },
+   * ])
    */
-  constructor(address) {
+  constructor(address, args) {
     /**
      * @type {number} offset
      * @private
@@ -48,8 +53,14 @@ export class TypedMessage {
       if (!(isString(address) || isArray(address))) {
         throw new Error('OSC Message constructor first argument (address) must be a string or array')
       }
-
       this.address = prepareAddress(address)
+    }
+
+    if (!isUndefined(args)) {
+      if (!isArray(args)) {
+        throw new Error('OSC Message constructor second argument (args) must be an array')
+      }
+      args.forEach((item) => this.add(item.type, item.value))
     }
   }
 
@@ -63,8 +74,8 @@ export class TypedMessage {
       throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
-    // Some data types e.g. boolean does not require item
-    if (!isUndefined(item)) {
+    // Some data types e.g. Boolean does not require item
+    if (!(item === null || isUndefined(item))) {
       this.args.push(item)
     }
 
@@ -219,7 +230,14 @@ export default class Message extends TypedMessage {
       address = args.shift()
     }
 
-    super(address)
+    let oscArgs
+    if (args.length > 0) {
+      if (args[0] instanceof Array) {
+        oscArgs = args.shift()
+      }
+    }
+
+    super(address, oscArgs)
 
     if (args.length > 0) {
       this.types = args.map((item) => typeTag(item)).join('')
