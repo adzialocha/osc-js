@@ -47,15 +47,19 @@ describe('TypedMessage', () => {
     let result
 
     before(() => {
-      typedMessage = new TypedMessage()
+      typedMessage = new TypedMessage('/test/types')
 
-      typedMessage.address = '/sssss/osc/sssssadss'
-      typedMessage.add('i', 12)
-      typedMessage.add('s','Hello World')
-      typedMessage.add('d', 22111.344)
-      typedMessage.add('T')
+      typedMessage.add('i', 1)
+      typedMessage.add('h', BigInt("0x7FFFFFFFFFFFFFFF"))
+      typedMessage.add('t', BigInt("0xFFFFFFFFFFFFFFFF"))
+      typedMessage.add('f', 123.123)
+      typedMessage.add('d', 123.123456789)
+      typedMessage.add('s', 'stringValue')
       typedMessage.add('b', new Uint8Array([100, 52]))
-      typedMessage.add('h', BigInt("9223372036854775807"))
+      typedMessage.add('T') // true
+      typedMessage.add('F') // false
+      typedMessage.add('N') // Nil
+      typedMessage.add('I') // Infinitum
 
       result = typedMessage.pack()
     })
@@ -64,10 +68,19 @@ describe('TypedMessage', () => {
       const anotherMessage = new TypedMessage()
       anotherMessage.unpack(new DataView(result.buffer), 0)
 
-      expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')
-      expect(anotherMessage.args[3][0]).to.equal(100)
-      expect(anotherMessage.types[4]).to.equal('T')
-      expect(anotherMessage.types[6]).to.equal('h')
+      expect(anotherMessage.address).to.equal('/test/types')
+      expect(anotherMessage.args.length).to.equal(7)
+      expect(anotherMessage.args[0]).to.equal(1)
+      // chai.expect cannot handle BigInt directly
+      expect(anotherMessage.args[1] === BigInt("0x7FFFFFFFFFFFFFFF")).to.be.true
+      expect(anotherMessage.args[2] === BigInt("0xFFFFFFFFFFFFFFFF")).to.be.true
+      expect(anotherMessage.args[3]).to.be.closeTo(123.123, 0.00001)
+      expect(anotherMessage.args[4]).to.be.closeTo(123.123456789, 0.00001)
+      expect(anotherMessage.args[5]).to.equal('stringValue')
+      expect(anotherMessage.args[6][0]).to.equal(100)
+
+      expect(anotherMessage.types.length).to.equal(12)
+      expect(anotherMessage.types).to.equal(',ihtfdsbTFNI')
     })
 
     it('returns a multiple of 32', () => {
