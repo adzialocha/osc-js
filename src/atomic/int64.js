@@ -2,8 +2,8 @@ import { isNumber } from '../common/utils'
 
 import Atomic from '../atomic'
 
-// 2n ** (64n - 1n) - 1n
-const INT64_MAX = BigInt(9223372036854775807)
+const MAX_INT64 = BigInt("9223372036854775807")
+const MIN_INT64 = BigInt("-9223372036854775808")
 
 /**
  * 64-bit big-endian two's complement integer OSC Atomic Data Type
@@ -18,7 +18,7 @@ export default class AtomicInt64 extends Atomic {
       throw new Error('OSC AtomicInt64 constructor expects value of type BigInt')
     }
 
-    if (value && value > INT64_MAX) {
+    if (value && (value < MIN_INT64 || value > MAX_INT64)) {
       throw new Error('OSC AtomicInt64 value is out of bounds')
     }
 
