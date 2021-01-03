@@ -18,7 +18,7 @@ osc-js
 
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a customizable Plugin API for network protocols.
 
-[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://adzialocha.github.io/osc-js) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
+[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [Documentation](https://adzialocha.github.io/osc-js) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
 
 ## Features
 
@@ -35,7 +35,7 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for Java
 
 ## Documentation
 
-Read more about osc-js and how to use it in the [Wiki](https://github.com/adzialocha/osc-js/wiki).
+Read more about osc-js and how to use it in the [Wiki](https://github.com/adzialocha/osc-js/wiki) and [Documentation](https://adzialocha.github.io/osc-js).
 
 ## Example
 
@@ -65,7 +65,7 @@ osc.open({ port: 9000 })
 
 ## Installation and Usage
 
-Recommended installation via npm: `npm install osc-js --save` or `yarn add osc-js`.
+Recommended installation via npm: `npm i osc-js` or `yarn add osc-js`.
 
 Import the library `const OSC = require('osc-js')` or add the script `lib/osc.js` or `lib/osc.min.js` (minified version) for usage in a browser.
 
@@ -119,7 +119,7 @@ by default.
   osc.open() // start a WebSocket server on port 8080
   ```
 
-3. Create your Max/MSP patch (or PD, or SuperCollider or whatever you need).
+3. Create your Max/MSP patch (or PD, SuperCollider etc.).
 
   ```
   [udpreceive 9129] // incoming '/test/random' messages with random number
@@ -127,7 +127,7 @@ by default.
 
 ### Custom solutions with Plugin API
 
-It is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including it's message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
+It is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including its message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.
 
 ```js
 class MyCustomPlugin {
@@ -179,12 +179,12 @@ npm install
 
 ### Testing
 
-`npm run test` for running the test suites.
-`npm run test:watch` for running specs during development. Check your style guide violations with `npm run lint`.
+`npm run test` for running the tests.
+`npm run test:watch` for running specs during development. Check code style with `npm run lint`.
 
 ### Deployment
 
-`npm run build` for creating all UMD modules in `lib` folder.
+`npm run build` for exporting UMD module in `lib` folder.
 
 ### Contributors
 
@@ -194,3 +194,7 @@ npm install
 ### ESDocs
 
 `npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://adzialocha.github.io/osc-js](https://adzialocha.github.io/osc-js)
+
+## License
+
+MIT License `MIT`
