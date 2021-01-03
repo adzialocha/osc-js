@@ -2,8 +2,8 @@ osc-js
 ======
 
 <p>
-  <a href="https://travis-ci.org/adzialocha/osc-js">
-    <img src="https://img.shields.io/github/checks-status/adzialocha/osc-js/master" alt="Build status">
+  <a href="https://github.com/adzialocha/osc-js/actions">
+    <img src="https://github.com/adzialocha/osc-js/workflows/Node.js%20CI/badge.svg" alt="Build status">
   </a>
   <a href="https://www.npmjs.org/package/osc-js">
     <img src="https://img.shields.io/npm/v/osc-js.svg?style=flat-square" alt="npm version">
@@ -12,7 +12,7 @@ osc-js
     <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
   </a>
   <a href="https://adzialocha.github.io/osc-js">
-    <img src="https://adzialocha.github.io/osc-js/badge.svg" alt="ESDoc status">
+    <img src="https://raw.githubusercontent.com/adzialocha/osc-js/gh-pages/badge.svg" alt="ESDoc status">
   </a>
 </p>
 
