@@ -3,7 +3,7 @@ osc-js
 
 <p>
   <a href="https://travis-ci.org/adzialocha/osc-js">
-    <img src="https://img.shields.io/travis/adzialocha/osc-js/master.svg?style=flat-square" alt="Build status">
+    <img src="https://img.shields.io/github/checks-status/adzialocha/osc-js/master" alt="Build status">
   </a>
   <a href="https://www.npmjs.org/package/osc-js">
     <img src="https://img.shields.io/npm/v/osc-js.svg?style=flat-square" alt="npm version">
@@ -11,14 +11,14 @@ osc-js
   <a href="http://spdx.org/licenses/MIT">
     <img src="https://img.shields.io/npm/l/osc-js.svg?style=flat-square" alt="npm licence">
   </a>
-  <a href="https://doc.esdoc.org/github.com/adzialocha/osc-js/">
-    <img src="https://doc.esdoc.org/github.com/adzialocha/osc-js/badge.svg" alt="ESDoc status">
+  <a href="https://adzialocha.github.io/osc-js">
+    <img src="https://adzialocha.github.io/osc-js/badge.svg" alt="ESDoc status">
   </a>
 </p>
 
 osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a customizable Plugin API for network protocols.
 
-[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://doc.esdoc.org/github.com/adzialocha/osc-js/) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
+[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [ESDoc Documentation](https://adzialocha.github.io/osc-js) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)
 
 ## Features
 
@@ -193,4 +193,4 @@ npm install
 
 ### ESDocs
 
-`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://doc.esdoc.org/github.com/adzialocha/osc-js/](https://doc.esdoc.org/github.com/adzialocha/osc-js/)
+`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://adzialocha.github.io/osc-js](https://adzialocha.github.io/osc-js)
