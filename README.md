@@ -3,7 +3,7 @@ osc-js
 
 <p>
   <a href="https://travis-ci.org/adzialocha/osc-js">
-    <img src="https://img.shields.io/travis/adzialocha/osc-js/master.svg?style=flat-square" alt="Build status">
+    <img src="https://img.shields.io/github/checks-status/adzialocha/osc-js/master" alt="Build status">
   </a>
   <a href="https://www.npmjs.org/package/osc-js">
     <img src="https://img.shields.io/npm/v/osc-js.svg?style=flat-square" alt="npm version">
