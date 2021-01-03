@@ -79,7 +79,7 @@
 
 <p></p>
 <p>osc-js is an <a href="http://opensoundcontrol.org/">Open Sound Control</a> library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via <em>UDP</em>, <em>WebSocket</em> or both (bridge mode) and offers a customizable Plugin API for network protocols.</p>
-<p><a href="https://github.com/adzialocha/osc-js/wiki">Wiki</a> | <a href="https://github.com/adzialocha/osc-js/wiki/Basic-Usage">Basic Usage</a> | <a href="https://adzialocha.github.io/osc-js">ESDoc Documentation</a> | <a href="https://github.com/adzialocha/osc-js/wiki/Plugin-API">Plugin API</a></p>
+<p><a href="https://github.com/adzialocha/osc-js/wiki">Wiki</a> | <a href="https://github.com/adzialocha/osc-js/wiki/Basic-Usage">Basic Usage</a> | <a href="https://adzialocha.github.io/osc-js">Documentation</a> | <a href="https://github.com/adzialocha/osc-js/wiki/Plugin-API">Plugin API</a></p>
 <h2 id="features">Features</h2><ul>
 <li>UMD Module running in Node.js, Electron, Chrome Apps, browser or any other JS environment</li>
 <li>Can be used with Webpack and Browserify</li>
@@ -92,7 +92,7 @@
 <li>OSC Address pattern matching</li>
 <li>Time-critical OSC Bundles with Timetags</li>
 </ul>
-<h2 id="documentation">Documentation</h2><p>Read more about osc-js and how to use it in the <a href="https://github.com/adzialocha/osc-js/wiki">Wiki</a>.</p>
+<h2 id="documentation">Documentation</h2><p>Read more about osc-js and how to use it in the <a href="https://github.com/adzialocha/osc-js/wiki">Wiki</a> and <a href="https://adzialocha.github.io/osc-js">Documentation</a>.</p>
 <h2 id="example">Example</h2><pre><code class="lang-js"><code class="source-code prettyprint">const osc = new OSC()
 
 osc.on(&apos;/param/density&apos;, (message, rinfo) =&gt; {
@@ -115,7 +115,7 @@ osc.on(&apos;open&apos;, () =&gt; {
 
 osc.open({ port: 9000 })</code>
 </code></pre>
-<h2 id="installation-and-usage">Installation and Usage</h2><p>Recommended installation via npm: <code>npm install osc-js --save</code> or <code>yarn add osc-js</code>.</p>
+<h2 id="installation-and-usage">Installation and Usage</h2><p>Recommended installation via npm: <code>npm i osc-js</code> or <code>yarn add osc-js</code>.</p>
 <p>Import the library <code>const OSC = require(&apos;osc-js&apos;)</code> or add the script <code>lib/osc.js</code> or <code>lib/osc.min.js</code> (minified version) for usage in a browser.</p>
 <h2 id="plugins">Plugins</h2><p>osc-js offers a plugin architecture for extending it&apos;s networking capabilities. The library comes with four built-in plugins. This is propably all you need for an OSC application:</p>
 <ul>
@@ -154,11 +154,11 @@ const osc = new OSC({ plugin: new OSC.BridgePlugin(config) })
 osc.open() // start a WebSocket server on port 8080</code>
 </code></pre>
 </li>
-<li><p>Create your Max/MSP patch (or PD, or SuperCollider or whatever you need).</p>
+<li><p>Create your Max/MSP patch (or PD, SuperCollider etc.).</p>
 <pre><code><code class="source-code prettyprint">[udpreceive 9129] // incoming &apos;/test/random&apos; messages with random number</code>
 </code></pre></li>
 </ol>
-<h3 id="custom-solutions-with-plugin-api">Custom solutions with Plugin API</h3><p>It is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including it&apos;s message handling etc.). Read the <a href="https://github.com/adzialocha/osc-js/wiki/Plugin-API">Plugin API documentation</a> for further information.</p>
+<h3 id="custom-solutions-with-plugin-api">Custom solutions with Plugin API</h3><p>It is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including its message handling etc.). Read the <a href="https://github.com/adzialocha/osc-js/wiki/Plugin-API">Plugin API documentation</a> for further information.</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">class MyCustomPlugin {
   // ... read docs for implementation details
 }
@@ -193,14 +193,15 @@ socket.on(&apos;message&apos;, data =&gt; {
 <pre><code><code class="source-code prettyprint">git clone git@github.com:adzialocha/osc-js.git
 cd osc-js
 npm install</code>
-</code></pre><h3 id="testing">Testing</h3><p><code>npm run test</code> for running the test suites.
-<code>npm run test:watch</code> for running specs during development. Check your style guide violations with <code>npm run lint</code>.</p>
-<h3 id="deployment">Deployment</h3><p><code>npm run build</code> for creating all UMD modules in <code>lib</code> folder.</p>
+</code></pre><h3 id="testing">Testing</h3><p><code>npm run test</code> for running the tests.
+<code>npm run test:watch</code> for running specs during development. Check code style with <code>npm run lint</code>.</p>
+<h3 id="deployment">Deployment</h3><p><code>npm run build</code> for exporting UMD module in <code>lib</code> folder.</p>
 <h3 id="contributors">Contributors</h3><ul>
 <li><a href="https://github.com/adzialocha">@adzialocha</a></li>
 <li><a href="https://github.com/eliot-akira">@eliot-akira</a></li>
 </ul>
 <h3 id="esdocs">ESDocs</h3><p><code>npm run docs</code> for generating a <code>docs</code> folder with HTML files documenting the library. Read them online here: <a href="https://adzialocha.github.io/osc-js">https://adzialocha.github.io/osc-js</a></p>
+<h2 id="license">License</h2><p>MIT License <code>MIT</code></p>
 </div>
 </div>
 
