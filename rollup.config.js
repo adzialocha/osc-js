@@ -1,6 +1,6 @@
 import babel from 'rollup-plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
-import { uglify } from 'rollup-plugin-uglify'
+import { terser } from 'rollup-plugin-terser'
 
 function rollupPlugins(isUglified = false) {
   const plugins = [
@@ -10,7 +10,7 @@ function rollupPlugins(isUglified = false) {
     cleanup(),
   ]
 
-  return isUglified ? plugins.concat(uglify()) : plugins
+  return isUglified ? plugins.concat(terser()) : plugins
 }
 
 function buildOptions(customOptions = {}) {
