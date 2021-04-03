@@ -66,11 +66,18 @@ export default class BridgePlugin {
    * @param {number} [options.udpClient.port=41235] Port of udp client for messaging
    * @param {string} [options.wsServer.host='localhost'] Hostname of Websocket server
    * @param {number} [options.wsServer.port=8080] Port of Websocket server
+   * @param {http.Server|https.Server} [options.wsServer.server] Optional: a pre-created Node.js HTTP/S server to be used instead of creating a new one
    * @param {string} [options.receiver='ws'] Where messages sent via 'send' method will be
    * delivered to, 'ws' for Websocket clients, 'udp' for udp client
    *
    * @example
    * const plugin = new OSC.BridgePlugin({ wsServer: { port: 9912 } })
+   * const osc = new OSC({ plugin: plugin })
+   *
+   * @example <caption>Using an existing HTTP server</caption>
+   * const http = require('http')
+   * const httpServer = http.createServer();
+   * const plugin = new OSC.BridgePlugin({ wsServer: { server: httpServer } })
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions = {}) {
@@ -153,11 +160,11 @@ export default class BridgePlugin {
       port: options.udpServer.port,
       exclusive: options.udpServer.exclusive,
     }, () => {
+      let wsServerOptions = {};
+      if (options.wsServer.server) wsServerOptions.server = options.wsServer.server;
+      else wsServerOptions = options.wsServer;
       // bind Websocket server
-      this.websocket = new WebSocketServer({
-        host: options.wsServer.host,
-        port: options.wsServer.port,
-      })
+      this.websocket = new WebSocketServer(wsServerOptions)
       this.websocket.binaryType = 'arraybuffer'
 
       // register Websocket events

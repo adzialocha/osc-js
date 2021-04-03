@@ -31,12 +31,18 @@ export default class WebsocketServerPlugin {
    * @param {object} [options] Custom options
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
+   * @param {http.Server|https.Server} [options.server] Optional: a pre-created Node.js HTTP/S server to be used instead of creating a new one
    *
    * @example
    * const plugin = new OSC.WebsocketServerPlugin({ port: 9912 })
    * const osc = new OSC({ plugin: plugin })
    *
    * osc.open() // start server
+   * @example <caption>Using an existing HTTP server</caption>
+   * const http = require('http')
+   * const httpServer = http.createServer();
+   * const plugin = new OSC.WebsocketServerPlugin({ server: httpServer })
+   * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions) {
     if (!WebSocketServer) {
@@ -107,7 +113,12 @@ export default class WebsocketServerPlugin {
     }
 
     // create websocket server
-    this.socket = new WebSocketServer({ host, port })
+    if (options.server) {
+        this.socket = new WebSocketServer({ server: options.server })
+    } else {
+        this.socket = new WebSocketServer({ host, port })
+    }
+
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
