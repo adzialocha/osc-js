@@ -190,6 +190,7 @@ npm install
 ### Contributors
 
 * [@adzialocha](https://github.com/adzialocha)
+* [@davidgranstrom](https://github.com/davidgranstrom)
 * [@eliot-akira](https://github.com/eliot-akira)
 
 ### ESDocs
