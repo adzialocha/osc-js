@@ -42,6 +42,7 @@
     "chai": "4.3.4",
     "chai-spies-next": "0.9.3",
     "esdoc": "1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-standard-plugin": "1.0.0",
     "eslint": "8.3.0",
     "eslint-config-airbnb-base": "15.0.0",
