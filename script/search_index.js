@@ -60,9 +60,21 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "osc-js/src/plugin/bridge.js~bridgeplugin",
+    "class/src/plugin/bridge.js~BridgePlugin.html",
+    "<span>BridgePlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/bridge.js</span>",
+    "class"
+  ],
+  [
     "osc-js/src/bundle.js~bundle",
     "class/src/bundle.js~Bundle.html",
     "<span>Bundle</span> <span class=\"search-result-import-path\">osc-js/src/bundle.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/plugin/dgram.js~datagramplugin",
+    "class/src/plugin/dgram.js~DatagramPlugin.html",
+    "<span>DatagramPlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/dgram.js</span>",
     "class"
   ],
   [
@@ -72,9 +84,21 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "osc-js/src/events.js~eventhandler",
+    "class/src/events.js~EventHandler.html",
+    "<span>EventHandler</span> <span class=\"search-result-import-path\">osc-js/src/events.js</span>",
+    "class"
+  ],
+  [
     "osc-js/src/message.js~message",
     "class/src/message.js~Message.html",
     "<span>Message</span> <span class=\"search-result-import-path\">osc-js/src/message.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/osc.js~osc",
+    "class/src/osc.js~OSC.html",
+    "<span>OSC</span> <span class=\"search-result-import-path\">osc-js/src/osc.js</span>",
     "class"
   ],
   [
@@ -105,6 +129,18 @@ window.esdocSearchIndex = [
     "osc-js/src/message.js~typedmessage",
     "class/src/message.js~TypedMessage.html",
     "<span>TypedMessage</span> <span class=\"search-result-import-path\">osc-js/src/message.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/plugin/wsclient.js~websocketclientplugin",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html",
+    "<span>WebsocketClientPlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/wsclient.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/plugin/wsserver.js~websocketserverplugin",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html",
+    "<span>WebsocketServerPlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/wsserver.js</span>",
     "class"
   ],
   [
@@ -606,7 +642,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "bridgeplugin bridgeplugin,bridgeplugin",
+    "bridgeplugin src/plugin/bridge.js~bridgeplugin,bridgeplugin",
     "test-file/test/plugin/bridge.spec.js.html#lineNumber15",
     "BridgePlugin",
     "test"
@@ -714,7 +750,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "datagramplugin datagramplugin,datagramplugin",
+    "datagramplugin src/plugin/dgram.js~datagramplugin,datagramplugin",
     "test-file/test/plugin/dgram.spec.js.html#lineNumber10",
     "DatagramPlugin",
     "test"
@@ -768,13 +804,13 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "eventhandler eventhandler,eventhandler",
+    "eventhandler src/events.js~eventhandler,eventhandler",
     "test-file/test/events.spec.js.html#lineNumber10",
     "EventHandler",
     "test"
   ],
   [
-    "eventhandler#notify eventhandler#notify,eventhandler#notify",
+    "eventhandler#notify src/events.js~eventhandler#notify,eventhandler#notify",
     "test-file/test/events.spec.js.html#lineNumber63",
     "EventHandler notify",
     "test"
@@ -912,7 +948,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "eventhandler#off eventhandler#off,eventhandler#off",
+    "eventhandler#off src/events.js~eventhandler#off,eventhandler#off",
     "test-file/test/events.spec.js.html#lineNumber39",
     "EventHandler off",
     "test"
@@ -930,7 +966,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "eventhandler#on eventhandler#on,eventhandler#on",
+    "eventhandler#on src/events.js~eventhandler#on,eventhandler#on",
     "test-file/test/events.spec.js.html#lineNumber18",
     "EventHandler on",
     "test"
@@ -1020,13 +1056,13 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc osc,osc",
+    "osc src/osc.js~osc,osc",
     "test-file/test/osc.spec.js.html#lineNumber50",
     "OSC",
     "test"
   ],
   [
-    "osc#close osc#close,osc#close",
+    "osc#close src/osc.js~osc#close,osc#close",
     "test-file/test/osc.spec.js.html#lineNumber128",
     "OSC close",
     "test"
@@ -1044,7 +1080,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc#off osc#off,osc#off",
+    "osc#off src/osc.js~osc#off,osc#off",
     "test-file/test/osc.spec.js.html#lineNumber88",
     "OSC off",
     "test"
@@ -1056,7 +1092,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc#on osc#on,osc#on",
+    "osc#on src/osc.js~osc#on,osc#on",
     "test-file/test/osc.spec.js.html#lineNumber67",
     "OSC on",
     "test"
@@ -1074,7 +1110,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc#open osc#open,osc#open",
+    "osc#open src/osc.js~osc#open,osc#open",
     "test-file/test/osc.spec.js.html#lineNumber109",
     "OSC open",
     "test"
@@ -1098,7 +1134,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc#send osc#send,osc#send",
+    "osc#send src/osc.js~osc#send,osc#send",
     "test-file/test/osc.spec.js.html#lineNumber147",
     "OSC send",
     "test"
@@ -1110,7 +1146,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "osc#status osc#status,osc#status",
+    "osc#status src/osc.js~osc#status,osc#status",
     "test-file/test/osc.spec.js.html#lineNumber102",
     "OSC status",
     "test"
@@ -1278,7 +1314,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "websocketclientplugin websocketclientplugin,websocketclientplugin",
+    "websocketclientplugin src/plugin/wsclient.js~websocketclientplugin,websocketclientplugin",
     "test-file/test/plugin/ws.spec.js.html#lineNumber12",
     "WebsocketClient/ServerPlugin",
     "test"
@@ -1296,7 +1332,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "websocketclientplugin websocketclientplugin,websocketclientplugin",
+    "websocketclientplugin src/plugin/wsclient.js~websocketclientplugin,websocketclientplugin",
     "test-file/test/plugin/wsclient.spec.js.html#lineNumber6",
     "WebsocketClientPlugin",
     "test"
@@ -1320,7 +1356,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "websocketserverplugin websocketserverplugin,websocketserverplugin",
+    "websocketserverplugin src/plugin/wsserver.js~websocketserverplugin,websocketserverplugin",
     "test-file/test/plugin/wsserver.spec.js.html#lineNumber6",
     "WebsocketServerPlugin",
     "test"
@@ -2046,6 +2082,72 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/events.js",
+    "file/src/events.js.html",
+    "src/events.js",
+    "file"
+  ],
+  [
+    "src/events.js~eventhandler#addresshandlers",
+    "class/src/events.js~EventHandler.html#instance-member-addressHandlers",
+    "src/events.js~EventHandler#addressHandlers",
+    "member"
+  ],
+  [
+    "src/events.js~eventhandler#call",
+    "class/src/events.js~EventHandler.html#instance-method-call",
+    "src/events.js~EventHandler#call",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#constructor",
+    "class/src/events.js~EventHandler.html#instance-constructor-constructor",
+    "src/events.js~EventHandler#constructor",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#dispatch",
+    "class/src/events.js~EventHandler.html#instance-method-dispatch",
+    "src/events.js~EventHandler#dispatch",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#eventhandlers",
+    "class/src/events.js~EventHandler.html#instance-member-eventHandlers",
+    "src/events.js~EventHandler#eventHandlers",
+    "member"
+  ],
+  [
+    "src/events.js~eventhandler#notify",
+    "class/src/events.js~EventHandler.html#instance-method-notify",
+    "src/events.js~EventHandler#notify",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#off",
+    "class/src/events.js~EventHandler.html#instance-method-off",
+    "src/events.js~EventHandler#off",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#on",
+    "class/src/events.js~EventHandler.html#instance-method-on",
+    "src/events.js~EventHandler#on",
+    "method"
+  ],
+  [
+    "src/events.js~eventhandler#options",
+    "class/src/events.js~EventHandler.html#instance-member-options",
+    "src/events.js~EventHandler#options",
+    "member"
+  ],
+  [
+    "src/events.js~eventhandler#uuid",
+    "class/src/events.js~EventHandler.html#instance-member-uuid",
+    "src/events.js~EventHandler#uuid",
+    "member"
+  ],
+  [
     "src/message.js",
     "file/src/message.js.html",
     "src/message.js",
@@ -2124,6 +2226,66 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/osc.js",
+    "file/src/osc.js.html",
+    "src/osc.js",
+    "file"
+  ],
+  [
+    "src/osc.js~osc#close",
+    "class/src/osc.js~OSC.html#instance-method-close",
+    "src/osc.js~OSC#close",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#constructor",
+    "class/src/osc.js~OSC.html#instance-constructor-constructor",
+    "src/osc.js~OSC#constructor",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#eventhandler",
+    "class/src/osc.js~OSC.html#instance-member-eventHandler",
+    "src/osc.js~OSC#eventHandler",
+    "member"
+  ],
+  [
+    "src/osc.js~osc#off",
+    "class/src/osc.js~OSC.html#instance-method-off",
+    "src/osc.js~OSC#off",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#on",
+    "class/src/osc.js~OSC.html#instance-method-on",
+    "src/osc.js~OSC#on",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#open",
+    "class/src/osc.js~OSC.html#instance-method-open",
+    "src/osc.js~OSC#open",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#options",
+    "class/src/osc.js~OSC.html#instance-member-options",
+    "src/osc.js~OSC#options",
+    "member"
+  ],
+  [
+    "src/osc.js~osc#send",
+    "class/src/osc.js~OSC.html#instance-method-send",
+    "src/osc.js~OSC#send",
+    "method"
+  ],
+  [
+    "src/osc.js~osc#status",
+    "class/src/osc.js~OSC.html#instance-method-status",
+    "src/osc.js~OSC#status",
+    "method"
+  ],
+  [
     "src/packet.js",
     "file/src/packet.js.html",
     "src/packet.js",
@@ -2158,6 +2320,276 @@ window.esdocSearchIndex = [
     "class/src/packet.js~Packet.html#instance-member-value",
     "src/packet.js~Packet#value",
     "member"
+  ],
+  [
+    "src/plugin/bridge.js",
+    "file/src/plugin/bridge.js.html",
+    "src/plugin/bridge.js",
+    "file"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#close",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-method-close",
+    "src/plugin/bridge.js~BridgePlugin#close",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#constructor",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-constructor-constructor",
+    "src/plugin/bridge.js~BridgePlugin#constructor",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#notify",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-member-notify",
+    "src/plugin/bridge.js~BridgePlugin#notify",
+    "member"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#open",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-method-open",
+    "src/plugin/bridge.js~BridgePlugin#open",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#options",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-member-options",
+    "src/plugin/bridge.js~BridgePlugin#options",
+    "member"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#registernotify",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-method-registerNotify",
+    "src/plugin/bridge.js~BridgePlugin#registerNotify",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#send",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-method-send",
+    "src/plugin/bridge.js~BridgePlugin#send",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#socket",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-member-socket",
+    "src/plugin/bridge.js~BridgePlugin#socket",
+    "member"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#socketstatus",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-member-socketStatus",
+    "src/plugin/bridge.js~BridgePlugin#socketStatus",
+    "member"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#status",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-method-status",
+    "src/plugin/bridge.js~BridgePlugin#status",
+    "method"
+  ],
+  [
+    "src/plugin/bridge.js~bridgeplugin#websocket",
+    "class/src/plugin/bridge.js~BridgePlugin.html#instance-member-websocket",
+    "src/plugin/bridge.js~BridgePlugin#websocket",
+    "member"
+  ],
+  [
+    "src/plugin/dgram.js",
+    "file/src/plugin/dgram.js.html",
+    "src/plugin/dgram.js",
+    "file"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#close",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-close",
+    "src/plugin/dgram.js~DatagramPlugin#close",
+    "method"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#constructor",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-constructor-constructor",
+    "src/plugin/dgram.js~DatagramPlugin#constructor",
+    "method"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#notify",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-member-notify",
+    "src/plugin/dgram.js~DatagramPlugin#notify",
+    "member"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#open",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-open",
+    "src/plugin/dgram.js~DatagramPlugin#open",
+    "method"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#options",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-member-options",
+    "src/plugin/dgram.js~DatagramPlugin#options",
+    "member"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#registernotify",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-registerNotify",
+    "src/plugin/dgram.js~DatagramPlugin#registerNotify",
+    "method"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#send",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-send",
+    "src/plugin/dgram.js~DatagramPlugin#send",
+    "method"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#socket",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-member-socket",
+    "src/plugin/dgram.js~DatagramPlugin#socket",
+    "member"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#socketstatus",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-member-socketStatus",
+    "src/plugin/dgram.js~DatagramPlugin#socketStatus",
+    "member"
+  ],
+  [
+    "src/plugin/dgram.js~datagramplugin#status",
+    "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-status",
+    "src/plugin/dgram.js~DatagramPlugin#status",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js",
+    "file/src/plugin/wsclient.js.html",
+    "src/plugin/wsclient.js",
+    "file"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#close",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-method-close",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#close",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#constructor",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-constructor-constructor",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#constructor",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#notify",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-member-notify",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#notify",
+    "member"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#open",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-method-open",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#open",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#options",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-member-options",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#options",
+    "member"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#registernotify",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-method-registerNotify",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#registerNotify",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#send",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-method-send",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#send",
+    "method"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#socket",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-member-socket",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#socket",
+    "member"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#socketstatus",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-member-socketStatus",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#socketStatus",
+    "member"
+  ],
+  [
+    "src/plugin/wsclient.js~websocketclientplugin#status",
+    "class/src/plugin/wsclient.js~WebsocketClientPlugin.html#instance-method-status",
+    "src/plugin/wsclient.js~WebsocketClientPlugin#status",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js",
+    "file/src/plugin/wsserver.js.html",
+    "src/plugin/wsserver.js",
+    "file"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#close",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-method-close",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#close",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#constructor",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-constructor-constructor",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#constructor",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#notify",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-member-notify",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#notify",
+    "member"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#open",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-method-open",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#open",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#options",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-member-options",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#options",
+    "member"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#registernotify",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-method-registerNotify",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#registerNotify",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#send",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-method-send",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#send",
+    "method"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#socket",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-member-socket",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#socket",
+    "member"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#socketstatus",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-member-socketStatus",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#socketStatus",
+    "member"
+  ],
+  [
+    "src/plugin/wsserver.js~websocketserverplugin#status",
+    "class/src/plugin/wsserver.js~WebsocketServerPlugin.html#instance-method-status",
+    "src/plugin/wsserver.js~WebsocketServerPlugin#status",
+    "method"
   ],
   [
     "test/atomic.spec.js",
