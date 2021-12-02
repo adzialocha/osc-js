@@ -7,7 +7,7 @@ import {
 
 import Bundle from './bundle'
 import EventHandler from './events'
-import Message from './message'
+import Message, { TypedMessage } from './message'
 import Packet from './packet'
 
 import DatagramPlugin from './plugin/dgram'
@@ -230,7 +230,11 @@ class OSC {
       throw new Error('OSC Plugin API #send is not implemented!')
     }
 
-    if (!(packet instanceof Message || packet instanceof Bundle || packet instanceof Packet)) {
+    if (!(packet instanceof TypedMessage
+        || packet instanceof Message
+        || packet instanceof Bundle
+        || packet instanceof Packet)
+    ) {
       throw new Error('OSC send() needs Messages, Bundles or Packets')
     }
 
@@ -249,6 +253,7 @@ OSC.STATUS = STATUS
 OSC.Packet = Packet
 OSC.Bundle = Bundle
 OSC.Message = Message
+OSC.TypedMessage = TypedMessage
 
 // expose plugins
 OSC.DatagramPlugin = DatagramPlugin

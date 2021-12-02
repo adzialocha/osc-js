@@ -3,16 +3,16 @@ import { isNumber } from '../common/utils'
 import Atomic from '../atomic'
 
 /**
- * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type
+ * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type
  */
-export default class AtomicFloat32 extends Atomic {
+export default class AtomicFloat64 extends Atomic {
   /**
-   * Create an AtomicFloat32 instance
+   * Create an AtomicFloat64 instance
    * @param {number} [value] Float number
    */
   constructor(value) {
     if (value && !isNumber(value)) {
-      throw new Error('OSC AtomicFloat32 constructor expects value of type float')
+      throw new Error('OSC AtomicFloat64 constructor expects value of type float')
     }
 
     super(value)
@@ -23,16 +23,16 @@ export default class AtomicFloat32 extends Atomic {
    * @return {Uint8Array} Packed binary data
    */
   pack() {
-    return super.pack('setFloat32', 4)
+    return super.pack('setFloat64', 8)
   }
 
   /**
-   * Unpack binary data from DataView and read a Float32 number
+   * Unpack binary data from DataView and read a Float64 number
    * @param {DataView} dataView The DataView holding the binary representation of the value
    * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
-    return super.unpack(dataView, 'getFloat32', 4, initialOffset)
+    return super.unpack(dataView, 'getFloat64', 8, initialOffset)
   }
 }

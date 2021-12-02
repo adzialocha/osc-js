@@ -5,6 +5,9 @@
   },
   "parser": "@babel/eslint-parser",
   "extends": "airbnb-base",
+  "globals": {
+    "BigInt": true
+  },
   "rules": {
     "max-classes-per-file": "off",
     "class-methods-use-this": "off",
