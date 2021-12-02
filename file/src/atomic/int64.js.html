@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/atomic/int32.js | osc-js</title>
+  <title data-ice="title">src/atomic/int64.js | osc-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -67,25 +67,35 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/atomic/int32.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { isInt } from &apos;../common/utils&apos;
+<div class="content" data-ice="content"><h1 data-ice="title">src/atomic/int64.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Atomic from &apos;../atomic&apos;
 
-import Atomic from &apos;../atomic&apos;
+const MAX_INT64 = BigInt(&apos;9223372036854775807&apos;)
+const MIN_INT64 = BigInt(&apos;-9223372036854775808&apos;)
 
 /**
- * 32-bit big-endian two&apos;s complement integer OSC Atomic Data Type
+ * 64-bit big-endian two&apos;s complement integer OSC Atomic Data Type
  */
-export default class AtomicInt32 extends Atomic {
+export default class AtomicInt64 extends Atomic {
   /**
-   * Create an AtomicInt32 instance
+   * Create an AtomicInt64 instance
    * @param {number} [value] Initial integer value
    */
   constructor(value) {
-    if (value &amp;&amp; !isInt(value)) {
-      throw new Error(&apos;OSC AtomicInt32 constructor expects value of type number&apos;)
+    if (value &amp;&amp; typeof value !== &apos;bigint&apos;) {
+      throw new Error(&apos;OSC AtomicInt64 constructor expects value of type BigInt&apos;)
     }
 
-    super(value)
+    if (value &amp;&amp; (value &lt; MIN_INT64 || value &gt; MAX_INT64)) {
+      throw new Error(&apos;OSC AtomicInt64 value is out of bounds&apos;)
+    }
+
+    let tmp
+    if (value) {
+      tmp = BigInt.asIntN(64, value)
+    }
+
+    super(tmp)
   }
 
   /**
@@ -93,17 +103,17 @@ export default class AtomicInt32 extends Atomic {
    * @return {Uint8Array} Packed binary data
    */
   pack() {
-    return super.pack(&apos;setInt32&apos;, 4)
+    return super.pack(&apos;setBigInt64&apos;, 8)
   }
 
   /**
-   * Unpack binary data from DataView and read a Int32 number
+   * Unpack binary data from DataView and read a Int64 number
    * @param {DataView} dataView The DataView holding the binary representation of the value
    * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
-    return super.unpack(dataView, &apos;getInt32&apos;, 4, initialOffset)
+    return super.unpack(dataView, &apos;getBigInt64&apos;, 8, initialOffset)
   }
 }
 </code></pre>

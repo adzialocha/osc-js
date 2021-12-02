@@ -32,14 +32,18 @@
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float64.js~AtomicFloat64.html">AtomicFloat64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int64.js~AtomicInt64.html">AtomicInt64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html">AtomicUInt64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
@@ -54,6 +58,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNumber">isNumber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
@@ -65,7 +70,131 @@
 <div class="content" data-ice="content"><h1 data-ice="title">test/message.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expect } from &apos;chai&apos;
 
-import Message from &apos;../src/message&apos;
+import Message, { TypedMessage } from &apos;../src/message&apos;
+
+/** @test {TypedMessage} */
+describe(&apos;TypedMessage&apos;, () =&gt; {
+  let typedMessage
+
+  before(() =&gt; {
+    typedMessage = new TypedMessage()
+  })
+
+  it(&apos;contains a set of osc message data&apos;, () =&gt; {
+    expect(typedMessage.address).to.exist
+    expect(typedMessage.types).to.exist
+    expect(typedMessage.args).to.exist
+  })
+
+  it(&apos;can be initialized with an address&apos;, () =&gt; {
+    const anotherMessage = new TypedMessage(&apos;somekind/of/path&apos;)
+    expect(anotherMessage.address).to.be.equals(&apos;/somekind/of/path&apos;)
+  })
+
+  it(&apos;can be initialized with an address and argument array&apos;, () =&gt; {
+    const anotherMessage = new TypedMessage(&apos;/a/path&apos;, [
+      { type: &apos;i&apos;, value: 123 },
+      { type: &apos;d&apos;, value: 123.123 },
+      { type: &apos;h&apos;, value: BigInt(&apos;0xFFFFFF&apos;) },
+      { type: &apos;T&apos;, value: null },
+    ])
+    expect(anotherMessage.types.length).to.equal(4)
+    expect(anotherMessage.args.length).to.equal(3)
+  })
+
+  /** @test {TypedMessage#add} */
+  describe(&apos;add&apos;, () =&gt; {
+    before(() =&gt; {
+      typedMessage = new TypedMessage()
+
+      typedMessage.add(&apos;s&apos;, &apos;Hello World&apos;)
+      typedMessage.add(&apos;i&apos;, 121123)
+      typedMessage.add(&apos;d&apos;, 123.123456789)
+      typedMessage.add(&apos;T&apos;)
+      typedMessage.add(&apos;i&apos;, 10)
+    })
+
+    it(&apos;pushes the values to our args array&apos;, () =&gt; {
+      expect(typedMessage.args).to.deep.equal([&apos;Hello World&apos;, 121123, 123.123456789, 10])
+    })
+
+    it(&apos;adds to the types string accordingly&apos;, () =&gt; {
+      expect(typedMessage.types).to.equal(&apos;sidTi&apos;)
+    })
+  })
+
+  /** @test {TypedMessage#pack} */
+  describe(&apos;pack&apos;, () =&gt; {
+    let result
+
+    before(() =&gt; {
+      typedMessage = new TypedMessage(&apos;/test/types&apos;)
+
+      typedMessage.add(&apos;i&apos;, 1)
+      typedMessage.add(&apos;h&apos;, BigInt(&apos;0x7FFFFFFFFFFFFFFF&apos;))
+      typedMessage.add(&apos;t&apos;, BigInt(&apos;0xFFFFFFFFFFFFFFFF&apos;))
+      typedMessage.add(&apos;f&apos;, 123.123)
+      typedMessage.add(&apos;d&apos;, 123.123456789)
+      typedMessage.add(&apos;s&apos;, &apos;stringValue&apos;)
+      typedMessage.add(&apos;b&apos;, new Uint8Array([100, 52]))
+      typedMessage.add(&apos;T&apos;) // true
+      typedMessage.add(&apos;F&apos;) // false
+      typedMessage.add(&apos;N&apos;) // Nil
+      typedMessage.add(&apos;I&apos;) // Infinitum
+
+      result = typedMessage.pack()
+    })
+
+    it(&apos;returns an object we can unpack again&apos;, () =&gt; {
+      const anotherMessage = new TypedMessage()
+      anotherMessage.unpack(new DataView(result.buffer), 0)
+
+      expect(anotherMessage.address).to.equal(&apos;/test/types&apos;)
+      expect(anotherMessage.args.length).to.equal(7)
+      expect(anotherMessage.args[0]).to.equal(1)
+      // chai.expect cannot handle BigInt directly
+      expect(anotherMessage.args[1] === BigInt(&apos;0x7FFFFFFFFFFFFFFF&apos;)).to.be.true
+      expect(anotherMessage.args[2] === BigInt(&apos;0xFFFFFFFFFFFFFFFF&apos;)).to.be.true
+      expect(anotherMessage.args[3]).to.be.closeTo(123.123, 0.00001)
+      expect(anotherMessage.args[4]).to.be.closeTo(123.123456789, 0.00001)
+      expect(anotherMessage.args[5]).to.equal(&apos;stringValue&apos;)
+      expect(anotherMessage.args[6][0]).to.equal(100)
+
+      expect(anotherMessage.types.length).to.equal(12)
+      expect(anotherMessage.types).to.equal(&apos;,ihtfdsbTFNI&apos;)
+    })
+
+    it(&apos;returns a multiple of 32&apos;, () =&gt; {
+      expect((result.byteLength * 8) % 32).to.equal(0)
+    })
+  })
+
+  /** @test {TypedMessage#unpack} */
+  describe(&apos;unpack&apos;, () =&gt; {
+    let result
+    let anotherMessage
+
+    before(() =&gt; {
+      anotherMessage = new TypedMessage()
+      const data = new Uint8Array([47, 115, 111, 109, 101, 47, 97,
+        100, 100, 114, 0, 0, 44, 100, 115, 105, 0, 0, 0, 0, 64, 94,
+        199, 230, 183, 77, 206, 89, 116, 101, 115, 116,
+        0, 0, 0, 0, 0, 0, 0, 0])
+      const dataView = new DataView(data.buffer, 0)
+      result = anotherMessage.unpack(dataView)
+    })
+
+    it(&apos;decodes the message correctly&apos;, () =&gt; {
+      expect(anotherMessage.address).to.equal(&apos;/some/addr&apos;)
+      expect(anotherMessage.args[1]).to.equal(&apos;test&apos;)
+      expect(anotherMessage.args[2]).to.equal(0)
+    })
+
+    it(&apos;returns a number&apos;, () =&gt; {
+      expect(result).to.be.a(&apos;number&apos;)
+    })
+  })
+})
 
 /** @test {Message} */
 describe(&apos;Message&apos;, () =&gt; {

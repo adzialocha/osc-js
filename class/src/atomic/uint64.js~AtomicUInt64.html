@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">EncodeHelper | osc-js</title>
+  <title data-ice="title">AtomicUInt64 | osc-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -68,23 +68,23 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import EncodeHelper from &apos;<span><a href="file/src/common/helpers.js.html#lineNumber96">osc-js/src/common/helpers.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import AtomicUInt64 from &apos;<span><a href="file/src/atomic/uint64.js.html#lineNumber8">osc-js/src/atomic/uint64.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/common/helpers.js.html#lineNumber96">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/atomic/uint64.js.html#lineNumber8">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
-  <h1 data-ice="name">EncodeHelper</h1>
+  <h1 data-ice="name">AtomicUInt64</h1>
 
   
 
   
   
-  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span> &#x2192; AtomicUInt64</div></div>
   
   
   
@@ -94,8 +94,7 @@
 
   
   
-  <div class="description" data-ice="description"><p>Holds a list of items and helps to merge them
-into a single array of packed binary data</p>
+  <div class="description" data-ice="description"><p>Unsigned 64-bit big-endian two&apos;s complement integer OSC Atomic Data Type</p>
 </div>
   
 
@@ -107,7 +106,7 @@ into a single array of packed binary data</p>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/test/common/helpers.spec.js.html#lineNumber34">EncodeHelper</a></span></li>
+    <li data-ice="test"><span><a href="test-file/test/atomic/uint64.spec.js.html#lineNumber8">AtomicUInt64</a></span></li>
 </ul>
   </div>
 
@@ -134,13 +133,13 @@ into a single array of packed binary data</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">()</span>
+          <span class="code" data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(value: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Create a new EncodeHelper instance</p>
+        <div data-ice="description"><p>Create an AtomicUInt64 instance</p>
 </div>
       </div>
     </td>
@@ -152,69 +151,7 @@ into a single array of packed binary data</p>
 </tbody>
 </table>
 </div>
-<div data-ice="memberSummary"><h2>Member Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Public Members</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html#instance-member-byteLength">byteLength</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html#instance-member-data">data</a></span></span><span class="code" data-ice="signature">: <span>array</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
+
 <div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
   <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
   <tbody>
@@ -233,13 +170,13 @@ into a single array of packed binary data</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html#instance-method-add">add</a></span></span><span class="code" data-ice="signature">(item: <span>*</span>): <span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html#instance-method-pack">pack</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Packs an item and adds it to the list</p>
+        <div data-ice="description"><p>Interpret the given number as packed binary data</p>
 </div>
       </div>
     </td>
@@ -262,13 +199,135 @@ into a single array of packed binary data</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html#instance-method-merge">merge</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html#instance-method-unpack">unpack</a></span></span><span class="code" data-ice="signature">(dataView: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a></span>, initialOffset: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Merge all added items into one Uint8Array</p>
+        <div data-ice="description"><p>Unpack binary data from DataView and read a UInt64 number</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/atomic.js~Atomic.html#instance-member-offset">offset</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/atomic.js~Atomic.html#instance-member-value">value</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/atomic.js~Atomic.html#instance-method-pack">pack</a></span></span><span class="code" data-ice="signature">(method: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, byteLength: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Interpret the given value of this entity as packed binary data</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/atomic.js~Atomic.html#instance-method-unpack">unpack</a></span></span><span class="code" data-ice="signature">(dataView: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a></span>, method: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, byteLength: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, initialOffset: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Unpack binary data from DataView according to the given format</p>
 </div>
       </div>
     </td>
@@ -283,8 +342,6 @@ into a single array of packed binary data</p>
 
 
 
-
-
 <div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
 <div class="detail" data-ice="detail">
@@ -295,157 +352,21 @@ into a single array of packed binary data</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">()</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(value: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/common/helpers.js.html#lineNumber100">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/atomic/uint64.js.html#lineNumber13">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Create a new EncodeHelper instance</p>
+  <div data-ice="description"><p>Create an AtomicUInt64 instance</p>
 </div>
 
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
-<div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
-
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-byteLength">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">byteLength</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/common/helpers.js.html#lineNumber104">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-data">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">data</span><span class="code" data-ice="signature">: <span>array</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/common/helpers.js.html#lineNumber102">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
-<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
-
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-add">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">add</span><span class="code" data-ice="signature">(item: <span>*</span>): <span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/common/helpers.js.html#lineNumber112">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Packs an item and adds it to the list</p>
-</div>
-
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/atomic.js~Atomic.html#instance-constructor-constructor">Atomic#constructor</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -456,10 +377,146 @@ into a single array of packed binary data</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">item</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="name" class="code" data-depth="0">value</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>Initial integer value</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-pack">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">pack</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/atomic/uint64.js.html#lineNumber34">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Interpret the given number as packed binary data</p>
+</div>
+
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/atomic.js~Atomic.html#instance-method-pack">Atomic#pack</a></span></div>
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Packed binary data</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <div data-ice="tests">
+    <h4>Test:</h4>
+    <ul>
+      
+    <li data-ice="test"><span><a href="test-file/test/atomic/uint64.spec.js.html#lineNumber29">AtomicUInt64 pack</a></span></li>
+</ul>
+  </div>
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-unpack">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">unpack</span><span class="code" data-ice="signature">(dataView: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a></span>, initialOffset: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/atomic/uint64.js.html#lineNumber44">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Unpack binary data from DataView and read a UInt64 number</p>
+</div>
+
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/atomic.js~Atomic.html#instance-method-unpack">Atomic#unpack</a></span></div>
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">dataView</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Any object</p>
+      <td data-ice="description"><p>The DataView holding the binary representation of the value</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">initialOffset</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>Offset of DataView before unpacking</p>
 </td>
     </tr>
 </tbody>
@@ -472,64 +529,8 @@ into a single array of packed binary data</p>
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-merge">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">merge</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/common/helpers.js.html#lineNumber124">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Merge all added items into one Uint8Array</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>Merged binary data array of all items</p>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Offset after unpacking</p>
 </td>
         </tr>
       </tbody>
@@ -548,7 +549,13 @@ into a single array of packed binary data</p>
 
   
 
-  
+  <div data-ice="tests">
+    <h4>Test:</h4>
+    <ul>
+      
+    <li data-ice="test"><span><a href="test-file/test/atomic/uint64.spec.js.html#lineNumber42">AtomicUInt64 unpack</a></span></li>
+</ul>
+  </div>
 
   
   

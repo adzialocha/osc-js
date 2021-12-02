@@ -18,9 +18,21 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "osc-js/src/atomic/float64.js~atomicfloat64",
+    "class/src/atomic/float64.js~AtomicFloat64.html",
+    "<span>AtomicFloat64</span> <span class=\"search-result-import-path\">osc-js/src/atomic/float64.js</span>",
+    "class"
+  ],
+  [
     "osc-js/src/atomic/int32.js~atomicint32",
     "class/src/atomic/int32.js~AtomicInt32.html",
     "<span>AtomicInt32</span> <span class=\"search-result-import-path\">osc-js/src/atomic/int32.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/atomic/int64.js~atomicint64",
+    "class/src/atomic/int64.js~AtomicInt64.html",
+    "<span>AtomicInt64</span> <span class=\"search-result-import-path\">osc-js/src/atomic/int64.js</span>",
     "class"
   ],
   [
@@ -33,6 +45,12 @@ window.esdocSearchIndex = [
     "osc-js/src/atomic/timetag.js~atomictimetag",
     "class/src/atomic/timetag.js~AtomicTimetag.html",
     "<span>AtomicTimetag</span> <span class=\"search-result-import-path\">osc-js/src/atomic/timetag.js</span>",
+    "class"
+  ],
+  [
+    "osc-js/src/atomic/uint64.js~atomicuint64",
+    "class/src/atomic/uint64.js~AtomicUInt64.html",
+    "<span>AtomicUInt64</span> <span class=\"search-result-import-path\">osc-js/src/atomic/uint64.js</span>",
     "class"
   ],
   [
@@ -84,6 +102,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "osc-js/src/message.js~typedmessage",
+    "class/src/message.js~TypedMessage.html",
+    "<span>TypedMessage</span> <span class=\"search-result-import-path\">osc-js/src/message.js</span>",
+    "class"
+  ],
+  [
     "osc-js/src/common/utils.js~dataview",
     "function/index.html#static-function-dataView",
     "<span>dataView</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
@@ -132,6 +156,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "osc-js/src/common/utils.js~isnumber",
+    "function/index.html#static-function-isNumber",
+    "<span>isNumber</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
+    "function"
+  ],
+  [
     "osc-js/src/common/utils.js~isobject",
     "function/index.html#static-function-isObject",
     "<span>isObject</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
@@ -175,49 +205,49 @@ window.esdocSearchIndex = [
   ],
   [
     "atomic src/atomic.js~atomic,atomic",
-    "test-file/test/atomic.spec.js.html#lineNumber16",
+    "test-file/test/atomic.spec.js.html#lineNumber19",
     "Atomic",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber51",
+    "test-file/test/atomic.spec.js.html#lineNumber57",
     "Atomic pack",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber52",
+    "test-file/test/atomic.spec.js.html#lineNumber58",
     "Atomic pack returns a multiple of 32",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber58",
+    "test-file/test/atomic.spec.js.html#lineNumber64",
     "Atomic pack returns an object of type Uint8Array",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber38",
+    "test-file/test/atomic.spec.js.html#lineNumber44",
     "Atomic sets an initial offset of zero",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber34",
+    "test-file/test/atomic.spec.js.html#lineNumber40",
     "Atomic sets the given value on construction",
     "test"
   ],
   [
     "atomic#unpack src/atomic.js~atomic#unpack,atomic#unpack",
-    "test-file/test/atomic.spec.js.html#lineNumber43",
+    "test-file/test/atomic.spec.js.html#lineNumber49",
     "Atomic unpack",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber44",
+    "test-file/test/atomic.spec.js.html#lineNumber50",
     "Atomic unpack exists",
     "test"
   ],
@@ -354,6 +384,60 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
+    "atomicint64 src/atomic/int64.js~atomicint64,atomicint64",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber9",
+    "AtomicInt64",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber20",
+    "AtomicInt64 bounds",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber21",
+    "AtomicInt64 bounds throws an error in constructor if out of bounds",
+    "test"
+  ],
+  [
+    "atomicint64#pack src/atomic/int64.js~atomicint64#pack,atomicint64#pack",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber30",
+    "AtomicInt64 pack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber37",
+    "AtomicInt64 pack returns correct bits",
+    "test"
+  ],
+  [
+    "atomicint64#unpack src/atomic/int64.js~atomicint64#unpack,atomicint64#unpack",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber43",
+    "AtomicInt64 unpack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber55",
+    "AtomicInt64 unpack returns a number",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber59",
+    "AtomicInt64 unpack sets the offset to 4",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/int64.spec.js.html#lineNumber63",
+    "AtomicInt64 unpack sets the value to a human readable number",
+    "test"
+  ],
+  [
     "atomicstring src/atomic/string.js~atomicstring,atomicstring",
     "test-file/test/atomic/string.spec.js.html#lineNumber16",
     "AtomicString",
@@ -465,6 +549,60 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/atomic/timetag.spec.js.html#lineNumber83",
     "AtomicTimetag unpack sets the offset to 8",
+    "test"
+  ],
+  [
+    "atomicuint64 src/atomic/uint64.js~atomicuint64,atomicuint64",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber8",
+    "AtomicUInt64",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber19",
+    "AtomicUInt64 bounds",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber20",
+    "AtomicUInt64 bounds throws an error in constructor if out of bounds",
+    "test"
+  ],
+  [
+    "atomicuint64#pack src/atomic/uint64.js~atomicuint64#pack,atomicuint64#pack",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber29",
+    "AtomicUInt64 pack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber36",
+    "AtomicUInt64 pack returns correct bits",
+    "test"
+  ],
+  [
+    "atomicuint64#unpack src/atomic/uint64.js~atomicuint64#unpack,atomicuint64#unpack",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber42",
+    "AtomicUInt64 unpack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber54",
+    "AtomicUInt64 unpack returns a number",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber58",
+    "AtomicUInt64 unpack sets the offset to 4",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/atomic/uint64.spec.js.html#lineNumber62",
+    "AtomicUInt64 unpack sets the value to a human readable number",
     "test"
   ],
   [
@@ -811,73 +949,73 @@ window.esdocSearchIndex = [
   ],
   [
     "message src/message.js~message,message",
-    "test-file/test/message.spec.js.html#lineNumber6",
+    "test-file/test/message.spec.js.html#lineNumber130",
     "Message",
     "test"
   ],
   [
     "message#add src/message.js~message#add,message#add",
-    "test-file/test/message.spec.js.html#lineNumber28",
+    "test-file/test/message.spec.js.html#lineNumber152",
     "Message add",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber40",
+    "test-file/test/message.spec.js.html#lineNumber164",
     "Message add changes the types string accordingly",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber36",
+    "test-file/test/message.spec.js.html#lineNumber160",
     "Message add pushes the values to our args array",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber13",
+    "test-file/test/message.spec.js.html#lineNumber137",
     "Message contains a set of osc message data",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber19",
+    "test-file/test/message.spec.js.html#lineNumber143",
     "Message fills the arguments and address during its construction",
     "test"
   ],
   [
-    "message#pack src/message.js~message#pack,message#pack",
-    "test-file/test/message.spec.js.html#lineNumber46",
+    "message#pack src/message.js~typedmessage#pack,message#pack",
+    "test-file/test/message.spec.js.html#lineNumber170",
     "Message pack",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber69",
+    "test-file/test/message.spec.js.html#lineNumber193",
     "Message pack returns a multiple of 32",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber61",
+    "test-file/test/message.spec.js.html#lineNumber185",
     "Message pack returns an object we can unpack again",
     "test"
   ],
   [
-    "message#unpack src/message.js~message#unpack,message#unpack",
-    "test-file/test/message.spec.js.html#lineNumber75",
+    "message#unpack src/message.js~typedmessage#unpack,message#unpack",
+    "test-file/test/message.spec.js.html#lineNumber199",
     "Message unpack",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber89",
+    "test-file/test/message.spec.js.html#lineNumber213",
     "Message unpack decodes the message correctly",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber94",
+    "test-file/test/message.spec.js.html#lineNumber218",
     "Message unpack returns a number",
     "test"
   ],
@@ -1059,6 +1197,84 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/atomic/timetag.spec.js.html#lineNumber25",
     "Timetag timestamp converts correctly to js timestamps",
+    "test"
+  ],
+  [
+    "typedmessage src/message.js~typedmessage,typedmessage",
+    "test-file/test/message.spec.js.html#lineNumber6",
+    "TypedMessage",
+    "test"
+  ],
+  [
+    "typedmessage#add src/message.js~typedmessage#add,typedmessage#add",
+    "test-file/test/message.spec.js.html#lineNumber36",
+    "TypedMessage add",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber51",
+    "TypedMessage add adds to the types string accordingly",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber47",
+    "TypedMessage add pushes the values to our args array",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber19",
+    "TypedMessage can be initialized with an address",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber24",
+    "TypedMessage can be initialized with an address and argument array",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber13",
+    "TypedMessage contains a set of osc message data",
+    "test"
+  ],
+  [
+    "typedmessage#pack src/message.js~typedmessage#pack,typedmessage#pack",
+    "test-file/test/message.spec.js.html#lineNumber57",
+    "TypedMessage pack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber97",
+    "TypedMessage pack returns a multiple of 32",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber78",
+    "TypedMessage pack returns an object we can unpack again",
+    "test"
+  ],
+  [
+    "typedmessage#unpack src/message.js~typedmessage#unpack,typedmessage#unpack",
+    "test-file/test/message.spec.js.html#lineNumber103",
+    "TypedMessage unpack",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber117",
+    "TypedMessage unpack decodes the message correctly",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/message.spec.js.html#lineNumber123",
+    "TypedMessage unpack returns a number",
     "test"
   ],
   [
@@ -1542,6 +1758,30 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/atomic/float64.js",
+    "file/src/atomic/float64.js.html",
+    "src/atomic/float64.js",
+    "file"
+  ],
+  [
+    "src/atomic/float64.js~atomicfloat64#constructor",
+    "class/src/atomic/float64.js~AtomicFloat64.html#instance-constructor-constructor",
+    "src/atomic/float64.js~AtomicFloat64#constructor",
+    "method"
+  ],
+  [
+    "src/atomic/float64.js~atomicfloat64#pack",
+    "class/src/atomic/float64.js~AtomicFloat64.html#instance-method-pack",
+    "src/atomic/float64.js~AtomicFloat64#pack",
+    "method"
+  ],
+  [
+    "src/atomic/float64.js~atomicfloat64#unpack",
+    "class/src/atomic/float64.js~AtomicFloat64.html#instance-method-unpack",
+    "src/atomic/float64.js~AtomicFloat64#unpack",
+    "method"
+  ],
+  [
     "src/atomic/int32.js",
     "file/src/atomic/int32.js.html",
     "src/atomic/int32.js",
@@ -1563,6 +1803,30 @@ window.esdocSearchIndex = [
     "src/atomic/int32.js~atomicint32#unpack",
     "class/src/atomic/int32.js~AtomicInt32.html#instance-method-unpack",
     "src/atomic/int32.js~AtomicInt32#unpack",
+    "method"
+  ],
+  [
+    "src/atomic/int64.js",
+    "file/src/atomic/int64.js.html",
+    "src/atomic/int64.js",
+    "file"
+  ],
+  [
+    "src/atomic/int64.js~atomicint64#constructor",
+    "class/src/atomic/int64.js~AtomicInt64.html#instance-constructor-constructor",
+    "src/atomic/int64.js~AtomicInt64#constructor",
+    "method"
+  ],
+  [
+    "src/atomic/int64.js~atomicint64#pack",
+    "class/src/atomic/int64.js~AtomicInt64.html#instance-method-pack",
+    "src/atomic/int64.js~AtomicInt64#pack",
+    "method"
+  ],
+  [
+    "src/atomic/int64.js~atomicint64#unpack",
+    "class/src/atomic/int64.js~AtomicInt64.html#instance-method-unpack",
+    "src/atomic/int64.js~AtomicInt64#unpack",
     "method"
   ],
   [
@@ -1659,6 +1923,30 @@ window.esdocSearchIndex = [
     "src/atomic/timetag.js~timetag#timestamp",
     "class/src/atomic/timetag.js~Timetag.html#instance-method-timestamp",
     "src/atomic/timetag.js~Timetag#timestamp",
+    "method"
+  ],
+  [
+    "src/atomic/uint64.js",
+    "file/src/atomic/uint64.js.html",
+    "src/atomic/uint64.js",
+    "file"
+  ],
+  [
+    "src/atomic/uint64.js~atomicuint64#constructor",
+    "class/src/atomic/uint64.js~AtomicUInt64.html#instance-constructor-constructor",
+    "src/atomic/uint64.js~AtomicUInt64#constructor",
+    "method"
+  ],
+  [
+    "src/atomic/uint64.js~atomicuint64#pack",
+    "class/src/atomic/uint64.js~AtomicUInt64.html#instance-method-pack",
+    "src/atomic/uint64.js~AtomicUInt64#pack",
+    "method"
+  ],
+  [
+    "src/atomic/uint64.js~atomicuint64#unpack",
+    "class/src/atomic/uint64.js~AtomicUInt64.html#instance-method-unpack",
+    "src/atomic/uint64.js~AtomicUInt64#unpack",
     "method"
   ],
   [
@@ -1770,12 +2058,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/message.js~message#address",
-    "class/src/message.js~Message.html#instance-member-address",
-    "src/message.js~Message#address",
-    "member"
-  ],
-  [
     "src/message.js~message#args",
     "class/src/message.js~Message.html#instance-member-args",
     "src/message.js~Message#args",
@@ -1788,27 +2070,57 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/message.js~message#offset",
-    "class/src/message.js~Message.html#instance-member-offset",
-    "src/message.js~Message#offset",
-    "member"
-  ],
-  [
-    "src/message.js~message#pack",
-    "class/src/message.js~Message.html#instance-method-pack",
-    "src/message.js~Message#pack",
-    "method"
-  ],
-  [
     "src/message.js~message#types",
     "class/src/message.js~Message.html#instance-member-types",
     "src/message.js~Message#types",
     "member"
   ],
   [
-    "src/message.js~message#unpack",
-    "class/src/message.js~Message.html#instance-method-unpack",
-    "src/message.js~Message#unpack",
+    "src/message.js~typedmessage#add",
+    "class/src/message.js~TypedMessage.html#instance-method-add",
+    "src/message.js~TypedMessage#add",
+    "method"
+  ],
+  [
+    "src/message.js~typedmessage#address",
+    "class/src/message.js~TypedMessage.html#instance-member-address",
+    "src/message.js~TypedMessage#address",
+    "member"
+  ],
+  [
+    "src/message.js~typedmessage#args",
+    "class/src/message.js~TypedMessage.html#instance-member-args",
+    "src/message.js~TypedMessage#args",
+    "member"
+  ],
+  [
+    "src/message.js~typedmessage#constructor",
+    "class/src/message.js~TypedMessage.html#instance-constructor-constructor",
+    "src/message.js~TypedMessage#constructor",
+    "method"
+  ],
+  [
+    "src/message.js~typedmessage#offset",
+    "class/src/message.js~TypedMessage.html#instance-member-offset",
+    "src/message.js~TypedMessage#offset",
+    "member"
+  ],
+  [
+    "src/message.js~typedmessage#pack",
+    "class/src/message.js~TypedMessage.html#instance-method-pack",
+    "src/message.js~TypedMessage#pack",
+    "method"
+  ],
+  [
+    "src/message.js~typedmessage#types",
+    "class/src/message.js~TypedMessage.html#instance-member-types",
+    "src/message.js~TypedMessage#types",
+    "member"
+  ],
+  [
+    "src/message.js~typedmessage#unpack",
+    "class/src/message.js~TypedMessage.html#instance-method-unpack",
+    "src/message.js~TypedMessage#unpack",
     "method"
   ],
   [
@@ -1872,6 +2184,12 @@ window.esdocSearchIndex = [
     "testFile"
   ],
   [
+    "test/atomic/int64.spec.js",
+    "test-file/test/atomic/int64.spec.js.html",
+    "test/atomic/int64.spec.js",
+    "testFile"
+  ],
+  [
     "test/atomic/string.spec.js",
     "test-file/test/atomic/string.spec.js.html",
     "test/atomic/string.spec.js",
@@ -1881,6 +2199,12 @@ window.esdocSearchIndex = [
     "test/atomic/timetag.spec.js",
     "test-file/test/atomic/timetag.spec.js.html",
     "test/atomic/timetag.spec.js",
+    "testFile"
+  ],
+  [
+    "test/atomic/uint64.spec.js",
+    "test-file/test/atomic/uint64.spec.js.html",
+    "test/atomic/uint64.spec.js",
     "testFile"
   ],
   [

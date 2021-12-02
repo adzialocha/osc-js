@@ -187,7 +187,7 @@
         "trailingComments": [
           {
             "type": "CommentBlock",
-            "value": "*\n * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
+            "value": "*\n * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
             "start": 76,
             "end": 156,
             "loc": {
@@ -244,9 +244,9 @@
                 "line": 8,
                 "column": 34
               },
-              "identifierName": "AtomicFloat32"
+              "identifierName": "AtomicFloat64"
             },
-            "name": "AtomicFloat32",
+            "name": "AtomicFloat64",
             "leadingComments": null
           },
           "superClass": {
@@ -548,10 +548,10 @@
                                     }
                                   },
                                   "extra": {
-                                    "rawValue": "OSC AtomicFloat32 constructor expects value of type float",
-                                    "raw": "'OSC AtomicFloat32 constructor expects value of type float'"
+                                    "rawValue": "OSC AtomicFloat64 constructor expects value of type float",
+                                    "raw": "'OSC AtomicFloat64 constructor expects value of type float'"
                                   },
-                                  "value": "OSC AtomicFloat32 constructor expects value of type float"
+                                  "value": "OSC AtomicFloat64 constructor expects value of type float"
                                 }
                               ]
                             }
@@ -632,7 +632,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Create an AtomicFloat32 instance\n   * @param {number} [value] Float number\n   ",
+                    "value": "*\n   * Create an AtomicFloat64 instance\n   * @param {number} [value] Float number\n   ",
                     "start": 211,
                     "end": 300,
                     "loc": {
@@ -813,10 +813,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": "setFloat32",
-                              "raw": "'setFloat32'"
+                              "rawValue": "setFloat64",
+                              "raw": "'setFloat64'"
                             },
-                            "value": "setFloat32"
+                            "value": "setFloat64"
                           },
                           {
                             "type": "NumericLiteral",
@@ -833,10 +833,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": 4,
-                              "raw": "4"
+                              "rawValue": 8,
+                              "raw": "8"
                             },
-                            "value": 4
+                            "value": 8
                           }
                         ]
                       }
@@ -866,7 +866,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Unpack binary data from DataView and read a Float32 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
+                    "value": "*\n   * Unpack binary data from DataView and read a Float64 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
                     "start": 641,
                     "end": 926,
                     "loc": {
@@ -1116,10 +1116,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": "getFloat32",
-                              "raw": "'getFloat32'"
+                              "rawValue": "getFloat64",
+                              "raw": "'getFloat64'"
                             },
-                            "value": "getFloat32"
+                            "value": "getFloat64"
                           },
                           {
                             "type": "NumericLiteral",
@@ -1136,10 +1136,10 @@
                               }
                             },
                             "extra": {
-                              "rawValue": 4,
-                              "raw": "4"
+                              "rawValue": 8,
+                              "raw": "8"
                             },
-                            "value": 4
+                            "value": 8
                           },
                           {
                             "type": "Identifier",
@@ -1167,7 +1167,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Unpack binary data from DataView and read a Float32 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
+                    "value": "*\n   * Unpack binary data from DataView and read a Float64 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
                     "start": 641,
                     "end": 926,
                     "loc": {
@@ -1188,7 +1188,7 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
+              "value": "*\n * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
               "start": 76,
               "end": 156,
               "loc": {
@@ -1208,7 +1208,7 @@
         "leadingComments": [
           {
             "type": "CommentBlock",
-            "value": "*\n * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
+            "value": "*\n * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
             "start": 76,
             "end": 156,
             "loc": {
@@ -1230,7 +1230,7 @@
   "comments": [
     {
       "type": "CommentBlock",
-      "value": "*\n * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
+      "value": "*\n * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
       "start": 76,
       "end": 156,
       "loc": {
@@ -1246,7 +1246,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Create an AtomicFloat32 instance\n   * @param {number} [value] Float number\n   ",
+      "value": "*\n   * Create an AtomicFloat64 instance\n   * @param {number} [value] Float number\n   ",
       "start": 211,
       "end": 300,
       "loc": {
@@ -1278,7 +1278,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Unpack binary data from DataView and read a Float32 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
+      "value": "*\n   * Unpack binary data from DataView and read a Float64 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
       "start": 641,
       "end": 926,
       "loc": {
@@ -1560,7 +1560,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * 32-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
+      "value": "*\n * 64-bit big-endian IEEE 754 floating point number OSC Atomic Data Type\n ",
       "start": 76,
       "end": 156,
       "loc": {
@@ -1670,7 +1670,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "AtomicFloat32",
+      "value": "AtomicFloat64",
       "start": 178,
       "end": 191,
       "loc": {
@@ -1765,7 +1765,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Create an AtomicFloat32 instance\n   * @param {number} [value] Float number\n   ",
+      "value": "*\n   * Create an AtomicFloat64 instance\n   * @param {number} [value] Float number\n   ",
       "start": 211,
       "end": 300,
       "loc": {
@@ -2311,7 +2311,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "OSC AtomicFloat32 constructor expects value of type float",
+      "value": "OSC AtomicFloat64 constructor expects value of type float",
       "start": 383,
       "end": 442,
       "loc": {
@@ -2767,7 +2767,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "setFloat32",
+      "value": "setFloat64",
       "start": 617,
       "end": 629,
       "loc": {
@@ -2820,7 +2820,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": 4,
+      "value": 8,
       "start": 631,
       "end": 632,
       "loc": {
@@ -2886,7 +2886,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Unpack binary data from DataView and read a Float32 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
+      "value": "*\n   * Unpack binary data from DataView and read a Float64 number\n   * @param {DataView} dataView The DataView holding the binary representation of the value\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   ",
       "start": 641,
       "end": 926,
       "loc": {
@@ -3331,7 +3331,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "getFloat32",
+      "value": "getFloat64",
       "start": 1001,
       "end": 1013,
       "loc": {
@@ -3384,7 +3384,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": 4,
+      "value": 8,
       "start": 1015,
       "end": 1016,
       "loc": {

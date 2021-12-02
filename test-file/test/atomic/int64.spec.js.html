@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/atomic/int32.js | osc-js</title>
+  <title data-ice="title">test/atomic/int64.spec.js | osc-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -67,45 +67,75 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/atomic/int32.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { isInt } from &apos;../common/utils&apos;
+<div class="content" data-ice="content"><h1 data-ice="title">test/atomic/int64.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expect } from &apos;chai&apos;
 
-import Atomic from &apos;../atomic&apos;
+import AtomicInt64 from &apos;../../src/atomic/int64&apos;
 
-/**
- * 32-bit big-endian two&apos;s complement integer OSC Atomic Data Type
- */
-export default class AtomicInt32 extends Atomic {
-  /**
-   * Create an AtomicInt32 instance
-   * @param {number} [value] Initial integer value
-   */
-  constructor(value) {
-    if (value &amp;&amp; !isInt(value)) {
-      throw new Error(&apos;OSC AtomicInt32 constructor expects value of type number&apos;)
-    }
+const MAX_INT64 = BigInt(&apos;9223372036854775807&apos;)
+const MIN_INT64 = BigInt(&apos;-9223372036854775808&apos;)
 
-    super(value)
+/** @test {AtomicInt64} */
+describe(&apos;AtomicInt64&apos;, () =&gt; {
+  const bitArray = {
+    0: 127, 1: 255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,
   }
 
-  /**
-   * Interpret the given number as packed binary data
-   * @return {Uint8Array} Packed binary data
-   */
-  pack() {
-    return super.pack(&apos;setInt32&apos;, 4)
-  }
+  let atomic
 
-  /**
-   * Unpack binary data from DataView and read a Int32 number
-   * @param {DataView} dataView The DataView holding the binary representation of the value
-   * @param {number} [initialOffset=0] Offset of DataView before unpacking
-   * @return {number} Offset after unpacking
-   */
-  unpack(dataView, initialOffset = 0) {
-    return super.unpack(dataView, &apos;getInt32&apos;, 4, initialOffset)
-  }
-}
+  before(() =&gt; {
+    atomic = new AtomicInt64(MAX_INT64)
+  })
+
+  describe(&apos;bounds&apos;, () =&gt; {
+    it(&apos;throws an error in constructor if out of bounds&apos;, () =&gt; {
+      /* eslint-disable no-new */
+      expect(() =&gt; { new AtomicInt64(MAX_INT64 + BigInt(&apos;1&apos;)) }).to.throw(&apos;OSC AtomicInt64 value is out of bounds&apos;)
+      expect(() =&gt; { new AtomicInt64(MIN_INT64 + BigInt(&apos;-1&apos;)) }).to.throw(&apos;OSC AtomicInt64 value is out of bounds&apos;)
+      /* eslint-enable no-new */
+    })
+  })
+
+  /** @test {AtomicInt64#pack} */
+  describe(&apos;pack&apos;, () =&gt; {
+    let result
+
+    before(() =&gt; {
+      result = atomic.pack()
+    })
+
+    it(&apos;returns correct bits&apos;, () =&gt; {
+      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))
+    })
+  })
+
+  /** @test {AtomicInt64#unpack} */
+  describe(&apos;unpack&apos;, () =&gt; {
+    let returnValue
+
+    before(() =&gt; {
+      const data = new Uint8Array(8)
+      const dataView = new DataView(data.buffer)
+
+      dataView.setBigInt64(0, BigInt.asIntN(64, MAX_INT64), false)
+
+      returnValue = atomic.unpack(dataView, 0)
+    })
+
+    it(&apos;returns a number&apos;, () =&gt; {
+      expect(returnValue).to.be.a(&apos;number&apos;)
+    })
+
+    it(&apos;sets the offset to 4&apos;, () =&gt; {
+      expect(atomic.offset).to.equal(8)
+    })
+
+    it(&apos;sets the value to a human readable number&apos;, () =&gt; {
+      const res = atomic.value === MAX_INT64
+      expect(res).to.be.true
+    })
+  })
+})
 </code></pre>
 
 </div>

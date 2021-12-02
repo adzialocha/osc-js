@@ -1,7 +1,7 @@
 {
-  "coverage": "100%",
-  "expectCount": 88,
-  "actualCount": 88,
+  "coverage": "95.41%",
+  "expectCount": 109,
+  "actualCount": 104,
   "files": {
     "src/atomic/blob.js": {
       "expectCount": 6,
@@ -13,10 +13,23 @@
       "actualCount": 4,
       "undocumentLines": []
     },
+    "src/atomic/float64.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
     "src/atomic/int32.js": {
       "expectCount": 4,
       "actualCount": 4,
       "undocumentLines": []
+    },
+    "src/atomic/int64.js": {
+      "expectCount": 6,
+      "actualCount": 4,
+      "undocumentLines": [
+        3,
+        4
+      ]
     },
     "src/atomic/string.js": {
       "expectCount": 9,
@@ -27,6 +40,13 @@
       "expectCount": 13,
       "actualCount": 13,
       "undocumentLines": []
+    },
+    "src/atomic/uint64.js": {
+      "expectCount": 5,
+      "actualCount": 4,
+      "undocumentLines": [
+        3
+      ]
     },
     "src/atomic.js": {
       "expectCount": 6,
@@ -44,14 +64,17 @@
       "undocumentLines": []
     },
     "src/common/utils.js": {
-      "expectCount": 12,
-      "actualCount": 12,
+      "expectCount": 13,
+      "actualCount": 13,
       "undocumentLines": []
     },
     "src/message.js": {
-      "expectCount": 9,
-      "actualCount": 9,
-      "undocumentLines": []
+      "expectCount": 14,
+      "actualCount": 12,
+      "undocumentLines": [
+        258,
+        259
+      ]
     },
     "src/packet.js": {
       "expectCount": 6,

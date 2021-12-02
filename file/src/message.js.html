@@ -32,14 +32,18 @@
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic.js~Atomic.html">Atomic</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float64.js~AtomicFloat64.html">AtomicFloat64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int32.js~AtomicInt32.html">AtomicInt32</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/int64.js~AtomicInt64.html">AtomicInt64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/string.js~AtomicString.html">AtomicString</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html">AtomicUInt64</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
@@ -54,6 +58,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNumber">isNumber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
@@ -65,9 +70,6 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/message.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {
   isArray,
-  isBlob,
-  isFloat,
-  isInt,
   isString,
   isUndefined,
 } from &apos;./common/utils&apos;
@@ -76,26 +78,50 @@ import Helper, { typeTag, prepareAddress } from &apos;./common/helpers&apos;
 
 import AtomicBlob from &apos;./atomic/blob&apos;
 import AtomicFloat32 from &apos;./atomic/float32&apos;
+import AtomicFloat64 from &apos;./atomic/float64&apos;
 import AtomicInt32 from &apos;./atomic/int32&apos;
+import AtomicInt64 from &apos;./atomic/int64&apos;
+import AtomicUInt64 from &apos;./atomic/uint64&apos;
 import AtomicString from &apos;./atomic/string&apos;
 
 /**
- * An OSC message consists of an OSC Address Pattern followed
- * by an OSC Type Tag String followed by zero or more OSC Arguments
+ * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
+ *
+ * ## Supported types
+ *
+ * - `i` - int32
+ * - `f` - float32
+ * - `s` - string
+ * - `b` - blob
+ * - `h` - int64
+ * - `t` - uint64
+ * - `d` - double
+ * - `T` - True (no argument data)
+ * - `F` - False (no argument data)
+ * - `N` - Nil (no argument data)
+ * - `I` - Infinitum (no argument data)
+ *
  */
-export default class Message {
+export class TypedMessage {
   /**
-   * Create a Message instance
-   * @param {array|string} args Address
-   * @param {...*} args OSC Atomic Data Types
+   * Create a TypedMessage instance
+   * @param {array|string} address Address
+   * @param {array} args Arguments
    *
    * @example
-   * const message = new Message([&apos;test&apos;, &apos;path&apos;], 50, 100.52, &apos;test&apos;)
+   * const message = new TypedMessage([&apos;test&apos;, &apos;path&apos;])
+   * message.add(&apos;d&apos;, 123.123456789)
+   * message.add(&apos;s&apos;, &apos;hello&apos;)
    *
    * @example
-   * const message = new Message(&apos;/test/path&apos;, 51.2)
+   * const message = new TypedMessage(&apos;/test/path&apos;, [
+   *   { type: &apos;i&apos;, value: 123 },
+   *   { type: &apos;d&apos;, value: 123.123 },
+   *   { type: &apos;h&apos;, value: 0xFFFFFFn },
+   *   { type: &apos;T&apos;, value: null },
+   * ])
    */
-  constructor(...args) {
+  constructor(address, args) {
     /**
      * @type {number} offset
      * @private
@@ -108,28 +134,37 @@ export default class Message {
     /** @type {array} args */
     this.args = []
 
-    if (args.length &gt; 0) {
-      if (!(isString(args[0]) || isArray(args[0]))) {
+    if (!isUndefined(address)) {
+      if (!(isString(address) || isArray(address))) {
         throw new Error(&apos;OSC Message constructor first argument (address) must be a string or array&apos;)
       }
+      this.address = prepareAddress(address)
+    }
 
-      this.address = prepareAddress(args.shift())
-      this.types = args.map((item) =&gt; typeTag(item)).join(&apos;&apos;)
-      this.args = args
+    if (!isUndefined(args)) {
+      if (!isArray(args)) {
+        throw new Error(&apos;OSC Message constructor second argument (args) must be an array&apos;)
+      }
+      args.forEach((item) =&gt; this.add(item.type, item.value))
     }
   }
 
   /**
    * Add an OSC Atomic Data Type to the list of elements
+   * @param {string} type
    * @param {*} item
    */
-  add(item) {
-    if (isUndefined(item)) {
+  add(type, item) {
+    if (isUndefined(type)) {
       throw new Error(&apos;OSC Message needs a valid OSC Atomic Data Type&apos;)
     }
 
-    this.args.push(item)
-    this.types += typeTag(item)
+    // Some data types e.g. Boolean does not require item
+    if (!(item === null || isUndefined(item))) {
+      this.args.push(item)
+    }
+
+    this.types += type
   }
 
   /**
@@ -151,14 +186,25 @@ export default class Message {
     if (this.args.length &gt; 0) {
       let argument
 
-      this.args.forEach((value) =&gt; {
-        if (isInt(value)) {
+      if (this.args.length &gt; this.types.length) {
+        throw new Error(&apos;OSC Message argument and type tag mismatch&apos;)
+      }
+
+      this.args.forEach((value, index) =&gt; {
+        const type = this.types[index]
+        if (type === &apos;i&apos;) {
           argument = new AtomicInt32(value)
-        } else if (isFloat(value)) {
+        } else if (type === &apos;h&apos;) {
+          argument = new AtomicInt64(value)
+        } else if (type === &apos;t&apos;) {
+          argument = new AtomicUInt64(value)
+        } else if (type === &apos;f&apos;) {
           argument = new AtomicFloat32(value)
-        } else if (isString(value)) {
+        } else if (type === &apos;d&apos;) {
+          argument = new AtomicFloat64(value)
+        } else if (type === &apos;s&apos;) {
           argument = new AtomicString(value)
-        } else if (isBlob(value)) {
+        } else if (type === &apos;b&apos;) {
           argument = new AtomicBlob(value)
         } else {
           throw new Error(&apos;OSC Message found unknown argument type&apos;)
@@ -210,18 +256,32 @@ export default class Message {
 
       if (type === &apos;i&apos;) {
         next = new AtomicInt32()
+      } else if (type === &apos;h&apos;) {
+        next = new AtomicInt64()
+      } else if (type === &apos;t&apos;) {
+        next = new AtomicUInt64()
       } else if (type === &apos;f&apos;) {
         next = new AtomicFloat32()
+      } else if (type === &apos;d&apos;) {
+        next = new AtomicFloat64()
       } else if (type === &apos;s&apos;) {
         next = new AtomicString()
       } else if (type === &apos;b&apos;) {
         next = new AtomicBlob()
+      } else if (type === &apos;T&apos; || type === &apos;F&apos;) {
+        next = null
+      } else if (type === &apos;N&apos;) {
+        next = null
+      } else if (type === &apos;I&apos;) {
+        next = null
       } else {
         throw new Error(&apos;OSC Message found non-standard argument type&apos;)
       }
 
-      offset = next.unpack(dataView, offset)
-      args.push(next.value)
+      if (next !== null) {
+        offset = next.unpack(dataView, offset)
+        args.push(next.value)
+      }
     }
 
     this.offset = offset
@@ -230,6 +290,52 @@ export default class Message {
     this.args = args
 
     return this.offset
+  }
+}
+
+/**
+ * An OSC message consists of an OSC Address Pattern followed
+ * by an OSC Type Tag String followed by zero or more OSC Arguments
+ */
+export default class Message extends TypedMessage {
+  /**
+   * Create a Message instance
+   * @param {array|string} args Address
+   * @param {...*} args OSC Atomic Data Types
+   *
+   * @example
+   * const message = new Message([&apos;test&apos;, &apos;path&apos;], 50, 100.52, &apos;test&apos;)
+   *
+   * @example
+   * const message = new Message(&apos;/test/path&apos;, 51.2)
+   */
+  constructor(...args) {
+    let address
+    if (args.length &gt; 0) {
+      address = args.shift()
+    }
+
+    let oscArgs
+    if (args.length &gt; 0) {
+      if (args[0] instanceof Array) {
+        oscArgs = args.shift()
+      }
+    }
+
+    super(address, oscArgs)
+
+    if (args.length &gt; 0) {
+      this.types = args.map((item) =&gt; typeTag(item)).join(&apos;&apos;)
+      this.args = args
+    }
+  }
+
+  /**
+   * Add an OSC Atomic Data Type to the list of elements
+   * @param {*} item
+   */
+  add(item) {
+    super.add(typeTag(item), item)
   }
 }
 </code></pre>
