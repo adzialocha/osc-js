@@ -191,6 +191,7 @@ npm install
 
 * [@adzialocha](https://github.com/adzialocha)
 * [@davidgranstrom](https://github.com/davidgranstrom)
+* [@elgiano](https://github.com/elgiano)
 * [@eliot-akira](https://github.com/eliot-akira)
 
 ### ESDocs
