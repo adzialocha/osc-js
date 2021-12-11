@@ -22,6 +22,7 @@ const defaultOptions = {
   host: 'localhost',
   port: 8080,
   secure: false,
+  subProtocol: ''
 }
 
 /**
@@ -35,6 +36,7 @@ export default class WebsocketClientPlugin {
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
    * @param {boolean} [options.secure=false] Use wss:// for secure connections
+   * @param {string|array} [options.subProtocol=''] Subprotocol of Websocket server
    *
    * @example
    * const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })
@@ -93,10 +95,11 @@ export default class WebsocketClientPlugin {
    * @param {string} [customOptions.host] Hostname of Websocket server
    * @param {number} [customOptions.port] Port of Websocket server
    * @param {boolean} [customOptions.secure] Use wss:// for secure connections
+   * @param {string|array} [options.subProtocol] Subprotocol of Websocket server
    */
   open(customOptions = {}) {
     const options = { ...this.options, ...customOptions }
-    const { port, host, secure } = options
+    const { port, host, secure, subProtocol } = options
 
     // close socket when already given
     if (this.socket) {
@@ -112,7 +115,7 @@ export default class WebsocketClientPlugin {
       size: 0,
     }
 
-    this.socket = new WebSocket(`${protocol}://${host}:${port}`)
+    this.socket = new WebSocket(`${protocol}://${host}:${port}`, !!subProtocol && subProtocol)
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
