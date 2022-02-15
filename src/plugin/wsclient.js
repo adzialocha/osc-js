@@ -22,6 +22,7 @@ const defaultOptions = {
   host: 'localhost',
   port: 8080,
   secure: false,
+  protocol: ''
 }
 
 /**
@@ -35,6 +36,7 @@ export default class WebsocketClientPlugin {
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
    * @param {boolean} [options.secure=false] Use wss:// for secure connections
+   * @param {string|array} [options.protocol=''] Subprotocol of Websocket server
    *
    * @example
    * const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })
@@ -93,10 +95,11 @@ export default class WebsocketClientPlugin {
    * @param {string} [customOptions.host] Hostname of Websocket server
    * @param {number} [customOptions.port] Port of Websocket server
    * @param {boolean} [customOptions.secure] Use wss:// for secure connections
+   * @param {string|array} [options.protocol] Subprotocol of Websocket server
    */
   open(customOptions = {}) {
     const options = { ...this.options, ...customOptions }
-    const { port, host, secure } = options
+    const { port, host, secure, protocol } = options
 
     // close socket when already given
     if (this.socket) {
@@ -104,15 +107,15 @@ export default class WebsocketClientPlugin {
     }
 
     // create websocket client
-    const protocol = secure ? 'wss' : 'ws'
+    const scheme = secure ? 'wss' : 'ws'
     const rinfo = {
       address: host,
-      family: protocol,
+      family: scheme,
       port,
       size: 0,
     }
 
-    this.socket = new WebSocket(`${protocol}://${host}:${port}`)
+    this.socket = new WebSocket(`${scheme}://${host}:${port}`, !!protocol && protocol)
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
