@@ -132,6 +132,30 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "osc-js/src/atomic/constant.js~value_false",
+    "variable/index.html#static-variable-VALUE_FALSE",
+    "<span>VALUE_FALSE</span> <span class=\"search-result-import-path\">osc-js/src/atomic/constant.js</span>",
+    "variable"
+  ],
+  [
+    "osc-js/src/atomic/constant.js~value_infinity",
+    "variable/index.html#static-variable-VALUE_INFINITY",
+    "<span>VALUE_INFINITY</span> <span class=\"search-result-import-path\">osc-js/src/atomic/constant.js</span>",
+    "variable"
+  ],
+  [
+    "osc-js/src/atomic/constant.js~value_none",
+    "variable/index.html#static-variable-VALUE_NONE",
+    "<span>VALUE_NONE</span> <span class=\"search-result-import-path\">osc-js/src/atomic/constant.js</span>",
+    "variable"
+  ],
+  [
+    "osc-js/src/atomic/constant.js~value_true",
+    "variable/index.html#static-variable-VALUE_TRUE",
+    "<span>VALUE_TRUE</span> <span class=\"search-result-import-path\">osc-js/src/atomic/constant.js</span>",
+    "variable"
+  ],
+  [
     "osc-js/src/plugin/wsclient.js~websocketclientplugin",
     "class/src/plugin/wsclient.js~WebsocketClientPlugin.html",
     "<span>WebsocketClientPlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/wsclient.js</span>",
@@ -168,6 +192,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "osc-js/src/common/utils.js~isboolean",
+    "function/index.html#static-function-isBoolean",
+    "<span>isBoolean</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
+    "function"
+  ],
+  [
     "osc-js/src/common/utils.js~isdate",
     "function/index.html#static-function-isDate",
     "<span>isDate</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
@@ -186,9 +216,21 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "osc-js/src/common/utils.js~isinfinity",
+    "function/index.html#static-function-isInfinity",
+    "<span>isInfinity</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
+    "function"
+  ],
+  [
     "osc-js/src/common/utils.js~isint",
     "function/index.html#static-function-isInt",
     "<span>isInt</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
+    "function"
+  ],
+  [
+    "osc-js/src/common/utils.js~isnull",
+    "function/index.html#static-function-isNull",
+    "<span>isNull</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
     "function"
   ],
   [
@@ -241,49 +283,49 @@ window.esdocSearchIndex = [
   ],
   [
     "atomic src/atomic.js~atomic,atomic",
-    "test-file/test/atomic.spec.js.html#lineNumber19",
+    "test-file/test/atomic.spec.js.html#lineNumber17",
     "Atomic",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber57",
+    "test-file/test/atomic.spec.js.html#lineNumber55",
     "Atomic pack",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber58",
+    "test-file/test/atomic.spec.js.html#lineNumber56",
     "Atomic pack returns a multiple of 32",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber64",
+    "test-file/test/atomic.spec.js.html#lineNumber62",
     "Atomic pack returns an object of type Uint8Array",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber44",
+    "test-file/test/atomic.spec.js.html#lineNumber42",
     "Atomic sets an initial offset of zero",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber40",
+    "test-file/test/atomic.spec.js.html#lineNumber38",
     "Atomic sets the given value on construction",
     "test"
   ],
   [
     "atomic#unpack src/atomic.js~atomic#unpack,atomic#unpack",
-    "test-file/test/atomic.spec.js.html#lineNumber49",
+    "test-file/test/atomic.spec.js.html#lineNumber47",
     "Atomic unpack",
     "test"
   ],
   [
     "",
-    "test-file/test/atomic.spec.js.html#lineNumber50",
+    "test-file/test/atomic.spec.js.html#lineNumber48",
     "Atomic unpack exists",
     "test"
   ],
@@ -985,73 +1027,73 @@ window.esdocSearchIndex = [
   ],
   [
     "message src/message.js~message,message",
-    "test-file/test/message.spec.js.html#lineNumber130",
+    "test-file/test/message.spec.js.html#lineNumber134",
     "Message",
     "test"
   ],
   [
     "message#add src/message.js~message#add,message#add",
-    "test-file/test/message.spec.js.html#lineNumber152",
+    "test-file/test/message.spec.js.html#lineNumber158",
     "Message add",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber164",
+    "test-file/test/message.spec.js.html#lineNumber170",
     "Message add changes the types string accordingly",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber160",
+    "test-file/test/message.spec.js.html#lineNumber166",
     "Message add pushes the values to our args array",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber137",
+    "test-file/test/message.spec.js.html#lineNumber141",
     "Message contains a set of osc message data",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber143",
+    "test-file/test/message.spec.js.html#lineNumber147",
     "Message fills the arguments and address during its construction",
     "test"
   ],
   [
     "message#pack src/message.js~typedmessage#pack,message#pack",
-    "test-file/test/message.spec.js.html#lineNumber170",
+    "test-file/test/message.spec.js.html#lineNumber176",
     "Message pack",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber193",
+    "test-file/test/message.spec.js.html#lineNumber203",
     "Message pack returns a multiple of 32",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber185",
+    "test-file/test/message.spec.js.html#lineNumber193",
     "Message pack returns an object we can unpack again",
     "test"
   ],
   [
     "message#unpack src/message.js~typedmessage#unpack,message#unpack",
-    "test-file/test/message.spec.js.html#lineNumber199",
+    "test-file/test/message.spec.js.html#lineNumber209",
     "Message unpack",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber213",
+    "test-file/test/message.spec.js.html#lineNumber223",
     "Message unpack decodes the message correctly",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber218",
+    "test-file/test/message.spec.js.html#lineNumber228",
     "Message unpack returns a number",
     "test"
   ],
@@ -1285,7 +1327,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber97",
+    "test-file/test/message.spec.js.html#lineNumber101",
     "TypedMessage pack returns a multiple of 32",
     "test"
   ],
@@ -1297,19 +1339,19 @@ window.esdocSearchIndex = [
   ],
   [
     "typedmessage#unpack src/message.js~typedmessage#unpack,typedmessage#unpack",
-    "test-file/test/message.spec.js.html#lineNumber103",
+    "test-file/test/message.spec.js.html#lineNumber107",
     "TypedMessage unpack",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber117",
+    "test-file/test/message.spec.js.html#lineNumber121",
     "TypedMessage unpack decodes the message correctly",
     "test"
   ],
   [
     "",
-    "test-file/test/message.spec.js.html#lineNumber123",
+    "test-file/test/message.spec.js.html#lineNumber127",
     "TypedMessage unpack returns a number",
     "test"
   ],
@@ -1377,6 +1419,30 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/plugin/wsserver.spec.js.html#lineNumber26",
     "WebsocketServerPlugin status returns the initial status",
+    "test"
+  ],
+  [
+    "isnull src/common/utils.js~isnull,isnull",
+    "test-file/test/common/utils.spec.js.html#lineNumber16",
+    "isNull",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/common/utils.spec.js.html#lineNumber17",
+    "isNull correctly identifies null value",
+    "test"
+  ],
+  [
+    "isundefined src/common/utils.js~isundefined,isundefined",
+    "test-file/test/common/utils.spec.js.html#lineNumber25",
+    "isUndefined",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/common/utils.spec.js.html#lineNumber26",
+    "isUndefined correctly identifies undefined value",
     "test"
   ],
   [
@@ -1768,6 +1834,12 @@ window.esdocSearchIndex = [
     "class/src/atomic/blob.js~AtomicBlob.html#instance-member-value",
     "src/atomic/blob.js~AtomicBlob#value",
     "member"
+  ],
+  [
+    "src/atomic/constant.js",
+    "file/src/atomic/constant.js.html",
+    "src/atomic/constant.js",
+    "file"
   ],
   [
     "src/atomic/float32.js",

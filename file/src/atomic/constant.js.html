@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">test/atomic/uint64.spec.js | osc-js</title>
+  <title data-ice="title">src/atomic/constant.js | osc-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -80,74 +80,26 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">test/atomic/uint64.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expect } from &apos;chai&apos;
+<div class="content" data-ice="content"><h1 data-ice="title">src/atomic/constant.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Extended boolean type without data representing &quot;True&quot;
+ */
+export const VALUE_TRUE = true
 
-import AtomicUInt64 from &apos;../../src/atomic/uint64&apos;
+/**
+ * Extended boolean type without data representing &quot;False&quot;
+ */
+export const VALUE_FALSE = false
 
-const MAX_UINT64 = BigInt(&apos;18446744073709551615&apos;)
+/**
+ * Extended type without data representing &quot;None&quot;
+ */
+export const VALUE_NONE = null
 
-/** @test {AtomicUInt64} */
-describe(&apos;AtomicUInt64&apos;, () =&gt; {
-  const bitArray = {
-    0: 255, 1: 255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,
-  }
-
-  let atomic
-
-  before(() =&gt; {
-    atomic = new AtomicUInt64(MAX_UINT64)
-  })
-
-  describe(&apos;bounds&apos;, () =&gt; {
-    it(&apos;throws an error in constructor if out of bounds&apos;, () =&gt; {
-      /* eslint-disable no-new */
-      expect(() =&gt; { new AtomicUInt64(MAX_UINT64 + BigInt(&apos;1&apos;)) }).to.throw(&apos;OSC AtomicUInt64 value is out of bounds&apos;)
-      expect(() =&gt; { new AtomicUInt64(BigInt(&apos;-1&apos;)) }).to.throw(&apos;OSC AtomicUInt64 value is out of bounds&apos;)
-      /* eslint-enable no-new */
-    })
-  })
-
-  /** @test {AtomicUInt64#pack} */
-  describe(&apos;pack&apos;, () =&gt; {
-    let result
-
-    before(() =&gt; {
-      result = atomic.pack()
-    })
-
-    it(&apos;returns correct bits&apos;, () =&gt; {
-      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))
-    })
-  })
-
-  /** @test {AtomicUInt64#unpack} */
-  describe(&apos;unpack&apos;, () =&gt; {
-    let returnValue
-
-    before(() =&gt; {
-      const data = new Uint8Array(8)
-      const dataView = new DataView(data.buffer)
-
-      dataView.setBigInt64(0, BigInt.asUintN(64, MAX_UINT64), false)
-
-      returnValue = atomic.unpack(dataView, 0)
-    })
-
-    it(&apos;returns a number&apos;, () =&gt; {
-      expect(returnValue).to.be.a(&apos;number&apos;)
-    })
-
-    it(&apos;sets the offset to 4&apos;, () =&gt; {
-      expect(atomic.offset).to.equal(8)
-    })
-
-    it(&apos;sets the value to a human readable number&apos;, () =&gt; {
-      const res = atomic.value === MAX_UINT64
-      expect(res).to.be.true
-    })
-  })
-})
+/**
+ * Extended type without data representing &quot;Infinity&quot;
+ */
+export const VALUE_INFINITY = Infinity
 </code></pre>
 
 </div>

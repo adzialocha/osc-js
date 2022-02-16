@@ -1,11 +1,16 @@
 {
-  "coverage": "87.24%",
-  "expectCount": 196,
-  "actualCount": 171,
+  "coverage": "87.68%",
+  "expectCount": 203,
+  "actualCount": 178,
   "files": {
     "src/atomic/blob.js": {
       "expectCount": 6,
       "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/atomic/constant.js": {
+      "expectCount": 4,
+      "actualCount": 4,
       "undocumentLines": []
     },
     "src/atomic/float32.js": {
@@ -64,8 +69,8 @@
       "undocumentLines": []
     },
     "src/common/utils.js": {
-      "expectCount": 13,
-      "actualCount": 13,
+      "expectCount": 16,
+      "actualCount": 16,
       "undocumentLines": []
     },
     "src/events.js": {
@@ -80,8 +85,8 @@
       "expectCount": 14,
       "actualCount": 12,
       "undocumentLines": [
-        258,
-        259
+        279,
+        280
       ]
     },
     "src/osc.js": {

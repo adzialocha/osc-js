@@ -46,6 +46,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html">AtomicUInt64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_FALSE">VALUE_FALSE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_INFINITY">VALUE_INFINITY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_NONE">VALUE_NONE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_TRUE">VALUE_TRUE</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
@@ -56,10 +60,13 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBoolean">isBoolean</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInfinity">isInfinity</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNull">isNull</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNumber">isNumber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
@@ -89,6 +96,9 @@ import AtomicInt32 from &apos;./atomic/int32&apos;
 import AtomicInt64 from &apos;./atomic/int64&apos;
 import AtomicUInt64 from &apos;./atomic/uint64&apos;
 import AtomicString from &apos;./atomic/string&apos;
+import {
+  VALUE_NONE, VALUE_TRUE, VALUE_FALSE, VALUE_INFINITY,
+} from &apos;./atomic/constant&apos;
 
 /**
  * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
@@ -165,8 +175,15 @@ export class TypedMessage {
       throw new Error(&apos;OSC Message needs a valid OSC Atomic Data Type&apos;)
     }
 
-    // Some data types e.g. Boolean does not require item
-    if (!(item === null || isUndefined(item))) {
+    if (type === &apos;N&apos;) {
+      this.args.push(VALUE_NONE)
+    } else if (type === &apos;T&apos;) {
+      this.args.push(VALUE_TRUE)
+    } else if (type === &apos;F&apos;) {
+      this.args.push(VALUE_FALSE)
+    } else if (type === &apos;I&apos;) {
+      this.args.push(VALUE_INFINITY)
+    } else {
       this.args.push(item)
     }
 
@@ -212,6 +229,14 @@ export class TypedMessage {
           argument = new AtomicString(value)
         } else if (type === &apos;b&apos;) {
           argument = new AtomicBlob(value)
+        } else if (type === &apos;T&apos;) {
+          argument = VALUE_TRUE
+        } else if (type === &apos;F&apos;) {
+          argument = VALUE_FALSE
+        } else if (type === &apos;N&apos;) {
+          argument = VALUE_NONE
+        } else if (type === &apos;I&apos;) {
+          argument = VALUE_INFINITY
         } else {
           throw new Error(&apos;OSC Message found unknown argument type&apos;)
         }
@@ -259,6 +284,7 @@ export class TypedMessage {
     // read message arguments (OSC Atomic Data Types)
     for (let i = 1; i &lt; types.value.length; i += 1) {
       type = types.value[i]
+      next = null
 
       if (type === &apos;i&apos;) {
         next = new AtomicInt32()
@@ -274,17 +300,19 @@ export class TypedMessage {
         next = new AtomicString()
       } else if (type === &apos;b&apos;) {
         next = new AtomicBlob()
-      } else if (type === &apos;T&apos; || type === &apos;F&apos;) {
-        next = null
+      } else if (type === &apos;T&apos;) {
+        args.push(VALUE_TRUE)
+      } else if (type === &apos;F&apos;) {
+        args.push(VALUE_FALSE)
       } else if (type === &apos;N&apos;) {
-        next = null
+        args.push(VALUE_NONE)
       } else if (type === &apos;I&apos;) {
-        next = null
+        args.push(VALUE_INFINITY)
       } else {
-        throw new Error(&apos;OSC Message found non-standard argument type&apos;)
+        throw new Error(&apos;OSC Message found unsupported argument type&apos;)
       }
 
-      if (next !== null) {
+      if (next) {
         offset = next.unpack(dataView, offset)
         args.push(next.value)
       }

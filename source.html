@@ -46,6 +46,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~AtomicTimetag.html">AtomicTimetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/timetag.js~Timetag.html">Timetag</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/uint64.js~AtomicUInt64.html">AtomicUInt64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_FALSE">VALUE_FALSE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_INFINITY">VALUE_INFINITY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_NONE">VALUE_NONE</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_TRUE">VALUE_TRUE</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SECONDS_70_YEARS">SECONDS_70_YEARS</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TWO_POWER_32">TWO_POWER_32</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#common">common</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/common/helpers.js~EncodeHelper.html">EncodeHelper</a></span></span></li>
@@ -56,10 +60,13 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBlob">isBlob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isBoolean">isBoolean</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDate">isDate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFloat">isFloat</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInfinity">isInfinity</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isInt">isInt</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNull">isNull</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNumber">isNumber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isObject">isObject</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
@@ -73,7 +80,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">171/196</span></h1>
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">178/203</span></h1>
 
 <table class="files-summary" data-ice="files" data-use-coverage="true">
   <thead>
@@ -94,7 +101,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
       <td style="display: none;" data-ice="size">2157 byte</td>
       <td style="display: none;" data-ice="lines">67</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/blob.js.html">src/atomic/blob.js</a></span></td>
@@ -102,7 +109,18 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
       <td style="display: none;" data-ice="size">1794 byte</td>
       <td style="display: none;" data-ice="lines">66</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/atomic/constant.js.html">src/atomic/constant.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="variable/index.html#static-variable-VALUE_FALSE">VALUE_FALSE</a></span>
+<span><a href="variable/index.html#static-variable-VALUE_INFINITY">VALUE_INFINITY</a></span>
+<span><a href="variable/index.html#static-variable-VALUE_NONE">VALUE_NONE</a></span>
+<span><a href="variable/index.html#static-variable-VALUE_TRUE">VALUE_TRUE</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">390 byte</td>
+      <td style="display: none;" data-ice="lines">19</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/float32.js.html">src/atomic/float32.js</a></span></td>
@@ -110,7 +128,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
       <td style="display: none;" data-ice="size">1039 byte</td>
       <td style="display: none;" data-ice="lines">38</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/float64.js.html">src/atomic/float64.js</a></span></td>
@@ -118,7 +136,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
       <td style="display: none;" data-ice="size">1039 byte</td>
       <td style="display: none;" data-ice="lines">38</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/int32.js.html">src/atomic/int32.js</a></span></td>
@@ -126,7 +144,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
       <td style="display: none;" data-ice="size">1025 byte</td>
       <td style="display: none;" data-ice="lines">38</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/int64.js.html#errorLines=3,4">src/atomic/int64.js</a></span></td>
@@ -134,7 +152,7 @@
       <td class="coverage"><span data-ice="coverage">66 %</span><span data-ice="coverageCount" class="coverage-count">4/6</span></td>
       <td style="display: none;" data-ice="size">1303 byte</td>
       <td style="display: none;" data-ice="lines">48</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/string.js.html">src/atomic/string.js</a></span></td>
@@ -142,7 +160,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
       <td style="display: none;" data-ice="size">3062 byte</td>
       <td style="display: none;" data-ice="lines">119</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/timetag.js.html">src/atomic/timetag.js</a></span></td>
@@ -153,7 +171,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
       <td style="display: none;" data-ice="size">3403 byte</td>
       <td style="display: none;" data-ice="lines">123</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/atomic/uint64.js.html#errorLines=3">src/atomic/uint64.js</a></span></td>
@@ -161,7 +179,7 @@
       <td class="coverage"><span data-ice="coverage">80 %</span><span data-ice="coverageCount" class="coverage-count">4/5</span></td>
       <td style="display: none;" data-ice="size">1266 byte</td>
       <td style="display: none;" data-ice="lines">47</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/bundle.js.html">src/bundle.js</a></span></td>
@@ -170,7 +188,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
       <td style="display: none;" data-ice="size">4732 byte</td>
       <td style="display: none;" data-ice="lines">173</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/common/helpers.js.html">src/common/helpers.js</a></span></td>
@@ -179,9 +197,9 @@
 <span><a href="function/index.html#static-function-prepareRegExPattern">prepareRegExPattern</a></span>
 <span><a href="function/index.html#static-function-typeTag">typeTag</a></span></td>
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
-      <td style="display: none;" data-ice="size">2998 byte</td>
-      <td style="display: none;" data-ice="lines">135</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="size">3352 byte</td>
+      <td style="display: none;" data-ice="lines">149</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/common/utils.js.html">src/common/utils.js</a></span></td>
@@ -189,19 +207,22 @@
 <span><a href="function/index.html#static-function-hasProperty">hasProperty</a></span>
 <span><a href="function/index.html#static-function-isArray">isArray</a></span>
 <span><a href="function/index.html#static-function-isBlob">isBlob</a></span>
+<span><a href="function/index.html#static-function-isBoolean">isBoolean</a></span>
 <span><a href="function/index.html#static-function-isDate">isDate</a></span>
 <span><a href="function/index.html#static-function-isFloat">isFloat</a></span>
 <span><a href="function/index.html#static-function-isFunction">isFunction</a></span>
+<span><a href="function/index.html#static-function-isInfinity">isInfinity</a></span>
 <span><a href="function/index.html#static-function-isInt">isInt</a></span>
+<span><a href="function/index.html#static-function-isNull">isNull</a></span>
 <span><a href="function/index.html#static-function-isNumber">isNumber</a></span>
 <span><a href="function/index.html#static-function-isObject">isObject</a></span>
 <span><a href="function/index.html#static-function-isString">isString</a></span>
 <span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span>
 <span><a href="function/index.html#static-function-pad">pad</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
-      <td style="display: none;" data-ice="size">2274 byte</td>
-      <td style="display: none;" data-ice="lines">124</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">16/16</span></td>
+      <td style="display: none;" data-ice="size">2702 byte</td>
+      <td style="display: none;" data-ice="lines">151</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/events.js.html#errorLines=30,59">src/events.js</a></span></td>
@@ -209,16 +230,16 @@
       <td class="coverage"><span data-ice="coverage">83 %</span><span data-ice="coverageCount" class="coverage-count">10/12</span></td>
       <td style="display: none;" data-ice="size">9374 byte</td>
       <td style="display: none;" data-ice="lines">354</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/message.js.html#errorLines=258,259">src/message.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/message.js.html#errorLines=279,280">src/message.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/message.js~Message.html">Message</a></span>
 <span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></td>
       <td class="coverage"><span data-ice="coverage">85 %</span><span data-ice="coverageCount" class="coverage-count">12/14</span></td>
-      <td style="display: none;" data-ice="size">7140 byte</td>
-      <td style="display: none;" data-ice="lines">270</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="size">7754 byte</td>
+      <td style="display: none;" data-ice="lines">291</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/osc.js.html#errorLines=30,59">src/osc.js</a></span></td>
@@ -226,7 +247,7 @@
       <td class="coverage"><span data-ice="coverage">83 %</span><span data-ice="coverageCount" class="coverage-count">10/12</span></td>
       <td style="display: none;" data-ice="size">7698 byte</td>
       <td style="display: none;" data-ice="lines">264</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/packet.js.html">src/packet.js</a></span></td>
@@ -234,7 +255,7 @@
       <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
       <td style="display: none;" data-ice="size">2369 byte</td>
       <td style="display: none;" data-ice="lines">84</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/plugin/bridge.js.html#errorLines=1,2,20,41">src/plugin/bridge.js</a></span></td>
@@ -242,7 +263,7 @@
       <td class="coverage"><span data-ice="coverage">76 %</span><span data-ice="coverageCount" class="coverage-count">13/17</span></td>
       <td style="display: none;" data-ice="size">7015 byte</td>
       <td style="display: none;" data-ice="lines">238</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/plugin/dgram.js.html#errorLines=1,19,29,38,48">src/plugin/dgram.js</a></span></td>
@@ -250,7 +271,7 @@
       <td class="coverage"><span data-ice="coverage">70 %</span><span data-ice="coverageCount" class="coverage-count">12/17</span></td>
       <td style="display: none;" data-ice="size">4501 byte</td>
       <td style="display: none;" data-ice="lines">184</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/plugin/wsclient.js.html#errorLines=2,21,3,31">src/plugin/wsclient.js</a></span></td>
@@ -258,7 +279,7 @@
       <td class="coverage"><span data-ice="coverage">73 %</span><span data-ice="coverageCount" class="coverage-count">11/15</span></td>
       <td style="display: none;" data-ice="size">3857 byte</td>
       <td style="display: none;" data-ice="lines">159</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/plugin/wsserver.js.html#errorLines=1,19,27">src/plugin/wsserver.js</a></span></td>
@@ -266,7 +287,7 @@
       <td class="coverage"><span data-ice="coverage">78 %</span><span data-ice="coverageCount" class="coverage-count">11/14</span></td>
       <td style="display: none;" data-ice="size">3957 byte</td>
       <td style="display: none;" data-ice="lines">163</td>
-      <td style="display: none;" data-ice="updated">2022-02-04 11:00:18 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2022-02-04 12:23:11 (UTC)</td>
     </tr>
 </tbody>
 </table>
