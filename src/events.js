@@ -178,7 +178,6 @@ export default class EventHandler {
    * (any type). All regarding listeners will be notified with this data.
    * As a third argument you can define a javascript timestamp (number or
    * Date instance) for timed notification of the listeners.
-   * @param {*} [rinfo] Remote address info
    * @return {boolean} Success state of notification
    *
    * @example
