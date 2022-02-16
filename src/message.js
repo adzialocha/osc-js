@@ -1,8 +1,5 @@
 import {
   isArray,
-  isBoolean,
-  isInfinity,
-  isNull,
   isString,
   isUndefined,
 } from './common/utils'

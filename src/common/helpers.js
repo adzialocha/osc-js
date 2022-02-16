@@ -7,7 +7,6 @@ import {
   isInt,
   isNull,
   isString,
-  isUndefined,
 } from './utils'
 
 /**
