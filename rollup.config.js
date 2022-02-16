@@ -1,10 +1,11 @@
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
 import { terser } from 'rollup-plugin-terser'
 
 function rollupPlugins(isUglified = false) {
   const plugins = [
     babel({
+      babelHelpers: 'bundled',
       exclude: 'node_modules/**',
     }),
     cleanup(),
