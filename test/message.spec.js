@@ -29,7 +29,7 @@ describe('TypedMessage', () => {
       { type: 'T', value: null },
     ])
     expect(anotherMessage.types.length).to.equal(4)
-    expect(anotherMessage.args.length).to.equal(3)
+    expect(anotherMessage.args.length).to.equal(4)
   })
 
   /** @test {TypedMessage#add} */
@@ -45,7 +45,7 @@ describe('TypedMessage', () => {
     })
 
     it('pushes the values to our args array', () => {
-      expect(typedMessage.args).to.deep.equal(['Hello World', 121123, 123.123456789, 10])
+      expect(typedMessage.args).to.deep.equal(['Hello World', 121123, 123.123456789, true, 10])
     })
 
     it('adds to the types string accordingly', () => {
@@ -80,7 +80,7 @@ describe('TypedMessage', () => {
       anotherMessage.unpack(new DataView(result.buffer), 0)
 
       expect(anotherMessage.address).to.equal('/test/types')
-      expect(anotherMessage.args.length).to.equal(7)
+      expect(anotherMessage.args.length).to.equal(11)
       expect(anotherMessage.args[0]).to.equal(1)
       // chai.expect cannot handle BigInt directly
       expect(anotherMessage.args[1] === BigInt('0x7FFFFFFFFFFFFFFF')).to.be.true
@@ -89,6 +89,10 @@ describe('TypedMessage', () => {
       expect(anotherMessage.args[4]).to.be.closeTo(123.123456789, 0.00001)
       expect(anotherMessage.args[5]).to.equal('stringValue')
       expect(anotherMessage.args[6][0]).to.equal(100)
+      expect(anotherMessage.args[7]).to.equal(true)
+      expect(anotherMessage.args[8]).to.equal(false)
+      expect(anotherMessage.args[9]).to.equal(null)
+      expect(anotherMessage.args[10]).to.equal(Infinity)
 
       expect(anotherMessage.types.length).to.equal(12)
       expect(anotherMessage.types).to.equal(',ihtfdsbTFNI')
@@ -141,11 +145,13 @@ describe('Message', () => {
   })
 
   it('fills the arguments and address during its construction', () => {
-    const anotherMessage = new Message('somekind/of/path', 221.21, 317, 'test')
+    const anotherMessage = new Message('somekind/of/path', 221.21, 317, 'test', false, null)
 
     expect(anotherMessage.address).to.be.equals('/somekind/of/path')
     expect(anotherMessage.args[0]).to.be.equals(221.21)
-    expect(anotherMessage.types).to.be.equals('fis')
+    expect(anotherMessage.args[3]).to.be.equals(false)
+    expect(anotherMessage.args[4]).to.be.equals(null)
+    expect(anotherMessage.types).to.be.equals('fisFN')
   })
 
   /** @test {Message#add} */
@@ -175,7 +181,9 @@ describe('Message', () => {
 
       message.address = '/sssss/osc/sssssadss'
       message.add(12)
+      message.add(null)
       message.add('Hello World')
+      message.add(Infinity)
       message.add(22111.344)
       message.add(new Uint8Array([100, 52]))
 
@@ -187,7 +195,9 @@ describe('Message', () => {
       anotherMessage.unpack(new DataView(result.buffer), 0)
 
       expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')
-      expect(anotherMessage.args[3][0]).to.equal(100)
+      expect(anotherMessage.args[1]).to.equal(null)
+      expect(anotherMessage.args[3]).to.equal(Infinity)
+      expect(anotherMessage.args[5][0]).to.equal(100)
     })
 
     it('returns a multiple of 32', () => {

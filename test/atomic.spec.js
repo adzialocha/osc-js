@@ -1,19 +1,17 @@
 import { expect } from 'chai'
 
 import Atomic from '../src/atomic'
-
-import AtomicInt32 from '../src/atomic/int32'
-import AtomicInt64 from '../src/atomic/int64'
-import AtomicUInt64 from '../src/atomic/uint64'
+import AtomicBlob from '../src/atomic/blob'
 import AtomicFloat32 from '../src/atomic/float32'
 import AtomicFloat64 from '../src/atomic/float64'
+import AtomicInt32 from '../src/atomic/int32'
+import AtomicInt64 from '../src/atomic/int64'
 import AtomicString from '../src/atomic/string'
-import AtomicBlob from '../src/atomic/blob'
-
 import AtomicTimetag, {
   Timetag,
   SECONDS_70_YEARS,
 } from '../src/atomic/timetag'
+import AtomicUInt64 from '../src/atomic/uint64'
 
 /** @test {Atomic} */
 describe('Atomic', () => {

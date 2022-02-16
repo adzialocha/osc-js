@@ -1,8 +1,11 @@
 import {
   isArray,
   isBlob,
+  isBoolean,
   isFloat,
+  isInfinity,
   isInt,
+  isNull,
   isString,
 } from './utils'
 
@@ -21,6 +24,12 @@ export function typeTag(item) {
     return 's'
   } else if (isBlob(item)) {
     return 'b'
+  } else if (isBoolean(item)) {
+    return item ? 'T' : 'F'
+  } else if (isNull(item)) {
+    return 'N'
+  } else if (isInfinity(item)) {
+    return 'I'
   }
 
   throw new Error('OSC typeTag() found unknown value type')
@@ -110,6 +119,11 @@ export default class EncodeHelper {
    * @return {EncodeHelper}
    */
   add(item) {
+    // Skip encoding items which do not need a payload as they are constants
+    if (isBoolean(item) || isInfinity(item) || isNull(item)) {
+      return this
+    }
+
     const buffer = item.pack()
     this.byteLength += buffer.byteLength
     this.data.push(buffer)
