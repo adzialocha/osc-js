@@ -1,10 +1,17 @@
 import {
   isArray,
   isBlob,
+  isBoolean,
   isFloat,
+  isInfinity,
   isInt,
+  isNull,
   isString,
+  isUndefined,
 } from './utils'
+import {
+  VALUE_INFINITY, VALUE_TRUE, VALUE_FALSE, VALUE_NONE,
+} from '../atomic/constant'
 
 /**
  * Checks type of given object and returns the regarding OSC
@@ -21,6 +28,12 @@ export function typeTag(item) {
     return 's'
   } else if (isBlob(item)) {
     return 'b'
+  } else if (isBoolean(item)) {
+    return item ? 'T' : 'F'
+  } else if (isNull(item) || isUndefined(item)) {
+    return 'N'
+  } else if (isInfinity(item)) {
+    return 'I'
   }
 
   throw new Error('OSC typeTag() found unknown value type')
@@ -110,6 +123,11 @@ export default class EncodeHelper {
    * @return {EncodeHelper}
    */
   add(item) {
+    // Skip encoding items which do not need a payload as they are constants
+    if (isBoolean(item) || isInfinity(item) || isNull(item)) {
+      return this
+    }
+
     const buffer = item.pack()
     this.byteLength += buffer.byteLength
     this.data.push(buffer)

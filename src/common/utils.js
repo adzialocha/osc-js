@@ -35,6 +35,24 @@ export function isString(n) {
 }
 
 /**
+ * Check if given object is a boolean
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isBoolean(n) {
+  return typeof n === 'boolean'
+}
+
+/**
+ * Check if given object is infinity constant
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isInfinity(n) {
+  return n === Infinity
+}
+
+/**
  * Check if given object is an array
  * @param {*} n
  * @return {boolean}
@@ -86,6 +104,15 @@ export function isDate(n) {
  */
 export function isUndefined(n) {
   return typeof n === 'undefined'
+}
+
+/**
+ * Check if given object is null
+ * @param {*} n
+ * @return {boolean}
+ */
+export function isNull(n) {
+  return n === null
 }
 
 /**

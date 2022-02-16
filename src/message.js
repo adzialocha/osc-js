@@ -1,5 +1,8 @@
 import {
   isArray,
+  isBoolean,
+  isInfinity,
+  isNull,
   isString,
   isUndefined,
 } from './common/utils'
@@ -13,6 +16,9 @@ import AtomicInt32 from './atomic/int32'
 import AtomicInt64 from './atomic/int64'
 import AtomicUInt64 from './atomic/uint64'
 import AtomicString from './atomic/string'
+import {
+  VALUE_NONE, VALUE_TRUE, VALUE_FALSE, VALUE_INFINITY,
+} from './atomic/constant'
 
 /**
  * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
@@ -89,8 +95,15 @@ export class TypedMessage {
       throw new Error('OSC Message needs a valid OSC Atomic Data Type')
     }
 
-    // Some data types e.g. Boolean does not require item
-    if (!(item === null || isUndefined(item))) {
+    if (type === 'N') {
+      this.args.push(VALUE_NONE)
+    } else if (type === 'T') {
+      this.args.push(VALUE_TRUE)
+    } else if (type === 'F') {
+      this.args.push(VALUE_FALSE)
+    } else if (type === 'I') {
+      this.args.push(VALUE_INFINITY)
+    } else {
       this.args.push(item)
     }
 
@@ -136,6 +149,14 @@ export class TypedMessage {
           argument = new AtomicString(value)
         } else if (type === 'b') {
           argument = new AtomicBlob(value)
+        } else if (type === 'T') {
+          argument = VALUE_TRUE
+        } else if (type === 'F') {
+          argument = VALUE_FALSE
+        } else if (type === 'N') {
+          argument = VALUE_NONE
+        } else if (type === 'I') {
+          argument = VALUE_INFINITY
         } else {
           throw new Error('OSC Message found unknown argument type')
         }
@@ -183,6 +204,7 @@ export class TypedMessage {
     // read message arguments (OSC Atomic Data Types)
     for (let i = 1; i < types.value.length; i += 1) {
       type = types.value[i]
+      next = null
 
       if (type === 'i') {
         next = new AtomicInt32()
@@ -198,17 +220,19 @@ export class TypedMessage {
         next = new AtomicString()
       } else if (type === 'b') {
         next = new AtomicBlob()
-      } else if (type === 'T' || type === 'F') {
-        next = null
+      } else if (type === 'T') {
+        args.push(VALUE_TRUE)
+      } else if (type === 'F') {
+        args.push(VALUE_FALSE)
       } else if (type === 'N') {
-        next = null
+        args.push(VALUE_NONE)
       } else if (type === 'I') {
-        next = null
+        args.push(VALUE_INFINITY)
       } else {
-        throw new Error('OSC Message found non-standard argument type')
+        throw new Error('OSC Message found unsupported argument type')
       }
 
-      if (next !== null) {
+      if (next) {
         offset = next.unpack(dataView, offset)
         args.push(next.value)
       }
