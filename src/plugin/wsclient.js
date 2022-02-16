@@ -22,7 +22,7 @@ const defaultOptions = {
   host: 'localhost',
   port: 8080,
   secure: false,
-  protocol: ''
+  protocol: [],
 }
 
 /**
@@ -99,7 +99,9 @@ export default class WebsocketClientPlugin {
    */
   open(customOptions = {}) {
     const options = { ...this.options, ...customOptions }
-    const { port, host, secure, protocol } = options
+    const {
+      port, host, secure, protocol,
+    } = options
 
     // close socket when already given
     if (this.socket) {
@@ -115,7 +117,7 @@ export default class WebsocketClientPlugin {
       size: 0,
     }
 
-    this.socket = new WebSocket(`${scheme}://${host}:${port}`, !!protocol && protocol)
+    this.socket = new WebSocket(`${scheme}://${host}:${port}`, protocol)
     this.socket.binaryType = 'arraybuffer'
     this.socketStatus = STATUS.IS_CONNECTING
 
