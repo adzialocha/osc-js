@@ -9,9 +9,6 @@ import {
   isString,
   isUndefined,
 } from './utils'
-import {
-  VALUE_INFINITY, VALUE_TRUE, VALUE_FALSE, VALUE_NONE,
-} from '../atomic/constant'
 
 /**
  * Checks type of given object and returns the regarding OSC
@@ -30,7 +27,7 @@ export function typeTag(item) {
     return 'b'
   } else if (isBoolean(item)) {
     return item ? 'T' : 'F'
-  } else if (isNull(item) || isUndefined(item)) {
+  } else if (isNull(item)) {
     return 'N'
   } else if (isInfinity(item)) {
     return 'I'
