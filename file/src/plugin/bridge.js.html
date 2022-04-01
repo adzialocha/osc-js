@@ -81,8 +81,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/plugin/bridge.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const dgram = typeof __dirname !== &apos;undefined&apos; ? require(&apos;dgram&apos;) : undefined
-const WebSocketServer = typeof __dirname !== &apos;undefined&apos; ? require(&apos;isomorphic-ws&apos;).Server : undefined
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const dgram = typeof window === &apos;undefined&apos; ? require(&apos;dgram&apos;) : undefined
+const WebSocketServer = typeof window === &apos;undefined&apos; ? require(&apos;isomorphic-ws&apos;).Server : undefined
 
 /**
  * Status flags

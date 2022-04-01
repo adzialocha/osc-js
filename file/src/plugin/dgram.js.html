@@ -81,7 +81,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/plugin/dgram.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const dgram = typeof __dirname !== &apos;undefined&apos; ? require(&apos;dgram&apos;) : undefined
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const dgram = typeof window === &apos;undefined&apos; ? require(&apos;dgram&apos;) : undefined
 
 /**
  * Status flags
