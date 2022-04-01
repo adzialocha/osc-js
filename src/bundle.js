@@ -52,7 +52,7 @@ export default class Bundle {
         })
 
         // second argument is an Date or js timestamp (number)
-        if (args.length > 1 && (args[1] instanceof Date || isInt(args[0]))) {
+        if (args.length > 1 && (args[1] instanceof Date || isInt(args[1]))) {
           this.timetag = new AtomicTimetag(args[1])
         }
       } else {
