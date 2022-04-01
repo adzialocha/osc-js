@@ -194,6 +194,7 @@ npm install
 * [@elgiano](https://github.com/elgiano)
 * [@eliot-akira](https://github.com/eliot-akira)
 * [@PeterKey](https://github.com/PeterKey)
+* [@yaxu](https://github.com/yaxu)
 
 ### ESDocs
 
