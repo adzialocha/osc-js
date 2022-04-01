@@ -1,5 +1,5 @@
-const dgram = typeof __dirname !== 'undefined' ? require('dgram') : undefined
-const WebSocketServer = typeof __dirname !== 'undefined' ? require('isomorphic-ws').Server : undefined
+const dgram = typeof window === 'undefined' ? require('dgram') : undefined
+const WebSocketServer = typeof window === 'undefined' ? require('isomorphic-ws').Server : undefined
 
 /**
  * Status flags

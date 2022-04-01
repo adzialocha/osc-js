@@ -1,4 +1,4 @@
-const dgram = typeof __dirname !== 'undefined' ? require('dgram') : undefined
+const dgram = typeof window === 'undefined' ? require('dgram') : undefined
 
 /**
  * Status flags
