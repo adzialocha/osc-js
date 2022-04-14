@@ -1,4 +1,4 @@
-const dgram = typeof window === 'undefined' ? require('dgram') : undefined
+import dgram from 'dgram'
 
 /**
  * Status flags
@@ -76,6 +76,8 @@ export default class DatagramPlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions = {}) {
+    // `dgram` gets replaced with an undefined value in builds targeting
+    // browser environments
     if (!dgram) {
       throw new Error('DatagramPlugin can not be used in browser context')
     }

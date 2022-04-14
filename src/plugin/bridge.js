@@ -1,5 +1,5 @@
-const dgram = typeof window === 'undefined' ? require('dgram') : undefined
-const WebSocketServer = typeof window === 'undefined' ? require('isomorphic-ws').Server : undefined
+import dgram from 'dgram'
+import { WebSocketServer } from 'ws'
 
 /**
  * Status flags
@@ -81,6 +81,8 @@ export default class BridgePlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions = {}) {
+    // `dgram` and `WebSocketServer` get replaced with an undefined value in
+    // builds targeting browser environments
     if (!dgram || !WebSocketServer) {
       throw new Error('BridgePlugin can not be used in browser context')
     }
@@ -161,8 +163,12 @@ export default class BridgePlugin {
       exclusive: options.udpServer.exclusive,
     }, () => {
       let wsServerOptions = {}
-      if (options.wsServer.server) wsServerOptions.server = options.wsServer.server
-      else wsServerOptions = options.wsServer
+      if (options.wsServer.server) {
+        wsServerOptions.server = options.wsServer.server
+      } else {
+        wsServerOptions = options.wsServer
+      }
+
       // bind Websocket server
       this.websocket = new WebSocketServer(wsServerOptions)
       this.websocket.binaryType = 'arraybuffer'

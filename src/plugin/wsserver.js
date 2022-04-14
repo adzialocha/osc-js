@@ -1,4 +1,4 @@
-const WebSocketServer = typeof __dirname !== 'undefined' ? require('isomorphic-ws').Server : undefined
+import { WebSocketServer } from 'ws'
 
 /**
  * Status flags
@@ -45,6 +45,8 @@ export default class WebsocketServerPlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions) {
+    // `WebSocketServer` gets replaced with an undefined value in builds
+    // targeting browser environments
     if (!WebSocketServer) {
       throw new Error('WebsocketServerPlugin can not be used in browser context')
     }
