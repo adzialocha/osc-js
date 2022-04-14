@@ -97,7 +97,7 @@ by default.
 
   ```html
   <button id="send">Send Message</button>
-  <script type="text/javascript" src="lib/osc.browser.min.js"></script>
+  <script type="text/javascript" src="lib/osc.min.js"></script>
   <script type="text/javascript">
     var osc = new OSC();
     osc.open(); // connect by default to ws://localhost:8080
