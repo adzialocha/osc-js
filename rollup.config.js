@@ -1,8 +1,9 @@
+import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
 import { terser } from 'rollup-plugin-terser'
 
-function rollupPlugins(isUglified = false) {
+function rollupPlugins({ isBrowser = false } = {}) {
   const plugins = [
     babel({
       babelHelpers: 'bundled',
@@ -11,20 +12,30 @@ function rollupPlugins(isUglified = false) {
     cleanup(),
   ]
 
-  return isUglified ? plugins.concat(terser()) : plugins
+  return isBrowser ? [alias({
+    entries: [
+      { find: 'ws', replacement: 'src/external/ws.js' },
+      { find: 'dgram', replacement: 'src/external/dgram.js' },
+    ],
+  }), ...plugins, terser()] : plugins
 }
 
 function buildOptions(customOptions = {}) {
-  const { file, isUglified } = customOptions
+  const { file, isBrowser } = customOptions
 
   const defaultOptions = {
     input: 'src/osc.js',
-    plugins: isUglified ? rollupPlugins(true) : rollupPlugins(),
+    external: isBrowser ? [] : ['ws', 'dgram'],
+    plugins: rollupPlugins({ isBrowser }),
     output: {
+      globals: isBrowser ? {} : {
+        ws: 'ws',
+        dgram: 'dgram',
+      },
       file: file || 'lib/osc.js',
       name: 'OSC',
       format: 'umd',
-      sourcemap: isUglified || false,
+      sourcemap: isBrowser || false,
     },
   }
 
@@ -35,6 +46,6 @@ export default [
   buildOptions(),
   buildOptions({
     file: 'lib/osc.min.js',
-    isUglified: true,
+    isBrowser: true,
   }),
 ]

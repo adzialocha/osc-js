@@ -6,7 +6,9 @@
   "parser": "@babel/eslint-parser",
   "extends": "airbnb-base",
   "globals": {
-    "BigInt": true
+    "BigInt": true,
+    "WebSocket": true,
+    "MozWebSocket": true
   },
   "rules": {
     "max-classes-per-file": "off",
