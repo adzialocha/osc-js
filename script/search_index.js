@@ -156,6 +156,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "osc-js/src/external/ws.js~websocketserver",
+    "variable/index.html#static-variable-WebSocketServer",
+    "<span>WebSocketServer</span> <span class=\"search-result-import-path\">osc-js/src/external/ws.js</span>",
+    "variable"
+  ],
+  [
     "osc-js/src/plugin/wsclient.js~websocketclientplugin",
     "class/src/plugin/wsclient.js~WebsocketClientPlugin.html",
     "<span>WebsocketClientPlugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/wsclient.js</span>",
@@ -256,6 +262,12 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-isUndefined",
     "<span>isUndefined</span> <span class=\"search-result-import-path\">osc-js/src/common/utils.js</span>",
     "function"
+  ],
+  [
+    "osc-js/src/external/dgram.js~noop",
+    "variable/index.html#static-variable-noop",
+    "<span>noop</span> <span class=\"search-result-import-path\">osc-js/src/external/dgram.js</span>",
+    "variable"
   ],
   [
     "osc-js/src/common/utils.js~pad",
@@ -2218,6 +2230,18 @@ window.esdocSearchIndex = [
     "class/src/events.js~EventHandler.html#instance-member-uuid",
     "src/events.js~EventHandler#uuid",
     "member"
+  ],
+  [
+    "src/external/dgram.js",
+    "file/src/external/dgram.js.html",
+    "src/external/dgram.js",
+    "file"
+  ],
+  [
+    "src/external/ws.js",
+    "file/src/external/ws.js.html",
+    "src/external/ws.js",
+    "file"
   ],
   [
     "src/message.js",

@@ -72,6 +72,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#external">external</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-noop">noop</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WebSocketServer">WebSocketServer</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
@@ -81,7 +83,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/plugin/wsserver.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const WebSocketServer = typeof __dirname !== &apos;undefined&apos; ? require(&apos;isomorphic-ws&apos;).Server : undefined
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { WebSocketServer } from &apos;ws&apos;
 
 /**
  * Status flags
@@ -128,6 +130,8 @@ export default class WebsocketServerPlugin {
    * const osc = new OSC({ plugin: plugin })
    */
   constructor(customOptions) {
+    // `WebSocketServer` gets replaced with an undefined value in builds
+    // targeting browser environments
     if (!WebSocketServer) {
       throw new Error(&apos;WebsocketServerPlugin can not be used in browser context&apos;)
     }

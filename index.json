@@ -3687,6 +3687,67 @@
   {
     "__docId__": 183,
     "kind": "file",
+    "name": "src/external/dgram.js",
+    "content": "// This file gets used instead of the NodeJS `dgram` module during rollup\n// builds targeting browser environments. It simply returns \"nothing\".\nconst noop = undefined\nexport default noop\n",
+    "static": true,
+    "longname": "/home/runner/work/osc-js/osc-js/src/external/dgram.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 184,
+    "kind": "variable",
+    "name": "noop",
+    "memberof": "src/external/dgram.js",
+    "static": true,
+    "longname": "src/external/dgram.js~noop",
+    "access": "public",
+    "export": true,
+    "importPath": "osc-js/src/external/dgram.js",
+    "importStyle": "noop",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 185,
+    "kind": "file",
+    "name": "src/external/ws.js",
+    "content": "// This file gets used instead of the `ws` package during rollup builds\n// targeting browser environments.\nlet ws\n\nif (typeof WebSocket !== 'undefined') {\n  ws = WebSocket\n} else if (typeof MozWebSocket !== 'undefined') {\n  ws = MozWebSocket\n} else if (typeof global !== 'undefined') {\n  ws = global.WebSocket || global.MozWebSocket\n} else if (typeof window !== 'undefined') {\n  ws = window.WebSocket || window.MozWebSocket\n} else if (typeof self !== 'undefined') {\n  ws = self.WebSocket || self.MozWebSocket\n}\n\n/**\n * Do not export server for browser environments.\n * @private\n */\nexport const WebSocketServer = undefined\n\n/**\n * Return WebSocket client for browser environments.\n * @private\n */\nexport default ws\n",
+    "static": true,
+    "longname": "/home/runner/work/osc-js/osc-js/src/external/ws.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 186,
+    "kind": "variable",
+    "name": "WebSocketServer",
+    "memberof": "src/external/ws.js",
+    "static": true,
+    "longname": "src/external/ws.js~WebSocketServer",
+    "access": "private",
+    "export": true,
+    "importPath": "osc-js/src/external/ws.js",
+    "importStyle": "{WebSocketServer}",
+    "description": "Do not export server for browser environments.",
+    "lineNumber": 21,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 187,
+    "kind": "file",
     "name": "src/message.js",
     "content": "import {\n  isArray,\n  isString,\n  isUndefined,\n} from './common/utils'\n\nimport Helper, { typeTag, prepareAddress } from './common/helpers'\n\nimport AtomicBlob from './atomic/blob'\nimport AtomicFloat32 from './atomic/float32'\nimport AtomicFloat64 from './atomic/float64'\nimport AtomicInt32 from './atomic/int32'\nimport AtomicInt64 from './atomic/int64'\nimport AtomicUInt64 from './atomic/uint64'\nimport AtomicString from './atomic/string'\nimport {\n  VALUE_NONE, VALUE_TRUE, VALUE_FALSE, VALUE_INFINITY,\n} from './atomic/constant'\n\n/**\n * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.\n *\n * ## Supported types\n *\n * - `i` - int32\n * - `f` - float32\n * - `s` - string\n * - `b` - blob\n * - `h` - int64\n * - `t` - uint64\n * - `d` - double\n * - `T` - True (no argument data)\n * - `F` - False (no argument data)\n * - `N` - Nil (no argument data)\n * - `I` - Infinitum (no argument data)\n *\n */\nexport class TypedMessage {\n  /**\n   * Create a TypedMessage instance\n   * @param {array|string} address Address\n   * @param {array} args Arguments\n   *\n   * @example\n   * const message = new TypedMessage(['test', 'path'])\n   * message.add('d', 123.123456789)\n   * message.add('s', 'hello')\n   *\n   * @example\n   * const message = new TypedMessage('/test/path', [\n   *   { type: 'i', value: 123 },\n   *   { type: 'd', value: 123.123 },\n   *   { type: 'h', value: 0xFFFFFFn },\n   *   { type: 'T', value: null },\n   * ])\n   */\n  constructor(address, args) {\n    /**\n     * @type {number} offset\n     * @private\n     */\n    this.offset = 0\n    /** @type {string} address */\n    this.address = ''\n    /** @type {string} types */\n    this.types = ''\n    /** @type {array} args */\n    this.args = []\n\n    if (!isUndefined(address)) {\n      if (!(isString(address) || isArray(address))) {\n        throw new Error('OSC Message constructor first argument (address) must be a string or array')\n      }\n      this.address = prepareAddress(address)\n    }\n\n    if (!isUndefined(args)) {\n      if (!isArray(args)) {\n        throw new Error('OSC Message constructor second argument (args) must be an array')\n      }\n      args.forEach((item) => this.add(item.type, item.value))\n    }\n  }\n\n  /**\n   * Add an OSC Atomic Data Type to the list of elements\n   * @param {string} type\n   * @param {*} item\n   */\n  add(type, item) {\n    if (isUndefined(type)) {\n      throw new Error('OSC Message needs a valid OSC Atomic Data Type')\n    }\n\n    if (type === 'N') {\n      this.args.push(VALUE_NONE)\n    } else if (type === 'T') {\n      this.args.push(VALUE_TRUE)\n    } else if (type === 'F') {\n      this.args.push(VALUE_FALSE)\n    } else if (type === 'I') {\n      this.args.push(VALUE_INFINITY)\n    } else {\n      this.args.push(item)\n    }\n\n    this.types += type\n  }\n\n  /**\n   * Interpret the Message as packed binary data\n   * @return {Uint8Array} Packed binary data\n   */\n  pack() {\n    if (this.address.length === 0 || this.address[0] !== '/') {\n      throw new Error('OSC Message has an invalid address')\n    }\n\n    const encoder = new Helper()\n\n    // OSC Address Pattern and Type string\n    encoder.add(new AtomicString(this.address))\n    encoder.add(new AtomicString(`,${this.types}`))\n\n    // followed by zero or more OSC Arguments\n    if (this.args.length > 0) {\n      let argument\n\n      if (this.args.length > this.types.length) {\n        throw new Error('OSC Message argument and type tag mismatch')\n      }\n\n      this.args.forEach((value, index) => {\n        const type = this.types[index]\n        if (type === 'i') {\n          argument = new AtomicInt32(value)\n        } else if (type === 'h') {\n          argument = new AtomicInt64(value)\n        } else if (type === 't') {\n          argument = new AtomicUInt64(value)\n        } else if (type === 'f') {\n          argument = new AtomicFloat32(value)\n        } else if (type === 'd') {\n          argument = new AtomicFloat64(value)\n        } else if (type === 's') {\n          argument = new AtomicString(value)\n        } else if (type === 'b') {\n          argument = new AtomicBlob(value)\n        } else if (type === 'T') {\n          argument = VALUE_TRUE\n        } else if (type === 'F') {\n          argument = VALUE_FALSE\n        } else if (type === 'N') {\n          argument = VALUE_NONE\n        } else if (type === 'I') {\n          argument = VALUE_INFINITY\n        } else {\n          throw new Error('OSC Message found unknown argument type')\n        }\n\n        encoder.add(argument)\n      })\n    }\n\n    return encoder.merge()\n  }\n\n  /**\n   * Unpack binary data to read a Message\n   * @param {DataView} dataView The DataView holding the binary representation of a Message\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   */\n  unpack(dataView, initialOffset = 0) {\n    if (!(dataView instanceof DataView)) {\n      throw new Error('OSC Message expects an instance of type DataView.')\n    }\n\n    // read address pattern\n    const address = new AtomicString()\n    address.unpack(dataView, initialOffset)\n\n    // read type string\n    const types = new AtomicString()\n    types.unpack(dataView, address.offset)\n\n    if (address.value.length === 0 || address.value[0] !== '/') {\n      throw new Error('OSC Message found malformed or missing address string')\n    }\n\n    if (types.value.length === 0 && types.value[0] !== ',') {\n      throw new Error('OSC Message found malformed or missing type string')\n    }\n\n    let { offset } = types\n    let next\n    let type\n\n    const args = []\n\n    // read message arguments (OSC Atomic Data Types)\n    for (let i = 1; i < types.value.length; i += 1) {\n      type = types.value[i]\n      next = null\n\n      if (type === 'i') {\n        next = new AtomicInt32()\n      } else if (type === 'h') {\n        next = new AtomicInt64()\n      } else if (type === 't') {\n        next = new AtomicUInt64()\n      } else if (type === 'f') {\n        next = new AtomicFloat32()\n      } else if (type === 'd') {\n        next = new AtomicFloat64()\n      } else if (type === 's') {\n        next = new AtomicString()\n      } else if (type === 'b') {\n        next = new AtomicBlob()\n      } else if (type === 'T') {\n        args.push(VALUE_TRUE)\n      } else if (type === 'F') {\n        args.push(VALUE_FALSE)\n      } else if (type === 'N') {\n        args.push(VALUE_NONE)\n      } else if (type === 'I') {\n        args.push(VALUE_INFINITY)\n      } else {\n        throw new Error('OSC Message found unsupported argument type')\n      }\n\n      if (next) {\n        offset = next.unpack(dataView, offset)\n        args.push(next.value)\n      }\n    }\n\n    this.offset = offset\n    this.address = address.value\n    this.types = types.value\n    this.args = args\n\n    return this.offset\n  }\n}\n\n/**\n * An OSC message consists of an OSC Address Pattern followed\n * by an OSC Type Tag String followed by zero or more OSC Arguments\n */\nexport default class Message extends TypedMessage {\n  /**\n   * Create a Message instance\n   * @param {array|string} args Address\n   * @param {...*} args OSC Atomic Data Types\n   *\n   * @example\n   * const message = new Message(['test', 'path'], 50, 100.52, 'test')\n   *\n   * @example\n   * const message = new Message('/test/path', 51.2)\n   */\n  constructor(...args) {\n    let address\n    if (args.length > 0) {\n      address = args.shift()\n    }\n\n    let oscArgs\n    if (args.length > 0) {\n      if (args[0] instanceof Array) {\n        oscArgs = args.shift()\n      }\n    }\n\n    super(address, oscArgs)\n\n    if (args.length > 0) {\n      this.types = args.map((item) => typeTag(item)).join('')\n      this.args = args\n    }\n  }\n\n  /**\n   * Add an OSC Atomic Data Type to the list of elements\n   * @param {*} item\n   */\n  add(item) {\n    super.add(typeTag(item), item)\n  }\n}\n",
     "static": true,
@@ -3696,7 +3757,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 184,
+    "__docId__": 188,
     "kind": "class",
     "name": "TypedMessage",
     "memberof": "src/message.js",
@@ -3711,7 +3772,7 @@
     "interface": false
   },
   {
-    "__docId__": 185,
+    "__docId__": 189,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/message.js~TypedMessage",
@@ -3751,7 +3812,7 @@
     ]
   },
   {
-    "__docId__": 186,
+    "__docId__": 190,
     "kind": "member",
     "name": "offset",
     "memberof": "src/message.js~TypedMessage",
@@ -3770,7 +3831,7 @@
     }
   },
   {
-    "__docId__": 187,
+    "__docId__": 191,
     "kind": "member",
     "name": "address",
     "memberof": "src/message.js~TypedMessage",
@@ -3789,7 +3850,7 @@
     }
   },
   {
-    "__docId__": 188,
+    "__docId__": 192,
     "kind": "member",
     "name": "types",
     "memberof": "src/message.js~TypedMessage",
@@ -3808,7 +3869,7 @@
     }
   },
   {
-    "__docId__": 189,
+    "__docId__": 193,
     "kind": "member",
     "name": "args",
     "memberof": "src/message.js~TypedMessage",
@@ -3827,7 +3888,7 @@
     }
   },
   {
-    "__docId__": 191,
+    "__docId__": 195,
     "kind": "method",
     "name": "add",
     "memberof": "src/message.js~TypedMessage",
@@ -3863,7 +3924,7 @@
     "return": null
   },
   {
-    "__docId__": 193,
+    "__docId__": 197,
     "kind": "method",
     "name": "pack",
     "memberof": "src/message.js~TypedMessage",
@@ -3885,7 +3946,7 @@
     "params": []
   },
   {
-    "__docId__": 194,
+    "__docId__": 198,
     "kind": "method",
     "name": "unpack",
     "memberof": "src/message.js~TypedMessage",
@@ -3930,7 +3991,7 @@
     }
   },
   {
-    "__docId__": 199,
+    "__docId__": 203,
     "kind": "class",
     "name": "Message",
     "memberof": "src/message.js",
@@ -3948,7 +4009,7 @@
     ]
   },
   {
-    "__docId__": 200,
+    "__docId__": 204,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/message.js~Message",
@@ -3988,7 +4049,7 @@
     ]
   },
   {
-    "__docId__": 201,
+    "__docId__": 205,
     "kind": "member",
     "name": "types",
     "memberof": "src/message.js~Message",
@@ -4005,7 +4066,7 @@
     }
   },
   {
-    "__docId__": 202,
+    "__docId__": 206,
     "kind": "member",
     "name": "args",
     "memberof": "src/message.js~Message",
@@ -4022,7 +4083,7 @@
     }
   },
   {
-    "__docId__": 203,
+    "__docId__": 207,
     "kind": "method",
     "name": "add",
     "memberof": "src/message.js~Message",
@@ -4048,7 +4109,7 @@
     "return": null
   },
   {
-    "__docId__": 204,
+    "__docId__": 208,
     "kind": "file",
     "name": "src/osc.js",
     "content": "import {\n  isFunction,\n  isInt,\n  isObject,\n  isString,\n} from './common/utils'\n\nimport Bundle from './bundle'\nimport EventHandler from './events'\nimport Message, { TypedMessage } from './message'\nimport Packet from './packet'\n\nimport DatagramPlugin from './plugin/dgram'\nimport BridgePlugin from './plugin/bridge'\nimport WebsocketClientPlugin from './plugin/wsclient'\nimport WebsocketServerPlugin from './plugin/wsserver'\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  discardLateMessages: false,\n  plugin: new WebsocketClientPlugin(),\n}\n\n/**\n * Status flags\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * OSC interface to send OSC Packets and listen to status changes and\n * incoming message events. Offers a Plugin API for different network\n * protocols, defaults to a simple Websocket client for OSC communication\n * between a browser js-app and a js-node server\n *\n * @example\n * const osc = new OSC()\n *\n * osc.on('/input/test', message => {\n *   // print incoming OSC message arguments\n *   console.log(message.args)\n * })\n *\n * osc.on('open', () => {\n *   const message = new Message('/test/path', 55.12, 'hello')\n *   osc.send(message)\n * })\n *\n * osc.open({ host: '192.168.178.115', port: 9012 })\n */\nclass OSC {\n  /**\n   * Create an OSC instance with given options\n   * @param {object} [options] Custom options\n   * @param {boolean} [options.discardLateMessages=false] Ignore incoming\n   * messages when given timetag lies in the past\n   * @param {Plugin} [options.plugin=WebsocketClientPlugin] Add a connection plugin\n   * to this interface, defaults to a plugin with Websocket client.\n   * Open README.md for further information on how to handle plugins or\n   * how to write your own with the Plugin API\n   *\n   * @example\n   * const osc = new OSC() // default options with Websocket client\n   *\n   * @example\n   * const osc = new OSC({ discardLateMessages: true })\n   *\n   * @example\n   * const websocketPlugin = new OSC.WebsocketClientPlugin()\n   * const osc = new OSC({ plugin: websocketPlugin })\n   */\n  constructor(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC options argument has to be an object.')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...options }\n    /**\n     * @type {EventHandler} eventHandler\n     * @private\n     */\n    this.eventHandler = new EventHandler({\n      discardLateMessages: this.options.discardLateMessages,\n    })\n\n    // pass EventHandler's notify() to plugin\n    const { eventHandler } = this\n    if (this.options.plugin && this.options.plugin.registerNotify) {\n      this.options.plugin.registerNotify((...args) => eventHandler.notify(...args))\n    }\n  }\n\n  /**\n   * Listen to a status-change event or incoming OSC message with\n   * address pattern matching\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {function} callback Function which is called on notification\n   * @return {number} Subscription id (needed to unsubscribe)\n   *\n   * @example\n   * // will be called when server receives /in!trument/* for example\n   * osc.on('/instrument/1', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called for every message since it uses the wildcard symbol\n   * osc.on('*', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called on network socket error\n   * osc.on('error', message => {\n   *   console.log(message)\n   * })\n   */\n  on(eventName, callback) {\n    if (!(isString(eventName) && isFunction(callback))) {\n      throw new Error('OSC on() needs event- or address string and callback function')\n    }\n\n    return this.eventHandler.on(eventName, callback)\n  }\n\n  /**\n   * Unsubscribe an event listener\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {number} subscriptionId The subscription id\n   * @return {boolean} Success state\n   *\n   * @example\n   * const listenerId = osc.on('error', message => {\n   *   console.log(message)\n   * })\n   * osc.off('error', listenerId) // unsubscribe from error event\n   */\n  off(eventName, subscriptionId) {\n    if (!(isString(eventName) && isInt(subscriptionId))) {\n      throw new Error('OSC off() needs string and number (subscriptionId) to unsubscribe')\n    }\n\n    return this.eventHandler.off(eventName, subscriptionId)\n  }\n\n  /**\n   * Open network socket with plugin. This method is used by\n   * plugins and is not available without (see Plugin API for more information)\n   * @param {object} [options] Custom global options for plugin instance\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   */\n  open(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC open() options argument needs to be an object')\n    }\n\n    if (!(this.options.plugin && isFunction(this.options.plugin.open))) {\n      throw new Error('OSC Plugin API #open is not implemented!')\n    }\n\n    return this.options.plugin.open(options)\n  }\n\n  /**\n   * Returns the current status of the connection. See *STATUS* for\n   * different possible states. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @return {number} Status identifier\n   *\n   * @example\n   * import OSC, { STATUS } from 'osc'\n   * const osc = new OSC()\n   * if (osc.status() === STATUS.IS_CONNECTING) {\n   *   // do something\n   * }\n   */\n  status() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.status))) {\n      throw new Error('OSC Plugin API #status is not implemented!')\n    }\n\n    return this.options.plugin.status()\n  }\n\n  /**\n   * Close connection. This method is used by plugins and is not\n   * available without (see Plugin API for more information)\n   */\n  close() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.close))) {\n      throw new Error('OSC Plugin API #close is not implemented!')\n    }\n\n    return this.options.plugin.close()\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @param {Packet|Bundle|Message} packet OSC Packet, Bundle or Message instance\n   * @param {object} [options] Custom options\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   *\n   * const message = new OSC.Message('/test/path', 55.1, 57)\n   * osc.send(message)\n   *\n   * // send message again to custom address\n   * osc.send(message, { host: '192.168.178.115', port: 9001 })\n   */\n  send(packet, options) {\n    if (!(this.options.plugin && isFunction(this.options.plugin.send))) {\n      throw new Error('OSC Plugin API #send is not implemented!')\n    }\n\n    if (!(packet instanceof TypedMessage\n        || packet instanceof Message\n        || packet instanceof Bundle\n        || packet instanceof Packet)\n    ) {\n      throw new Error('OSC send() needs Messages, Bundles or Packets')\n    }\n\n    if (options && !isObject(options)) {\n      throw new Error('OSC send() options argument has to be an object')\n    }\n\n    return this.options.plugin.send(packet.pack(), options)\n  }\n}\n\n// expose status flags\nOSC.STATUS = STATUS\n\n// expose OSC classes\nOSC.Packet = Packet\nOSC.Bundle = Bundle\nOSC.Message = Message\nOSC.TypedMessage = TypedMessage\n\n// expose plugins\nOSC.DatagramPlugin = DatagramPlugin\nOSC.WebsocketClientPlugin = WebsocketClientPlugin\nOSC.WebsocketServerPlugin = WebsocketServerPlugin\nOSC.BridgePlugin = BridgePlugin\n\nexport default OSC\n",
@@ -4059,7 +4120,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 205,
+    "__docId__": 209,
     "kind": "variable",
     "name": "defaultOptions",
     "memberof": "src/osc.js",
@@ -4079,7 +4140,7 @@
     "ignore": true
   },
   {
-    "__docId__": 206,
+    "__docId__": 210,
     "kind": "variable",
     "name": "STATUS",
     "memberof": "src/osc.js",
@@ -4100,7 +4161,7 @@
     "ignore": true
   },
   {
-    "__docId__": 207,
+    "__docId__": 211,
     "kind": "class",
     "name": "OSC",
     "memberof": "src/osc.js",
@@ -4116,7 +4177,7 @@
     "interface": false
   },
   {
-    "__docId__": 208,
+    "__docId__": 212,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/osc.js~OSC",
@@ -4170,7 +4231,7 @@
     ]
   },
   {
-    "__docId__": 209,
+    "__docId__": 213,
     "kind": "member",
     "name": "options",
     "memberof": "src/osc.js~OSC",
@@ -4189,7 +4250,7 @@
     }
   },
   {
-    "__docId__": 210,
+    "__docId__": 214,
     "kind": "member",
     "name": "eventHandler",
     "memberof": "src/osc.js~OSC",
@@ -4208,7 +4269,7 @@
     }
   },
   {
-    "__docId__": 211,
+    "__docId__": 215,
     "kind": "method",
     "name": "on",
     "memberof": "src/osc.js~OSC",
@@ -4256,7 +4317,7 @@
     }
   },
   {
-    "__docId__": 212,
+    "__docId__": 216,
     "kind": "method",
     "name": "off",
     "memberof": "src/osc.js~OSC",
@@ -4302,7 +4363,7 @@
     }
   },
   {
-    "__docId__": 213,
+    "__docId__": 217,
     "kind": "method",
     "name": "open",
     "memberof": "src/osc.js~OSC",
@@ -4335,7 +4396,7 @@
     }
   },
   {
-    "__docId__": 214,
+    "__docId__": 218,
     "kind": "method",
     "name": "status",
     "memberof": "src/osc.js~OSC",
@@ -4360,7 +4421,7 @@
     "params": []
   },
   {
-    "__docId__": 215,
+    "__docId__": 219,
     "kind": "method",
     "name": "close",
     "memberof": "src/osc.js~OSC",
@@ -4379,7 +4440,7 @@
     }
   },
   {
-    "__docId__": 216,
+    "__docId__": 220,
     "kind": "method",
     "name": "send",
     "memberof": "src/osc.js~OSC",
@@ -4424,7 +4485,7 @@
     }
   },
   {
-    "__docId__": 217,
+    "__docId__": 221,
     "kind": "file",
     "name": "src/packet.js",
     "content": "import AtomicString from './atomic/string'\nimport Bundle, { BUNDLE_TAG } from './bundle'\nimport Message from './message'\n\n/**\n * The unit of transmission of OSC is an OSC Packet. The contents\n * of an OSC packet must be either an OSC Message or an OSC Bundle\n */\nexport default class Packet {\n  /**\n   * Create a Packet instance holding a Message or Bundle\n   * @param {Message|Bundle} [value] Initial Packet value\n   */\n  constructor(value) {\n    if (value && !(value instanceof Message || value instanceof Bundle)) {\n      throw new Error('OSC Packet value has to be Message or Bundle')\n    }\n\n    /** @type {Message|Bundle} value */\n    this.value = value\n    /**\n     * @type {number} offset\n     * @private\n     */\n    this.offset = 0\n  }\n\n  /**\n   * Packs the Packet value. This implementation is more like\n   * a wrapper due to OSC specifications, you could also skip the\n   * Packet and directly work with the Message or Bundle instance\n   * @return {Uint8Array} Packed binary data\n   *\n   * @example\n   * const message = new Message('/test/path', 21.5, 'test')\n   * const packet = new Packet(message)\n   * const packetBinary = packet.pack() // then send it via udp etc.\n   *\n   * // or skip the Packet for convenience\n   * const messageBinary = message.pack()\n   */\n  pack() {\n    if (!this.value) {\n      throw new Error('OSC Packet can not be encoded with empty body')\n    }\n\n    return this.value.pack()\n  }\n\n  /**\n   * Unpack binary data from DataView to read Messages or Bundles\n   * @param {DataView} dataView The DataView holding a binary representation of a Packet\n   * @param {number} [initialOffset=0] Offset of DataView before unpacking\n   * @return {number} Offset after unpacking\n   */\n  unpack(dataView, initialOffset = 0) {\n    if (!(dataView instanceof DataView)) {\n      throw new Error('OSC Packet expects an instance of type DataView')\n    }\n\n    if (dataView.byteLength % 4 !== 0) {\n      throw new Error('OSC Packet byteLength has to be a multiple of four')\n    }\n\n    const head = new AtomicString()\n    head.unpack(dataView, initialOffset)\n\n    let item\n\n    // check if Packet is a Bundle or a Message\n    if (head.value === BUNDLE_TAG) {\n      item = new Bundle()\n    } else {\n      item = new Message()\n    }\n\n    item.unpack(dataView, initialOffset)\n\n    this.offset = item.offset\n    this.value = item\n\n    return this.offset\n  }\n}\n",
@@ -4435,7 +4496,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 218,
+    "__docId__": 222,
     "kind": "class",
     "name": "Packet",
     "memberof": "src/packet.js",
@@ -4450,7 +4511,7 @@
     "interface": false
   },
   {
-    "__docId__": 219,
+    "__docId__": 223,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/packet.js~Packet",
@@ -4476,7 +4537,7 @@
     ]
   },
   {
-    "__docId__": 220,
+    "__docId__": 224,
     "kind": "member",
     "name": "value",
     "memberof": "src/packet.js~Packet",
@@ -4496,7 +4557,7 @@
     }
   },
   {
-    "__docId__": 221,
+    "__docId__": 225,
     "kind": "member",
     "name": "offset",
     "memberof": "src/packet.js~Packet",
@@ -4515,7 +4576,7 @@
     }
   },
   {
-    "__docId__": 222,
+    "__docId__": 226,
     "kind": "method",
     "name": "pack",
     "memberof": "src/packet.js~Packet",
@@ -4540,7 +4601,7 @@
     "params": []
   },
   {
-    "__docId__": 223,
+    "__docId__": 227,
     "kind": "method",
     "name": "unpack",
     "memberof": "src/packet.js~Packet",
@@ -4585,10 +4646,10 @@
     }
   },
   {
-    "__docId__": 226,
+    "__docId__": 230,
     "kind": "file",
     "name": "src/plugin/bridge.js",
-    "content": "const dgram = typeof window === 'undefined' ? require('dgram') : undefined\nconst WebSocketServer = typeof window === 'undefined' ? require('isomorphic-ws').Server : undefined\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  udpServer: {\n    host: 'localhost',\n    port: 41234,\n    exclusive: false,\n  },\n  udpClient: {\n    host: 'localhost',\n    port: 41235,\n  },\n  wsServer: {\n    host: 'localhost',\n    port: 8080,\n  },\n  receiver: 'ws',\n}\n\n/**\n * Helper method to merge nested objects\n * @private\n */\nfunction mergeOptions(base, custom) {\n  return {\n    ...defaultOptions,\n    ...base,\n    ...custom,\n    udpServer: { ...defaultOptions.udpServer, ...base.udpServer, ...custom.udpServer },\n    udpClient: { ...defaultOptions.udpClient, ...base.udpClient, ...custom.udpClient },\n    wsServer: { ...defaultOptions.wsServer, ...base.wsServer, ...custom.wsServer },\n  }\n}\n\n/**\n * OSC plugin for setting up communication between a Websocket\n * client and a udp client with a bridge inbetween\n */\nexport default class BridgePlugin {\n  /**\n   * Create an OSC Bridge instance with given options. Defaults to\n   * localhost:41234 for udp server, localhost:41235 for udp client and\n   * localhost:8080 for Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.udpServer.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [options.udpServer.port=41234] Port of udp server to bind to\n   * @param {boolean} [options.udpServer.exclusive=false] Exclusive flag\n   * @param {string} [options.udpClient.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [options.udpClient.port=41235] Port of udp client for messaging\n   * @param {string} [options.wsServer.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.wsServer.port=8080] Port of Websocket server\n   * @param {http.Server|https.Server} [options.wsServer.server] Use existing Node.js HTTP/S server\n   * @param {string} [options.receiver='ws'] Where messages sent via 'send' method will be\n   * delivered to, 'ws' for Websocket clients, 'udp' for udp client\n   *\n   * @example\n   * const plugin = new OSC.BridgePlugin({ wsServer: { port: 9912 } })\n   * const osc = new OSC({ plugin: plugin })\n   *\n   * @example <caption>Using an existing HTTP server</caption>\n   * const http = require('http')\n   * const httpServer = http.createServer();\n   * const plugin = new OSC.BridgePlugin({ wsServer: { server: httpServer } })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions = {}) {\n    if (!dgram || !WebSocketServer) {\n      throw new Error('BridgePlugin can not be used in browser context')\n    }\n\n    /** @type {object} options\n     * @private\n     */\n    this.options = mergeOptions({}, customOptions)\n\n    /**\n     * @type {object} websocket\n     * @private\n     */\n    this.websocket = null\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = dgram.createSocket('udp4')\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    // register udp events\n    this.socket.on('message', (message) => {\n      this.send(message, { receiver: 'ws' })\n      this.notify(message.buffer)\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status ID\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Bind a udp socket to a hostname and port\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [customOptions.port=41234] Port of udp server to bind to\n   * @param {boolean} [customOptions.exclusive=false] Exclusive flag\n   */\n  open(customOptions = {}) {\n    const options = mergeOptions(this.options, customOptions)\n\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // bind udp server\n    this.socket.bind({\n      address: options.udpServer.host,\n      port: options.udpServer.port,\n      exclusive: options.udpServer.exclusive,\n    }, () => {\n      let wsServerOptions = {}\n      if (options.wsServer.server) wsServerOptions.server = options.wsServer.server\n      else wsServerOptions = options.wsServer\n      // bind Websocket server\n      this.websocket = new WebSocketServer(wsServerOptions)\n      this.websocket.binaryType = 'arraybuffer'\n\n      // register Websocket events\n      this.websocket.on('listening', () => {\n        this.socketStatus = STATUS.IS_OPEN\n        this.notify('open')\n      })\n\n      this.websocket.on('error', (error) => {\n        this.notify('error', error)\n      })\n\n      this.websocket.on('connection', (client) => {\n        client.on('message', (message, rinfo) => {\n          this.send(message, { receiver: 'udp' })\n          this.notify(new Uint8Array(message), rinfo)\n        })\n      })\n    })\n  }\n\n  /**\n   * Close udp socket and Websocket server\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    // close udp socket\n    this.socket.close(() => {\n      // close Websocket\n      this.websocket.close(() => {\n        this.socketStatus = STATUS.IS_CLOSED\n        this.notify('close')\n      })\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. Use options here for\n   * custom receiver, otherwise the global options will be taken\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.udpClient.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [customOptions.udpClient.port=41235] Port of udp client for messaging\n   * @param {string} [customOptions.receiver='ws'] Messages will be delivered to Websocket ('ws')\n   * clients or udp client ('udp')\n   */\n  send(binary, customOptions = {}) {\n    const options = mergeOptions(this.options, customOptions)\n    const { receiver } = options\n\n    if (receiver === 'udp') {\n      // send data to udp client\n      const data = binary instanceof Buffer ? binary : Buffer.from(binary)\n      this.socket.send(\n        data,\n        0,\n        data.byteLength,\n        options.udpClient.port,\n        options.udpClient.host,\n      )\n    } else if (receiver === 'ws') {\n      // send data to all Websocket clients\n      this.websocket.clients.forEach((client) => {\n        client.send(binary, { binary: true })\n      })\n    } else {\n      throw new Error('BridgePlugin can not send message to unknown receiver')\n    }\n  }\n}\n",
+    "content": "import dgram from 'dgram'\nimport { WebSocketServer } from 'ws'\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  udpServer: {\n    host: 'localhost',\n    port: 41234,\n    exclusive: false,\n  },\n  udpClient: {\n    host: 'localhost',\n    port: 41235,\n  },\n  wsServer: {\n    host: 'localhost',\n    port: 8080,\n  },\n  receiver: 'ws',\n}\n\n/**\n * Helper method to merge nested objects\n * @private\n */\nfunction mergeOptions(base, custom) {\n  return {\n    ...defaultOptions,\n    ...base,\n    ...custom,\n    udpServer: { ...defaultOptions.udpServer, ...base.udpServer, ...custom.udpServer },\n    udpClient: { ...defaultOptions.udpClient, ...base.udpClient, ...custom.udpClient },\n    wsServer: { ...defaultOptions.wsServer, ...base.wsServer, ...custom.wsServer },\n  }\n}\n\n/**\n * OSC plugin for setting up communication between a Websocket\n * client and a udp client with a bridge inbetween\n */\nexport default class BridgePlugin {\n  /**\n   * Create an OSC Bridge instance with given options. Defaults to\n   * localhost:41234 for udp server, localhost:41235 for udp client and\n   * localhost:8080 for Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.udpServer.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [options.udpServer.port=41234] Port of udp server to bind to\n   * @param {boolean} [options.udpServer.exclusive=false] Exclusive flag\n   * @param {string} [options.udpClient.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [options.udpClient.port=41235] Port of udp client for messaging\n   * @param {string} [options.wsServer.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.wsServer.port=8080] Port of Websocket server\n   * @param {http.Server|https.Server} [options.wsServer.server] Use existing Node.js HTTP/S server\n   * @param {string} [options.receiver='ws'] Where messages sent via 'send' method will be\n   * delivered to, 'ws' for Websocket clients, 'udp' for udp client\n   *\n   * @example\n   * const plugin = new OSC.BridgePlugin({ wsServer: { port: 9912 } })\n   * const osc = new OSC({ plugin: plugin })\n   *\n   * @example <caption>Using an existing HTTP server</caption>\n   * const http = require('http')\n   * const httpServer = http.createServer();\n   * const plugin = new OSC.BridgePlugin({ wsServer: { server: httpServer } })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions = {}) {\n    // `dgram` and `WebSocketServer` get replaced with an undefined value in\n    // builds targeting browser environments\n    if (!dgram || !WebSocketServer) {\n      throw new Error('BridgePlugin can not be used in browser context')\n    }\n\n    /** @type {object} options\n     * @private\n     */\n    this.options = mergeOptions({}, customOptions)\n\n    /**\n     * @type {object} websocket\n     * @private\n     */\n    this.websocket = null\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = dgram.createSocket('udp4')\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    // register udp events\n    this.socket.on('message', (message) => {\n      this.send(message, { receiver: 'ws' })\n      this.notify(message.buffer)\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status ID\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Bind a udp socket to a hostname and port\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [customOptions.port=41234] Port of udp server to bind to\n   * @param {boolean} [customOptions.exclusive=false] Exclusive flag\n   */\n  open(customOptions = {}) {\n    const options = mergeOptions(this.options, customOptions)\n\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // bind udp server\n    this.socket.bind({\n      address: options.udpServer.host,\n      port: options.udpServer.port,\n      exclusive: options.udpServer.exclusive,\n    }, () => {\n      let wsServerOptions = {}\n      if (options.wsServer.server) {\n        wsServerOptions.server = options.wsServer.server\n      } else {\n        wsServerOptions = options.wsServer\n      }\n\n      // bind Websocket server\n      this.websocket = new WebSocketServer(wsServerOptions)\n      this.websocket.binaryType = 'arraybuffer'\n\n      // register Websocket events\n      this.websocket.on('listening', () => {\n        this.socketStatus = STATUS.IS_OPEN\n        this.notify('open')\n      })\n\n      this.websocket.on('error', (error) => {\n        this.notify('error', error)\n      })\n\n      this.websocket.on('connection', (client) => {\n        client.on('message', (message, rinfo) => {\n          this.send(message, { receiver: 'udp' })\n          this.notify(new Uint8Array(message), rinfo)\n        })\n      })\n    })\n  }\n\n  /**\n   * Close udp socket and Websocket server\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    // close udp socket\n    this.socket.close(() => {\n      // close Websocket\n      this.websocket.close(() => {\n        this.socketStatus = STATUS.IS_CLOSED\n        this.notify('close')\n      })\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. Use options here for\n   * custom receiver, otherwise the global options will be taken\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.udpClient.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [customOptions.udpClient.port=41235] Port of udp client for messaging\n   * @param {string} [customOptions.receiver='ws'] Messages will be delivered to Websocket ('ws')\n   * clients or udp client ('udp')\n   */\n  send(binary, customOptions = {}) {\n    const options = mergeOptions(this.options, customOptions)\n    const { receiver } = options\n\n    if (receiver === 'udp') {\n      // send data to udp client\n      const data = binary instanceof Buffer ? binary : Buffer.from(binary)\n      this.socket.send(\n        data,\n        0,\n        data.byteLength,\n        options.udpClient.port,\n        options.udpClient.host,\n      )\n    } else if (receiver === 'ws') {\n      // send data to all Websocket clients\n      this.websocket.clients.forEach((client) => {\n        client.send(binary, { binary: true })\n      })\n    } else {\n      throw new Error('BridgePlugin can not send message to unknown receiver')\n    }\n  }\n}\n",
     "static": true,
     "longname": "/home/runner/work/osc-js/osc-js/src/plugin/bridge.js",
     "access": "public",
@@ -4596,49 +4657,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 227,
-    "kind": "variable",
-    "name": "dgram",
-    "memberof": "src/plugin/bridge.js",
-    "static": true,
-    "longname": "src/plugin/bridge.js~dgram",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/bridge.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 228,
-    "kind": "variable",
-    "name": "WebSocketServer",
-    "memberof": "src/plugin/bridge.js",
-    "static": true,
-    "longname": "src/plugin/bridge.js~WebSocketServer",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/bridge.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 2,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 229,
+    "__docId__": 231,
     "kind": "variable",
     "name": "STATUS",
     "memberof": "src/plugin/bridge.js",
@@ -4658,7 +4677,7 @@
     "ignore": true
   },
   {
-    "__docId__": 230,
+    "__docId__": 232,
     "kind": "variable",
     "name": "defaultOptions",
     "memberof": "src/plugin/bridge.js",
@@ -4679,7 +4698,7 @@
     "ignore": true
   },
   {
-    "__docId__": 231,
+    "__docId__": 233,
     "kind": "function",
     "name": "mergeOptions",
     "memberof": "src/plugin/bridge.js",
@@ -4716,7 +4735,7 @@
     "ignore": true
   },
   {
-    "__docId__": 232,
+    "__docId__": 234,
     "kind": "class",
     "name": "BridgePlugin",
     "memberof": "src/plugin/bridge.js",
@@ -4731,7 +4750,7 @@
     "interface": false
   },
   {
-    "__docId__": 233,
+    "__docId__": 235,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -4867,7 +4886,7 @@
     ]
   },
   {
-    "__docId__": 234,
+    "__docId__": 236,
     "kind": "member",
     "name": "options",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -4875,45 +4894,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#options",
     "access": "private",
     "description": null,
-    "lineNumber": 91,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 235,
-    "kind": "member",
-    "name": "websocket",
-    "memberof": "src/plugin/bridge.js~BridgePlugin",
-    "static": false,
-    "longname": "src/plugin/bridge.js~BridgePlugin#websocket",
-    "access": "private",
-    "description": "",
-    "lineNumber": 97,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 236,
-    "kind": "member",
-    "name": "socket",
-    "memberof": "src/plugin/bridge.js~BridgePlugin",
-    "static": false,
-    "longname": "src/plugin/bridge.js~BridgePlugin#socket",
-    "access": "private",
-    "description": "",
-    "lineNumber": 103,
+    "lineNumber": 93,
     "type": {
       "nullable": null,
       "types": [
@@ -4926,13 +4907,51 @@
   {
     "__docId__": 237,
     "kind": "member",
+    "name": "websocket",
+    "memberof": "src/plugin/bridge.js~BridgePlugin",
+    "static": false,
+    "longname": "src/plugin/bridge.js~BridgePlugin#websocket",
+    "access": "private",
+    "description": "",
+    "lineNumber": 99,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 238,
+    "kind": "member",
+    "name": "socket",
+    "memberof": "src/plugin/bridge.js~BridgePlugin",
+    "static": false,
+    "longname": "src/plugin/bridge.js~BridgePlugin#socket",
+    "access": "private",
+    "description": "",
+    "lineNumber": 105,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 239,
+    "kind": "member",
     "name": "socketStatus",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
     "static": false,
     "longname": "src/plugin/bridge.js~BridgePlugin#socketStatus",
     "access": "private",
     "description": "",
-    "lineNumber": 108,
+    "lineNumber": 110,
     "type": {
       "nullable": null,
       "types": [
@@ -4943,7 +4962,7 @@
     }
   },
   {
-    "__docId__": 238,
+    "__docId__": 240,
     "kind": "member",
     "name": "notify",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -4951,7 +4970,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#notify",
     "access": "private",
     "description": "",
-    "lineNumber": 124,
+    "lineNumber": 126,
     "type": {
       "nullable": null,
       "types": [
@@ -4962,7 +4981,7 @@
     }
   },
   {
-    "__docId__": 239,
+    "__docId__": 241,
     "kind": "method",
     "name": "registerNotify",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -4972,7 +4991,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#registerNotify",
     "access": "private",
     "description": "Internal method to hook into osc library's\nEventHandler notify method",
-    "lineNumber": 133,
+    "lineNumber": 135,
     "params": [
       {
         "nullable": null,
@@ -4988,7 +5007,7 @@
     "return": null
   },
   {
-    "__docId__": 241,
+    "__docId__": 243,
     "kind": "method",
     "name": "status",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -4998,7 +5017,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#status",
     "access": "public",
     "description": "Returns the current status of the connection",
-    "lineNumber": 141,
+    "lineNumber": 143,
     "return": {
       "nullable": null,
       "types": [
@@ -5010,7 +5029,7 @@
     "params": []
   },
   {
-    "__docId__": 242,
+    "__docId__": 244,
     "kind": "method",
     "name": "open",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -5020,7 +5039,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#open",
     "access": "public",
     "description": "Bind a udp socket to a hostname and port",
-    "lineNumber": 152,
+    "lineNumber": 154,
     "params": [
       {
         "nullable": null,
@@ -5072,7 +5091,7 @@
     "return": null
   },
   {
-    "__docId__": 246,
+    "__docId__": 248,
     "kind": "method",
     "name": "close",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -5082,12 +5101,12 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#close",
     "access": "public",
     "description": "Close udp socket and Websocket server",
-    "lineNumber": 192,
+    "lineNumber": 198,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 249,
+    "__docId__": 251,
     "kind": "method",
     "name": "send",
     "memberof": "src/plugin/bridge.js~BridgePlugin",
@@ -5097,7 +5116,7 @@
     "longname": "src/plugin/bridge.js~BridgePlugin#send",
     "access": "public",
     "description": "Send an OSC Packet, Bundle or Message. Use options here for\ncustom receiver, otherwise the global options will be taken",
-    "lineNumber": 215,
+    "lineNumber": 221,
     "params": [
       {
         "nullable": null,
@@ -5159,10 +5178,10 @@
     "return": null
   },
   {
-    "__docId__": 250,
+    "__docId__": 252,
     "kind": "file",
     "name": "src/plugin/dgram.js",
-    "content": "const dgram = typeof window === 'undefined' ? require('dgram') : undefined\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options for open method\n * @private\n */\nconst defaultOpenOptions = {\n  host: 'localhost',\n  port: 41234,\n  exclusive: false,\n}\n\n/**\n * Default options for send method\n * @private\n */\nconst defaultSendOptions = {\n  host: 'localhost',\n  port: 41235,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  type: 'udp4',\n  open: defaultOpenOptions,\n  send: defaultSendOptions,\n}\n\n/**\n * Helper method to merge nested objects\n * @private\n */\nfunction mergeOptions(base, custom) {\n  return {\n    ...defaultOptions,\n    ...base,\n    ...custom,\n    open: { ...defaultOptions.open, ...base.open, ...custom.open },\n    send: { ...defaultOptions.send, ...base.send, ...custom.send },\n  }\n}\n\n/**\n * OSC plugin for simple OSC messaging via udp client\n * and udp server\n */\nexport default class DatagramPlugin {\n  /**\n   * Create an OSC Plugin instance with given options. Defaults to\n   * localhost:41234 for server and localhost:41235 for client messaging\n   * @param {object} [options] Custom options\n   * @param {string} [options.type='udp4'] 'udp4' or 'udp6'\n   * @param {string} [options.open.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [options.open.port=41234] Port of udp server to bind to\n   * @param {boolean} [options.open.exclusive=false] Exclusive flag\n   * @param {string} [options.send.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [options.send.port=41235] Port of udp client for messaging\n   *\n   * @example\n   * const plugin = new OSC.DatagramPlugin({ send: { port: 9912 } })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions = {}) {\n    if (!dgram) {\n      throw new Error('DatagramPlugin can not be used in browser context')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = mergeOptions({}, customOptions)\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = dgram.createSocket(this.options.type)\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    // register events\n    this.socket.on('message', (message, rinfo) => {\n      this.notify(message, rinfo)\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status ID\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Bind a udp socket to a hostname and port\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [customOptions.port=41234] Port of udp server to bind to\n   * @param {boolean} [customOptions.exclusive=false] Exclusive flag\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options.open, ...customOptions }\n    const { port, exclusive } = options\n\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    this.socket.bind({\n      address: options.host,\n      port,\n      exclusive,\n    }, () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    })\n  }\n\n  /**\n   * Close udp socket\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    this.socket.close(() => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. Use options here for\n   * custom port and hostname, otherwise the global options will\n   * be taken\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   * @param {object} [customOptions] Custom options for udp socket\n   * @param {string} [customOptions.host] Hostname of udp client\n   * @param {number} [customOptions.port] Port of udp client\n   */\n  send(binary, customOptions = {}) {\n    const options = { ...this.options.send, ...customOptions }\n    const { port, host } = options\n\n    this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host)\n  }\n}\n",
+    "content": "import dgram from 'dgram'\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options for open method\n * @private\n */\nconst defaultOpenOptions = {\n  host: 'localhost',\n  port: 41234,\n  exclusive: false,\n}\n\n/**\n * Default options for send method\n * @private\n */\nconst defaultSendOptions = {\n  host: 'localhost',\n  port: 41235,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  type: 'udp4',\n  open: defaultOpenOptions,\n  send: defaultSendOptions,\n}\n\n/**\n * Helper method to merge nested objects\n * @private\n */\nfunction mergeOptions(base, custom) {\n  return {\n    ...defaultOptions,\n    ...base,\n    ...custom,\n    open: { ...defaultOptions.open, ...base.open, ...custom.open },\n    send: { ...defaultOptions.send, ...base.send, ...custom.send },\n  }\n}\n\n/**\n * OSC plugin for simple OSC messaging via udp client\n * and udp server\n */\nexport default class DatagramPlugin {\n  /**\n   * Create an OSC Plugin instance with given options. Defaults to\n   * localhost:41234 for server and localhost:41235 for client messaging\n   * @param {object} [options] Custom options\n   * @param {string} [options.type='udp4'] 'udp4' or 'udp6'\n   * @param {string} [options.open.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [options.open.port=41234] Port of udp server to bind to\n   * @param {boolean} [options.open.exclusive=false] Exclusive flag\n   * @param {string} [options.send.host='localhost'] Hostname of udp client for messaging\n   * @param {number} [options.send.port=41235] Port of udp client for messaging\n   *\n   * @example\n   * const plugin = new OSC.DatagramPlugin({ send: { port: 9912 } })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions = {}) {\n    // `dgram` gets replaced with an undefined value in builds targeting\n    // browser environments\n    if (!dgram) {\n      throw new Error('DatagramPlugin can not be used in browser context')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = mergeOptions({}, customOptions)\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = dgram.createSocket(this.options.type)\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    // register events\n    this.socket.on('message', (message, rinfo) => {\n      this.notify(message, rinfo)\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status ID\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Bind a udp socket to a hostname and port\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host='localhost'] Hostname of udp server to bind to\n   * @param {number} [customOptions.port=41234] Port of udp server to bind to\n   * @param {boolean} [customOptions.exclusive=false] Exclusive flag\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options.open, ...customOptions }\n    const { port, exclusive } = options\n\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    this.socket.bind({\n      address: options.host,\n      port,\n      exclusive,\n    }, () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    })\n  }\n\n  /**\n   * Close udp socket\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    this.socket.close(() => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. Use options here for\n   * custom port and hostname, otherwise the global options will\n   * be taken\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   * @param {object} [customOptions] Custom options for udp socket\n   * @param {string} [customOptions.host] Hostname of udp client\n   * @param {number} [customOptions.port] Port of udp client\n   */\n  send(binary, customOptions = {}) {\n    const options = { ...this.options.send, ...customOptions }\n    const { port, host } = options\n\n    this.socket.send(Buffer.from(binary), 0, binary.byteLength, port, host)\n  }\n}\n",
     "static": true,
     "longname": "/home/runner/work/osc-js/osc-js/src/plugin/dgram.js",
     "access": "public",
@@ -5170,28 +5189,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 251,
-    "kind": "variable",
-    "name": "dgram",
-    "memberof": "src/plugin/dgram.js",
-    "static": true,
-    "longname": "src/plugin/dgram.js~dgram",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/dgram.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 252,
+    "__docId__": 253,
     "kind": "variable",
     "name": "STATUS",
     "memberof": "src/plugin/dgram.js",
@@ -5211,7 +5209,7 @@
     "ignore": true
   },
   {
-    "__docId__": 253,
+    "__docId__": 254,
     "kind": "variable",
     "name": "defaultOpenOptions",
     "memberof": "src/plugin/dgram.js",
@@ -5232,7 +5230,7 @@
     "ignore": true
   },
   {
-    "__docId__": 254,
+    "__docId__": 255,
     "kind": "variable",
     "name": "defaultSendOptions",
     "memberof": "src/plugin/dgram.js",
@@ -5253,7 +5251,7 @@
     "ignore": true
   },
   {
-    "__docId__": 255,
+    "__docId__": 256,
     "kind": "variable",
     "name": "defaultOptions",
     "memberof": "src/plugin/dgram.js",
@@ -5274,7 +5272,7 @@
     "ignore": true
   },
   {
-    "__docId__": 256,
+    "__docId__": 257,
     "kind": "function",
     "name": "mergeOptions",
     "memberof": "src/plugin/dgram.js",
@@ -5311,7 +5309,7 @@
     "ignore": true
   },
   {
-    "__docId__": 257,
+    "__docId__": 258,
     "kind": "class",
     "name": "DatagramPlugin",
     "memberof": "src/plugin/dgram.js",
@@ -5326,7 +5324,7 @@
     "interface": false
   },
   {
-    "__docId__": 258,
+    "__docId__": 259,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5426,7 +5424,7 @@
     ]
   },
   {
-    "__docId__": 259,
+    "__docId__": 260,
     "kind": "member",
     "name": "options",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5434,26 +5432,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#options",
     "access": "private",
     "description": "",
-    "lineNumber": 87,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 260,
-    "kind": "member",
-    "name": "socket",
-    "memberof": "src/plugin/dgram.js~DatagramPlugin",
-    "static": false,
-    "longname": "src/plugin/dgram.js~DatagramPlugin#socket",
-    "access": "private",
-    "description": "",
-    "lineNumber": 93,
+    "lineNumber": 89,
     "type": {
       "nullable": null,
       "types": [
@@ -5466,13 +5445,32 @@
   {
     "__docId__": 261,
     "kind": "member",
+    "name": "socket",
+    "memberof": "src/plugin/dgram.js~DatagramPlugin",
+    "static": false,
+    "longname": "src/plugin/dgram.js~DatagramPlugin#socket",
+    "access": "private",
+    "description": "",
+    "lineNumber": 95,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 262,
+    "kind": "member",
     "name": "socketStatus",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
     "static": false,
     "longname": "src/plugin/dgram.js~DatagramPlugin#socketStatus",
     "access": "private",
     "description": "",
-    "lineNumber": 98,
+    "lineNumber": 100,
     "type": {
       "nullable": null,
       "types": [
@@ -5483,7 +5481,7 @@
     }
   },
   {
-    "__docId__": 262,
+    "__docId__": 263,
     "kind": "member",
     "name": "notify",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5491,7 +5489,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#notify",
     "access": "private",
     "description": "",
-    "lineNumber": 113,
+    "lineNumber": 115,
     "type": {
       "nullable": null,
       "types": [
@@ -5502,7 +5500,7 @@
     }
   },
   {
-    "__docId__": 263,
+    "__docId__": 264,
     "kind": "method",
     "name": "registerNotify",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5512,7 +5510,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#registerNotify",
     "access": "private",
     "description": "Internal method to hook into osc library's\nEventHandler notify method",
-    "lineNumber": 122,
+    "lineNumber": 124,
     "params": [
       {
         "nullable": null,
@@ -5528,7 +5526,7 @@
     "return": null
   },
   {
-    "__docId__": 265,
+    "__docId__": 266,
     "kind": "method",
     "name": "status",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5538,7 +5536,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#status",
     "access": "public",
     "description": "Returns the current status of the connection",
-    "lineNumber": 130,
+    "lineNumber": 132,
     "return": {
       "nullable": null,
       "types": [
@@ -5550,7 +5548,7 @@
     "params": []
   },
   {
-    "__docId__": 266,
+    "__docId__": 267,
     "kind": "method",
     "name": "open",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5560,7 +5558,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#open",
     "access": "public",
     "description": "Bind a udp socket to a hostname and port",
-    "lineNumber": 141,
+    "lineNumber": 143,
     "params": [
       {
         "nullable": null,
@@ -5612,7 +5610,7 @@
     "return": null
   },
   {
-    "__docId__": 269,
+    "__docId__": 270,
     "kind": "method",
     "name": "close",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5622,12 +5620,12 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#close",
     "access": "public",
     "description": "Close udp socket",
-    "lineNumber": 160,
+    "lineNumber": 162,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 272,
+    "__docId__": 273,
     "kind": "method",
     "name": "send",
     "memberof": "src/plugin/dgram.js~DatagramPlugin",
@@ -5637,7 +5635,7 @@
     "longname": "src/plugin/dgram.js~DatagramPlugin#send",
     "access": "public",
     "description": "Send an OSC Packet, Bundle or Message. Use options here for\ncustom port and hostname, otherwise the global options will\nbe taken",
-    "lineNumber": 178,
+    "lineNumber": 180,
     "params": [
       {
         "nullable": null,
@@ -5683,10 +5681,10 @@
     "return": null
   },
   {
-    "__docId__": 273,
+    "__docId__": 274,
     "kind": "file",
     "name": "src/plugin/wsclient.js",
-    "content": "// eslint-disable-next-line no-undef\nconst scope = typeof global === 'undefined' ? window : global\nconst WebSocket = typeof __dirname === 'undefined' ? scope.WebSocket : require('isomorphic-ws')\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  host: 'localhost',\n  port: 8080,\n  secure: false,\n  protocol: [],\n}\n\n/**\n * OSC plugin for a Websocket client running in node or browser context\n */\nexport default class WebsocketClientPlugin {\n  /**\n   * Create an OSC WebsocketClientPlugin instance with given options.\n   * Defaults to *localhost:8080* for connecting to a Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.port=8080] Port of Websocket server\n   * @param {boolean} [options.secure=false] Use wss:// for secure connections\n   * @param {string|array} [options.protocol=''] Subprotocol of Websocket server\n   *\n   * @example\n   * const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions) {\n    if (!WebSocket) {\n      throw new Error('WebsocketClientPlugin can\\'t find a WebSocket class')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...customOptions }\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = null\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status identifier\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Connect to a Websocket server. Defaults to global options\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host] Hostname of Websocket server\n   * @param {number} [customOptions.port] Port of Websocket server\n   * @param {boolean} [customOptions.secure] Use wss:// for secure connections\n   * @param {string|array} [options.protocol] Subprotocol of Websocket server\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options, ...customOptions }\n    const {\n      port, host, secure, protocol,\n    } = options\n\n    // close socket when already given\n    if (this.socket) {\n      this.close()\n    }\n\n    // create websocket client\n    const scheme = secure ? 'wss' : 'ws'\n    const rinfo = {\n      address: host,\n      family: scheme,\n      port,\n      size: 0,\n    }\n\n    this.socket = new WebSocket(`${scheme}://${host}:${port}`, protocol)\n    this.socket.binaryType = 'arraybuffer'\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // register events\n    this.socket.onopen = () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    }\n\n    this.socket.onclose = () => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    }\n\n    this.socket.onerror = (error) => {\n      this.notify('error', error)\n    }\n\n    this.socket.onmessage = (message) => {\n      this.notify(message.data, rinfo)\n    }\n  }\n\n  /**\n   * Close Websocket\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n    this.socket.close()\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message to Websocket server\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   */\n  send(binary) {\n    this.socket.send(binary)\n  }\n}\n",
+    "content": "import WebSocket from 'ws'\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  host: 'localhost',\n  port: 8080,\n  secure: false,\n  protocol: [],\n}\n\n/**\n * OSC plugin for a Websocket client running in node or browser context\n */\nexport default class WebsocketClientPlugin {\n  /**\n   * Create an OSC WebsocketClientPlugin instance with given options.\n   * Defaults to *localhost:8080* for connecting to a Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.port=8080] Port of Websocket server\n   * @param {boolean} [options.secure=false] Use wss:// for secure connections\n   * @param {string|array} [options.protocol=''] Subprotocol of Websocket server\n   *\n   * @example\n   * const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions) {\n    if (!WebSocket) {\n      throw new Error('WebsocketClientPlugin can\\'t find a WebSocket class')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...customOptions }\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = null\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status identifier\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Connect to a Websocket server. Defaults to global options\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host] Hostname of Websocket server\n   * @param {number} [customOptions.port] Port of Websocket server\n   * @param {boolean} [customOptions.secure] Use wss:// for secure connections\n   * @param {string|array} [options.protocol] Subprotocol of Websocket server\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options, ...customOptions }\n    const {\n      port, host, secure, protocol,\n    } = options\n\n    // close socket when already given\n    if (this.socket) {\n      this.close()\n    }\n\n    // create websocket client\n    const scheme = secure ? 'wss' : 'ws'\n    const rinfo = {\n      address: host,\n      family: scheme,\n      port,\n      size: 0,\n    }\n\n    this.socket = new WebSocket(`${scheme}://${host}:${port}`, protocol)\n    this.socket.binaryType = 'arraybuffer'\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // register events\n    this.socket.onopen = () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    }\n\n    this.socket.onclose = () => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    }\n\n    this.socket.onerror = (error) => {\n      this.notify('error', error)\n    }\n\n    this.socket.onmessage = (message) => {\n      this.notify(message.data, rinfo)\n    }\n  }\n\n  /**\n   * Close Websocket\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n    this.socket.close()\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message to Websocket server\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   */\n  send(binary) {\n    this.socket.send(binary)\n  }\n}\n",
     "static": true,
     "longname": "/home/runner/work/osc-js/osc-js/src/plugin/wsclient.js",
     "access": "public",
@@ -5694,49 +5692,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 274,
-    "kind": "variable",
-    "name": "scope",
-    "memberof": "src/plugin/wsclient.js",
-    "static": true,
-    "longname": "src/plugin/wsclient.js~scope",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/wsclient.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 2,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
     "__docId__": 275,
-    "kind": "variable",
-    "name": "WebSocket",
-    "memberof": "src/plugin/wsclient.js",
-    "static": true,
-    "longname": "src/plugin/wsclient.js~WebSocket",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/wsclient.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 276,
     "kind": "variable",
     "name": "STATUS",
     "memberof": "src/plugin/wsclient.js",
@@ -5747,7 +5703,7 @@
     "importPath": "osc-js/src/plugin/wsclient.js",
     "importStyle": null,
     "description": "Status flags",
-    "lineNumber": 9,
+    "lineNumber": 7,
     "type": {
       "types": [
         "{\"IS_NOT_INITIALIZED\": *, \"IS_CONNECTING\": *, \"IS_OPEN\": number, \"IS_CLOSING\": number, \"IS_CLOSED\": number}"
@@ -5756,7 +5712,7 @@
     "ignore": true
   },
   {
-    "__docId__": 277,
+    "__docId__": 276,
     "kind": "variable",
     "name": "defaultOptions",
     "memberof": "src/plugin/wsclient.js",
@@ -5767,7 +5723,7 @@
     "importPath": "osc-js/src/plugin/wsclient.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 21,
+    "lineNumber": 19,
     "undocument": true,
     "type": {
       "types": [
@@ -5777,7 +5733,7 @@
     "ignore": true
   },
   {
-    "__docId__": 278,
+    "__docId__": 277,
     "kind": "class",
     "name": "WebsocketClientPlugin",
     "memberof": "src/plugin/wsclient.js",
@@ -5788,12 +5744,12 @@
     "importPath": "osc-js/src/plugin/wsclient.js",
     "importStyle": "WebsocketClientPlugin",
     "description": null,
-    "lineNumber": 31,
+    "lineNumber": 29,
     "undocument": true,
     "interface": false
   },
   {
-    "__docId__": 279,
+    "__docId__": 278,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -5806,7 +5762,7 @@
     "examples": [
       "const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })\nconst osc = new OSC({ plugin: plugin })"
     ],
-    "lineNumber": 45,
+    "lineNumber": 43,
     "params": [
       {
         "nullable": null,
@@ -5870,7 +5826,7 @@
     ]
   },
   {
-    "__docId__": 280,
+    "__docId__": 279,
     "kind": "member",
     "name": "options",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -5878,7 +5834,26 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#options",
     "access": "private",
     "description": "",
-    "lineNumber": 54,
+    "lineNumber": 52,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 280,
+    "kind": "member",
+    "name": "socket",
+    "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
+    "static": false,
+    "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#socket",
+    "access": "private",
+    "description": "",
+    "lineNumber": 58,
     "type": {
       "nullable": null,
       "types": [
@@ -5891,32 +5866,13 @@
   {
     "__docId__": 281,
     "kind": "member",
-    "name": "socket",
-    "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
-    "static": false,
-    "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#socket",
-    "access": "private",
-    "description": "",
-    "lineNumber": 60,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 282,
-    "kind": "member",
     "name": "socketStatus",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
     "static": false,
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#socketStatus",
     "access": "private",
     "description": "",
-    "lineNumber": 65,
+    "lineNumber": 63,
     "type": {
       "nullable": null,
       "types": [
@@ -5927,7 +5883,7 @@
     }
   },
   {
-    "__docId__": 283,
+    "__docId__": 282,
     "kind": "member",
     "name": "notify",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -5935,7 +5891,7 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#notify",
     "access": "private",
     "description": "",
-    "lineNumber": 71,
+    "lineNumber": 69,
     "type": {
       "nullable": null,
       "types": [
@@ -5946,7 +5902,7 @@
     }
   },
   {
-    "__docId__": 284,
+    "__docId__": 283,
     "kind": "method",
     "name": "registerNotify",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -5956,7 +5912,7 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#registerNotify",
     "access": "private",
     "description": "Internal method to hook into osc library's\nEventHandler notify method",
-    "lineNumber": 80,
+    "lineNumber": 78,
     "params": [
       {
         "nullable": null,
@@ -5972,7 +5928,7 @@
     "return": null
   },
   {
-    "__docId__": 286,
+    "__docId__": 285,
     "kind": "method",
     "name": "status",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -5982,7 +5938,7 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#status",
     "access": "public",
     "description": "Returns the current status of the connection",
-    "lineNumber": 88,
+    "lineNumber": 86,
     "return": {
       "nullable": null,
       "types": [
@@ -5994,7 +5950,7 @@
     "params": []
   },
   {
-    "__docId__": 287,
+    "__docId__": 286,
     "kind": "method",
     "name": "open",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -6004,7 +5960,7 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#open",
     "access": "public",
     "description": "Connect to a Websocket server. Defaults to global options",
-    "lineNumber": 100,
+    "lineNumber": 98,
     "params": [
       {
         "nullable": null,
@@ -6061,7 +6017,7 @@
     "return": null
   },
   {
-    "__docId__": 292,
+    "__docId__": 291,
     "kind": "method",
     "name": "close",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -6071,12 +6027,12 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#close",
     "access": "public",
     "description": "Close Websocket",
-    "lineNumber": 147,
+    "lineNumber": 145,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 294,
+    "__docId__": 293,
     "kind": "method",
     "name": "send",
     "memberof": "src/plugin/wsclient.js~WebsocketClientPlugin",
@@ -6086,7 +6042,7 @@
     "longname": "src/plugin/wsclient.js~WebsocketClientPlugin#send",
     "access": "public",
     "description": "Send an OSC Packet, Bundle or Message to Websocket server",
-    "lineNumber": 156,
+    "lineNumber": 154,
     "params": [
       {
         "nullable": null,
@@ -6102,10 +6058,10 @@
     "return": null
   },
   {
-    "__docId__": 295,
+    "__docId__": 294,
     "kind": "file",
     "name": "src/plugin/wsserver.js",
-    "content": "const WebSocketServer = typeof __dirname !== 'undefined' ? require('isomorphic-ws').Server : undefined\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  host: 'localhost',\n  port: 8080,\n}\n\n/**\n * OSC plugin for a Websocket client running in node or browser context\n */\nexport default class WebsocketServerPlugin {\n  /**\n   * Create an OSC WebsocketServerPlugin instance with given options.\n   * Defaults to *localhost:8080* for the Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.port=8080] Port of Websocket server\n   * @param {http.Server|https.Server} [options.server] Use existing Node.js HTTP/S server\n   *\n   * @example\n   * const plugin = new OSC.WebsocketServerPlugin({ port: 9912 })\n   * const osc = new OSC({ plugin: plugin })\n   *\n   * osc.open() // start server\n   * @example <caption>Using an existing HTTP server</caption>\n   * const http = require('http')\n   * const httpServer = http.createServer();\n   * const plugin = new OSC.WebsocketServerPlugin({ server: httpServer })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions) {\n    if (!WebSocketServer) {\n      throw new Error('WebsocketServerPlugin can not be used in browser context')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...customOptions }\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = null\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status identifier\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Start a Websocket server. Defaults to global options\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host] Hostname of Websocket server\n   * @param {number} [customOptions.port] Port of Websocket server\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options, ...customOptions }\n    const { port, host } = options\n    const rinfo = {\n      address: host,\n      family: 'wsserver',\n      port,\n      size: 0,\n    }\n\n    // close socket when already given\n    if (this.socket) {\n      this.close()\n    }\n\n    // create websocket server\n    if (options.server) {\n      this.socket = new WebSocketServer({ server: options.server })\n    } else {\n      this.socket = new WebSocketServer({ host, port })\n    }\n\n    this.socket.binaryType = 'arraybuffer'\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // register events\n    this.socket.on('listening', () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    this.socket.on('connection', (client) => {\n      client.on('message', (message) => {\n        this.notify(new Uint8Array(message), rinfo)\n      })\n    })\n  }\n\n  /**\n   * Close Websocket server\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    this.socket.close(() => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message to Websocket clients\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   */\n  send(binary) {\n    this.socket.clients.forEach((client) => {\n      client.send(binary, { binary: true })\n    })\n  }\n}\n",
+    "content": "import { WebSocketServer } from 'ws'\n\n/**\n * Status flags\n * @private\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  host: 'localhost',\n  port: 8080,\n}\n\n/**\n * OSC plugin for a Websocket client running in node or browser context\n */\nexport default class WebsocketServerPlugin {\n  /**\n   * Create an OSC WebsocketServerPlugin instance with given options.\n   * Defaults to *localhost:8080* for the Websocket server\n   * @param {object} [options] Custom options\n   * @param {string} [options.host='localhost'] Hostname of Websocket server\n   * @param {number} [options.port=8080] Port of Websocket server\n   * @param {http.Server|https.Server} [options.server] Use existing Node.js HTTP/S server\n   *\n   * @example\n   * const plugin = new OSC.WebsocketServerPlugin({ port: 9912 })\n   * const osc = new OSC({ plugin: plugin })\n   *\n   * osc.open() // start server\n   * @example <caption>Using an existing HTTP server</caption>\n   * const http = require('http')\n   * const httpServer = http.createServer();\n   * const plugin = new OSC.WebsocketServerPlugin({ server: httpServer })\n   * const osc = new OSC({ plugin: plugin })\n   */\n  constructor(customOptions) {\n    // `WebSocketServer` gets replaced with an undefined value in builds\n    // targeting browser environments\n    if (!WebSocketServer) {\n      throw new Error('WebsocketServerPlugin can not be used in browser context')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...customOptions }\n\n    /**\n     * @type {object} socket\n     * @private\n     */\n    this.socket = null\n    /**\n     * @type {number} socketStatus\n     * @private\n     */\n    this.socketStatus = STATUS.IS_NOT_INITIALIZED\n\n    /**\n     * @type {function} notify\n     * @private\n     */\n    this.notify = () => {}\n  }\n\n  /**\n   * Internal method to hook into osc library's\n   * EventHandler notify method\n   * @param {function} fn Notify callback\n   * @private\n   */\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  /**\n   * Returns the current status of the connection\n   * @return {number} Status identifier\n   */\n  status() {\n    return this.socketStatus\n  }\n\n  /**\n   * Start a Websocket server. Defaults to global options\n   * @param {object} [customOptions] Custom options\n   * @param {string} [customOptions.host] Hostname of Websocket server\n   * @param {number} [customOptions.port] Port of Websocket server\n   */\n  open(customOptions = {}) {\n    const options = { ...this.options, ...customOptions }\n    const { port, host } = options\n    const rinfo = {\n      address: host,\n      family: 'wsserver',\n      port,\n      size: 0,\n    }\n\n    // close socket when already given\n    if (this.socket) {\n      this.close()\n    }\n\n    // create websocket server\n    if (options.server) {\n      this.socket = new WebSocketServer({ server: options.server })\n    } else {\n      this.socket = new WebSocketServer({ host, port })\n    }\n\n    this.socket.binaryType = 'arraybuffer'\n    this.socketStatus = STATUS.IS_CONNECTING\n\n    // register events\n    this.socket.on('listening', () => {\n      this.socketStatus = STATUS.IS_OPEN\n      this.notify('open')\n    })\n\n    this.socket.on('error', (error) => {\n      this.notify('error', error)\n    })\n\n    this.socket.on('connection', (client) => {\n      client.on('message', (message) => {\n        this.notify(new Uint8Array(message), rinfo)\n      })\n    })\n  }\n\n  /**\n   * Close Websocket server\n   */\n  close() {\n    this.socketStatus = STATUS.IS_CLOSING\n\n    this.socket.close(() => {\n      this.socketStatus = STATUS.IS_CLOSED\n      this.notify('close')\n    })\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message to Websocket clients\n   * @param {Uint8Array} binary Binary representation of OSC Packet\n   */\n  send(binary) {\n    this.socket.clients.forEach((client) => {\n      client.send(binary, { binary: true })\n    })\n  }\n}\n",
     "static": true,
     "longname": "/home/runner/work/osc-js/osc-js/src/plugin/wsserver.js",
     "access": "public",
@@ -6113,28 +6069,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 296,
-    "kind": "variable",
-    "name": "WebSocketServer",
-    "memberof": "src/plugin/wsserver.js",
-    "static": true,
-    "longname": "src/plugin/wsserver.js~WebSocketServer",
-    "access": "public",
-    "export": false,
-    "importPath": "osc-js/src/plugin/wsserver.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 297,
+    "__docId__": 295,
     "kind": "variable",
     "name": "STATUS",
     "memberof": "src/plugin/wsserver.js",
@@ -6154,7 +6089,7 @@
     "ignore": true
   },
   {
-    "__docId__": 298,
+    "__docId__": 296,
     "kind": "variable",
     "name": "defaultOptions",
     "memberof": "src/plugin/wsserver.js",
@@ -6175,7 +6110,7 @@
     "ignore": true
   },
   {
-    "__docId__": 299,
+    "__docId__": 297,
     "kind": "class",
     "name": "WebsocketServerPlugin",
     "memberof": "src/plugin/wsserver.js",
@@ -6191,7 +6126,7 @@
     "interface": false
   },
   {
-    "__docId__": 300,
+    "__docId__": 298,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6255,7 +6190,7 @@
     ]
   },
   {
-    "__docId__": 301,
+    "__docId__": 299,
     "kind": "member",
     "name": "options",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6263,7 +6198,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#options",
     "access": "private",
     "description": "",
-    "lineNumber": 56,
+    "lineNumber": 58,
     "type": {
       "nullable": null,
       "types": [
@@ -6274,7 +6209,7 @@
     }
   },
   {
-    "__docId__": 302,
+    "__docId__": 300,
     "kind": "member",
     "name": "socket",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6282,7 +6217,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#socket",
     "access": "private",
     "description": "",
-    "lineNumber": 62,
+    "lineNumber": 64,
     "type": {
       "nullable": null,
       "types": [
@@ -6293,7 +6228,7 @@
     }
   },
   {
-    "__docId__": 303,
+    "__docId__": 301,
     "kind": "member",
     "name": "socketStatus",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6301,7 +6236,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#socketStatus",
     "access": "private",
     "description": "",
-    "lineNumber": 67,
+    "lineNumber": 69,
     "type": {
       "nullable": null,
       "types": [
@@ -6312,7 +6247,7 @@
     }
   },
   {
-    "__docId__": 304,
+    "__docId__": 302,
     "kind": "member",
     "name": "notify",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6320,7 +6255,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#notify",
     "access": "private",
     "description": "",
-    "lineNumber": 73,
+    "lineNumber": 75,
     "type": {
       "nullable": null,
       "types": [
@@ -6331,7 +6266,7 @@
     }
   },
   {
-    "__docId__": 305,
+    "__docId__": 303,
     "kind": "method",
     "name": "registerNotify",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6341,7 +6276,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#registerNotify",
     "access": "private",
     "description": "Internal method to hook into osc library's\nEventHandler notify method",
-    "lineNumber": 82,
+    "lineNumber": 84,
     "params": [
       {
         "nullable": null,
@@ -6357,7 +6292,7 @@
     "return": null
   },
   {
-    "__docId__": 307,
+    "__docId__": 305,
     "kind": "method",
     "name": "status",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6367,7 +6302,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#status",
     "access": "public",
     "description": "Returns the current status of the connection",
-    "lineNumber": 90,
+    "lineNumber": 92,
     "return": {
       "nullable": null,
       "types": [
@@ -6379,7 +6314,7 @@
     "params": []
   },
   {
-    "__docId__": 308,
+    "__docId__": 306,
     "kind": "method",
     "name": "open",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6389,7 +6324,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#open",
     "access": "public",
     "description": "Start a Websocket server. Defaults to global options",
-    "lineNumber": 100,
+    "lineNumber": 102,
     "params": [
       {
         "nullable": null,
@@ -6425,7 +6360,7 @@
     "return": null
   },
   {
-    "__docId__": 313,
+    "__docId__": 311,
     "kind": "method",
     "name": "close",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6435,12 +6370,12 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#close",
     "access": "public",
     "description": "Close Websocket server",
-    "lineNumber": 145,
+    "lineNumber": 147,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 316,
+    "__docId__": 314,
     "kind": "method",
     "name": "send",
     "memberof": "src/plugin/wsserver.js~WebsocketServerPlugin",
@@ -6450,7 +6385,7 @@
     "longname": "src/plugin/wsserver.js~WebsocketServerPlugin#send",
     "access": "public",
     "description": "Send an OSC Packet, Bundle or Message to Websocket clients",
-    "lineNumber": 158,
+    "lineNumber": 160,
     "params": [
       {
         "nullable": null,
@@ -6467,7 +6402,7 @@
   },
   {
     "kind": "index",
-    "content": "osc-js\n======\n\n<p>\n  <a href=\"https://github.com/adzialocha/osc-js/actions\">\n    <img src=\"https://github.com/adzialocha/osc-js/workflows/Node.js%20CI/badge.svg\" alt=\"Build status\">\n  </a>\n  <a href=\"https://www.npmjs.org/package/osc-js\">\n    <img src=\"https://img.shields.io/npm/v/osc-js.svg?style=flat-square\" alt=\"npm version\">\n  </a>\n  <a href=\"http://spdx.org/licenses/MIT\">\n    <img src=\"https://img.shields.io/npm/l/osc-js.svg?style=flat-square\" alt=\"npm licence\">\n  </a>\n  <a href=\"https://adzialocha.github.io/osc-js\">\n    <img src=\"https://raw.githubusercontent.com/adzialocha/osc-js/gh-pages/badge.svg\" alt=\"ESDoc status\">\n  </a>\n</p>\n\nosc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a customizable Plugin API for network protocols.\n\n[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [Documentation](https://adzialocha.github.io/osc-js) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)\n\n## Features\n\n- UMD Module running in Node.js, Electron, Chrome Apps, browser or any other JS environment\n- Can be used with Webpack and Browserify\n- No dependencies (except of `ws` in Node.js or similar environments)\n- Receive sender information from incoming messages\n- Built-in *UDP*, *WebSocket* networking support as plugins\n- Special bridge plugin for easy communication between *UDP*- and *WebSocket* clients\n- Plugin API for custom network protocols\n- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)\n- OSC Address pattern matching\n- Time-critical OSC Bundles with Timetags\n- Extended (nonstandard) argument types\n\n## Documentation\n\nRead more about osc-js and how to use it in the [Wiki](https://github.com/adzialocha/osc-js/wiki) and [Documentation](https://adzialocha.github.io/osc-js).\n\n## Example\n\n```js\nconst osc = new OSC()\n\nosc.on('/param/density', (message, rinfo) => {\n  console.log(message.args)\n  console.log(rinfo)\n})\n\nosc.on('*', message => {\n  console.log(message.args)\n})\n\nosc.on('/{foo,bar}/*/param', message => {\n  console.log(message.args)\n})\n\nosc.on('open', () => {\n  const message = new OSC.Message('/test', 12.221, 'hello')\n  osc.send(message)\n})\n\nosc.open({ port: 9000 })\n```\n\n## Installation and Usage\n\nRecommended installation via npm: `npm i osc-js` or `yarn add osc-js`.\n\nImport the library `const OSC = require('osc-js')` or add the script `lib/osc.js` or `lib/osc.min.js` (minified version) for usage in a browser.\n\n## Plugins\n\nosc-js offers a plugin architecture for extending it's networking capabilities. The library comes with four built-in plugins. This is propably all you need for an OSC application:\n\n- `WebsocketClientPlugin` (default)\n- `WebsocketServerPlugin`\n- `DatagramPlugin` for UDP network messaging\n- `BridgePlugin` useful Bridge between WebSocket- and UDP Clients\n\nConfiguration and examples of every plugin can be read here: [Wiki](https://github.com/adzialocha/osc-js/wiki).\n\n### Example: WebSocket Server\n\nRegister the plugin when creating the OSC instance:\n\n```js\nconst osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() })\nosc.open() // listening on 'ws://localhost:8080'\n```\n\n### Example: OSC between MaxMSP/PD/SC etc. and your browser\n\n1. Write a simple webpage. The library will use a WebSocket client\nby default.\n\n  ```html\n  <button id=\"send\">Send Message</button>\n  <script type=\"text/javascript\" src=\"lib/osc.browser.min.js\"></script>\n  <script type=\"text/javascript\">\n    var osc = new OSC();\n    osc.open(); // connect by default to ws://localhost:8080\n\n    document.getElementById('send').addEventListener('click', () => {\n      var message = new OSC.Message('/test/random', Math.random());\n      osc.send(message);\n    });\n  </script>\n  ```\n\n2. Write a Node app (the \"bridge\" between your UDP and WebSocket clients).\n\n  ```js\n  const OSC = require('osc-js')\n\n  const config = { udpClient: { port: 9129 } }\n  const osc = new OSC({ plugin: new OSC.BridgePlugin(config) })\n\n  osc.open() // start a WebSocket server on port 8080\n  ```\n\n3. Create your Max/MSP patch (or PD, SuperCollider etc.).\n\n  ```\n  [udpreceive 9129] // incoming '/test/random' messages with random number\n  ```\n\n### Custom solutions with Plugin API\n\nIt is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including its message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.\n\n```js\nclass MyCustomPlugin {\n  // ... read docs for implementation details\n}\n\nconst osc = new OSC({ plugin: MyCustomPlugin() })\nosc.open()\n\nosc.on('/test', message => {\n  // use event listener with your plugin\n})\n```\n\n### Usage without plugins\n\nThe library can be used without the mentioned features in case you need to write and read binary OSC data. See this example below for using the [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API) (even though the library already has a solution for handling UDP like in this example):\n\n```js\nconst dgram = require('dgram')\nconst OSC = require('osc-js')\n\nconst socket = dgram.createSocket('udp4')\n\n// send a messsage via udp\nconst message = new OSC.Message('/some/path', 21)\nconst binary = message.pack()\nsocket.send(new Buffer(binary), 0, binary.byteLength, 41234, 'localhost')\n\n// receive a message via UDP\nsocket.on('message', data => {\n  const msg = new OSC.Message()\n  msg.unpack(data)\n  console.log(msg.args)\n})\n```\n\n## Development\n\nosc-js uses [Babel](http://babeljs.io) for ES6 support, [ESDoc](https://esdoc.org) for documentation, [Mocha](https://mochajs.org/) + [Chai](http://chaijs.com/) for testing and [Rollup](https://rollupjs.org) for generating the UMD module.\n\nClone the repository and install all dependencies:\n\n```\ngit clone git@github.com:adzialocha/osc-js.git\ncd osc-js\nnpm install\n```\n\n### Testing\n\n`npm run test` for running the tests.\n`npm run test:watch` for running specs during development. Check code style with `npm run lint`.\n\n### Deployment\n\n`npm run build` for exporting UMD module in `lib` folder.\n\n### Contributors\n\n* [@adzialocha](https://github.com/adzialocha)\n* [@davidgranstrom](https://github.com/davidgranstrom)\n* [@elgiano](https://github.com/elgiano)\n* [@eliot-akira](https://github.com/eliot-akira)\n* [@PeterKey](https://github.com/PeterKey)\n* [@yaxu](https://github.com/yaxu)\n\n### ESDocs\n\n`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://adzialocha.github.io/osc-js](https://adzialocha.github.io/osc-js)\n\n## License\n\nMIT License `MIT`\n",
+    "content": "osc-js\n======\n\n<p>\n  <a href=\"https://github.com/adzialocha/osc-js/actions\">\n    <img src=\"https://github.com/adzialocha/osc-js/workflows/Node.js%20CI/badge.svg\" alt=\"Build status\">\n  </a>\n  <a href=\"https://www.npmjs.org/package/osc-js\">\n    <img src=\"https://img.shields.io/npm/v/osc-js.svg?style=flat-square\" alt=\"npm version\">\n  </a>\n  <a href=\"http://spdx.org/licenses/MIT\">\n    <img src=\"https://img.shields.io/npm/l/osc-js.svg?style=flat-square\" alt=\"npm licence\">\n  </a>\n  <a href=\"https://adzialocha.github.io/osc-js\">\n    <img src=\"https://raw.githubusercontent.com/adzialocha/osc-js/gh-pages/badge.svg\" alt=\"ESDoc status\">\n  </a>\n</p>\n\nosc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for JavaScript applications (UMD module for Node, Browser etc.) with address pattern matching and timetag handling. Sends messages via *UDP*, *WebSocket* or both (bridge mode) and offers a customizable Plugin API for network protocols.\n\n[Wiki](https://github.com/adzialocha/osc-js/wiki) | [Basic Usage](https://github.com/adzialocha/osc-js/wiki/Basic-Usage) | [Documentation](https://adzialocha.github.io/osc-js) | [Plugin API](https://github.com/adzialocha/osc-js/wiki/Plugin-API)\n\n## Features\n\n- UMD Module running in Node.js, Electron, Chrome Apps, browser or any other JS environment\n- Can be used with Webpack and Browserify\n- No dependencies (except of `ws` in Node.js or similar environments)\n- Receive sender information from incoming messages\n- Built-in *UDP*, *WebSocket* networking support as plugins\n- Special bridge plugin for easy communication between *UDP*- and *WebSocket* clients\n- Plugin API for custom network protocols\n- Featuring all [OSC 1.0 specifications](http://opensoundcontrol.org/spec-1_0)\n- OSC Address pattern matching\n- Time-critical OSC Bundles with Timetags\n- Extended (nonstandard) argument types\n\n## Documentation\n\nRead more about osc-js and how to use it in the [Wiki](https://github.com/adzialocha/osc-js/wiki) and [Documentation](https://adzialocha.github.io/osc-js).\n\n## Example\n\n```js\nconst osc = new OSC()\n\nosc.on('/param/density', (message, rinfo) => {\n  console.log(message.args)\n  console.log(rinfo)\n})\n\nosc.on('*', message => {\n  console.log(message.args)\n})\n\nosc.on('/{foo,bar}/*/param', message => {\n  console.log(message.args)\n})\n\nosc.on('open', () => {\n  const message = new OSC.Message('/test', 12.221, 'hello')\n  osc.send(message)\n})\n\nosc.open({ port: 9000 })\n```\n\n## Installation and Usage\n\nRecommended installation via npm: `npm i osc-js` or `yarn add osc-js`.\n\nImport the library `const OSC = require('osc-js')` or add the script `lib/osc.js` or `lib/osc.min.js` (minified version) for usage in a browser.\n\n## Plugins\n\nosc-js offers a plugin architecture for extending it's networking capabilities. The library comes with four built-in plugins. This is propably all you need for an OSC application:\n\n- `WebsocketClientPlugin` (default)\n- `WebsocketServerPlugin`\n- `DatagramPlugin` for UDP network messaging\n- `BridgePlugin` useful Bridge between WebSocket- and UDP Clients\n\nConfiguration and examples of every plugin can be read here: [Wiki](https://github.com/adzialocha/osc-js/wiki).\n\n### Example: WebSocket Server\n\nRegister the plugin when creating the OSC instance:\n\n```js\nconst osc = new OSC({ plugin: new OSC.WebsocketServerPlugin() })\nosc.open() // listening on 'ws://localhost:8080'\n```\n\n### Example: OSC between MaxMSP/PD/SC etc. and your browser\n\n1. Write a simple webpage. The library will use a WebSocket client\nby default.\n\n  ```html\n  <button id=\"send\">Send Message</button>\n  <script type=\"text/javascript\" src=\"lib/osc.min.js\"></script>\n  <script type=\"text/javascript\">\n    var osc = new OSC();\n    osc.open(); // connect by default to ws://localhost:8080\n\n    document.getElementById('send').addEventListener('click', () => {\n      var message = new OSC.Message('/test/random', Math.random());\n      osc.send(message);\n    });\n  </script>\n  ```\n\n2. Write a Node app (the \"bridge\" between your UDP and WebSocket clients).\n\n  ```js\n  const OSC = require('osc-js')\n\n  const config = { udpClient: { port: 9129 } }\n  const osc = new OSC({ plugin: new OSC.BridgePlugin(config) })\n\n  osc.open() // start a WebSocket server on port 8080\n  ```\n\n3. Create your Max/MSP patch (or PD, SuperCollider etc.).\n\n  ```\n  [udpreceive 9129] // incoming '/test/random' messages with random number\n  ```\n\n### Custom solutions with Plugin API\n\nIt is possible to write more sophisticated solutions for OSC applications without loosing the osc-js interface (including its message handling etc.). Read the [Plugin API documentation](https://github.com/adzialocha/osc-js/wiki/Plugin-API) for further information.\n\n```js\nclass MyCustomPlugin {\n  // ... read docs for implementation details\n}\n\nconst osc = new OSC({ plugin: MyCustomPlugin() })\nosc.open()\n\nosc.on('/test', message => {\n  // use event listener with your plugin\n})\n```\n\n### Usage without plugins\n\nThe library can be used without the mentioned features in case you need to write and read binary OSC data. See this example below for using the [Low-Level API](https://github.com/adzialocha/osc-js/wiki/Low-Level-API) (even though the library already has a solution for handling UDP like in this example):\n\n```js\nconst dgram = require('dgram')\nconst OSC = require('osc-js')\n\nconst socket = dgram.createSocket('udp4')\n\n// send a messsage via udp\nconst message = new OSC.Message('/some/path', 21)\nconst binary = message.pack()\nsocket.send(new Buffer(binary), 0, binary.byteLength, 41234, 'localhost')\n\n// receive a message via UDP\nsocket.on('message', data => {\n  const msg = new OSC.Message()\n  msg.unpack(data)\n  console.log(msg.args)\n})\n```\n\n## Development\n\nosc-js uses [Babel](http://babeljs.io) for ES6 support, [ESDoc](https://esdoc.org) for documentation, [Mocha](https://mochajs.org/) + [Chai](http://chaijs.com/) for testing and [Rollup](https://rollupjs.org) for generating the UMD module.\n\nClone the repository and install all dependencies:\n\n```\ngit clone git@github.com:adzialocha/osc-js.git\ncd osc-js\nnpm install\n```\n\n### Testing\n\n`npm run test` for running the tests.\n`npm run test:watch` for running specs during development. Check code style with `npm run lint`.\n\n### Deployment\n\n`npm run build` for exporting UMD module in `lib` folder.\n\n### Contributors\n\n* [@adzialocha](https://github.com/adzialocha)\n* [@davidgranstrom](https://github.com/davidgranstrom)\n* [@elgiano](https://github.com/elgiano)\n* [@eliot-akira](https://github.com/eliot-akira)\n* [@PeterKey](https://github.com/PeterKey)\n* [@yaxu](https://github.com/yaxu)\n\n### ESDocs\n\n`npm run docs` for generating a `docs` folder with HTML files documenting the library. Read them online here: [https://adzialocha.github.io/osc-js](https://adzialocha.github.io/osc-js)\n\n## License\n\nMIT License `MIT`\n",
     "longname": "/home/runner/work/osc-js/osc-js/README.md",
     "name": "./README.md",
     "static": true,
@@ -6475,14 +6410,14 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"osc-js\",\n  \"version\": \"2.3.1\",\n  \"description\": \"OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking\",\n  \"main\": \"lib/osc.js\",\n  \"scripts\": {\n    \"build\": \"rollup -c\",\n    \"docs\": \"esdoc\",\n    \"lint\": \"eslint rollup.config.js src/** test/**\",\n    \"test\": \"mocha test/** --require @babel/register --exit\",\n    \"test:watch\": \"mocha test/** --require @babel/register --reporter min --watch test/** src/**\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+ssh://git@github.com/adzialocha/osc-js.git\"\n  },\n  \"keywords\": [\n    \"osc\",\n    \"data\",\n    \"open\",\n    \"sound\",\n    \"control\",\n    \"websocket\",\n    \"udp\",\n    \"datagram\",\n    \"network\"\n  ],\n  \"author\": \"Andreas Dzialocha\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/adzialocha/osc-js/issues\"\n  },\n  \"files\": [\n    \"lib\"\n  ],\n  \"homepage\": \"https://github.com/adzialocha/osc-js#readme\",\n  \"devDependencies\": {\n    \"@babel/core\": \"7.17.4\",\n    \"@babel/eslint-parser\": \"7.17.0\",\n    \"@babel/preset-env\": \"7.16.11\",\n    \"@babel/register\": \"7.17.0\",\n    \"@rollup/plugin-babel\": \"^5.3.0\",\n    \"chai\": \"4.3.6\",\n    \"chai-spies-next\": \"0.9.3\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"eslint\": \"8.9.0\",\n    \"eslint-config-airbnb-base\": \"15.0.0\",\n    \"eslint-plugin-import\": \"2.25.4\",\n    \"mocha\": \"9.2.0\",\n    \"rollup\": \"2.67.2\",\n    \"rollup-plugin-cleanup\": \"3.2.1\",\n    \"rollup-plugin-terser\": \"7.0.2\"\n  },\n  \"dependencies\": {\n    \"isomorphic-ws\": \"4.0.1\",\n    \"ws\": \"8.5.0\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"osc-js\",\n  \"version\": \"2.3.1\",\n  \"description\": \"OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking\",\n  \"main\": \"lib/osc.js\",\n  \"browser\": \"lib/osc.min.js\",\n  \"scripts\": {\n    \"build\": \"rollup -c\",\n    \"docs\": \"esdoc\",\n    \"lint\": \"eslint rollup.config.js src/** test/**\",\n    \"test\": \"mocha test/** --require @babel/register --exit\",\n    \"test:watch\": \"mocha test/** --require @babel/register --reporter min --watch test/** src/**\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+ssh://git@github.com/adzialocha/osc-js.git\"\n  },\n  \"keywords\": [\n    \"osc\",\n    \"data\",\n    \"open\",\n    \"sound\",\n    \"control\",\n    \"websocket\",\n    \"udp\",\n    \"datagram\",\n    \"network\"\n  ],\n  \"author\": \"Andreas Dzialocha\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/adzialocha/osc-js/issues\"\n  },\n  \"files\": [\n    \"lib\"\n  ],\n  \"homepage\": \"https://github.com/adzialocha/osc-js#readme\",\n  \"devDependencies\": {\n    \"@babel/core\": \"7.17.9\",\n    \"@babel/eslint-parser\": \"7.17.0\",\n    \"@babel/preset-env\": \"7.16.11\",\n    \"@babel/register\": \"7.17.7\",\n    \"@rollup/plugin-alias\": \"^3.1.9\",\n    \"@rollup/plugin-babel\": \"^5.3.1\",\n    \"chai\": \"4.3.6\",\n    \"chai-spies-next\": \"0.9.3\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"eslint\": \"8.13.0\",\n    \"eslint-config-airbnb-base\": \"15.0.0\",\n    \"eslint-plugin-import\": \"2.26.0\",\n    \"mocha\": \"9.2.2\",\n    \"rollup\": \"2.70.1\",\n    \"rollup-plugin-cleanup\": \"3.2.1\",\n    \"rollup-plugin-terser\": \"7.0.2\"\n  },\n  \"dependencies\": {\n    \"ws\": \"^8.5.0\"\n  }\n}\n",
     "longname": "/home/runner/work/osc-js/osc-js/package.json",
     "name": "package.json",
     "static": true,
     "access": "public"
   },
   {
-    "__docId__": 317,
+    "__docId__": 315,
     "kind": "testFile",
     "name": "test/atomic/blob.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicBlob from '../../src/atomic/blob'\n\n/** @test {AtomicBlob} */\ndescribe('AtomicBlob', () => {\n  const bitArray = {\n    0: 0, 1: 0, 2: 0, 3: 5, 4: 54, 5: 42, 6: 11, 7: 33, 8: 66, 9: 0, 10: 0, 11: 0,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicBlob(new Uint8Array([54, 42, 11, 33, 66]))\n  })\n\n  /** @test {AtomicBlob#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n\n    it('returns the first 8 bit for the size of the data', () => {\n      const dataView = new DataView(result.buffer)\n      expect(dataView.getInt32(0, false)).to.equal(5)\n    })\n  })\n\n  /** @test {AtomicBlob#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array([0, 0, 0, 7, 1, 2, 3, 4, 5, 6, 7])\n      const dataView = new DataView(data.buffer)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 12', () => {\n      expect(atomic.offset).to.equal(12)\n    })\n\n    it('sets the value to our blob', () => {\n      expect(JSON.stringify(atomic.value)).to.equal(\n        JSON.stringify({\n          0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7,\n        }),\n      )\n    })\n  })\n})\n",
@@ -6493,7 +6428,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 318,
+    "__docId__": 316,
     "kind": "test",
     "name": "describe0",
     "testId": 0,
@@ -6509,7 +6444,7 @@
     ]
   },
   {
-    "__docId__": 319,
+    "__docId__": 317,
     "kind": "test",
     "name": "describe1",
     "testId": 1,
@@ -6525,7 +6460,7 @@
     ]
   },
   {
-    "__docId__": 320,
+    "__docId__": 318,
     "kind": "test",
     "name": "it2",
     "testId": 2,
@@ -6538,7 +6473,7 @@
     "lineNumber": 25
   },
   {
-    "__docId__": 321,
+    "__docId__": 319,
     "kind": "test",
     "name": "it3",
     "testId": 3,
@@ -6551,7 +6486,7 @@
     "lineNumber": 29
   },
   {
-    "__docId__": 322,
+    "__docId__": 320,
     "kind": "test",
     "name": "describe4",
     "testId": 4,
@@ -6567,7 +6502,7 @@
     ]
   },
   {
-    "__docId__": 323,
+    "__docId__": 321,
     "kind": "test",
     "name": "it5",
     "testId": 5,
@@ -6580,7 +6515,7 @@
     "lineNumber": 46
   },
   {
-    "__docId__": 324,
+    "__docId__": 322,
     "kind": "test",
     "name": "it6",
     "testId": 6,
@@ -6593,7 +6528,7 @@
     "lineNumber": 50
   },
   {
-    "__docId__": 325,
+    "__docId__": 323,
     "kind": "test",
     "name": "it7",
     "testId": 7,
@@ -6606,7 +6541,7 @@
     "lineNumber": 54
   },
   {
-    "__docId__": 326,
+    "__docId__": 324,
     "kind": "testFile",
     "name": "test/atomic/float32.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicFloat32 from '../../src/atomic/float32'\n\n/** @test {AtomicFloat32} */\ndescribe('AtomicFloat32', () => {\n  const bitArray = {\n    0: 70, 1: 25, 2: 124, 3: 237,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicFloat32(9823.2312155)\n  })\n\n  /** @test {AtomicFloat32#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n  })\n\n  /** @test {AtomicFloat32#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array(8)\n      const dataView = new DataView(data.buffer)\n\n      dataView.setFloat32(0, 1.254999123, false)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 4', () => {\n      expect(atomic.offset).to.equal(4)\n    })\n\n    it('sets the value to a human readable float number', () => {\n      expect(atomic.value).to.equal(Math.fround(1.254999123))\n    })\n  })\n})\n",
@@ -6617,7 +6552,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 327,
+    "__docId__": 325,
     "kind": "test",
     "name": "describe8",
     "testId": 8,
@@ -6633,7 +6568,7 @@
     ]
   },
   {
-    "__docId__": 328,
+    "__docId__": 326,
     "kind": "test",
     "name": "describe9",
     "testId": 9,
@@ -6649,7 +6584,7 @@
     ]
   },
   {
-    "__docId__": 329,
+    "__docId__": 327,
     "kind": "test",
     "name": "it10",
     "testId": 10,
@@ -6662,7 +6597,7 @@
     "lineNumber": 25
   },
   {
-    "__docId__": 330,
+    "__docId__": 328,
     "kind": "test",
     "name": "describe11",
     "testId": 11,
@@ -6678,7 +6613,7 @@
     ]
   },
   {
-    "__docId__": 331,
+    "__docId__": 329,
     "kind": "test",
     "name": "it12",
     "testId": 12,
@@ -6691,7 +6626,7 @@
     "lineNumber": 43
   },
   {
-    "__docId__": 332,
+    "__docId__": 330,
     "kind": "test",
     "name": "it13",
     "testId": 13,
@@ -6704,7 +6639,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 333,
+    "__docId__": 331,
     "kind": "test",
     "name": "it14",
     "testId": 14,
@@ -6717,7 +6652,7 @@
     "lineNumber": 51
   },
   {
-    "__docId__": 334,
+    "__docId__": 332,
     "kind": "testFile",
     "name": "test/atomic/int32.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicInt32 from '../../src/atomic/int32'\n\n/** @test {AtomicInt32} */\ndescribe('AtomicInt32', () => {\n  const bitArray = {\n    0: 0, 1: 0, 2: 0, 3: 42,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicInt32(42)\n  })\n\n  /** @test {AtomicInt32#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n  })\n\n  /** @test {AtomicInt32#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array(4)\n      const dataView = new DataView(data.buffer)\n\n      dataView.setInt32(0, 214748364, false)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 4', () => {\n      expect(atomic.offset).to.equal(4)\n    })\n\n    it('sets the value to a human readable number', () => {\n      expect(atomic.value).to.equal(214748364)\n    })\n  })\n})\n",
@@ -6728,7 +6663,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 335,
+    "__docId__": 333,
     "kind": "test",
     "name": "describe15",
     "testId": 15,
@@ -6744,7 +6679,7 @@
     ]
   },
   {
-    "__docId__": 336,
+    "__docId__": 334,
     "kind": "test",
     "name": "describe16",
     "testId": 16,
@@ -6760,7 +6695,7 @@
     ]
   },
   {
-    "__docId__": 337,
+    "__docId__": 335,
     "kind": "test",
     "name": "it17",
     "testId": 17,
@@ -6773,7 +6708,7 @@
     "lineNumber": 25
   },
   {
-    "__docId__": 338,
+    "__docId__": 336,
     "kind": "test",
     "name": "describe18",
     "testId": 18,
@@ -6789,7 +6724,7 @@
     ]
   },
   {
-    "__docId__": 339,
+    "__docId__": 337,
     "kind": "test",
     "name": "it19",
     "testId": 19,
@@ -6802,7 +6737,7 @@
     "lineNumber": 43
   },
   {
-    "__docId__": 340,
+    "__docId__": 338,
     "kind": "test",
     "name": "it20",
     "testId": 20,
@@ -6815,7 +6750,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 341,
+    "__docId__": 339,
     "kind": "test",
     "name": "it21",
     "testId": 21,
@@ -6828,7 +6763,7 @@
     "lineNumber": 51
   },
   {
-    "__docId__": 342,
+    "__docId__": 340,
     "kind": "testFile",
     "name": "test/atomic/int64.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicInt64 from '../../src/atomic/int64'\n\nconst MAX_INT64 = BigInt('9223372036854775807')\nconst MIN_INT64 = BigInt('-9223372036854775808')\n\n/** @test {AtomicInt64} */\ndescribe('AtomicInt64', () => {\n  const bitArray = {\n    0: 127, 1: 255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicInt64(MAX_INT64)\n  })\n\n  describe('bounds', () => {\n    it('throws an error in constructor if out of bounds', () => {\n      /* eslint-disable no-new */\n      expect(() => { new AtomicInt64(MAX_INT64 + BigInt('1')) }).to.throw('OSC AtomicInt64 value is out of bounds')\n      expect(() => { new AtomicInt64(MIN_INT64 + BigInt('-1')) }).to.throw('OSC AtomicInt64 value is out of bounds')\n      /* eslint-enable no-new */\n    })\n  })\n\n  /** @test {AtomicInt64#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n  })\n\n  /** @test {AtomicInt64#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array(8)\n      const dataView = new DataView(data.buffer)\n\n      dataView.setBigInt64(0, BigInt.asIntN(64, MAX_INT64), false)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 4', () => {\n      expect(atomic.offset).to.equal(8)\n    })\n\n    it('sets the value to a human readable number', () => {\n      const res = atomic.value === MAX_INT64\n      expect(res).to.be.true\n    })\n  })\n})\n",
@@ -6839,7 +6774,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 343,
+    "__docId__": 341,
     "kind": "test",
     "name": "describe22",
     "testId": 22,
@@ -6855,7 +6790,7 @@
     ]
   },
   {
-    "__docId__": 344,
+    "__docId__": 342,
     "kind": "test",
     "name": "describe23",
     "testId": 23,
@@ -6868,7 +6803,7 @@
     "lineNumber": 20
   },
   {
-    "__docId__": 345,
+    "__docId__": 343,
     "kind": "test",
     "name": "it24",
     "testId": 24,
@@ -6881,7 +6816,7 @@
     "lineNumber": 21
   },
   {
-    "__docId__": 346,
+    "__docId__": 344,
     "kind": "test",
     "name": "describe25",
     "testId": 25,
@@ -6897,7 +6832,7 @@
     ]
   },
   {
-    "__docId__": 347,
+    "__docId__": 345,
     "kind": "test",
     "name": "it26",
     "testId": 26,
@@ -6910,7 +6845,7 @@
     "lineNumber": 37
   },
   {
-    "__docId__": 348,
+    "__docId__": 346,
     "kind": "test",
     "name": "describe27",
     "testId": 27,
@@ -6926,7 +6861,7 @@
     ]
   },
   {
-    "__docId__": 349,
+    "__docId__": 347,
     "kind": "test",
     "name": "it28",
     "testId": 28,
@@ -6939,7 +6874,7 @@
     "lineNumber": 55
   },
   {
-    "__docId__": 350,
+    "__docId__": 348,
     "kind": "test",
     "name": "it29",
     "testId": 29,
@@ -6952,7 +6887,7 @@
     "lineNumber": 59
   },
   {
-    "__docId__": 351,
+    "__docId__": 349,
     "kind": "test",
     "name": "it30",
     "testId": 30,
@@ -6965,7 +6900,7 @@
     "lineNumber": 63
   },
   {
-    "__docId__": 352,
+    "__docId__": 350,
     "kind": "testFile",
     "name": "test/atomic/string.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicString from '../../src/atomic/string'\n\nfunction generateLongString(length = 500000) {\n  let str = ''\n\n  for (let i = 0; i < length; i += 1) {\n    str += 'a'\n  }\n\n  return str\n}\n\n/** @test {AtomicString} */\ndescribe('AtomicString', () => {\n  const bitArrayHello = [104, 97, 108, 108, 111, 0, 0, 0]\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicString('hallo')\n  })\n\n  /** @test {AtomicString#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array(bitArrayHello)\n      const dataView = new DataView(data.buffer)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to a multiple of 4', () => {\n      expect(atomic.offset % 4).to.equal(0)\n    })\n\n    it('sets the value to a human readable string', () => {\n      expect(atomic.value).to.equal('hallo')\n    })\n  })\n\n  /** @test {AtomicString#pack} */\n  describe('pack', () => {\n    it('returns correct bits', () => {\n      expect(JSON.stringify(atomic.pack())).to.equal(\n        JSON.stringify(new Int8Array(bitArrayHello)),\n      )\n    })\n\n    it('converts a long string without throwing RangeError', () => {\n      const longString = generateLongString()\n      const largeAtomic = new AtomicString(longString)\n      const dataView = new DataView(largeAtomic.pack().buffer)\n\n      expect(() => {\n        largeAtomic.unpack(dataView, 0)\n      }).to.not.throw(RangeError)\n    })\n  })\n})\n",
@@ -6976,7 +6911,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 353,
+    "__docId__": 351,
     "kind": "test",
     "name": "describe31",
     "testId": 31,
@@ -6992,7 +6927,7 @@
     ]
   },
   {
-    "__docId__": 354,
+    "__docId__": 352,
     "kind": "test",
     "name": "describe32",
     "testId": 32,
@@ -7008,7 +6943,7 @@
     ]
   },
   {
-    "__docId__": 355,
+    "__docId__": 353,
     "kind": "test",
     "name": "it33",
     "testId": 33,
@@ -7021,7 +6956,7 @@
     "lineNumber": 36
   },
   {
-    "__docId__": 356,
+    "__docId__": 354,
     "kind": "test",
     "name": "it34",
     "testId": 34,
@@ -7034,7 +6969,7 @@
     "lineNumber": 40
   },
   {
-    "__docId__": 357,
+    "__docId__": 355,
     "kind": "test",
     "name": "it35",
     "testId": 35,
@@ -7047,7 +6982,7 @@
     "lineNumber": 44
   },
   {
-    "__docId__": 358,
+    "__docId__": 356,
     "kind": "test",
     "name": "describe36",
     "testId": 36,
@@ -7063,7 +6998,7 @@
     ]
   },
   {
-    "__docId__": 359,
+    "__docId__": 357,
     "kind": "test",
     "name": "it37",
     "testId": 37,
@@ -7076,7 +7011,7 @@
     "lineNumber": 51
   },
   {
-    "__docId__": 360,
+    "__docId__": 358,
     "kind": "test",
     "name": "it38",
     "testId": 38,
@@ -7089,7 +7024,7 @@
     "lineNumber": 57
   },
   {
-    "__docId__": 361,
+    "__docId__": 359,
     "kind": "testFile",
     "name": "test/atomic/timetag.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicTimetag, {\n  Timetag,\n  SECONDS_70_YEARS,\n} from '../../src/atomic/timetag'\n\n/** @test {Timetag} */\ndescribe('Timetag', () => {\n  let timetag\n  let anotherTimetag\n\n  before(() => {\n    timetag = new Timetag(SECONDS_70_YEARS + 1234, 0)\n    anotherTimetag = new Timetag(3718482449, 131799040)\n  })\n\n  it('sets the values correctly on initialization', () => {\n    expect(timetag.seconds).to.be.equals(SECONDS_70_YEARS + 1234)\n    expect(timetag.fractions).to.be.equals(0)\n  })\n\n  /** @test {Timetag#timestamp} */\n  describe('timestamp', () => {\n    it('converts correctly to js timestamps', () => {\n      expect(timetag.timestamp()).to.be.equals(1234 * 1000)\n      expect(anotherTimetag.timestamp()).to.be.equals(1509493649000)\n    })\n\n    it('converts correctly to NTP timestamps', () => {\n      timetag.timestamp(1)\n\n      expect(timetag.seconds).to.be.equals(SECONDS_70_YEARS)\n      expect(timetag.fractions).to.be.equals(4294967)\n    })\n  })\n})\n\n/** @test {AtomicTimetag} */\ndescribe('AtomicTimetag', () => {\n  const bitArray = {\n    0: 0, 1: 1, 2: 248, 3: 99, 4: 0, 5: 4, 6: 84, 7: 63,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicTimetag(new Timetag(129123, 283711))\n  })\n\n  /** @test {AtomicTimetag#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n\n    it('consists of 64 bits', () => {\n      expect(result.byteLength * 8).to.equal(64)\n    })\n  })\n\n  /** @test {AtomicTimetag#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array([1, 1, 1, 0, 0, 0, 1, 0])\n      const dataView = new DataView(data.buffer)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 8', () => {\n      expect(atomic.offset).to.equal(8)\n    })\n\n    it('sets the correct NTP values', () => {\n      expect(atomic.value.seconds).to.equal(16843008)\n      expect(atomic.value.fractions).to.equal(256)\n    })\n  })\n\n  describe('constructor', () => {\n    it('with an integer timestamp', () => {\n      atomic = new AtomicTimetag(5000)\n      expect(atomic.value.seconds).to.equal(2208988805)\n    })\n\n    it('with a Date instance', () => {\n      const date = new Date(2015, 2, 21, 5, 0, 21)\n      date.setUTCHours(4)\n      atomic = new AtomicTimetag(date)\n      expect(atomic.value.seconds).to.equal(3635899221)\n    })\n  })\n})\n",
@@ -7100,7 +7035,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 362,
+    "__docId__": 360,
     "kind": "test",
     "name": "describe39",
     "testId": 39,
@@ -7116,7 +7051,7 @@
     ]
   },
   {
-    "__docId__": 363,
+    "__docId__": 361,
     "kind": "test",
     "name": "it40",
     "testId": 40,
@@ -7129,7 +7064,7 @@
     "lineNumber": 18
   },
   {
-    "__docId__": 364,
+    "__docId__": 362,
     "kind": "test",
     "name": "describe41",
     "testId": 41,
@@ -7145,7 +7080,7 @@
     ]
   },
   {
-    "__docId__": 365,
+    "__docId__": 363,
     "kind": "test",
     "name": "it42",
     "testId": 42,
@@ -7158,7 +7093,7 @@
     "lineNumber": 25
   },
   {
-    "__docId__": 366,
+    "__docId__": 364,
     "kind": "test",
     "name": "it43",
     "testId": 43,
@@ -7171,7 +7106,7 @@
     "lineNumber": 30
   },
   {
-    "__docId__": 367,
+    "__docId__": 365,
     "kind": "test",
     "name": "describe44",
     "testId": 44,
@@ -7187,7 +7122,7 @@
     ]
   },
   {
-    "__docId__": 368,
+    "__docId__": 366,
     "kind": "test",
     "name": "describe45",
     "testId": 45,
@@ -7203,7 +7138,7 @@
     ]
   },
   {
-    "__docId__": 369,
+    "__docId__": 367,
     "kind": "test",
     "name": "it46",
     "testId": 46,
@@ -7216,7 +7151,7 @@
     "lineNumber": 59
   },
   {
-    "__docId__": 370,
+    "__docId__": 368,
     "kind": "test",
     "name": "it47",
     "testId": 47,
@@ -7229,7 +7164,7 @@
     "lineNumber": 63
   },
   {
-    "__docId__": 371,
+    "__docId__": 369,
     "kind": "test",
     "name": "describe48",
     "testId": 48,
@@ -7245,7 +7180,7 @@
     ]
   },
   {
-    "__docId__": 372,
+    "__docId__": 370,
     "kind": "test",
     "name": "it49",
     "testId": 49,
@@ -7258,7 +7193,7 @@
     "lineNumber": 79
   },
   {
-    "__docId__": 373,
+    "__docId__": 371,
     "kind": "test",
     "name": "it50",
     "testId": 50,
@@ -7271,7 +7206,7 @@
     "lineNumber": 83
   },
   {
-    "__docId__": 374,
+    "__docId__": 372,
     "kind": "test",
     "name": "it51",
     "testId": 51,
@@ -7284,7 +7219,7 @@
     "lineNumber": 87
   },
   {
-    "__docId__": 375,
+    "__docId__": 373,
     "kind": "test",
     "name": "describe52",
     "testId": 52,
@@ -7297,7 +7232,7 @@
     "lineNumber": 93
   },
   {
-    "__docId__": 376,
+    "__docId__": 374,
     "kind": "test",
     "name": "it53",
     "testId": 53,
@@ -7310,7 +7245,7 @@
     "lineNumber": 94
   },
   {
-    "__docId__": 377,
+    "__docId__": 375,
     "kind": "test",
     "name": "it54",
     "testId": 54,
@@ -7323,7 +7258,7 @@
     "lineNumber": 99
   },
   {
-    "__docId__": 378,
+    "__docId__": 376,
     "kind": "testFile",
     "name": "test/atomic/uint64.spec.js",
     "content": "import { expect } from 'chai'\n\nimport AtomicUInt64 from '../../src/atomic/uint64'\n\nconst MAX_UINT64 = BigInt('18446744073709551615')\n\n/** @test {AtomicUInt64} */\ndescribe('AtomicUInt64', () => {\n  const bitArray = {\n    0: 255, 1: 255, 2: 255, 3: 255, 4: 255, 5: 255, 6: 255, 7: 255,\n  }\n\n  let atomic\n\n  before(() => {\n    atomic = new AtomicUInt64(MAX_UINT64)\n  })\n\n  describe('bounds', () => {\n    it('throws an error in constructor if out of bounds', () => {\n      /* eslint-disable no-new */\n      expect(() => { new AtomicUInt64(MAX_UINT64 + BigInt('1')) }).to.throw('OSC AtomicUInt64 value is out of bounds')\n      expect(() => { new AtomicUInt64(BigInt('-1')) }).to.throw('OSC AtomicUInt64 value is out of bounds')\n      /* eslint-enable no-new */\n    })\n  })\n\n  /** @test {AtomicUInt64#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      result = atomic.pack()\n    })\n\n    it('returns correct bits', () => {\n      expect(JSON.stringify(result)).to.equal(JSON.stringify(bitArray))\n    })\n  })\n\n  /** @test {AtomicUInt64#unpack} */\n  describe('unpack', () => {\n    let returnValue\n\n    before(() => {\n      const data = new Uint8Array(8)\n      const dataView = new DataView(data.buffer)\n\n      dataView.setBigInt64(0, BigInt.asUintN(64, MAX_UINT64), false)\n\n      returnValue = atomic.unpack(dataView, 0)\n    })\n\n    it('returns a number', () => {\n      expect(returnValue).to.be.a('number')\n    })\n\n    it('sets the offset to 4', () => {\n      expect(atomic.offset).to.equal(8)\n    })\n\n    it('sets the value to a human readable number', () => {\n      const res = atomic.value === MAX_UINT64\n      expect(res).to.be.true\n    })\n  })\n})\n",
@@ -7334,7 +7269,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 379,
+    "__docId__": 377,
     "kind": "test",
     "name": "describe55",
     "testId": 55,
@@ -7350,7 +7285,7 @@
     ]
   },
   {
-    "__docId__": 380,
+    "__docId__": 378,
     "kind": "test",
     "name": "describe56",
     "testId": 56,
@@ -7363,7 +7298,7 @@
     "lineNumber": 19
   },
   {
-    "__docId__": 381,
+    "__docId__": 379,
     "kind": "test",
     "name": "it57",
     "testId": 57,
@@ -7376,7 +7311,7 @@
     "lineNumber": 20
   },
   {
-    "__docId__": 382,
+    "__docId__": 380,
     "kind": "test",
     "name": "describe58",
     "testId": 58,
@@ -7392,7 +7327,7 @@
     ]
   },
   {
-    "__docId__": 383,
+    "__docId__": 381,
     "kind": "test",
     "name": "it59",
     "testId": 59,
@@ -7405,7 +7340,7 @@
     "lineNumber": 36
   },
   {
-    "__docId__": 384,
+    "__docId__": 382,
     "kind": "test",
     "name": "describe60",
     "testId": 60,
@@ -7421,7 +7356,7 @@
     ]
   },
   {
-    "__docId__": 385,
+    "__docId__": 383,
     "kind": "test",
     "name": "it61",
     "testId": 61,
@@ -7434,7 +7369,7 @@
     "lineNumber": 54
   },
   {
-    "__docId__": 386,
+    "__docId__": 384,
     "kind": "test",
     "name": "it62",
     "testId": 62,
@@ -7447,7 +7382,7 @@
     "lineNumber": 58
   },
   {
-    "__docId__": 387,
+    "__docId__": 385,
     "kind": "test",
     "name": "it63",
     "testId": 63,
@@ -7460,7 +7395,7 @@
     "lineNumber": 62
   },
   {
-    "__docId__": 388,
+    "__docId__": 386,
     "kind": "testFile",
     "name": "test/atomic.spec.js",
     "content": "import { expect } from 'chai'\n\nimport Atomic from '../src/atomic'\nimport AtomicBlob from '../src/atomic/blob'\nimport AtomicFloat32 from '../src/atomic/float32'\nimport AtomicFloat64 from '../src/atomic/float64'\nimport AtomicInt32 from '../src/atomic/int32'\nimport AtomicInt64 from '../src/atomic/int64'\nimport AtomicString from '../src/atomic/string'\nimport AtomicTimetag, {\n  Timetag,\n  SECONDS_70_YEARS,\n} from '../src/atomic/timetag'\nimport AtomicUInt64 from '../src/atomic/uint64'\n\n/** @test {Atomic} */\ndescribe('Atomic', () => {\n  let atomic\n  let atomicChildren\n\n  before(() => {\n    atomic = new Atomic(2)\n\n    atomicChildren = [\n      new AtomicInt32(0),\n      new AtomicInt32(123132132),\n      new AtomicInt64(BigInt('0x7FFFFFFFFFFFFFFF')),\n      new AtomicUInt64(BigInt('0xFFFFFFFFFFFFFFFF')),\n      new AtomicFloat32(1299389992.342243),\n      new AtomicFloat64(1299389992.342243),\n      new AtomicString('hello'),\n      new AtomicString(''),\n      new AtomicBlob(new Uint8Array([5, 4, 3, 2, 1])),\n      new AtomicTimetag(new Timetag(SECONDS_70_YEARS + 123, 3312123)),\n    ]\n  })\n\n  it('sets the given value on construction', () => {\n    expect(atomic.value).to.equal(2)\n  })\n\n  it('sets an initial offset of zero', () => {\n    expect(atomic.offset).to.be.equals(0)\n  })\n\n  /** @test {Atomic#unpack} */\n  describe('unpack', () => {\n    it('exists', () => {\n      atomicChildren.forEach((atomicItem) => {\n        expect(atomicItem).to.have.property('unpack')\n      })\n    })\n  })\n\n  describe('pack', () => {\n    it('returns a multiple of 32', () => {\n      atomicChildren.forEach((atomicItem) => {\n        expect((atomicItem.pack().byteLength * 8) % 32).to.equal(0)\n      })\n    })\n\n    it('returns an object of type Uint8Array', () => {\n      atomicChildren.forEach((atomicItem) => {\n        expect(atomicItem.pack()).to.be.a('uint8Array')\n      })\n    })\n  })\n})\n",
@@ -7471,7 +7406,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 389,
+    "__docId__": 387,
     "kind": "test",
     "name": "describe64",
     "testId": 64,
@@ -7487,7 +7422,7 @@
     ]
   },
   {
-    "__docId__": 390,
+    "__docId__": 388,
     "kind": "test",
     "name": "it65",
     "testId": 65,
@@ -7500,7 +7435,7 @@
     "lineNumber": 38
   },
   {
-    "__docId__": 391,
+    "__docId__": 389,
     "kind": "test",
     "name": "it66",
     "testId": 66,
@@ -7513,7 +7448,7 @@
     "lineNumber": 42
   },
   {
-    "__docId__": 392,
+    "__docId__": 390,
     "kind": "test",
     "name": "describe67",
     "testId": 67,
@@ -7529,7 +7464,7 @@
     ]
   },
   {
-    "__docId__": 393,
+    "__docId__": 391,
     "kind": "test",
     "name": "it68",
     "testId": 68,
@@ -7542,7 +7477,7 @@
     "lineNumber": 48
   },
   {
-    "__docId__": 394,
+    "__docId__": 392,
     "kind": "test",
     "name": "describe69",
     "testId": 69,
@@ -7555,7 +7490,7 @@
     "lineNumber": 55
   },
   {
-    "__docId__": 395,
+    "__docId__": 393,
     "kind": "test",
     "name": "it70",
     "testId": 70,
@@ -7568,7 +7503,7 @@
     "lineNumber": 56
   },
   {
-    "__docId__": 396,
+    "__docId__": 394,
     "kind": "test",
     "name": "it71",
     "testId": 71,
@@ -7581,7 +7516,7 @@
     "lineNumber": 62
   },
   {
-    "__docId__": 397,
+    "__docId__": 395,
     "kind": "testFile",
     "name": "test/bundle.spec.js",
     "content": "import { expect } from 'chai'\n\nimport Bundle from '../src/bundle'\nimport Message from '../src/message'\n\n/** @test {Bundle} */\ndescribe('Bundle', () => {\n  let bundle\n\n  it('contains a set of osc bundle data', () => {\n    bundle = new Bundle()\n    expect(bundle.timetag).to.exist\n  })\n\n  describe('add', () => {\n    before(() => {\n      const message = new Message('/foo/bar', 1, 2, 'ho')\n\n      bundle = new Bundle([message])\n      bundle.add(new Message('/some/path', 42.1))\n      bundle.add(new Bundle(Date.now() + 500))\n    })\n\n    it('contains 3 bundle elements', () => {\n      expect(bundle.bundleElements.length).to.equals(3)\n    })\n  })\n\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      bundle = new Bundle([new Message('/super/path', 12)])\n      result = bundle.pack()\n    })\n\n    it('returns a multiple of 32', () => {\n      expect((result.byteLength * 8) % 32).to.equal(0)\n    })\n\n    it('can be unpacked again', () => {\n      const anotherBundle = new Bundle()\n      anotherBundle.unpack(new DataView(result.buffer), 0)\n\n      expect(anotherBundle.bundleElements[0].address).to.equal('/super/path')\n      expect(anotherBundle.bundleElements[0].args[0]).to.equal(12)\n    })\n  })\n\n  describe('unpack', () => {\n    let result\n\n    before(() => {\n      const data = new Uint8Array([35, 98, 117, 110, 100, 108, 101, 0, 220, 10,\n        223, 251, 100, 221, 48, 0, 0, 0, 0, 20, 47, 116, 101, 115, 116, 47, 112,\n        97, 116, 104, 0, 0, 44, 102, 0, 0, 66, 76, 204, 205])\n      const dataView = new DataView(data.buffer)\n\n      bundle = new Bundle()\n      result = bundle.unpack(dataView, 0)\n    })\n\n    it('decodes the correct timetag', () => {\n      expect(bundle.timetag.value.seconds).to.equal(3691700219)\n    })\n\n    it('returns a number', () => {\n      expect(result).to.be.a('number')\n    })\n  })\n\n  describe('timestamp', () => {\n    before(() => {\n      bundle = new Bundle()\n      bundle.timestamp(1234)\n    })\n\n    it('sets the timetag', () => {\n      expect(bundle.timetag.value.seconds).to.equal(2208988801)\n    })\n  })\n})\n",
@@ -7592,7 +7527,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 398,
+    "__docId__": 396,
     "kind": "test",
     "name": "describe72",
     "testId": 72,
@@ -7608,7 +7543,7 @@
     ]
   },
   {
-    "__docId__": 399,
+    "__docId__": 397,
     "kind": "test",
     "name": "it73",
     "testId": 73,
@@ -7621,7 +7556,7 @@
     "lineNumber": 10
   },
   {
-    "__docId__": 400,
+    "__docId__": 398,
     "kind": "test",
     "name": "describe74",
     "testId": 74,
@@ -7634,7 +7569,7 @@
     "lineNumber": 15
   },
   {
-    "__docId__": 401,
+    "__docId__": 399,
     "kind": "test",
     "name": "it75",
     "testId": 75,
@@ -7647,7 +7582,7 @@
     "lineNumber": 24
   },
   {
-    "__docId__": 402,
+    "__docId__": 400,
     "kind": "test",
     "name": "describe76",
     "testId": 76,
@@ -7660,7 +7595,7 @@
     "lineNumber": 29
   },
   {
-    "__docId__": 403,
+    "__docId__": 401,
     "kind": "test",
     "name": "it77",
     "testId": 77,
@@ -7673,7 +7608,7 @@
     "lineNumber": 37
   },
   {
-    "__docId__": 404,
+    "__docId__": 402,
     "kind": "test",
     "name": "it78",
     "testId": 78,
@@ -7686,7 +7621,7 @@
     "lineNumber": 41
   },
   {
-    "__docId__": 405,
+    "__docId__": 403,
     "kind": "test",
     "name": "describe79",
     "testId": 79,
@@ -7699,7 +7634,7 @@
     "lineNumber": 50
   },
   {
-    "__docId__": 406,
+    "__docId__": 404,
     "kind": "test",
     "name": "it80",
     "testId": 80,
@@ -7712,7 +7647,7 @@
     "lineNumber": 63
   },
   {
-    "__docId__": 407,
+    "__docId__": 405,
     "kind": "test",
     "name": "it81",
     "testId": 81,
@@ -7725,7 +7660,7 @@
     "lineNumber": 67
   },
   {
-    "__docId__": 408,
+    "__docId__": 406,
     "kind": "test",
     "name": "describe82",
     "testId": 82,
@@ -7738,7 +7673,7 @@
     "lineNumber": 72
   },
   {
-    "__docId__": 409,
+    "__docId__": 407,
     "kind": "test",
     "name": "it83",
     "testId": 83,
@@ -7751,7 +7686,7 @@
     "lineNumber": 78
   },
   {
-    "__docId__": 410,
+    "__docId__": 408,
     "kind": "testFile",
     "name": "test/common/helpers.spec.js",
     "content": "import { expect } from 'chai'\n\nimport EncodeHelper, { typeTag, prepareAddress } from '../../src/common/helpers'\n\nimport AtomicFloat32 from '../../src/atomic/float32'\nimport AtomicString from '../../src/atomic/string'\n\n/** @test {typeTag} */\ndescribe('typeTag', () => {\n  it('returns the right OSC Type Tag characters', () => {\n    expect(typeTag(2)).to.be.equals('i')\n    expect(typeTag(2.2)).to.be.equals('f')\n    expect(typeTag('joe')).to.be.equals('s')\n    expect(typeTag(new Uint8Array([1, 2, 3]))).to.be.equals('b')\n  })\n})\n\n/** @test {prepareAddress} */\ndescribe('prepareAddress', () => {\n  it('builds an valid  address from an array', () => {\n    expect(prepareAddress(['hello', 'world'])).to.be.equals('/hello/world')\n  })\n\n  it('builds an valid  address from an invalid string', () => {\n    expect(prepareAddress('hello/world')).to.be.equals('/hello/world')\n  })\n\n  it('removes the last slash', () => {\n    expect(prepareAddress('/hello/world/')).to.be.equals('/hello/world')\n  })\n})\n\n/** @test {EncodeHelper} */\ndescribe('EncodeHelper', () => {\n  let encoder\n\n  before(() => {\n    encoder = new EncodeHelper()\n    encoder.add(new AtomicFloat32(24.12))\n    encoder.add(new AtomicString('joe'))\n  })\n\n  it('adds items up and increases the byteLength accordingly', () => {\n    expect(encoder.byteLength).to.be.equals(8)\n    expect(encoder.data.length).to.be.equals(2)\n  })\n\n  it('merges the items to one Uint8Array', () => {\n    const merged = encoder.merge()\n\n    expect(merged.length).to.be.equals(8)\n    expect(merged).to.be.a('uint8array')\n  })\n})\n",
@@ -7762,7 +7697,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 411,
+    "__docId__": 409,
     "kind": "test",
     "name": "describe84",
     "testId": 84,
@@ -7778,7 +7713,7 @@
     ]
   },
   {
-    "__docId__": 412,
+    "__docId__": 410,
     "kind": "test",
     "name": "it85",
     "testId": 85,
@@ -7791,7 +7726,7 @@
     "lineNumber": 10
   },
   {
-    "__docId__": 413,
+    "__docId__": 411,
     "kind": "test",
     "name": "describe86",
     "testId": 86,
@@ -7807,7 +7742,7 @@
     ]
   },
   {
-    "__docId__": 414,
+    "__docId__": 412,
     "kind": "test",
     "name": "it87",
     "testId": 87,
@@ -7820,7 +7755,7 @@
     "lineNumber": 20
   },
   {
-    "__docId__": 415,
+    "__docId__": 413,
     "kind": "test",
     "name": "it88",
     "testId": 88,
@@ -7833,7 +7768,7 @@
     "lineNumber": 24
   },
   {
-    "__docId__": 416,
+    "__docId__": 414,
     "kind": "test",
     "name": "it89",
     "testId": 89,
@@ -7846,7 +7781,7 @@
     "lineNumber": 28
   },
   {
-    "__docId__": 417,
+    "__docId__": 415,
     "kind": "test",
     "name": "describe90",
     "testId": 90,
@@ -7862,7 +7797,7 @@
     ]
   },
   {
-    "__docId__": 418,
+    "__docId__": 416,
     "kind": "test",
     "name": "it91",
     "testId": 91,
@@ -7875,7 +7810,7 @@
     "lineNumber": 43
   },
   {
-    "__docId__": 419,
+    "__docId__": 417,
     "kind": "test",
     "name": "it92",
     "testId": 92,
@@ -7888,7 +7823,7 @@
     "lineNumber": 48
   },
   {
-    "__docId__": 420,
+    "__docId__": 418,
     "kind": "testFile",
     "name": "test/common/utils.spec.js",
     "content": "import { expect } from 'chai'\n\nimport { pad, isNull, isUndefined } from '../../src/common/utils'\n\n/** @test {pad} */\ndescribe('pad', () => {\n  it('returns the next multiple of 4', () => {\n    expect(pad(2)).to.be.equals(4)\n    expect(pad(8)).to.be.equals(8)\n    expect(pad(31)).to.be.equals(32)\n    expect(pad(0)).to.be.equals(0)\n  })\n})\n\n/** @test {isNull} */\ndescribe('isNull', () => {\n  it('correctly identifies null value', () => {\n    expect(isNull(0)).to.be.false\n    expect(isNull(undefined)).to.be.false\n    expect(isNull(null)).to.be.true\n  })\n})\n\n/** @test {isUndefined} */\ndescribe('isUndefined', () => {\n  it('correctly identifies undefined value', () => {\n    expect(isUndefined(0)).to.be.false\n    expect(isUndefined(undefined)).to.be.true\n    expect(isUndefined(null)).to.be.false\n  })\n})\n",
@@ -7899,7 +7834,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 421,
+    "__docId__": 419,
     "kind": "test",
     "name": "describe93",
     "testId": 93,
@@ -7915,7 +7850,7 @@
     ]
   },
   {
-    "__docId__": 422,
+    "__docId__": 420,
     "kind": "test",
     "name": "it94",
     "testId": 94,
@@ -7928,7 +7863,7 @@
     "lineNumber": 7
   },
   {
-    "__docId__": 423,
+    "__docId__": 421,
     "kind": "test",
     "name": "describe95",
     "testId": 95,
@@ -7944,7 +7879,7 @@
     ]
   },
   {
-    "__docId__": 424,
+    "__docId__": 422,
     "kind": "test",
     "name": "it96",
     "testId": 96,
@@ -7957,7 +7892,7 @@
     "lineNumber": 17
   },
   {
-    "__docId__": 425,
+    "__docId__": 423,
     "kind": "test",
     "name": "describe97",
     "testId": 97,
@@ -7973,7 +7908,7 @@
     ]
   },
   {
-    "__docId__": 426,
+    "__docId__": 424,
     "kind": "test",
     "name": "it98",
     "testId": 98,
@@ -7986,7 +7921,7 @@
     "lineNumber": 26
   },
   {
-    "__docId__": 427,
+    "__docId__": 425,
     "kind": "testFile",
     "name": "test/events.spec.js",
     "content": "import chai, { expect } from 'chai'\nimport spies from 'chai-spies-next'\n\nimport EventHandler from '../src/events'\nimport Message from '../src/message'\n\nchai.use(spies)\n\n/** @test {EventHandler} */\ndescribe('EventHandler', () => {\n  let handler\n\n  before(() => {\n    handler = new EventHandler()\n  })\n\n  /** @test {EventHandler#on} */\n  describe('on', () => {\n    let spy\n    let id\n\n    before(() => {\n      spy = chai.spy()\n      id = handler.on('/test/path', spy)\n    })\n\n    it('returns different subscription ids for each listener', () => {\n      const anotherId = handler.on(['test', 'path'], () => {})\n      expect(id !== anotherId).to.be.true\n    })\n\n    it('registers a handler which can be called', () => {\n      handler.notify('/test/path', {})\n      expect(spy).to.have.been.called()\n    })\n  })\n\n  /** @test {EventHandler#off} */\n  describe('off', () => {\n    let spy\n    let id\n\n    before(() => {\n      spy = chai.spy()\n      id = handler.on('/test/path', spy)\n    })\n\n    it('removes a handler', () => {\n      const success = handler.off('/test/path', id)\n      handler.notify('/test/path', {})\n\n      expect(spy).to.not.have.been.called()\n      expect(success).to.be.true\n    })\n\n    it('returns false when handler was not found', () => {\n      const success = handler.off('/test/path/which/does/not/exist', id)\n      expect(success).to.be.false\n    })\n  })\n\n  /** @test {EventHandler#notify} */\n  describe('notify', () => {\n    const testdata = {\n      test: 'data',\n    }\n\n    const spy = []\n\n    before(() => {\n      for (let i = 0; i < 12; i += 1) {\n        spy.push(chai.spy())\n      }\n\n      // regular address handlers\n      handler.on('/', spy[0])\n      handler.on('/one/test', spy[1])\n      handler.on('/and/another', spy[2])\n      handler.on('/two/test/path', spy[3])\n      handler.on(['two', 'test', 'path'], spy[4])\n      handler.on('/two/some/path', spy[5])\n\n      // system event handlers\n      handler.on('error', spy[6])\n      handler.on('close', spy[7])\n      handler.on('open', spy[8])\n\n      // pattern address handlers\n      handler.on('/two/*/path', spy[9])\n      handler.on('*', spy[10])\n      handler.on('/o?e/{test,bar}', spy[11])\n    })\n\n    afterEach(() => {\n      spy.forEach((item) => {\n        item.reset()\n      })\n    })\n\n    it('passes over the event data', () => {\n      handler.notify('/and/another', testdata)\n      expect(spy[2]).have.been.called.with(testdata)\n    })\n\n    it('accepts messages', () => {\n      handler.notify(new Message(['and', 'another']))\n      expect(spy[2]).have.been.called()\n    })\n\n    it('accepts binary packets', () => {\n      const binary = new Uint8Array([\n        47, 97, 110, 100, 47, 97, 110,\n        111, 116, 104, 101, 114, 0, 0, 0, 0, 44, 0, 0, 0,\n      ])\n\n      handler.notify(binary)\n      expect(spy[2]).have.been.called()\n    })\n\n    describe('event listeners', () => {\n      it('notifies error callbacks', () => {\n        handler.notify('error', testdata)\n        expect(spy[6]).have.been.called.with(testdata)\n      })\n\n      it('notifies close callbacks', () => {\n        handler.notify('close', testdata)\n        expect(spy[7]).have.been.called.with(testdata)\n      })\n\n      it('notifies open callbacks', () => {\n        handler.notify('open', testdata)\n        expect(spy[8]).have.been.called.with(testdata)\n      })\n    })\n\n    describe('address listeners with timetags', () => {\n      it('calls the handler later', () => {\n        handler.notify('/', testdata, Date.now() + 5000)\n\n        expect(spy[0]).not.have.been.called()\n      })\n    })\n\n    describe('address listeners with regular strings', () => {\n      it('calls the root listener', () => {\n        handler.notify('/', testdata)\n\n        expect(spy[0]).have.been.called()\n        expect(spy[1]).not.have.been.called()\n        expect(spy[4]).not.have.been.called()\n      })\n\n      it('calls two listeners with the same address', () => {\n        handler.notify('/two/test/path', testdata)\n\n        expect(spy[3]).have.been.called()\n        expect(spy[4]).have.been.called()\n      })\n\n      it('works with {} wildcard', () => {\n        handler.notify('/two/{test,some}/path', testdata)\n\n        expect(spy[1]).not.have.been.called()\n        expect(spy[3]).have.been.called()\n        expect(spy[4]).have.been.called()\n        expect(spy[5]).have.been.called()\n      })\n\n      it('works with [] wildcard', () => {\n        handler.notify('/[pawgfo]ne/[bnit]est', testdata)\n\n        expect(spy[1]).have.been.called()\n        expect(spy[2]).not.have.been.called()\n      })\n\n      it('works with [!] wildcard', () => {\n        handler.notify('/two/[!s][eso][tspm][tea]/path', testdata)\n\n        expect(spy[3]).have.been.called()\n        expect(spy[5]).not.have.been.called()\n      })\n\n      it('works with [a-z] wildcard', () => {\n        handler.notify('/two/[a-z]est/p[a-c]t[e-i]', testdata)\n\n        expect(spy[3]).have.been.called()\n        expect(spy[5]).not.have.been.called()\n      })\n\n      it('works with * wildcard', () => {\n        handler.notify('/two/*', testdata)\n\n        expect(spy[3]).have.been.called()\n        expect(spy[4]).have.been.called()\n        expect(spy[5]).have.been.called()\n        expect(spy[1]).not.have.been.called()\n      })\n\n      it('works with * wildcard calling all', () => {\n        handler.notify('/*', testdata)\n\n        expect(spy[0]).have.been.called()\n        expect(spy[1]).have.been.called()\n        expect(spy[2]).have.been.called()\n        expect(spy[3]).have.been.called()\n        expect(spy[4]).have.been.called()\n        expect(spy[5]).have.been.called()\n      })\n\n      it('works with ? wildcard', () => {\n        handler.notify('/two/????/pa?h', testdata)\n\n        expect(spy[0]).not.have.been.called()\n        expect(spy[3]).have.been.called()\n        expect(spy[5]).have.been.called()\n      })\n    })\n\n    describe('address listeners with pattern matching', () => {\n      it('calls wildcard listeners', () => {\n        handler.notify('/two/bar/path', testdata)\n\n        expect(spy[9]).have.been.called()\n        expect(spy[10]).have.been.called()\n        expect(spy[4]).not.have.been.called()\n      })\n\n      it('calls group matching listener', () => {\n        handler.notify('/ose/test', testdata)\n\n        expect(spy[10]).have.been.called()\n        expect(spy[11]).have.been.called()\n        expect(spy[1]).not.have.been.called()\n        expect(spy[9]).not.have.been.called()\n      })\n    })\n  })\n})\n",
@@ -7997,7 +7932,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 428,
+    "__docId__": 426,
     "kind": "test",
     "name": "describe99",
     "testId": 99,
@@ -8013,7 +7948,7 @@
     ]
   },
   {
-    "__docId__": 429,
+    "__docId__": 427,
     "kind": "test",
     "name": "describe100",
     "testId": 100,
@@ -8029,7 +7964,7 @@
     ]
   },
   {
-    "__docId__": 430,
+    "__docId__": 428,
     "kind": "test",
     "name": "it101",
     "testId": 101,
@@ -8042,7 +7977,7 @@
     "lineNumber": 27
   },
   {
-    "__docId__": 431,
+    "__docId__": 429,
     "kind": "test",
     "name": "it102",
     "testId": 102,
@@ -8055,7 +7990,7 @@
     "lineNumber": 32
   },
   {
-    "__docId__": 432,
+    "__docId__": 430,
     "kind": "test",
     "name": "describe103",
     "testId": 103,
@@ -8071,7 +8006,7 @@
     ]
   },
   {
-    "__docId__": 433,
+    "__docId__": 431,
     "kind": "test",
     "name": "it104",
     "testId": 104,
@@ -8084,7 +8019,7 @@
     "lineNumber": 48
   },
   {
-    "__docId__": 434,
+    "__docId__": 432,
     "kind": "test",
     "name": "it105",
     "testId": 105,
@@ -8097,7 +8032,7 @@
     "lineNumber": 56
   },
   {
-    "__docId__": 435,
+    "__docId__": 433,
     "kind": "test",
     "name": "describe106",
     "testId": 106,
@@ -8113,7 +8048,7 @@
     ]
   },
   {
-    "__docId__": 436,
+    "__docId__": 434,
     "kind": "test",
     "name": "it107",
     "testId": 107,
@@ -8126,7 +8061,7 @@
     "lineNumber": 100
   },
   {
-    "__docId__": 437,
+    "__docId__": 435,
     "kind": "test",
     "name": "it108",
     "testId": 108,
@@ -8139,7 +8074,7 @@
     "lineNumber": 105
   },
   {
-    "__docId__": 438,
+    "__docId__": 436,
     "kind": "test",
     "name": "it109",
     "testId": 109,
@@ -8152,7 +8087,7 @@
     "lineNumber": 110
   },
   {
-    "__docId__": 439,
+    "__docId__": 437,
     "kind": "test",
     "name": "describe110",
     "testId": 110,
@@ -8165,7 +8100,7 @@
     "lineNumber": 120
   },
   {
-    "__docId__": 440,
+    "__docId__": 438,
     "kind": "test",
     "name": "it111",
     "testId": 111,
@@ -8178,7 +8113,7 @@
     "lineNumber": 121
   },
   {
-    "__docId__": 441,
+    "__docId__": 439,
     "kind": "test",
     "name": "it112",
     "testId": 112,
@@ -8191,7 +8126,7 @@
     "lineNumber": 126
   },
   {
-    "__docId__": 442,
+    "__docId__": 440,
     "kind": "test",
     "name": "it113",
     "testId": 113,
@@ -8204,7 +8139,7 @@
     "lineNumber": 131
   },
   {
-    "__docId__": 443,
+    "__docId__": 441,
     "kind": "test",
     "name": "describe114",
     "testId": 114,
@@ -8217,7 +8152,7 @@
     "lineNumber": 137
   },
   {
-    "__docId__": 444,
+    "__docId__": 442,
     "kind": "test",
     "name": "it115",
     "testId": 115,
@@ -8230,7 +8165,7 @@
     "lineNumber": 138
   },
   {
-    "__docId__": 445,
+    "__docId__": 443,
     "kind": "test",
     "name": "describe116",
     "testId": 116,
@@ -8243,7 +8178,7 @@
     "lineNumber": 145
   },
   {
-    "__docId__": 446,
+    "__docId__": 444,
     "kind": "test",
     "name": "it117",
     "testId": 117,
@@ -8256,7 +8191,7 @@
     "lineNumber": 146
   },
   {
-    "__docId__": 447,
+    "__docId__": 445,
     "kind": "test",
     "name": "it118",
     "testId": 118,
@@ -8269,7 +8204,7 @@
     "lineNumber": 154
   },
   {
-    "__docId__": 448,
+    "__docId__": 446,
     "kind": "test",
     "name": "it119",
     "testId": 119,
@@ -8282,7 +8217,7 @@
     "lineNumber": 161
   },
   {
-    "__docId__": 449,
+    "__docId__": 447,
     "kind": "test",
     "name": "it120",
     "testId": 120,
@@ -8295,7 +8230,7 @@
     "lineNumber": 170
   },
   {
-    "__docId__": 450,
+    "__docId__": 448,
     "kind": "test",
     "name": "it121",
     "testId": 121,
@@ -8308,7 +8243,7 @@
     "lineNumber": 177
   },
   {
-    "__docId__": 451,
+    "__docId__": 449,
     "kind": "test",
     "name": "it122",
     "testId": 122,
@@ -8321,7 +8256,7 @@
     "lineNumber": 184
   },
   {
-    "__docId__": 452,
+    "__docId__": 450,
     "kind": "test",
     "name": "it123",
     "testId": 123,
@@ -8334,7 +8269,7 @@
     "lineNumber": 191
   },
   {
-    "__docId__": 453,
+    "__docId__": 451,
     "kind": "test",
     "name": "it124",
     "testId": 124,
@@ -8347,7 +8282,7 @@
     "lineNumber": 200
   },
   {
-    "__docId__": 454,
+    "__docId__": 452,
     "kind": "test",
     "name": "it125",
     "testId": 125,
@@ -8360,7 +8295,7 @@
     "lineNumber": 211
   },
   {
-    "__docId__": 455,
+    "__docId__": 453,
     "kind": "test",
     "name": "describe126",
     "testId": 126,
@@ -8373,7 +8308,7 @@
     "lineNumber": 220
   },
   {
-    "__docId__": 456,
+    "__docId__": 454,
     "kind": "test",
     "name": "it127",
     "testId": 127,
@@ -8386,7 +8321,7 @@
     "lineNumber": 221
   },
   {
-    "__docId__": 457,
+    "__docId__": 455,
     "kind": "test",
     "name": "it128",
     "testId": 128,
@@ -8399,7 +8334,7 @@
     "lineNumber": 229
   },
   {
-    "__docId__": 458,
+    "__docId__": 456,
     "kind": "testFile",
     "name": "test/message.spec.js",
     "content": "import { expect } from 'chai'\n\nimport Message, { TypedMessage } from '../src/message'\n\n/** @test {TypedMessage} */\ndescribe('TypedMessage', () => {\n  let typedMessage\n\n  before(() => {\n    typedMessage = new TypedMessage()\n  })\n\n  it('contains a set of osc message data', () => {\n    expect(typedMessage.address).to.exist\n    expect(typedMessage.types).to.exist\n    expect(typedMessage.args).to.exist\n  })\n\n  it('can be initialized with an address', () => {\n    const anotherMessage = new TypedMessage('somekind/of/path')\n    expect(anotherMessage.address).to.be.equals('/somekind/of/path')\n  })\n\n  it('can be initialized with an address and argument array', () => {\n    const anotherMessage = new TypedMessage('/a/path', [\n      { type: 'i', value: 123 },\n      { type: 'd', value: 123.123 },\n      { type: 'h', value: BigInt('0xFFFFFF') },\n      { type: 'T', value: null },\n    ])\n    expect(anotherMessage.types.length).to.equal(4)\n    expect(anotherMessage.args.length).to.equal(4)\n  })\n\n  /** @test {TypedMessage#add} */\n  describe('add', () => {\n    before(() => {\n      typedMessage = new TypedMessage()\n\n      typedMessage.add('s', 'Hello World')\n      typedMessage.add('i', 121123)\n      typedMessage.add('d', 123.123456789)\n      typedMessage.add('T')\n      typedMessage.add('i', 10)\n    })\n\n    it('pushes the values to our args array', () => {\n      expect(typedMessage.args).to.deep.equal(['Hello World', 121123, 123.123456789, true, 10])\n    })\n\n    it('adds to the types string accordingly', () => {\n      expect(typedMessage.types).to.equal('sidTi')\n    })\n  })\n\n  /** @test {TypedMessage#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      typedMessage = new TypedMessage('/test/types')\n\n      typedMessage.add('i', 1)\n      typedMessage.add('h', BigInt('0x7FFFFFFFFFFFFFFF'))\n      typedMessage.add('t', BigInt('0xFFFFFFFFFFFFFFFF'))\n      typedMessage.add('f', 123.123)\n      typedMessage.add('d', 123.123456789)\n      typedMessage.add('s', 'stringValue')\n      typedMessage.add('b', new Uint8Array([100, 52]))\n      typedMessage.add('T') // true\n      typedMessage.add('F') // false\n      typedMessage.add('N') // Nil\n      typedMessage.add('I') // Infinitum\n\n      result = typedMessage.pack()\n    })\n\n    it('returns an object we can unpack again', () => {\n      const anotherMessage = new TypedMessage()\n      anotherMessage.unpack(new DataView(result.buffer), 0)\n\n      expect(anotherMessage.address).to.equal('/test/types')\n      expect(anotherMessage.args.length).to.equal(11)\n      expect(anotherMessage.args[0]).to.equal(1)\n      // chai.expect cannot handle BigInt directly\n      expect(anotherMessage.args[1] === BigInt('0x7FFFFFFFFFFFFFFF')).to.be.true\n      expect(anotherMessage.args[2] === BigInt('0xFFFFFFFFFFFFFFFF')).to.be.true\n      expect(anotherMessage.args[3]).to.be.closeTo(123.123, 0.00001)\n      expect(anotherMessage.args[4]).to.be.closeTo(123.123456789, 0.00001)\n      expect(anotherMessage.args[5]).to.equal('stringValue')\n      expect(anotherMessage.args[6][0]).to.equal(100)\n      expect(anotherMessage.args[7]).to.equal(true)\n      expect(anotherMessage.args[8]).to.equal(false)\n      expect(anotherMessage.args[9]).to.equal(null)\n      expect(anotherMessage.args[10]).to.equal(Infinity)\n\n      expect(anotherMessage.types.length).to.equal(12)\n      expect(anotherMessage.types).to.equal(',ihtfdsbTFNI')\n    })\n\n    it('returns a multiple of 32', () => {\n      expect((result.byteLength * 8) % 32).to.equal(0)\n    })\n  })\n\n  /** @test {TypedMessage#unpack} */\n  describe('unpack', () => {\n    let result\n    let anotherMessage\n\n    before(() => {\n      anotherMessage = new TypedMessage()\n      const data = new Uint8Array([47, 115, 111, 109, 101, 47, 97,\n        100, 100, 114, 0, 0, 44, 100, 115, 105, 0, 0, 0, 0, 64, 94,\n        199, 230, 183, 77, 206, 89, 116, 101, 115, 116,\n        0, 0, 0, 0, 0, 0, 0, 0])\n      const dataView = new DataView(data.buffer, 0)\n      result = anotherMessage.unpack(dataView)\n    })\n\n    it('decodes the message correctly', () => {\n      expect(anotherMessage.address).to.equal('/some/addr')\n      expect(anotherMessage.args[1]).to.equal('test')\n      expect(anotherMessage.args[2]).to.equal(0)\n    })\n\n    it('returns a number', () => {\n      expect(result).to.be.a('number')\n    })\n  })\n})\n\n/** @test {Message} */\ndescribe('Message', () => {\n  let message\n\n  before(() => {\n    message = new Message()\n  })\n\n  it('contains a set of osc message data', () => {\n    expect(message.address).to.exist\n    expect(message.types).to.exist\n    expect(message.args).to.exist\n  })\n\n  it('fills the arguments and address during its construction', () => {\n    const anotherMessage = new Message('somekind/of/path', 221.21, 317, 'test', false, null)\n\n    expect(anotherMessage.address).to.be.equals('/somekind/of/path')\n    expect(anotherMessage.args[0]).to.be.equals(221.21)\n    expect(anotherMessage.args[3]).to.be.equals(false)\n    expect(anotherMessage.args[4]).to.be.equals(null)\n    expect(anotherMessage.types).to.be.equals('fisFN')\n  })\n\n  /** @test {Message#add} */\n  describe('add', () => {\n    before(() => {\n      message = new Message()\n\n      message.add('Hello World')\n      message.add(121123)\n    })\n\n    it('pushes the values to our args array', () => {\n      expect(message.args).to.deep.equal(['Hello World', 121123])\n    })\n\n    it('changes the types string accordingly', () => {\n      expect(message.types).to.equal('si')\n    })\n  })\n\n  /** @test {Message#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      message = new Message()\n\n      message.address = '/sssss/osc/sssssadss'\n      message.add(12)\n      message.add(null)\n      message.add('Hello World')\n      message.add(Infinity)\n      message.add(22111.344)\n      message.add(new Uint8Array([100, 52]))\n\n      result = message.pack()\n    })\n\n    it('returns an object we can unpack again', () => {\n      const anotherMessage = new Message()\n      anotherMessage.unpack(new DataView(result.buffer), 0)\n\n      expect(anotherMessage.address).to.equal('/sssss/osc/sssssadss')\n      expect(anotherMessage.args[1]).to.equal(null)\n      expect(anotherMessage.args[3]).to.equal(Infinity)\n      expect(anotherMessage.args[5][0]).to.equal(100)\n    })\n\n    it('returns a multiple of 32', () => {\n      expect((result.byteLength * 8) % 32).to.equal(0)\n    })\n  })\n\n  /** @test {Message#unpack} */\n  describe('unpack', () => {\n    let result\n    let anotherMessage\n\n    before(() => {\n      anotherMessage = new Message()\n      const data = new Uint8Array([\n        47, 116, 101, 115, 116, 47, 112, 97,\n        116, 104, 0, 0, 44, 105, 0, 0, 0, 0, 2, 141])\n      const dataView = new DataView(data.buffer, 0)\n\n      result = anotherMessage.unpack(dataView)\n    })\n\n    it('decodes the message correctly', () => {\n      expect(anotherMessage.address).to.equal('/test/path')\n      expect(anotherMessage.args[0]).to.equal(653)\n    })\n\n    it('returns a number', () => {\n      expect(result).to.be.a('number')\n    })\n  })\n})\n",
@@ -8410,7 +8345,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 459,
+    "__docId__": 457,
     "kind": "test",
     "name": "describe129",
     "testId": 129,
@@ -8426,7 +8361,7 @@
     ]
   },
   {
-    "__docId__": 460,
+    "__docId__": 458,
     "kind": "test",
     "name": "it130",
     "testId": 130,
@@ -8439,7 +8374,7 @@
     "lineNumber": 13
   },
   {
-    "__docId__": 461,
+    "__docId__": 459,
     "kind": "test",
     "name": "it131",
     "testId": 131,
@@ -8452,7 +8387,7 @@
     "lineNumber": 19
   },
   {
-    "__docId__": 462,
+    "__docId__": 460,
     "kind": "test",
     "name": "it132",
     "testId": 132,
@@ -8465,7 +8400,7 @@
     "lineNumber": 24
   },
   {
-    "__docId__": 463,
+    "__docId__": 461,
     "kind": "test",
     "name": "describe133",
     "testId": 133,
@@ -8481,7 +8416,7 @@
     ]
   },
   {
-    "__docId__": 464,
+    "__docId__": 462,
     "kind": "test",
     "name": "it134",
     "testId": 134,
@@ -8494,7 +8429,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 465,
+    "__docId__": 463,
     "kind": "test",
     "name": "it135",
     "testId": 135,
@@ -8507,7 +8442,7 @@
     "lineNumber": 51
   },
   {
-    "__docId__": 466,
+    "__docId__": 464,
     "kind": "test",
     "name": "describe136",
     "testId": 136,
@@ -8523,7 +8458,7 @@
     ]
   },
   {
-    "__docId__": 467,
+    "__docId__": 465,
     "kind": "test",
     "name": "it137",
     "testId": 137,
@@ -8536,7 +8471,7 @@
     "lineNumber": 78
   },
   {
-    "__docId__": 468,
+    "__docId__": 466,
     "kind": "test",
     "name": "it138",
     "testId": 138,
@@ -8549,7 +8484,7 @@
     "lineNumber": 101
   },
   {
-    "__docId__": 469,
+    "__docId__": 467,
     "kind": "test",
     "name": "describe139",
     "testId": 139,
@@ -8565,7 +8500,7 @@
     ]
   },
   {
-    "__docId__": 470,
+    "__docId__": 468,
     "kind": "test",
     "name": "it140",
     "testId": 140,
@@ -8578,7 +8513,7 @@
     "lineNumber": 121
   },
   {
-    "__docId__": 471,
+    "__docId__": 469,
     "kind": "test",
     "name": "it141",
     "testId": 141,
@@ -8591,7 +8526,7 @@
     "lineNumber": 127
   },
   {
-    "__docId__": 472,
+    "__docId__": 470,
     "kind": "test",
     "name": "describe142",
     "testId": 142,
@@ -8607,7 +8542,7 @@
     ]
   },
   {
-    "__docId__": 473,
+    "__docId__": 471,
     "kind": "test",
     "name": "it143",
     "testId": 143,
@@ -8620,7 +8555,7 @@
     "lineNumber": 141
   },
   {
-    "__docId__": 474,
+    "__docId__": 472,
     "kind": "test",
     "name": "it144",
     "testId": 144,
@@ -8633,7 +8568,7 @@
     "lineNumber": 147
   },
   {
-    "__docId__": 475,
+    "__docId__": 473,
     "kind": "test",
     "name": "describe145",
     "testId": 145,
@@ -8649,7 +8584,7 @@
     ]
   },
   {
-    "__docId__": 476,
+    "__docId__": 474,
     "kind": "test",
     "name": "it146",
     "testId": 146,
@@ -8662,7 +8597,7 @@
     "lineNumber": 166
   },
   {
-    "__docId__": 477,
+    "__docId__": 475,
     "kind": "test",
     "name": "it147",
     "testId": 147,
@@ -8675,7 +8610,7 @@
     "lineNumber": 170
   },
   {
-    "__docId__": 478,
+    "__docId__": 476,
     "kind": "test",
     "name": "describe148",
     "testId": 148,
@@ -8691,7 +8626,7 @@
     ]
   },
   {
-    "__docId__": 479,
+    "__docId__": 477,
     "kind": "test",
     "name": "it149",
     "testId": 149,
@@ -8704,7 +8639,7 @@
     "lineNumber": 193
   },
   {
-    "__docId__": 480,
+    "__docId__": 478,
     "kind": "test",
     "name": "it150",
     "testId": 150,
@@ -8717,7 +8652,7 @@
     "lineNumber": 203
   },
   {
-    "__docId__": 481,
+    "__docId__": 479,
     "kind": "test",
     "name": "describe151",
     "testId": 151,
@@ -8733,7 +8668,7 @@
     ]
   },
   {
-    "__docId__": 482,
+    "__docId__": 480,
     "kind": "test",
     "name": "it152",
     "testId": 152,
@@ -8746,7 +8681,7 @@
     "lineNumber": 223
   },
   {
-    "__docId__": 483,
+    "__docId__": 481,
     "kind": "test",
     "name": "it153",
     "testId": 153,
@@ -8759,7 +8694,7 @@
     "lineNumber": 228
   },
   {
-    "__docId__": 484,
+    "__docId__": 482,
     "kind": "testFile",
     "name": "test/osc.spec.js",
     "content": "import chai, { expect } from 'chai'\nimport spies from 'chai-spies-next'\n\nimport OSC from '../src/osc'\n\nimport Packet from '../src/packet'\nimport Message from '../src/message'\n\nchai.use(spies)\n\nclass TestPlugin {\n  constructor() {\n    this.socketStatus = -1\n    this.notify = null\n  }\n\n  registerNotify(fn) {\n    this.notify = fn\n  }\n\n  status() {\n    return this.socketStatus\n  }\n\n  open() {\n    this.socketStatus = 1\n    this.notify('open')\n  }\n\n  send() {\n    // unused\n  }\n\n  close() {\n    this.socketStatus = 3\n    this.notify('close')\n  }\n\n  // mocking helpers\n  mockError() {\n    this.notify('error', { message: 'An error' })\n  }\n\n  mockMessage() {\n    this.notify(new Message(['test/path'], 55.1, 224))\n  }\n}\n\n/** @test {OSC} */\ndescribe('OSC', () => {\n  let osc\n  let plugin\n\n  before(() => {\n    plugin = new TestPlugin()\n    osc = new OSC({\n      discardLateMessages: true,\n      plugin,\n    })\n  })\n\n  it('returns the instance options when created', () => {\n    expect(osc.options.discardLateMessages).to.be.true\n  })\n\n  /** @test {OSC#on} */\n  describe('on', () => {\n    it('calls my subscription when listening to the right address', () => {\n      const spy = chai.spy()\n      osc.on('/test/path', spy)\n\n      plugin.mockMessage()\n\n      expect(spy).to.have.been.called()\n    })\n\n    it('calls an error', () => {\n      const spy = chai.spy()\n      osc.on('error', spy)\n\n      plugin.mockError()\n\n      expect(spy).to.have.been.called()\n    })\n  })\n\n  /** @test {OSC#off} */\n  describe('off', () => {\n    it('removes a subscription', () => {\n      const spy = chai.spy()\n      const id = osc.on('error', spy)\n\n      osc.off('error', id)\n\n      plugin.mockError()\n\n      expect(spy).to.not.have.been.called()\n    })\n  })\n\n  /** @test {OSC#status} */\n  describe('status', () => {\n    it('returns the initial status', () => {\n      expect(osc.status()).to.be.equals(OSC.STATUS.IS_NOT_INITIALIZED)\n    })\n  })\n\n  /** @test {OSC#open} */\n  describe('open', () => {\n    let spy\n\n    beforeEach(() => {\n      spy = chai.spy()\n      osc.on('open', spy)\n      osc.open()\n    })\n\n    it('returns the correct status', () => {\n      expect(osc.status()).to.be.equals(OSC.STATUS.IS_OPEN)\n    })\n\n    it('calls the open event', () => {\n      expect(spy).to.have.been.called()\n    })\n  })\n\n  /** @test {OSC#close} */\n  describe('close', () => {\n    let spy\n\n    beforeEach(() => {\n      spy = chai.spy()\n      osc.on('close', spy)\n      osc.close()\n    })\n\n    it('returns the correct status', () => {\n      expect(osc.status()).to.be.equals(OSC.STATUS.IS_CLOSED)\n    })\n\n    it('calls the close event', () => {\n      expect(spy).to.have.been.called()\n    })\n  })\n\n  /** @test {OSC#send} */\n  describe('send', () => {\n    it('passes over a binary object with configs to the plugin', () => {\n      const message = new Message('/test/path', 122, 554)\n      const packet = new Packet(message)\n      const config = { host: 'localhost', port: 9001 }\n      const spy = chai.spy.on(plugin, 'send')\n      const binary = packet.pack()\n\n      osc.send(packet, config)\n\n      expect(binary).to.be.a('Uint8Array')\n      expect(spy).to.have.been.called.with(binary, config)\n    })\n  })\n})\n",
@@ -8770,7 +8705,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 485,
+    "__docId__": 483,
     "kind": "test",
     "name": "describe154",
     "testId": 154,
@@ -8786,7 +8721,7 @@
     ]
   },
   {
-    "__docId__": 486,
+    "__docId__": 484,
     "kind": "test",
     "name": "it155",
     "testId": 155,
@@ -8799,7 +8734,7 @@
     "lineNumber": 62
   },
   {
-    "__docId__": 487,
+    "__docId__": 485,
     "kind": "test",
     "name": "describe156",
     "testId": 156,
@@ -8815,7 +8750,7 @@
     ]
   },
   {
-    "__docId__": 488,
+    "__docId__": 486,
     "kind": "test",
     "name": "it157",
     "testId": 157,
@@ -8828,7 +8763,7 @@
     "lineNumber": 68
   },
   {
-    "__docId__": 489,
+    "__docId__": 487,
     "kind": "test",
     "name": "it158",
     "testId": 158,
@@ -8841,7 +8776,7 @@
     "lineNumber": 77
   },
   {
-    "__docId__": 490,
+    "__docId__": 488,
     "kind": "test",
     "name": "describe159",
     "testId": 159,
@@ -8857,7 +8792,7 @@
     ]
   },
   {
-    "__docId__": 491,
+    "__docId__": 489,
     "kind": "test",
     "name": "it160",
     "testId": 160,
@@ -8870,7 +8805,7 @@
     "lineNumber": 89
   },
   {
-    "__docId__": 492,
+    "__docId__": 490,
     "kind": "test",
     "name": "describe161",
     "testId": 161,
@@ -8886,7 +8821,7 @@
     ]
   },
   {
-    "__docId__": 493,
+    "__docId__": 491,
     "kind": "test",
     "name": "it162",
     "testId": 162,
@@ -8899,7 +8834,7 @@
     "lineNumber": 103
   },
   {
-    "__docId__": 494,
+    "__docId__": 492,
     "kind": "test",
     "name": "describe163",
     "testId": 163,
@@ -8915,7 +8850,7 @@
     ]
   },
   {
-    "__docId__": 495,
+    "__docId__": 493,
     "kind": "test",
     "name": "it164",
     "testId": 164,
@@ -8928,7 +8863,7 @@
     "lineNumber": 118
   },
   {
-    "__docId__": 496,
+    "__docId__": 494,
     "kind": "test",
     "name": "it165",
     "testId": 165,
@@ -8941,7 +8876,7 @@
     "lineNumber": 122
   },
   {
-    "__docId__": 497,
+    "__docId__": 495,
     "kind": "test",
     "name": "describe166",
     "testId": 166,
@@ -8957,7 +8892,7 @@
     ]
   },
   {
-    "__docId__": 498,
+    "__docId__": 496,
     "kind": "test",
     "name": "it167",
     "testId": 167,
@@ -8970,7 +8905,7 @@
     "lineNumber": 137
   },
   {
-    "__docId__": 499,
+    "__docId__": 497,
     "kind": "test",
     "name": "it168",
     "testId": 168,
@@ -8983,7 +8918,7 @@
     "lineNumber": 141
   },
   {
-    "__docId__": 500,
+    "__docId__": 498,
     "kind": "test",
     "name": "describe169",
     "testId": 169,
@@ -8999,7 +8934,7 @@
     ]
   },
   {
-    "__docId__": 501,
+    "__docId__": 499,
     "kind": "test",
     "name": "it170",
     "testId": 170,
@@ -9012,7 +8947,7 @@
     "lineNumber": 148
   },
   {
-    "__docId__": 502,
+    "__docId__": 500,
     "kind": "testFile",
     "name": "test/packet.spec.js",
     "content": "import { expect } from 'chai'\n\nimport Packet from '../src/packet'\nimport Message from '../src/message'\n\n/** @test {Packet} */\ndescribe('Packet', () => {\n  let packet\n\n  /** @test {Packet#pack} */\n  describe('pack', () => {\n    let result\n\n    before(() => {\n      packet = new Packet(new Message('/test/path', 21))\n      result = packet.pack()\n    })\n\n    it('returns an object we can unpack again', () => {\n      const anotherPacket = new Packet()\n      anotherPacket.unpack(new DataView(result.buffer), 0)\n\n      expect(anotherPacket.value.address).to.equal('/test/path')\n      expect(anotherPacket.value.args[0]).to.equal(21)\n    })\n\n    it('returns a multiple of 32', () => {\n      expect((result.byteLength * 8) % 32).to.equal(0)\n    })\n  })\n\n  /** @test {Packet#unpack} */\n  describe('unpack', () => {\n    let result\n\n    before(() => {\n      const data = new Uint8Array([\n        47, 116, 101, 115, 116, 47, 112, 97,\n        116, 104, 0, 0, 44, 105, 0, 0, 0, 0, 2, 141])\n      const dataView = new DataView(data.buffer, 0)\n\n      packet = new Packet()\n      result = packet.unpack(dataView)\n    })\n\n    it('decodes the message correctly', () => {\n      expect(packet.value.address).to.equal('/test/path')\n      expect(packet.value.args[0]).to.equal(653)\n    })\n\n    it('returns the offset of the data', () => {\n      expect(result).to.equal(20)\n    })\n\n    it('returns a number', () => {\n      expect(result).to.be.a('number')\n    })\n  })\n})\n",
@@ -9023,7 +8958,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 503,
+    "__docId__": 501,
     "kind": "test",
     "name": "describe171",
     "testId": 171,
@@ -9039,7 +8974,7 @@
     ]
   },
   {
-    "__docId__": 504,
+    "__docId__": 502,
     "kind": "test",
     "name": "describe172",
     "testId": 172,
@@ -9055,7 +8990,7 @@
     ]
   },
   {
-    "__docId__": 505,
+    "__docId__": 503,
     "kind": "test",
     "name": "it173",
     "testId": 173,
@@ -9068,7 +9003,7 @@
     "lineNumber": 19
   },
   {
-    "__docId__": 506,
+    "__docId__": 504,
     "kind": "test",
     "name": "it174",
     "testId": 174,
@@ -9081,7 +9016,7 @@
     "lineNumber": 27
   },
   {
-    "__docId__": 507,
+    "__docId__": 505,
     "kind": "test",
     "name": "describe175",
     "testId": 175,
@@ -9097,7 +9032,7 @@
     ]
   },
   {
-    "__docId__": 508,
+    "__docId__": 506,
     "kind": "test",
     "name": "it176",
     "testId": 176,
@@ -9110,7 +9045,7 @@
     "lineNumber": 46
   },
   {
-    "__docId__": 509,
+    "__docId__": 507,
     "kind": "test",
     "name": "it177",
     "testId": 177,
@@ -9123,7 +9058,7 @@
     "lineNumber": 51
   },
   {
-    "__docId__": 510,
+    "__docId__": 508,
     "kind": "test",
     "name": "it178",
     "testId": 178,
@@ -9136,7 +9071,7 @@
     "lineNumber": 55
   },
   {
-    "__docId__": 511,
+    "__docId__": 509,
     "kind": "testFile",
     "name": "test/plugin/bridge.spec.js",
     "content": "import { expect } from 'chai'\n\nimport OSC from '../../src/osc'\nimport Message from '../../src/message'\n\nimport BridgePlugin from '../../src/plugin/bridge'\nimport DatagramPlugin from '../../src/plugin/dgram'\nimport WebsocketClientPlugin from '../../src/plugin/wsclient'\n\nconst PORT_WEBSOCKET = 9129\nconst PORT_UDP_SERVER = 9130\nconst PORT_UDP_CLIENT = 9131\n\n/** @test {BridgePlugin} */\ndescribe('BridgePlugin', () => {\n  let plugin\n  let osc\n  let oscWsClient\n  let oscUdpClient\n\n  before(() => {\n    plugin = new BridgePlugin({\n      wsServer: {\n        port: PORT_WEBSOCKET,\n      },\n      udpClient: {\n        host: '127.0.0.1',\n        port: PORT_UDP_CLIENT,\n      },\n      udpServer: {\n        host: '127.0.0.1',\n        port: PORT_UDP_SERVER,\n      },\n    })\n\n    osc = new OSC({\n      plugin,\n    })\n\n    oscWsClient = new OSC({\n      plugin: new WebsocketClientPlugin({\n        port: PORT_WEBSOCKET,\n      }),\n    })\n\n    oscUdpClient = new OSC({\n      plugin: new DatagramPlugin({\n        open: {\n          host: '127.0.0.1',\n          port: PORT_UDP_CLIENT,\n        },\n      }),\n    })\n  })\n\n  it('merges the given options correctly', () => {\n    expect(plugin.options.wsServer.port).to.be.equals(PORT_WEBSOCKET)\n    expect(plugin.options.udpServer.host).to.be.equals('127.0.0.1')\n    expect(plugin.options.receiver).to.be.equals('ws')\n  })\n\n  describe('status', () => {\n    it('returns the initial status', () => {\n      expect(plugin.status()).to.be.equals(-1)\n    })\n  })\n\n  describe('remote address info', () => {\n    it('returns the remote address info', (done) => {\n      const expectedMessage = {\n        offset: 24,\n        address: '/test/path',\n        types: ',ii',\n        args: [122, 554],\n      }\n\n      const expectedRinfo = {\n        address: '127.0.0.1',\n        family: 'IPv4',\n        port: PORT_UDP_SERVER,\n        size: 24,\n      }\n\n      oscUdpClient.on('/test/path', (message, rinfo) => {\n        expect(message).to.deep.equal(expectedMessage)\n        expect(rinfo).to.deep.equal(expectedRinfo)\n\n        done()\n      })\n\n      oscWsClient.on('open', () => {\n        oscWsClient.send(new Message('/test/path', 122, 554))\n      })\n\n      oscUdpClient.on('open', () => {\n        oscWsClient.open()\n      })\n\n      osc.on('open', () => {\n        oscUdpClient.open()\n      })\n\n      osc.open()\n    })\n  })\n})\n",
@@ -9147,7 +9082,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 512,
+    "__docId__": 510,
     "kind": "test",
     "name": "describe179",
     "testId": 179,
@@ -9163,7 +9098,7 @@
     ]
   },
   {
-    "__docId__": 513,
+    "__docId__": 511,
     "kind": "test",
     "name": "it180",
     "testId": 180,
@@ -9176,7 +9111,7 @@
     "lineNumber": 56
   },
   {
-    "__docId__": 514,
+    "__docId__": 512,
     "kind": "test",
     "name": "describe181",
     "testId": 181,
@@ -9189,7 +9124,7 @@
     "lineNumber": 62
   },
   {
-    "__docId__": 515,
+    "__docId__": 513,
     "kind": "test",
     "name": "it182",
     "testId": 182,
@@ -9202,7 +9137,7 @@
     "lineNumber": 63
   },
   {
-    "__docId__": 516,
+    "__docId__": 514,
     "kind": "test",
     "name": "describe183",
     "testId": 183,
@@ -9215,7 +9150,7 @@
     "lineNumber": 68
   },
   {
-    "__docId__": 517,
+    "__docId__": 515,
     "kind": "test",
     "name": "it184",
     "testId": 184,
@@ -9228,7 +9163,7 @@
     "lineNumber": 69
   },
   {
-    "__docId__": 518,
+    "__docId__": 516,
     "kind": "testFile",
     "name": "test/plugin/dgram.spec.js",
     "content": "import { expect } from 'chai'\n\nimport DatagramPlugin from '../../src/plugin/dgram'\nimport Message from '../../src/message'\nimport OSC from '../../src/osc'\n\nconst PORT_UDP = 8129\n\n/** @test {DatagramPlugin} */\ndescribe('DatagramPlugin', () => {\n  let plugin\n  let osc\n\n  before(() => {\n    plugin = new DatagramPlugin({\n      send: {\n        port: PORT_UDP,\n      },\n      open: {\n        host: '127.0.0.1',\n        port: PORT_UDP,\n      },\n    })\n\n    osc = new OSC({\n      discardLateMessages: true,\n      plugin,\n    })\n  })\n\n  it('merges the given options correctly', () => {\n    expect(plugin.options.send.port).to.be.equals(PORT_UDP)\n    expect(plugin.options.open.host).to.be.equals('127.0.0.1')\n  })\n\n  describe('status', () => {\n    it('returns the initial status', () => {\n      expect(plugin.status()).to.be.equals(-1)\n    })\n  })\n\n  describe('remote address info', () => {\n    it('returns the remote address info', (done) => {\n      const expectedMessage = {\n        offset: 24,\n        address: '/test/path',\n        types: ',ii',\n        args: [122, 554],\n      }\n\n      const expectedRinfo = {\n        address: '127.0.0.1',\n        family: 'IPv4',\n        port: PORT_UDP,\n        size: 24,\n      }\n\n      osc.open()\n\n      osc.on('/test/path', (message, rinfo) => {\n        expect(message).to.deep.equal(expectedMessage)\n        expect(rinfo).to.deep.equal(expectedRinfo)\n\n        done()\n      })\n\n      osc.send(new Message('/test/path', 122, 554))\n    })\n  })\n})\n",
@@ -9239,7 +9174,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 519,
+    "__docId__": 517,
     "kind": "test",
     "name": "describe185",
     "testId": 185,
@@ -9255,7 +9190,7 @@
     ]
   },
   {
-    "__docId__": 520,
+    "__docId__": 518,
     "kind": "test",
     "name": "it186",
     "testId": 186,
@@ -9268,7 +9203,7 @@
     "lineNumber": 31
   },
   {
-    "__docId__": 521,
+    "__docId__": 519,
     "kind": "test",
     "name": "describe187",
     "testId": 187,
@@ -9281,7 +9216,7 @@
     "lineNumber": 36
   },
   {
-    "__docId__": 522,
+    "__docId__": 520,
     "kind": "test",
     "name": "it188",
     "testId": 188,
@@ -9294,7 +9229,7 @@
     "lineNumber": 37
   },
   {
-    "__docId__": 523,
+    "__docId__": 521,
     "kind": "test",
     "name": "describe189",
     "testId": 189,
@@ -9307,7 +9242,7 @@
     "lineNumber": 42
   },
   {
-    "__docId__": 524,
+    "__docId__": 522,
     "kind": "test",
     "name": "it190",
     "testId": 190,
@@ -9320,7 +9255,7 @@
     "lineNumber": 43
   },
   {
-    "__docId__": 525,
+    "__docId__": 523,
     "kind": "testFile",
     "name": "test/plugin/ws.spec.js",
     "content": "import { expect } from 'chai'\n\nimport OSC from '../../src/osc'\nimport Message from '../../src/message'\n\nimport WebsocketClientPlugin from '../../src/plugin/wsclient'\nimport WebsocketServerPlugin from '../../src/plugin/wsserver'\n\nconst PORT_WEBSOCKET = 8129\n\n/** @test {WebsocketClientPlugin} */\ndescribe('WebsocketClient/ServerPlugin', () => {\n  let plugin\n  let osc\n  let oscServer\n\n  before(() => {\n    plugin = new WebsocketClientPlugin({\n      port: PORT_WEBSOCKET,\n      host: '127.0.0.1',\n    })\n\n    osc = new OSC({\n      discardLateMessages: true,\n      plugin,\n    })\n\n    oscServer = new OSC({\n      discardLateMessages: true,\n      plugin: new WebsocketServerPlugin({\n        port: PORT_WEBSOCKET,\n        host: '127.0.0.1',\n      }),\n    })\n  })\n\n  describe('remote address info', () => {\n    it('returns the remote address info', (done) => {\n      const expectedMessage = {\n        offset: 24,\n        address: '/test/path',\n        types: ',ii',\n        args: [122, 554],\n      }\n\n      const expectedRinfo = {\n        address: '127.0.0.1',\n        family: 'wsserver',\n        port: PORT_WEBSOCKET,\n        size: 0,\n      }\n\n      oscServer.on('/test/path', (message, rinfo) => {\n        expect(message).to.deep.equal(expectedMessage)\n        expect(rinfo).to.deep.equal(expectedRinfo)\n\n        done()\n      })\n\n      osc.on('open', () => osc.send(new Message('/test/path', 122, 554)))\n\n      oscServer.open()\n      osc.open()\n    })\n  })\n})\n",
@@ -9331,7 +9266,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 526,
+    "__docId__": 524,
     "kind": "test",
     "name": "describe191",
     "testId": 191,
@@ -9347,7 +9282,7 @@
     ]
   },
   {
-    "__docId__": 527,
+    "__docId__": 525,
     "kind": "test",
     "name": "describe192",
     "testId": 192,
@@ -9360,7 +9295,7 @@
     "lineNumber": 37
   },
   {
-    "__docId__": 528,
+    "__docId__": 526,
     "kind": "test",
     "name": "it193",
     "testId": 193,
@@ -9373,7 +9308,7 @@
     "lineNumber": 38
   },
   {
-    "__docId__": 529,
+    "__docId__": 527,
     "kind": "testFile",
     "name": "test/plugin/wsclient.spec.js",
     "content": "import { expect } from 'chai'\n\nimport WebsocketClientPlugin from '../../src/plugin/wsclient'\n\n/** @test {WebsocketClientPlugin} */\ndescribe('WebsocketClientPlugin', () => {\n  let plugin\n\n  before(() => {\n    plugin = new WebsocketClientPlugin({\n      port: 8129,\n      host: '127.0.0.1',\n    })\n  })\n\n  it('merges the given options correctly', () => {\n    expect(plugin.options.port).to.be.equals(8129)\n    expect(plugin.options.host).to.be.equals('127.0.0.1')\n    expect(plugin.options.secure).to.be.equals(false)\n  })\n\n  describe('status', () => {\n    it('returns the initial status', () => {\n      expect(plugin.status()).to.be.equals(-1)\n    })\n  })\n})\n",
@@ -9384,7 +9319,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 530,
+    "__docId__": 528,
     "kind": "test",
     "name": "describe194",
     "testId": 194,
@@ -9400,7 +9335,7 @@
     ]
   },
   {
-    "__docId__": 531,
+    "__docId__": 529,
     "kind": "test",
     "name": "it195",
     "testId": 195,
@@ -9413,7 +9348,7 @@
     "lineNumber": 16
   },
   {
-    "__docId__": 532,
+    "__docId__": 530,
     "kind": "test",
     "name": "describe196",
     "testId": 196,
@@ -9426,7 +9361,7 @@
     "lineNumber": 22
   },
   {
-    "__docId__": 533,
+    "__docId__": 531,
     "kind": "test",
     "name": "it197",
     "testId": 197,
@@ -9439,7 +9374,7 @@
     "lineNumber": 23
   },
   {
-    "__docId__": 534,
+    "__docId__": 532,
     "kind": "testFile",
     "name": "test/plugin/wsserver.spec.js",
     "content": "import { expect } from 'chai'\n\nimport WebsocketServerPlugin from '../../src/plugin/wsserver'\n\n/** @test {WebsocketServerPlugin} */\ndescribe('WebsocketServerPlugin', () => {\n  let plugin\n\n  before(() => {\n    plugin = new WebsocketServerPlugin({\n      udpServer: {\n        port: 8129,\n      },\n      wsServer: {\n        host: '127.0.0.1',\n      },\n    })\n  })\n\n  it('merges the given options correctly', () => {\n    expect(plugin.options.udpServer.port).to.be.equals(8129)\n    expect(plugin.options.wsServer.host).to.be.equals('127.0.0.1')\n  })\n\n  describe('status', () => {\n    it('returns the initial status', () => {\n      expect(plugin.status()).to.be.equals(-1)\n    })\n  })\n})\n",
@@ -9450,7 +9385,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 535,
+    "__docId__": 533,
     "kind": "test",
     "name": "describe198",
     "testId": 198,
@@ -9466,7 +9401,7 @@
     ]
   },
   {
-    "__docId__": 536,
+    "__docId__": 534,
     "kind": "test",
     "name": "it199",
     "testId": 199,
@@ -9479,7 +9414,7 @@
     "lineNumber": 20
   },
   {
-    "__docId__": 537,
+    "__docId__": 535,
     "kind": "test",
     "name": "describe200",
     "testId": 200,
@@ -9492,7 +9427,7 @@
     "lineNumber": 25
   },
   {
-    "__docId__": 538,
+    "__docId__": 536,
     "kind": "test",
     "name": "it201",
     "testId": 201,
