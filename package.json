@@ -7,7 +7,6 @@
   "types": "lib/osc.d.ts",
   "scripts": {
     "build": "rollup -c",
-    "build:types": "tsc",
     "docs": "esdoc",
     "lint": "eslint rollup.config.js src/** test/**",
     "test": "mocha test/** --require @babel/register --exit",
@@ -52,6 +51,8 @@
     "eslint": "8.13.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
     "mocha": "9.2.2",
     "rollup": "2.70.1",
     "rollup-plugin-cleanup": "3.2.1",
@@ -60,8 +61,6 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "http": "^0.0.1-security",
-    "https": "^1.0.0",
     "ws": "^8.5.0"
   }
 }
