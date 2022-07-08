@@ -20,7 +20,7 @@ import {
 /**
  * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
  *
- * @typedef {('i'|'f'|'s'|'b'|'h'|'t'|'d'|'T'|'F'|'N'|'I')} MessageArgType
+ * @typedef {'i'|'f'|'s'|'b'|'h'|'t'|'d'|'T'|'F'|'N'|'I'} MessageArgType
  *
  * - `i` - int32
  * - `f` - float32
@@ -34,7 +34,7 @@ import {
  * - `N` - Nil (no argument data)
  * - `I` - Infinitum (no argument data)
  *
- * @typedef {(number|string|Blob|VALUE_TRUE|VALUE_FALSE|VALUE_NONE|VALUE_INFINITY)} MessageArgValue
+ * @typedef {number|string|Blob|VALUE_TRUE|VALUE_FALSE|VALUE_NONE|VALUE_INFINITY} MessageArgValue
  *
  * @typedef {object} MessageArgObject
  * @property {MessageArgType} type

@@ -25,7 +25,7 @@ const defaultOptions = {
 /**
  * This will import the types for JSDoc/Type declarations without
  * impacting the runtime
- * @typedef {(import('http').Server|import('https').Server)} Server
+ * @typedef {import('http').Server|import('https').Server} Server
  */
 
 /**
