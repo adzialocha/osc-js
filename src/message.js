@@ -20,7 +20,7 @@ import {
 /**
  * A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.
  *
- * ## Supported types
+ * @typedef {('i'|'f'|'s'|'b'|'h'|'t'|'d'|'T'|'F'|'N'|'I')} MessageArgType
  *
  * - `i` - int32
  * - `f` - float32
@@ -34,12 +34,22 @@ import {
  * - `N` - Nil (no argument data)
  * - `I` - Infinitum (no argument data)
  *
+ * @typedef {(number|string|Blob|VALUE_TRUE|VALUE_FALSE|VALUE_NONE|VALUE_INFINITY)} MessageArgValue
+ *
+ * @typedef {object} MessageArgObject
+ * @property {MessageArgType} type
+ * @property {MessageArgValue} value
+ *
+ * @example
+ * const messageArgObject = {
+ *   type: 'i', value: 123
+ * }
  */
 export class TypedMessage {
   /**
    * Create a TypedMessage instance
-   * @param {array|string} address Address
-   * @param {array} args Arguments
+   * @param {string[]|string} address Address
+   * @param {MessageArgValue[]} args Arguments
    *
    * @example
    * const message = new TypedMessage(['test', 'path'])
@@ -64,7 +74,7 @@ export class TypedMessage {
     this.address = ''
     /** @type {string} types */
     this.types = ''
-    /** @type {array} args */
+    /** @type {MessageArgValue[]} args */
     this.args = []
 
     if (!isUndefined(address)) {
@@ -84,8 +94,8 @@ export class TypedMessage {
 
   /**
    * Add an OSC Atomic Data Type to the list of elements
-   * @param {string} type
-   * @param {*} item
+   * @param {MessageArgType} type
+   * @param {MessageArgObject} item
    */
   add(type, item) {
     if (isUndefined(type)) {
@@ -251,8 +261,8 @@ export class TypedMessage {
 export default class Message extends TypedMessage {
   /**
    * Create a Message instance
-   * @param {array|string} args Address
-   * @param {...*} args OSC Atomic Data Types
+   * @param {string[]|string} address Address
+   * @param {...MessageArgObject} args OSC Atomic Data Types
    *
    * @example
    * const message = new Message(['test', 'path'], 50, 100.52, 'test')
@@ -260,12 +270,7 @@ export default class Message extends TypedMessage {
    * @example
    * const message = new Message('/test/path', 51.2)
    */
-  constructor(...args) {
-    let address
-    if (args.length > 0) {
-      address = args.shift()
-    }
-
+  constructor(address, ...args) {
     let oscArgs
     if (args.length > 0) {
       if (args[0] instanceof Array) {
@@ -283,7 +288,7 @@ export default class Message extends TypedMessage {
 
   /**
    * Add an OSC Atomic Data Type to the list of elements
-   * @param {*} item
+   * @param {MessageArgObject} item
    */
   add(item) {
     super.add(typeTag(item), item)

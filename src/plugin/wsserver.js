@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws'
+import Plugin from './plugin'
 
 /**
  * Status flags
@@ -22,16 +23,22 @@ const defaultOptions = {
 }
 
 /**
+ * This will import the types for JSDoc/Type declarations without
+ * impacting the runtime
+ * @typedef {(import('http').Server|import('https').Server)} Server
+ */
+
+/**
  * OSC plugin for a Websocket client running in node or browser context
  */
-export default class WebsocketServerPlugin {
+export default class WebsocketServerPlugin extends Plugin {
   /**
    * Create an OSC WebsocketServerPlugin instance with given options.
    * Defaults to *localhost:8080* for the Websocket server
    * @param {object} [options] Custom options
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
-   * @param {http.Server|https.Server} [options.server] Use existing Node.js HTTP/S server
+   * @param {Server} [options.server] Use existing Node.js HTTP/S server
    *
    * @example
    * const plugin = new OSC.WebsocketServerPlugin({ port: 9912 })
@@ -44,7 +51,9 @@ export default class WebsocketServerPlugin {
    * const plugin = new OSC.WebsocketServerPlugin({ server: httpServer })
    * const osc = new OSC({ plugin: plugin })
    */
-  constructor(customOptions) {
+  constructor(options) {
+    super()
+
     // `WebSocketServer` gets replaced with an undefined value in builds
     // targeting browser environments
     if (!WebSocketServer) {
@@ -55,7 +64,7 @@ export default class WebsocketServerPlugin {
      * @type {object} options
      * @private
      */
-    this.options = { ...defaultOptions, ...customOptions }
+    this.options = { ...defaultOptions, ...options }
 
     /**
      * @type {object} socket
