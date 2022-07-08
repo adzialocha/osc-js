@@ -6,6 +6,7 @@
   "browser": "lib/osc.min.js",
   "scripts": {
     "build": "rollup -c",
+    "build:types": "tsc",
     "docs": "esdoc",
     "lint": "eslint rollup.config.js src/** test/**",
     "test": "mocha test/** --require @babel/register --exit",
@@ -53,7 +54,8 @@
     "mocha": "9.2.2",
     "rollup": "2.70.1",
     "rollup-plugin-cleanup": "3.2.1",
-    "rollup-plugin-terser": "7.0.2"
+    "rollup-plugin-terser": "7.0.2",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "ws": "^8.5.0"
