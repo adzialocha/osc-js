@@ -16,7 +16,7 @@ export const BUNDLE_TAG = '#bundle'
 export default class Bundle {
   /**
    * Create a Bundle instance
-   * @param {...*} [args] Timetag and elements. See examples for options
+   * @param {...*} args Timetag and elements. See examples for options
    *
    * @example
    * const bundle = new Bundle(new Date() + 500)

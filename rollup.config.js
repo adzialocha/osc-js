@@ -53,5 +53,6 @@ export default [
     input: './src/osc.js',
     output: [{ file: 'lib/osc.d.ts', format: 'es' }],
     plugins: [dts()],
+    external: ['http', 'https'],
   },
 ]

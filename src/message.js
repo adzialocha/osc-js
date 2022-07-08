@@ -95,7 +95,7 @@ export class TypedMessage {
   /**
    * Add an OSC Atomic Data Type to the list of elements
    * @param {MessageArgType} type
-   * @param {MessageArgObject} item
+   * @param {MessageArgValue} item
    */
   add(type, item) {
     if (isUndefined(type)) {
@@ -262,7 +262,7 @@ export default class Message extends TypedMessage {
   /**
    * Create a Message instance
    * @param {string[]|string} address Address
-   * @param {...MessageArgObject} args OSC Atomic Data Types
+   * @param {...MessageArgValue} args OSC Atomic Data Types
    *
    * @example
    * const message = new Message(['test', 'path'], 50, 100.52, 'test')
@@ -288,7 +288,7 @@ export default class Message extends TypedMessage {
 
   /**
    * Add an OSC Atomic Data Type to the list of elements
-   * @param {MessageArgObject} item
+   * @param {MessageArgValue} item
    */
   add(item) {
     super.add(typeTag(item), item)
