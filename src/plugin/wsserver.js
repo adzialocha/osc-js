@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws'
+
 import Plugin from './plugin'
 
 /**
