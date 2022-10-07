@@ -1,4 +1,5 @@
 import WebSocket from 'ws'
+import Plugin from './plugin'
 
 /**
  * Status flags
@@ -26,7 +27,7 @@ const defaultOptions = {
 /**
  * OSC plugin for a Websocket client running in node or browser context
  */
-export default class WebsocketClientPlugin {
+export default class WebsocketClientPlugin extends Plugin {
   /**
    * Create an OSC WebsocketClientPlugin instance with given options.
    * Defaults to *localhost:8080* for connecting to a Websocket server
@@ -34,13 +35,15 @@ export default class WebsocketClientPlugin {
    * @param {string} [options.host='localhost'] Hostname of Websocket server
    * @param {number} [options.port=8080] Port of Websocket server
    * @param {boolean} [options.secure=false] Use wss:// for secure connections
-   * @param {string|array} [options.protocol=''] Subprotocol of Websocket server
+   * @param {string|string[]} [options.protocol=''] Subprotocol of Websocket server
    *
    * @example
    * const plugin = new OSC.WebsocketClientPlugin({ port: 9912 })
    * const osc = new OSC({ plugin: plugin })
    */
-  constructor(customOptions) {
+  constructor(options) {
+    super()
+
     if (!WebSocket) {
       throw new Error('WebsocketClientPlugin can\'t find a WebSocket class')
     }
@@ -49,7 +52,7 @@ export default class WebsocketClientPlugin {
      * @type {object} options
      * @private
      */
-    this.options = { ...defaultOptions, ...customOptions }
+    this.options = { ...defaultOptions, ...options }
 
     /**
      * @type {object} socket
@@ -93,7 +96,7 @@ export default class WebsocketClientPlugin {
    * @param {string} [customOptions.host] Hostname of Websocket server
    * @param {number} [customOptions.port] Port of Websocket server
    * @param {boolean} [customOptions.secure] Use wss:// for secure connections
-   * @param {string|array} [options.protocol] Subprotocol of Websocket server
+   * @param {string|string[]} [options.protocol] Subprotocol of Websocket server
    */
   open(customOptions = {}) {
     const options = { ...this.options, ...customOptions }

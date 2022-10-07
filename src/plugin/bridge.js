@@ -1,5 +1,6 @@
 import dgram from 'dgram'
 import { WebSocketServer } from 'ws'
+import Plugin from './plugin'
 
 /**
  * Status flags
@@ -53,7 +54,7 @@ function mergeOptions(base, custom) {
  * OSC plugin for setting up communication between a Websocket
  * client and a udp client with a bridge inbetween
  */
-export default class BridgePlugin {
+export default class BridgePlugin extends Plugin {
   /**
    * Create an OSC Bridge instance with given options. Defaults to
    * localhost:41234 for udp server, localhost:41235 for udp client and
@@ -80,7 +81,9 @@ export default class BridgePlugin {
    * const plugin = new OSC.BridgePlugin({ wsServer: { server: httpServer } })
    * const osc = new OSC({ plugin: plugin })
    */
-  constructor(customOptions = {}) {
+  constructor(options = {}) {
+    super()
+
     // `dgram` and `WebSocketServer` get replaced with an undefined value in
     // builds targeting browser environments
     if (!dgram || !WebSocketServer) {
@@ -90,7 +93,7 @@ export default class BridgePlugin {
     /** @type {object} options
      * @private
      */
-    this.options = mergeOptions({}, customOptions)
+    this.options = mergeOptions({}, options)
 
     /**
      * @type {object} websocket

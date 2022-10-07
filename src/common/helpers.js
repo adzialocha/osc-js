@@ -37,7 +37,7 @@ export function typeTag(item) {
 
 /**
  * Sanitizes an OSC-ready Address Pattern
- * @param {array|string} obj Address as string or array of strings
+ * @param {string[]|string} obj Address as string or array of strings
  * @return {string} Corrected address string
  *
  * @example

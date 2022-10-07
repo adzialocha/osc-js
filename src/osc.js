@@ -14,6 +14,7 @@ import DatagramPlugin from './plugin/dgram'
 import BridgePlugin from './plugin/bridge'
 import WebsocketClientPlugin from './plugin/wsclient'
 import WebsocketServerPlugin from './plugin/wsserver'
+import Plugin from './plugin/plugin'
 
 /**
  * Default options
@@ -212,7 +213,7 @@ class OSC {
   /**
    * Send an OSC Packet, Bundle or Message. This method is used by plugins
    * and is not available without (see Plugin API for more information)
-   * @param {Packet|Bundle|Message} packet OSC Packet, Bundle or Message instance
+   * @param {Packet|Bundle|Message|TypedMessage} packet OSC Packet, Bundle or Message instance
    * @param {object} [options] Custom options
    *
    * @example
@@ -256,6 +257,7 @@ OSC.Message = Message
 OSC.TypedMessage = TypedMessage
 
 // expose plugins
+OSC.Plugin = Plugin
 OSC.DatagramPlugin = DatagramPlugin
 OSC.WebsocketClientPlugin = WebsocketClientPlugin
 OSC.WebsocketServerPlugin = WebsocketServerPlugin

@@ -15,7 +15,7 @@ const STR_ENCODING = 'utf-8'
 
 /**
  * Helper method to decode a string using different methods depending on environment
- * @param {array} charCodes Array of char codes
+ * @param {number[]} charCodes Array of char codes
  * @return {string} Decoded string
  */
 function charCodesToString(charCodes) {

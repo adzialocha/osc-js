@@ -1,6 +1,7 @@
 import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
 import cleanup from 'rollup-plugin-cleanup'
+import dts from 'rollup-plugin-dts'
 import { terser } from 'rollup-plugin-terser'
 
 function rollupPlugins({ isBrowser = false } = {}) {
@@ -48,4 +49,10 @@ export default [
     file: 'lib/osc.min.js',
     isBrowser: true,
   }),
+  {
+    input: './src/osc.js',
+    output: [{ file: 'lib/osc.d.ts', format: 'es' }],
+    plugins: [dts()],
+    external: ['http', 'https'],
+  },
 ]

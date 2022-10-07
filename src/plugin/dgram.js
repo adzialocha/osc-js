@@ -1,4 +1,5 @@
 import dgram from 'dgram'
+import Plugin from './plugin'
 
 /**
  * Status flags
@@ -59,7 +60,7 @@ function mergeOptions(base, custom) {
  * OSC plugin for simple OSC messaging via udp client
  * and udp server
  */
-export default class DatagramPlugin {
+export default class DatagramPlugin extends Plugin {
   /**
    * Create an OSC Plugin instance with given options. Defaults to
    * localhost:41234 for server and localhost:41235 for client messaging
@@ -75,7 +76,9 @@ export default class DatagramPlugin {
    * const plugin = new OSC.DatagramPlugin({ send: { port: 9912 } })
    * const osc = new OSC({ plugin: plugin })
    */
-  constructor(customOptions = {}) {
+  constructor(options = {}) {
+    super()
+
     // `dgram` gets replaced with an undefined value in builds targeting
     // browser environments
     if (!dgram) {
@@ -86,7 +89,7 @@ export default class DatagramPlugin {
      * @type {object} options
      * @private
      */
-    this.options = mergeOptions({}, customOptions)
+    this.options = mergeOptions({}, options)
 
     /**
      * @type {object} socket

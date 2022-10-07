@@ -10,6 +10,7 @@ export const VALUE_FALSE = false
 
 /**
  * Extended type without data representing "None"
+ * @type {null}
  */
 export const VALUE_NONE = null
 
