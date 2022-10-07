@@ -33,10 +33,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MessageArgObject">MessageArgObject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float64.js~AtomicFloat64.html">AtomicFloat64</a></span></span></li>
@@ -74,8 +74,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#external">external</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-noop">noop</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WebSocketServer">WebSocketServer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ws">ws</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html">Plugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
 </ul>
@@ -83,13 +85,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import WebsocketClientPlugin from &apos;<span><a href="file/src/plugin/wsclient.js.html#lineNumber29">osc-js/src/plugin/wsclient.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import WebsocketClientPlugin from &apos;<span><a href="file/src/plugin/wsclient.js.html#lineNumber31">osc-js/src/plugin/wsclient.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/plugin/wsclient.js.html#lineNumber29">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/plugin/wsclient.js.html#lineNumber31">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -99,7 +101,7 @@
 
   
   
-  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/plugin/plugin.js~Plugin.html">Plugin</a></span> &#x2192; WebsocketClientPlugin</div></div>
   
   
   
@@ -445,7 +447,129 @@ EventHandler notify method</p>
 </table>
 </div>
 
-
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/plugin/plugin.js~Plugin.html">Plugin</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-close">close</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Close socket connection and anything else used in the implementation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-open">open</a></span></span><span class="code" data-ice="signature">(customOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Open socket connection.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-send">send</a></span></span><span class="code" data-ice="signature">(binary: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span>, customOptions: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Send an OSC Packet, Bundle or Message.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-status">status</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns the current status of the connection</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
 
 
 
@@ -463,7 +587,7 @@ EventHandler notify method</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber43">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber45">source</a></span></span>
     </span>
   </h3>
 
@@ -474,7 +598,7 @@ EventHandler notify method</p>
 Defaults to <em>localhost:8080</em> for connecting to a Websocket server</p>
 </div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-constructor-constructor">Plugin#constructor</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -517,7 +641,7 @@ Defaults to <em>localhost:8080</em> for connecting to a Websocket server</p>
     </tr>
 <tr data-ice="property" data-depth="1">
       <td data-ice="name" class="code" data-depth="1">options.protocol</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>array</span></td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: &apos;&apos;</li></ul></td>
       <td data-ice="description"><p>Subprotocol of Websocket server</p>
@@ -568,7 +692,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber69">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber73">source</a></span></span>
     </span>
   </h3>
 
@@ -611,7 +735,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber52">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber56">source</a></span></span>
     </span>
   </h3>
 
@@ -654,7 +778,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber58">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber62">source</a></span></span>
     </span>
   </h3>
 
@@ -697,7 +821,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber63">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber67">source</a></span></span>
     </span>
   </h3>
 
@@ -743,7 +867,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber145">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber149">source</a></span></span>
     </span>
   </h3>
 
@@ -753,7 +877,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
   <div data-ice="description"><p>Close Websocket</p>
 </div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-close">Plugin#close</a></span></div>
 
   <div data-ice="properties">
 </div>
@@ -787,7 +911,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber98">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber102">source</a></span></span>
     </span>
   </h3>
 
@@ -797,7 +921,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
   <div data-ice="description"><p>Connect to a Websocket server. Defaults to global options</p>
 </div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-open">Plugin#open</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -837,7 +961,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     </tr>
 <tr data-ice="property" data-depth="1">
       <td data-ice="name" class="code" data-depth="1">options.protocol</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span>array</span></td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>Subprotocol of Websocket server</p>
 </td>
@@ -876,7 +1000,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber154">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber158">source</a></span></span>
     </span>
   </h3>
 
@@ -886,7 +1010,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
   <div data-ice="description"><p>Send an OSC Packet, Bundle or Message to Websocket server</p>
 </div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-send">Plugin#send</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -937,7 +1061,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber86">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber90">source</a></span></span>
     </span>
   </h3>
 
@@ -947,7 +1071,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
   <div data-ice="description"><p>Returns the current status of the connection</p>
 </div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/plugin/plugin.js~Plugin.html#instance-method-status">Plugin#status</a></span></div>
 
   <div data-ice="properties">
 </div>
@@ -996,7 +1120,7 @@ const osc = new OSC({ plugin: plugin })</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber78">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/plugin/wsclient.js.html#lineNumber82">source</a></span></span>
     </span>
   </h3>
 

@@ -108,6 +108,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "osc-js/src/plugin/plugin.js~plugin",
+    "class/src/plugin/plugin.js~Plugin.html",
+    "<span>Plugin</span> <span class=\"search-result-import-path\">osc-js/src/plugin/plugin.js</span>",
+    "class"
+  ],
+  [
     "osc-js/src/atomic/timetag.js~seconds_70_years",
     "variable/index.html#static-variable-SECONDS_70_YEARS",
     "<span>SECONDS_70_YEARS</span> <span class=\"search-result-import-path\">osc-js/src/atomic/timetag.js</span>",
@@ -123,12 +129,6 @@ window.esdocSearchIndex = [
     "osc-js/src/atomic/timetag.js~timetag",
     "class/src/atomic/timetag.js~Timetag.html",
     "<span>Timetag</span> <span class=\"search-result-import-path\">osc-js/src/atomic/timetag.js</span>",
-    "class"
-  ],
-  [
-    "osc-js/src/message.js~typedmessage",
-    "class/src/message.js~TypedMessage.html",
-    "<span>TypedMessage</span> <span class=\"search-result-import-path\">osc-js/src/message.js</span>",
     "class"
   ],
   [
@@ -292,6 +292,12 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-typeTag",
     "<span>typeTag</span> <span class=\"search-result-import-path\">osc-js/src/common/helpers.js</span>",
     "function"
+  ],
+  [
+    "osc-js/src/external/ws.js~ws",
+    "variable/index.html#static-variable-ws",
+    "<span>ws</span> <span class=\"search-result-import-path\">osc-js/src/external/ws.js</span>",
+    "variable"
   ],
   [
     "atomic src/atomic.js~atomic,atomic",
@@ -1074,7 +1080,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "message#pack src/message.js~typedmessage#pack,message#pack",
+    "message#pack message#pack,message#pack",
     "test-file/test/message.spec.js.html#lineNumber176",
     "Message pack",
     "test"
@@ -1092,7 +1098,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "message#unpack src/message.js~typedmessage#unpack,message#unpack",
+    "message#unpack message#unpack,message#unpack",
     "test-file/test/message.spec.js.html#lineNumber209",
     "Message unpack",
     "test"
@@ -1290,13 +1296,13 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "typedmessage src/message.js~typedmessage,typedmessage",
+    "typedmessage typedmessage,typedmessage",
     "test-file/test/message.spec.js.html#lineNumber6",
     "TypedMessage",
     "test"
   ],
   [
-    "typedmessage#add src/message.js~typedmessage#add,typedmessage#add",
+    "typedmessage#add typedmessage#add,typedmessage#add",
     "test-file/test/message.spec.js.html#lineNumber36",
     "TypedMessage add",
     "test"
@@ -1332,7 +1338,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "typedmessage#pack src/message.js~typedmessage#pack,typedmessage#pack",
+    "typedmessage#pack typedmessage#pack,typedmessage#pack",
     "test-file/test/message.spec.js.html#lineNumber57",
     "TypedMessage pack",
     "test"
@@ -1350,7 +1356,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "typedmessage#unpack src/message.js~typedmessage#unpack,typedmessage#unpack",
+    "typedmessage#unpack typedmessage#unpack,typedmessage#unpack",
     "test-file/test/message.spec.js.html#lineNumber107",
     "TypedMessage unpack",
     "test"
@@ -2274,52 +2280,10 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/message.js~typedmessage#add",
-    "class/src/message.js~TypedMessage.html#instance-method-add",
-    "src/message.js~TypedMessage#add",
-    "method"
-  ],
-  [
-    "src/message.js~typedmessage#address",
-    "class/src/message.js~TypedMessage.html#instance-member-address",
-    "src/message.js~TypedMessage#address",
-    "member"
-  ],
-  [
-    "src/message.js~typedmessage#args",
-    "class/src/message.js~TypedMessage.html#instance-member-args",
-    "src/message.js~TypedMessage#args",
-    "member"
-  ],
-  [
-    "src/message.js~typedmessage#constructor",
-    "class/src/message.js~TypedMessage.html#instance-constructor-constructor",
-    "src/message.js~TypedMessage#constructor",
-    "method"
-  ],
-  [
-    "src/message.js~typedmessage#offset",
-    "class/src/message.js~TypedMessage.html#instance-member-offset",
-    "src/message.js~TypedMessage#offset",
-    "member"
-  ],
-  [
-    "src/message.js~typedmessage#pack",
-    "class/src/message.js~TypedMessage.html#instance-method-pack",
-    "src/message.js~TypedMessage#pack",
-    "method"
-  ],
-  [
-    "src/message.js~typedmessage#types",
-    "class/src/message.js~TypedMessage.html#instance-member-types",
-    "src/message.js~TypedMessage#types",
-    "member"
-  ],
-  [
-    "src/message.js~typedmessage#unpack",
-    "class/src/message.js~TypedMessage.html#instance-method-unpack",
-    "src/message.js~TypedMessage#unpack",
-    "method"
+    "src/message.js~messageargobject",
+    "typedef/index.html#static-typedef-MessageArgObject",
+    "src/message.js~MessageArgObject",
+    "typedef"
   ],
   [
     "src/osc.js",
@@ -2553,6 +2517,42 @@ window.esdocSearchIndex = [
     "src/plugin/dgram.js~datagramplugin#status",
     "class/src/plugin/dgram.js~DatagramPlugin.html#instance-method-status",
     "src/plugin/dgram.js~DatagramPlugin#status",
+    "method"
+  ],
+  [
+    "src/plugin/plugin.js",
+    "file/src/plugin/plugin.js.html",
+    "src/plugin/plugin.js",
+    "file"
+  ],
+  [
+    "src/plugin/plugin.js~plugin#close",
+    "class/src/plugin/plugin.js~Plugin.html#instance-method-close",
+    "src/plugin/plugin.js~Plugin#close",
+    "method"
+  ],
+  [
+    "src/plugin/plugin.js~plugin#constructor",
+    "class/src/plugin/plugin.js~Plugin.html#instance-constructor-constructor",
+    "src/plugin/plugin.js~Plugin#constructor",
+    "method"
+  ],
+  [
+    "src/plugin/plugin.js~plugin#open",
+    "class/src/plugin/plugin.js~Plugin.html#instance-method-open",
+    "src/plugin/plugin.js~Plugin#open",
+    "method"
+  ],
+  [
+    "src/plugin/plugin.js~plugin#send",
+    "class/src/plugin/plugin.js~Plugin.html#instance-method-send",
+    "src/plugin/plugin.js~Plugin#send",
+    "method"
+  ],
+  [
+    "src/plugin/plugin.js~plugin#status",
+    "class/src/plugin/plugin.js~Plugin.html#instance-method-status",
+    "src/plugin/plugin.js~Plugin#status",
     "method"
   ],
   [

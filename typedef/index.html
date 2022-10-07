@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">test/common/helpers.spec.js | osc-js</title>
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Typedef | osc-js</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -84,63 +84,121 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">test/common/helpers.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expect } from &apos;chai&apos;
+<div class="content" data-ice="content"><h1 data-ice="title">Typedef</h1>
+<div data-ice="summaries"><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-MessageArgObject">MessageArgObject</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="details"><h2 data-ice="title">Static Public </h2>
 
-import EncodeHelper, { typeTag, prepareAddress } from &apos;../../src/common/helpers&apos;
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-typedef-MessageArgObject">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">MessageArgObject</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber48">source</a></span></span>
+    </span>
+  </h3>
 
-import AtomicFloat32 from &apos;../../src/atomic/float32&apos;
-import AtomicString from &apos;../../src/atomic/string&apos;
+  
+  
+  
+  <div data-ice="description"><p>A TypedMessage consists of an OSC address and an optional array of typed OSC arguments.</p>
+</div>
 
-/** @test {typeTag} */
-describe(&apos;typeTag&apos;, () =&gt; {
-  it(&apos;returns the right OSC Type Tag characters&apos;, () =&gt; {
-    expect(typeTag(2)).to.be.equals(&apos;i&apos;)
-    expect(typeTag(2.2)).to.be.equals(&apos;f&apos;)
-    expect(typeTag(&apos;joe&apos;)).to.be.equals(&apos;s&apos;)
-    expect(typeTag(new Uint8Array([1, 2, 3]))).to.be.equals(&apos;b&apos;)
-  })
-})
+  
 
-/** @test {prepareAddress} */
-describe(&apos;prepareAddress&apos;, () =&gt; {
-  it(&apos;builds an valid  address from an array&apos;, () =&gt; {
-    expect(prepareAddress([&apos;hello&apos;, &apos;world&apos;])).to.be.equals(&apos;/hello/world&apos;)
-  })
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Properties:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">type</td>
+      <td data-ice="type" class="code"><span>MessageArgType</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">value</td>
+      <td data-ice="type" class="code"><span>MessageArgValue</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
 
-  it(&apos;builds an valid  address from an invalid string&apos;, () =&gt; {
-    expect(prepareAddress(&apos;hello/world&apos;)).to.be.equals(&apos;/hello/world&apos;)
-  })
+  
 
-  it(&apos;removes the last slash&apos;, () =&gt; {
-    expect(prepareAddress(&apos;/hello/world/&apos;)).to.be.equals(&apos;/hello/world&apos;)
-  })
-})
+  
 
-/** @test {EncodeHelper} */
-describe(&apos;EncodeHelper&apos;, () =&gt; {
-  let encoder
+  
 
-  before(() =&gt; {
-    encoder = new EncodeHelper()
-    encoder.add(new AtomicFloat32(24.12))
-    encoder.add(new AtomicString(&apos;joe&apos;))
-  })
+  
 
-  it(&apos;adds items up and increases the byteLength accordingly&apos;, () =&gt; {
-    expect(encoder.byteLength).to.be.equals(8)
-    expect(encoder.data.length).to.be.equals(2)
-  })
+  
 
-  it(&apos;merges the items to one Uint8Array&apos;, () =&gt; {
-    const merged = encoder.merge()
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">const messageArgObject = {
+  type: &apos;i&apos;, value: 123
+}</code></pre>
+    </div>
+</div>
 
-    expect(merged.length).to.be.equals(8)
-    expect(merged).to.be.a(&apos;uint8array&apos;)
-  })
-})
-</code></pre>
+  
 
+  
+  
+</div>
+</div>
 </div>
 
 <footer class="footer">

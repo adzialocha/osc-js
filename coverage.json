@@ -1,7 +1,7 @@
 {
-  "coverage": "89.94%",
-  "expectCount": 199,
-  "actualCount": 179,
+  "coverage": "88.38%",
+  "expectCount": 198,
+  "actualCount": 175,
   "files": {
     "src/atomic/blob.js": {
       "expectCount": 6,
@@ -89,24 +89,26 @@
       ]
     },
     "src/external/ws.js": {
-      "expectCount": 1,
-      "actualCount": 1,
-      "undocumentLines": []
+      "expectCount": 3,
+      "actualCount": 2,
+      "undocumentLines": [
+        5
+      ]
     },
     "src/message.js": {
-      "expectCount": 14,
-      "actualCount": 12,
+      "expectCount": 5,
+      "actualCount": 3,
       "undocumentLines": [
-        279,
-        280
+        284,
+        285
       ]
     },
     "src/osc.js": {
       "expectCount": 12,
       "actualCount": 10,
       "undocumentLines": [
-        30,
-        59
+        31,
+        60
       ]
     },
     "src/packet.js": {
@@ -118,34 +120,42 @@
       "expectCount": 15,
       "actualCount": 13,
       "undocumentLines": [
-        20,
-        41
+        22,
+        43
       ]
     },
     "src/plugin/dgram.js": {
       "expectCount": 16,
       "actualCount": 12,
       "undocumentLines": [
-        19,
-        29,
-        38,
-        48
+        21,
+        31,
+        40,
+        50
+      ]
+    },
+    "src/plugin/plugin.js": {
+      "expectCount": 6,
+      "actualCount": 4,
+      "undocumentLines": [
+        17,
+        18
       ]
     },
     "src/plugin/wsclient.js": {
       "expectCount": 13,
       "actualCount": 11,
       "undocumentLines": [
-        19,
-        29
+        21,
+        31
       ]
     },
     "src/plugin/wsserver.js": {
       "expectCount": 13,
       "actualCount": 11,
       "undocumentLines": [
-        19,
-        27
+        21,
+        35
       ]
     }
   }

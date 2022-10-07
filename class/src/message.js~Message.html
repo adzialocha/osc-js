@@ -33,10 +33,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MessageArgObject">MessageArgObject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float64.js~AtomicFloat64.html">AtomicFloat64</a></span></span></li>
@@ -74,8 +74,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#external">external</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-noop">noop</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WebSocketServer">WebSocketServer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ws">ws</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html">Plugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
 </ul>
@@ -83,13 +85,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Message from &apos;<span><a href="file/src/message.js.html#lineNumber251">osc-js/src/message.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Message from &apos;<span><a href="file/src/message.js.html#lineNumber261">osc-js/src/message.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/message.js.html#lineNumber251">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/message.js.html#lineNumber261">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -99,7 +101,7 @@
 
   
   
-  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span> &#x2192; Message</div></div>
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>TypedMessage</span> &#x2192; Message</div></div>
   
   
   
@@ -149,7 +151,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~Message.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(args: <span>array</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, args: ...<span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/message.js~Message.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(address: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, args: ...<span>MessageArgValue</span>)</span>
         </p>
       </div>
       <div>
@@ -248,7 +250,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~Message.html#instance-method-add">add</a></span></span><span class="code" data-ice="signature">(item: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/message.js~Message.html#instance-method-add">add</a></span></span><span class="code" data-ice="signature">(item: <span>MessageArgValue</span>)</span>
         </p>
       </div>
       <div>
@@ -267,212 +269,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
 </table>
 </div>
 
-<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-member-address">address</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-member-args">args</a></span></span><span class="code" data-ice="signature">: <span>array</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-member-types">types</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">private</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-member-offset">offset</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-method-add">add</a></span></span><span class="code" data-ice="signature">(type: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, item: <span>*</span>)</span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Add an OSC Atomic Data Type to the list of elements</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-method-pack">pack</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Interpret the Message as packed binary data</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/message.js~TypedMessage.html#instance-method-unpack">unpack</a></span></span><span class="code" data-ice="signature">(dataView: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView">DataView</a></span>, initialOffset: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>Unpack binary data to read a Message</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
+
 
 
 
@@ -486,11 +283,11 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(args: <span>array</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, args: ...<span>*</span>)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(address: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, args: ...<span>MessageArgValue</span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber263">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber273">source</a></span></span>
     </span>
   </h3>
 
@@ -500,7 +297,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
   <div data-ice="description"><p>Create a Message instance</p>
 </div>
 
-  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/message.js~TypedMessage.html#instance-constructor-constructor">TypedMessage#constructor</a></span></div>
+  
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -511,15 +308,15 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">args</td>
-      <td data-ice="type" class="code"><span>array</span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">address</td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>Address</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">args</td>
-      <td data-ice="type" class="code">...<span>*</span></td>
+      <td data-ice="type" class="code">...<span>MessageArgValue</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>OSC Atomic Data Types</p>
 </td>
@@ -572,7 +369,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber280">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber285">source</a></span></span>
     </span>
   </h3>
 
@@ -581,7 +378,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
   
   
 
-  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/message.js~TypedMessage.html#instance-member-args">TypedMessage#args</a></span></div>
+  
 
   <div data-ice="properties">
 </div>
@@ -615,7 +412,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber279">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber284">source</a></span></span>
     </span>
   </h3>
 
@@ -624,7 +421,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
   
   
 
-  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/message.js~TypedMessage.html#instance-member-types">TypedMessage#types</a></span></div>
+  
 
   <div data-ice="properties">
 </div>
@@ -657,11 +454,11 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     
     
     
-    <span class="code" data-ice="name">add</span><span class="code" data-ice="signature">(item: <span>*</span>)</span>
+    <span class="code" data-ice="name">add</span><span class="code" data-ice="signature">(item: <span>MessageArgValue</span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber288">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/message.js.html#lineNumber293">source</a></span></span>
     </span>
   </h3>
 
@@ -671,7 +468,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
   <div data-ice="description"><p>Add an OSC Atomic Data Type to the list of elements</p>
 </div>
 
-  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/message.js~TypedMessage.html#instance-method-add">TypedMessage#add</a></span></div>
+  
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -683,7 +480,7 @@ by an OSC Type Tag String followed by zero or more OSC Arguments</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">item</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="type" class="code"><span>MessageArgValue</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>

@@ -33,10 +33,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/bundle.js~Bundle.html">Bundle</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/events.js~EventHandler.html">EventHandler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~Message.html">Message</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/message.js~TypedMessage.html">TypedMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/osc.js~OSC.html">OSC</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/packet.js~Packet.html">Packet</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BUNDLE_TAG">BUNDLE_TAG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MessageArgObject">MessageArgObject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#atomic">atomic</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/blob.js~AtomicBlob.html">AtomicBlob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float32.js~AtomicFloat32.html">AtomicFloat32</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/atomic/float64.js~AtomicFloat64.html">AtomicFloat64</a></span></span></li>
@@ -74,8 +74,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pad">pad</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#external">external</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-noop">noop</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WebSocketServer">WebSocketServer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ws">ws</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#plugin">plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/bridge.js~BridgePlugin.html">BridgePlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/dgram.js~DatagramPlugin.html">DatagramPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/plugin.js~Plugin.html">Plugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsclient.js~WebsocketClientPlugin.html">WebsocketClientPlugin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/plugin/wsserver.js~WebsocketServerPlugin.html">WebsocketServerPlugin</a></span></span></li>
 </ul>
@@ -246,7 +248,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_NONE">VALUE_NONE</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-VALUE_NONE">VALUE_NONE</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></span></span>
         </p>
       </div>
       <div>
@@ -345,6 +347,35 @@
         
         
         <div data-ice="description"><p>Do not export server for browser environments.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="variable/index.html#static-variable-ws">ws</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return WebSocket client for browser environments.</p>
 </div>
       </div>
     </td>
@@ -546,11 +577,11 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/atomic/constant.js.html#lineNumber19">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/atomic/constant.js.html#lineNumber20">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {VALUE_INFINITY} from &apos;<span><a href="file/src/atomic/constant.js.html#lineNumber19">osc-js/src/atomic/constant.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {VALUE_INFINITY} from &apos;<span><a href="file/src/atomic/constant.js.html#lineNumber20">osc-js/src/atomic/constant.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Extended type without data representing &quot;Infinity&quot;</p>
@@ -586,15 +617,15 @@
     
     
     
-    <span class="code" data-ice="name">VALUE_NONE</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">VALUE_NONE</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/atomic/constant.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/atomic/constant.js.html#lineNumber15">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {VALUE_NONE} from &apos;<span><a href="file/src/atomic/constant.js.html#lineNumber14">osc-js/src/atomic/constant.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {VALUE_NONE} from &apos;<span><a href="file/src/atomic/constant.js.html#lineNumber15">osc-js/src/atomic/constant.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Extended type without data representing &quot;None&quot;</p>
@@ -723,14 +754,58 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/external/ws.js.html#lineNumber21">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/external/ws.js.html#lineNumber28">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {WebSocketServer} from &apos;<span><a href="file/src/external/ws.js.html#lineNumber21">osc-js/src/external/ws.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {WebSocketServer} from &apos;<span><a href="file/src/external/ws.js.html#lineNumber28">osc-js/src/external/ws.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Do not export server for browser environments.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-variable-ws">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">ws</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/external/ws.js.html#lineNumber22">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import ws from &apos;<span><a href="file/src/external/ws.js.html#lineNumber22">osc-js/src/external/ws.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Return WebSocket client for browser environments.</p>
 </div>
 
   
