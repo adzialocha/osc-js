@@ -24,6 +24,7 @@ osc-js is an [Open Sound Control](http://opensoundcontrol.org/) library for Java
 
 - UMD Module running in Node.js, Electron, Chrome Apps, browser or any other JS environment
 - Can be used with Webpack and Browserify
+- TypeScript definitions
 - No dependencies (except of `ws` in Node.js or similar environments)
 - Receive sender information from incoming messages
 - Built-in *UDP*, *WebSocket* networking support as plugins
@@ -193,6 +194,7 @@ npm install
 * [@davidgranstrom](https://github.com/davidgranstrom)
 * [@elgiano](https://github.com/elgiano)
 * [@eliot-akira](https://github.com/eliot-akira)
+* [@JacobMuchow](https://github.com/JacobMuchow)
 * [@PeterKey](https://github.com/PeterKey)
 * [@yaxu](https://github.com/yaxu)
 
