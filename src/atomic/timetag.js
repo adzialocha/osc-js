@@ -52,7 +52,7 @@ export class Timetag {
     }
 
     seconds = this.seconds - SECONDS_70_YEARS
-    return (seconds + Math.round(this.fractions / TWO_POWER_32)) * 1000
+    return Math.round((seconds + timetag.fractions / TWO_POWER_32) * 1000)
   }
 }
 
