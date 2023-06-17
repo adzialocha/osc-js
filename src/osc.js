@@ -22,7 +22,6 @@ import Plugin from './plugin/plugin'
  */
 const defaultOptions = {
   discardLateMessages: false,
-  plugin: new WebsocketClientPlugin(),
 }
 
 /**
@@ -88,6 +87,10 @@ class OSC {
      * @private
      */
     this.options = { ...defaultOptions, ...options }
+    // create default plugin with default options
+    if (!this.options.plugin) {
+      this.options.plugin = new WebsocketClientPlugin();
+    }
     /**
      * @type {EventHandler} eventHandler
      * @private
