@@ -197,6 +197,7 @@ npm install
 * [@JacobMuchow](https://github.com/JacobMuchow)
 * [@PeterKey](https://github.com/PeterKey)
 * [@yaxu](https://github.com/yaxu)
+* [@yojeek](https://github.com/yojeek)
 
 ### ESDocs
 
