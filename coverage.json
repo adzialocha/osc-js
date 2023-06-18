@@ -107,8 +107,8 @@
       "expectCount": 12,
       "actualCount": 10,
       "undocumentLines": [
-        31,
-        60
+        30,
+        59
       ]
     },
     "src/packet.js": {

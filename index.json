@@ -3967,7 +3967,7 @@
     "__docId__": 196,
     "kind": "file",
     "name": "src/osc.js",
-    "content": "import {\n  isFunction,\n  isInt,\n  isObject,\n  isString,\n} from './common/utils'\n\nimport Bundle from './bundle'\nimport EventHandler from './events'\nimport Message, { TypedMessage } from './message'\nimport Packet from './packet'\n\nimport DatagramPlugin from './plugin/dgram'\nimport BridgePlugin from './plugin/bridge'\nimport WebsocketClientPlugin from './plugin/wsclient'\nimport WebsocketServerPlugin from './plugin/wsserver'\nimport Plugin from './plugin/plugin'\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  discardLateMessages: false,\n  plugin: new WebsocketClientPlugin(),\n}\n\n/**\n * Status flags\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * OSC interface to send OSC Packets and listen to status changes and\n * incoming message events. Offers a Plugin API for different network\n * protocols, defaults to a simple Websocket client for OSC communication\n * between a browser js-app and a js-node server\n *\n * @example\n * const osc = new OSC()\n *\n * osc.on('/input/test', message => {\n *   // print incoming OSC message arguments\n *   console.log(message.args)\n * })\n *\n * osc.on('open', () => {\n *   const message = new Message('/test/path', 55.12, 'hello')\n *   osc.send(message)\n * })\n *\n * osc.open({ host: '192.168.178.115', port: 9012 })\n */\nclass OSC {\n  /**\n   * Create an OSC instance with given options\n   * @param {object} [options] Custom options\n   * @param {boolean} [options.discardLateMessages=false] Ignore incoming\n   * messages when given timetag lies in the past\n   * @param {Plugin} [options.plugin=WebsocketClientPlugin] Add a connection plugin\n   * to this interface, defaults to a plugin with Websocket client.\n   * Open README.md for further information on how to handle plugins or\n   * how to write your own with the Plugin API\n   *\n   * @example\n   * const osc = new OSC() // default options with Websocket client\n   *\n   * @example\n   * const osc = new OSC({ discardLateMessages: true })\n   *\n   * @example\n   * const websocketPlugin = new OSC.WebsocketClientPlugin()\n   * const osc = new OSC({ plugin: websocketPlugin })\n   */\n  constructor(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC options argument has to be an object.')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...options }\n    /**\n     * @type {EventHandler} eventHandler\n     * @private\n     */\n    this.eventHandler = new EventHandler({\n      discardLateMessages: this.options.discardLateMessages,\n    })\n\n    // pass EventHandler's notify() to plugin\n    const { eventHandler } = this\n    if (this.options.plugin && this.options.plugin.registerNotify) {\n      this.options.plugin.registerNotify((...args) => eventHandler.notify(...args))\n    }\n  }\n\n  /**\n   * Listen to a status-change event or incoming OSC message with\n   * address pattern matching\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {function} callback Function which is called on notification\n   * @return {number} Subscription id (needed to unsubscribe)\n   *\n   * @example\n   * // will be called when server receives /in!trument/* for example\n   * osc.on('/instrument/1', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called for every message since it uses the wildcard symbol\n   * osc.on('*', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called on network socket error\n   * osc.on('error', message => {\n   *   console.log(message)\n   * })\n   */\n  on(eventName, callback) {\n    if (!(isString(eventName) && isFunction(callback))) {\n      throw new Error('OSC on() needs event- or address string and callback function')\n    }\n\n    return this.eventHandler.on(eventName, callback)\n  }\n\n  /**\n   * Unsubscribe an event listener\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {number} subscriptionId The subscription id\n   * @return {boolean} Success state\n   *\n   * @example\n   * const listenerId = osc.on('error', message => {\n   *   console.log(message)\n   * })\n   * osc.off('error', listenerId) // unsubscribe from error event\n   */\n  off(eventName, subscriptionId) {\n    if (!(isString(eventName) && isInt(subscriptionId))) {\n      throw new Error('OSC off() needs string and number (subscriptionId) to unsubscribe')\n    }\n\n    return this.eventHandler.off(eventName, subscriptionId)\n  }\n\n  /**\n   * Open network socket with plugin. This method is used by\n   * plugins and is not available without (see Plugin API for more information)\n   * @param {object} [options] Custom global options for plugin instance\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   */\n  open(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC open() options argument needs to be an object')\n    }\n\n    if (!(this.options.plugin && isFunction(this.options.plugin.open))) {\n      throw new Error('OSC Plugin API #open is not implemented!')\n    }\n\n    return this.options.plugin.open(options)\n  }\n\n  /**\n   * Returns the current status of the connection. See *STATUS* for\n   * different possible states. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @return {number} Status identifier\n   *\n   * @example\n   * import OSC, { STATUS } from 'osc'\n   * const osc = new OSC()\n   * if (osc.status() === STATUS.IS_CONNECTING) {\n   *   // do something\n   * }\n   */\n  status() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.status))) {\n      throw new Error('OSC Plugin API #status is not implemented!')\n    }\n\n    return this.options.plugin.status()\n  }\n\n  /**\n   * Close connection. This method is used by plugins and is not\n   * available without (see Plugin API for more information)\n   */\n  close() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.close))) {\n      throw new Error('OSC Plugin API #close is not implemented!')\n    }\n\n    return this.options.plugin.close()\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @param {Packet|Bundle|Message|TypedMessage} packet OSC Packet, Bundle or Message instance\n   * @param {object} [options] Custom options\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   *\n   * const message = new OSC.Message('/test/path', 55.1, 57)\n   * osc.send(message)\n   *\n   * // send message again to custom address\n   * osc.send(message, { host: '192.168.178.115', port: 9001 })\n   */\n  send(packet, options) {\n    if (!(this.options.plugin && isFunction(this.options.plugin.send))) {\n      throw new Error('OSC Plugin API #send is not implemented!')\n    }\n\n    if (!(packet instanceof TypedMessage\n        || packet instanceof Message\n        || packet instanceof Bundle\n        || packet instanceof Packet)\n    ) {\n      throw new Error('OSC send() needs Messages, Bundles or Packets')\n    }\n\n    if (options && !isObject(options)) {\n      throw new Error('OSC send() options argument has to be an object')\n    }\n\n    return this.options.plugin.send(packet.pack(), options)\n  }\n}\n\n// expose status flags\nOSC.STATUS = STATUS\n\n// expose OSC classes\nOSC.Packet = Packet\nOSC.Bundle = Bundle\nOSC.Message = Message\nOSC.TypedMessage = TypedMessage\n\n// expose plugins\nOSC.Plugin = Plugin\nOSC.DatagramPlugin = DatagramPlugin\nOSC.WebsocketClientPlugin = WebsocketClientPlugin\nOSC.WebsocketServerPlugin = WebsocketServerPlugin\nOSC.BridgePlugin = BridgePlugin\n\nexport default OSC\n",
+    "content": "import {\n  isFunction,\n  isInt,\n  isObject,\n  isString,\n} from './common/utils'\n\nimport Bundle from './bundle'\nimport EventHandler from './events'\nimport Message, { TypedMessage } from './message'\nimport Packet from './packet'\n\nimport DatagramPlugin from './plugin/dgram'\nimport BridgePlugin from './plugin/bridge'\nimport WebsocketClientPlugin from './plugin/wsclient'\nimport WebsocketServerPlugin from './plugin/wsserver'\nimport Plugin from './plugin/plugin'\n\n/**\n * Default options\n * @private\n */\nconst defaultOptions = {\n  discardLateMessages: false,\n}\n\n/**\n * Status flags\n */\nconst STATUS = {\n  IS_NOT_INITIALIZED: -1,\n  IS_CONNECTING: 0,\n  IS_OPEN: 1,\n  IS_CLOSING: 2,\n  IS_CLOSED: 3,\n}\n\n/**\n * OSC interface to send OSC Packets and listen to status changes and\n * incoming message events. Offers a Plugin API for different network\n * protocols, defaults to a simple Websocket client for OSC communication\n * between a browser js-app and a js-node server\n *\n * @example\n * const osc = new OSC()\n *\n * osc.on('/input/test', message => {\n *   // print incoming OSC message arguments\n *   console.log(message.args)\n * })\n *\n * osc.on('open', () => {\n *   const message = new Message('/test/path', 55.12, 'hello')\n *   osc.send(message)\n * })\n *\n * osc.open({ host: '192.168.178.115', port: 9012 })\n */\nclass OSC {\n  /**\n   * Create an OSC instance with given options\n   * @param {object} [options] Custom options\n   * @param {boolean} [options.discardLateMessages=false] Ignore incoming\n   * messages when given timetag lies in the past\n   * @param {Plugin} [options.plugin=WebsocketClientPlugin] Add a connection plugin\n   * to this interface, defaults to a plugin with Websocket client.\n   * Open README.md for further information on how to handle plugins or\n   * how to write your own with the Plugin API\n   *\n   * @example\n   * const osc = new OSC() // default options with Websocket client\n   *\n   * @example\n   * const osc = new OSC({ discardLateMessages: true })\n   *\n   * @example\n   * const websocketPlugin = new OSC.WebsocketClientPlugin()\n   * const osc = new OSC({ plugin: websocketPlugin })\n   */\n  constructor(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC options argument has to be an object.')\n    }\n\n    /**\n     * @type {object} options\n     * @private\n     */\n    this.options = { ...defaultOptions, ...options }\n    // create default plugin with default options\n    if (!this.options.plugin) {\n      this.options.plugin = new WebsocketClientPlugin();\n    }\n    /**\n     * @type {EventHandler} eventHandler\n     * @private\n     */\n    this.eventHandler = new EventHandler({\n      discardLateMessages: this.options.discardLateMessages,\n    })\n\n    // pass EventHandler's notify() to plugin\n    const { eventHandler } = this\n    if (this.options.plugin && this.options.plugin.registerNotify) {\n      this.options.plugin.registerNotify((...args) => eventHandler.notify(...args))\n    }\n  }\n\n  /**\n   * Listen to a status-change event or incoming OSC message with\n   * address pattern matching\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {function} callback Function which is called on notification\n   * @return {number} Subscription id (needed to unsubscribe)\n   *\n   * @example\n   * // will be called when server receives /in!trument/* for example\n   * osc.on('/instrument/1', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called for every message since it uses the wildcard symbol\n   * osc.on('*', message => {\n   *   console.log(message)\n   * })\n   *\n   * @example\n   * // will be called on network socket error\n   * osc.on('error', message => {\n   *   console.log(message)\n   * })\n   */\n  on(eventName, callback) {\n    if (!(isString(eventName) && isFunction(callback))) {\n      throw new Error('OSC on() needs event- or address string and callback function')\n    }\n\n    return this.eventHandler.on(eventName, callback)\n  }\n\n  /**\n   * Unsubscribe an event listener\n   * @param {string} eventName Event name or OSC address pattern\n   * @param {number} subscriptionId The subscription id\n   * @return {boolean} Success state\n   *\n   * @example\n   * const listenerId = osc.on('error', message => {\n   *   console.log(message)\n   * })\n   * osc.off('error', listenerId) // unsubscribe from error event\n   */\n  off(eventName, subscriptionId) {\n    if (!(isString(eventName) && isInt(subscriptionId))) {\n      throw new Error('OSC off() needs string and number (subscriptionId) to unsubscribe')\n    }\n\n    return this.eventHandler.off(eventName, subscriptionId)\n  }\n\n  /**\n   * Open network socket with plugin. This method is used by\n   * plugins and is not available without (see Plugin API for more information)\n   * @param {object} [options] Custom global options for plugin instance\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   */\n  open(options) {\n    if (options && !isObject(options)) {\n      throw new Error('OSC open() options argument needs to be an object')\n    }\n\n    if (!(this.options.plugin && isFunction(this.options.plugin.open))) {\n      throw new Error('OSC Plugin API #open is not implemented!')\n    }\n\n    return this.options.plugin.open(options)\n  }\n\n  /**\n   * Returns the current status of the connection. See *STATUS* for\n   * different possible states. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @return {number} Status identifier\n   *\n   * @example\n   * import OSC, { STATUS } from 'osc'\n   * const osc = new OSC()\n   * if (osc.status() === STATUS.IS_CONNECTING) {\n   *   // do something\n   * }\n   */\n  status() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.status))) {\n      throw new Error('OSC Plugin API #status is not implemented!')\n    }\n\n    return this.options.plugin.status()\n  }\n\n  /**\n   * Close connection. This method is used by plugins and is not\n   * available without (see Plugin API for more information)\n   */\n  close() {\n    if (!(this.options.plugin && isFunction(this.options.plugin.close))) {\n      throw new Error('OSC Plugin API #close is not implemented!')\n    }\n\n    return this.options.plugin.close()\n  }\n\n  /**\n   * Send an OSC Packet, Bundle or Message. This method is used by plugins\n   * and is not available without (see Plugin API for more information)\n   * @param {Packet|Bundle|Message|TypedMessage} packet OSC Packet, Bundle or Message instance\n   * @param {object} [options] Custom options\n   *\n   * @example\n   * const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\n   * osc.open({ host: '127.0.0.1', port: 8080 })\n   *\n   * const message = new OSC.Message('/test/path', 55.1, 57)\n   * osc.send(message)\n   *\n   * // send message again to custom address\n   * osc.send(message, { host: '192.168.178.115', port: 9001 })\n   */\n  send(packet, options) {\n    if (!(this.options.plugin && isFunction(this.options.plugin.send))) {\n      throw new Error('OSC Plugin API #send is not implemented!')\n    }\n\n    if (!(packet instanceof TypedMessage\n        || packet instanceof Message\n        || packet instanceof Bundle\n        || packet instanceof Packet)\n    ) {\n      throw new Error('OSC send() needs Messages, Bundles or Packets')\n    }\n\n    if (options && !isObject(options)) {\n      throw new Error('OSC send() options argument has to be an object')\n    }\n\n    return this.options.plugin.send(packet.pack(), options)\n  }\n}\n\n// expose status flags\nOSC.STATUS = STATUS\n\n// expose OSC classes\nOSC.Packet = Packet\nOSC.Bundle = Bundle\nOSC.Message = Message\nOSC.TypedMessage = TypedMessage\n\n// expose plugins\nOSC.Plugin = Plugin\nOSC.DatagramPlugin = DatagramPlugin\nOSC.WebsocketClientPlugin = WebsocketClientPlugin\nOSC.WebsocketServerPlugin = WebsocketServerPlugin\nOSC.BridgePlugin = BridgePlugin\n\nexport default OSC\n",
     "static": true,
     "longname": "/home/runner/work/osc-js/osc-js/src/osc.js",
     "access": "public",
@@ -3989,7 +3989,7 @@
     "lineNumber": 23,
     "type": {
       "types": [
-        "{\"discardLateMessages\": *, \"plugin\": *}"
+        "{\"discardLateMessages\": *}"
       ]
     },
     "ignore": true
@@ -4006,7 +4006,7 @@
     "importPath": "osc-js/src/osc.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 31,
+    "lineNumber": 30,
     "undocument": true,
     "type": {
       "types": [
@@ -4027,7 +4027,7 @@
     "importPath": "osc-js/src/osc.js",
     "importStyle": "OSC",
     "description": null,
-    "lineNumber": 60,
+    "lineNumber": 59,
     "undocument": true,
     "interface": false
   },
@@ -4047,7 +4047,7 @@
       "const osc = new OSC({ discardLateMessages: true })",
       "const websocketPlugin = new OSC.WebsocketClientPlugin()\nconst osc = new OSC({ plugin: websocketPlugin })"
     ],
-    "lineNumber": 81,
+    "lineNumber": 80,
     "params": [
       {
         "nullable": null,
@@ -4094,7 +4094,7 @@
     "longname": "src/osc.js~OSC#options",
     "access": "private",
     "description": "",
-    "lineNumber": 90,
+    "lineNumber": 89,
     "type": {
       "nullable": null,
       "types": [
@@ -4113,7 +4113,7 @@
     "longname": "src/osc.js~OSC#eventHandler",
     "access": "private",
     "description": "",
-    "lineNumber": 95,
+    "lineNumber": 98,
     "type": {
       "nullable": null,
       "types": [
@@ -4139,7 +4139,7 @@
       "// will be called for every message since it uses the wildcard symbol\nosc.on('*', message => {\n  console.log(message)\n})",
       "// will be called on network socket error\nosc.on('error', message => {\n  console.log(message)\n})"
     ],
-    "lineNumber": 131,
+    "lineNumber": 134,
     "params": [
       {
         "nullable": null,
@@ -4185,7 +4185,7 @@
     "examples": [
       "const listenerId = osc.on('error', message => {\n  console.log(message)\n})\nosc.off('error', listenerId) // unsubscribe from error event"
     ],
-    "lineNumber": 151,
+    "lineNumber": 154,
     "params": [
       {
         "nullable": null,
@@ -4231,7 +4231,7 @@
     "examples": [
       "const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\nosc.open({ host: '127.0.0.1', port: 8080 })"
     ],
-    "lineNumber": 168,
+    "lineNumber": 171,
     "params": [
       {
         "nullable": null,
@@ -4264,7 +4264,7 @@
     "examples": [
       "import OSC, { STATUS } from 'osc'\nconst osc = new OSC()\nif (osc.status() === STATUS.IS_CONNECTING) {\n  // do something\n}"
     ],
-    "lineNumber": 193,
+    "lineNumber": 196,
     "return": {
       "nullable": null,
       "types": [
@@ -4286,7 +4286,7 @@
     "longname": "src/osc.js~OSC#close",
     "access": "public",
     "description": "Close connection. This method is used by plugins and is not\navailable without (see Plugin API for more information)",
-    "lineNumber": 205,
+    "lineNumber": 208,
     "params": [],
     "return": {
       "types": [
@@ -4308,7 +4308,7 @@
     "examples": [
       "const osc = new OSC({ plugin: new OSC.DatagramPlugin() })\nosc.open({ host: '127.0.0.1', port: 8080 })\n\nconst message = new OSC.Message('/test/path', 55.1, 57)\nosc.send(message)\n\n// send message again to custom address\nosc.send(message, { host: '192.168.178.115', port: 9001 })"
     ],
-    "lineNumber": 229,
+    "lineNumber": 232,
     "params": [
       {
         "nullable": null,
