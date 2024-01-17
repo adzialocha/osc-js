@@ -84,7 +84,7 @@ export default class EventHandler {
           if (bundle.timetag.value.timestamp() < bundleItem.timetag.value.timestamp()) {
             throw new Error('OSC Bundle timestamp is older than the timestamp of enclosed Bundles')
           }
-          return this.dispatch(bundleItem)
+          return this.dispatch(new Packet(bundleItem))
         } else if (bundleItem instanceof Message) {
           const message = bundleItem
           return this.notify(
