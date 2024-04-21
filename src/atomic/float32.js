@@ -33,6 +33,6 @@ export default class AtomicFloat32 extends Atomic {
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
-    return super.unpack(dataView, 'getFloat32', 4, initialOffset)
+    return super.unpackWithMethod(dataView, 'getFloat32', 4, initialOffset)
   }
 }
