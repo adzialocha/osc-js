@@ -82,6 +82,18 @@ describe('OSC', () => {
 
       expect(spy).to.have.been.called()
     })
+
+    it('calls an error due to an internal exception', () => {
+      const spy = chai.spy()
+
+      osc.on('error', spy)
+
+      // Receive broken OSC packet
+      const bytes = new Uint8Array([1, 2, 3])
+      osc.eventHandler.notify(bytes)
+
+      expect(spy).to.have.been.called()
+    })
   })
 
   /** @test {OSC#off} */
