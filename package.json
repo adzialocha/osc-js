@@ -1,6 +1,6 @@
 {
   "name": "osc-js",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "OSC library for Node.js and the browser, with customizable Plugin API for WebSocket, UDP or bridge networking",
   "main": "lib/osc.js",
   "browser": "lib/osc.min.js",
