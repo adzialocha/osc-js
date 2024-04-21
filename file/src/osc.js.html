@@ -176,7 +176,7 @@ class OSC {
     this.options = { ...defaultOptions, ...options }
     // create default plugin with default options
     if (!this.options.plugin) {
-      this.options.plugin = new WebsocketClientPlugin();
+      this.options.plugin = new WebsocketClientPlugin()
     }
     /**
      * @type {EventHandler} eventHandler

@@ -290,68 +290,73 @@ export default class EventHandler {
       throw new Error(&apos;OSC EventHandler can not be called without any argument&apos;)
     }
 
-    // check for incoming dispatchable OSC data
-    if (args[0] instanceof Packet) {
-      return this.dispatch(args[0], args[1])
-    } else if (args[0] instanceof Bundle || args[0] instanceof Message) {
-      return this.dispatch(new Packet(args[0]), args[1])
-    } else if (!isString(args[0])) {
-      const packet = new Packet()
-      packet.unpack(dataView(args[0]))
-      return this.dispatch(packet, args[1])
-    }
-
-    const name = args[0]
-
-    // data argument
-    let data = null
-
-    if (args.length &gt; 1) {
-      data = args[1]
-    }
-
-    // timestamp argument
-    let timestamp = null
-
-    if (args.length &gt; 2) {
-      if (isInt(args[2])) {
-        timestamp = args[2]
-      } else if (args[2] instanceof Date) {
-        timestamp = args[2].getTime()
-      } else {
-        throw new Error(&apos;OSC EventHandler timestamp has to be a number or Date&apos;)
+    try {
+      // check for incoming dispatchable OSC data
+      if (args[0] instanceof Packet) {
+        return this.dispatch(args[0], args[1])
+      } else if (args[0] instanceof Bundle || args[0] instanceof Message) {
+        return this.dispatch(new Packet(args[0]), args[1])
+      } else if (!isString(args[0])) {
+        const packet = new Packet()
+        packet.unpack(dataView(args[0]))
+        return this.dispatch(packet, args[1])
       }
-    }
 
-    // remote address info
-    let rinfo = null
+      const name = args[0]
 
-    if (args.length &gt;= 3) {
-      rinfo = args[3]
-    }
+      // data argument
+      let data = null
 
-    // notify now or later
-    if (timestamp) {
-      const now = Date.now()
+      if (args.length &gt; 1) {
+        data = args[1]
+      }
 
-      // is message outdated?
-      if (now &gt; timestamp) {
-        if (!this.options.discardLateMessages) {
-          return this.call(name, data, rinfo)
+      // timestamp argument
+      let timestamp = null
+
+      if (args.length &gt; 2) {
+        if (isInt(args[2])) {
+          timestamp = args[2]
+        } else if (args[2] instanceof Date) {
+          timestamp = args[2].getTime()
+        } else {
+          throw new Error(&apos;OSC EventHandler timestamp has to be a number or Date&apos;)
         }
       }
 
-      // notify later
-      const that = this
+      // remote address info
+      let rinfo = null
 
-      setTimeout(() =&gt; {
-        that.call(name, data, rinfo)
-      }, timestamp - now)
+      if (args.length &gt;= 3) {
+        rinfo = args[3]
+      }
 
-      return true
+      // notify now or later
+      if (timestamp) {
+        const now = Date.now()
+
+        // is message outdated?
+        if (now &gt; timestamp) {
+          if (!this.options.discardLateMessages) {
+            return this.call(name, data, rinfo)
+          }
+        }
+
+        // notify later
+        const that = this
+
+        setTimeout(() =&gt; {
+          that.call(name, data, rinfo)
+        }, timestamp - now)
+
+        return true
+      }
+
+      return this.call(name, data, rinfo)
+    } catch (error) {
+      this.notify(&apos;error&apos;, error)
+      return false
     }
-
-    return this.call(name, data, rinfo)
   }
 
   /**

@@ -1123,31 +1123,31 @@ window.esdocSearchIndex = [
   ],
   [
     "osc#close src/osc.js~osc#close,osc#close",
-    "test-file/test/osc.spec.js.html#lineNumber128",
+    "test-file/test/osc.spec.js.html#lineNumber140",
     "OSC close",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber141",
+    "test-file/test/osc.spec.js.html#lineNumber153",
     "OSC close calls the close event",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber137",
+    "test-file/test/osc.spec.js.html#lineNumber149",
     "OSC close returns the correct status",
     "test"
   ],
   [
     "osc#off src/osc.js~osc#off,osc#off",
-    "test-file/test/osc.spec.js.html#lineNumber88",
+    "test-file/test/osc.spec.js.html#lineNumber100",
     "OSC off",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber89",
+    "test-file/test/osc.spec.js.html#lineNumber101",
     "OSC off removes a subscription",
     "test"
   ],
@@ -1165,25 +1165,31 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/osc.spec.js.html#lineNumber86",
+    "OSC on calls an error due to an internal exception",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/osc.spec.js.html#lineNumber68",
     "OSC on calls my subscription when listening to the right address",
     "test"
   ],
   [
     "osc#open src/osc.js~osc#open,osc#open",
-    "test-file/test/osc.spec.js.html#lineNumber109",
+    "test-file/test/osc.spec.js.html#lineNumber121",
     "OSC open",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber122",
+    "test-file/test/osc.spec.js.html#lineNumber134",
     "OSC open calls the open event",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber118",
+    "test-file/test/osc.spec.js.html#lineNumber130",
     "OSC open returns the correct status",
     "test"
   ],
@@ -1195,25 +1201,25 @@ window.esdocSearchIndex = [
   ],
   [
     "osc#send src/osc.js~osc#send,osc#send",
-    "test-file/test/osc.spec.js.html#lineNumber147",
+    "test-file/test/osc.spec.js.html#lineNumber159",
     "OSC send",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber148",
+    "test-file/test/osc.spec.js.html#lineNumber160",
     "OSC send passes over a binary object with configs to the plugin",
     "test"
   ],
   [
     "osc#status src/osc.js~osc#status,osc#status",
-    "test-file/test/osc.spec.js.html#lineNumber102",
+    "test-file/test/osc.spec.js.html#lineNumber114",
     "OSC status",
     "test"
   ],
   [
     "",
-    "test-file/test/osc.spec.js.html#lineNumber103",
+    "test-file/test/osc.spec.js.html#lineNumber115",
     "OSC status returns the initial status",
     "test"
   ],
