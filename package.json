@@ -37,14 +37,14 @@
   ],
   "homepage": "https://github.com/adzialocha/osc-js#readme",
   "devDependencies": {
-    "@babel/core": "7.19.3",
-    "@babel/eslint-parser": "7.19.1",
-    "@babel/preset-env": "7.19.3",
-    "@babel/register": "7.18.9",
+    "@babel/core": "7.24.4",
+    "@babel/eslint-parser": "7.24.1",
+    "@babel/preset-env": "7.24.4",
+    "@babel/register": "7.23.7",
     "@rollup/plugin-alias": "^3.1.9",
     "@rollup/plugin-babel": "^5.3.1",
     "@types/node": "^18.8.3",
-    "@types/ws": "^8.5.3",
+    "@types/ws": "^8.5.10",
     "chai": "4.3.6",
     "chai-spies-next": "0.9.3",
     "esdoc": "1.1.0",
@@ -52,8 +52,8 @@
     "esdoc-standard-plugin": "1.0.0",
     "eslint": "8.24.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.26.0",
-    "mocha": "10.0.0",
+    "eslint-plugin-import": "2.29.1",
+    "mocha": "10.4.0",
     "rollup": "2.79.1",
     "rollup-plugin-cleanup": "3.2.1",
     "rollup-plugin-dts": "^4.2.2",
@@ -61,6 +61,6 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
-    "ws": "^8.9.0"
+    "ws": "^8.16.0"
   }
 }
