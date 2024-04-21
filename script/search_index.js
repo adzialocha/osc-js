@@ -336,7 +336,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "atomic#unpack src/atomic.js~atomic#unpack,atomic#unpack",
+    "atomic#unpack atomic#unpack,atomic#unpack",
     "test-file/test/atomic.spec.js.html#lineNumber47",
     "Atomic unpack",
     "test"
@@ -1812,9 +1812,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/atomic.js~atomic#unpack",
-    "class/src/atomic.js~Atomic.html#instance-method-unpack",
-    "src/atomic.js~Atomic#unpack",
+    "src/atomic.js~atomic#unpackwithmethod",
+    "class/src/atomic.js~Atomic.html#instance-method-unpackWithMethod",
+    "src/atomic.js~Atomic#unpackWithMethod",
     "method"
   ],
   [

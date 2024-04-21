@@ -129,7 +129,7 @@ export default class AtomicUInt64 extends Atomic {
    * @return {number} Offset after unpacking
    */
   unpack(dataView, initialOffset = 0) {
-    return super.unpack(dataView, &apos;getBigUint64&apos;, 8, initialOffset)
+    return super.unpackWithMethod(dataView, &apos;getBigUint64&apos;, 8, initialOffset)
   }
 }
 </code></pre>

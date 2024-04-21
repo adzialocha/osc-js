@@ -135,7 +135,7 @@ export default class Atomic {
    * @param {number} [initialOffset=0] Offset of DataView before unpacking
    * @return {number} Offset after unpacking
    */
-  unpack(dataView, method, byteLength, initialOffset = 0) {
+  unpackWithMethod(dataView, method, byteLength, initialOffset = 0) {
     if (!(dataView &amp;&amp; method &amp;&amp; byteLength)) {
       throw new Error(&apos;OSC Atomic cant\&apos;t be unpacked without given dataView, method or byteLength&apos;)
     }
